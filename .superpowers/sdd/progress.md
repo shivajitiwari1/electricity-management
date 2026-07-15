@@ -4,7 +4,7 @@
 ## Started: 2026-07-15
 
 ### Tasks
-- [ ] Task 1: Scaffold Next.js 15 project with all dependencies
+- [x] Task 1: Scaffold Next.js 15 project with all dependencies (commits 4b825dc..c5df0ce, review clean)
 - [ ] Task 2: Prisma schema, seed file, and lib/prisma.ts
 - [ ] Task 3: NextAuth v5 config, middleware, login page
 - [ ] Task 4: Core libraries (billing, email, pdf, razorpay)

@@ -12,7 +12,17 @@
       "Bash(npx shadcn@latest add button card table badge input label select dialog sonner dropdown-menu form separator sheet skeleton tabs --yes)",
       "Bash(npx shadcn@latest add form --yes)",
       "Read(//e/e/Demo Website/**)",
-      "Read(//e/e/Demo Website/Electricity Bill/**)"
+      "Read(//e/e/Demo Website/Electricity Bill/**)",
+      "Bash(xargs cat *)",
+      "Bash(timeout 30 npx shadcn@latest add form -y)",
+      "Bash(npm --version)",
+      "Bash(node_modules/.bin/jiti --help)",
+      "Bash(node_modules/.bin/prisma generate *)",
+      "mcp__plugin_context7_context7__resolve-library-id",
+      "mcp__plugin_context7_context7__query-docs",
+      "Bash(node_modules/.bin/tsc --noEmit)",
+      "Bash(node_modules/.bin/tsc --noEmit --skipLibCheck)",
+      "Bash(node_modules/.bin/tsc --noEmit lib/prisma.ts prisma.config.ts)"
     ]
   }
 }

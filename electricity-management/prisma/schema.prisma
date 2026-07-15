@@ -1,0 +1,145 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  ADMIN
+  RESIDENT
+}
+
+enum ConnectionStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum BillStatus {
+  PENDING
+  PAID
+  OVERDUE
+}
+
+enum PaymentMethod {
+  ONLINE
+  CASH
+}
+
+enum PaymentStatus {
+  INITIATED
+  SUCCESS
+  FAILED
+}
+
+model User {
+  id        String     @id @default(cuid())
+  name      String
+  email     String     @unique
+  password  String
+  role      Role
+  createdAt DateTime   @default(now())
+  resident  Resident?
+  auditLogs AuditLog[]
+}
+
+model Resident {
+  id             String       @id @default(cuid())
+  userId         String       @unique
+  user           User         @relation(fields: [userId], references: [id])
+  residentNumber String       @unique
+  phone          String?
+  createdAt      DateTime     @default(now())
+  connections    Connection[]
+}
+
+model Connection {
+  id             String           @id @default(cuid())
+  residentId     String
+  resident       Resident         @relation(fields: [residentId], references: [id])
+  tower          String
+  floor          String
+  flatNo         String           @unique
+  unitType       String
+  unitArea       Int
+  meterNo        String?
+  sanctionedLoad Decimal
+  status         ConnectionStatus @default(ACTIVE)
+  connectedAt    DateTime         @default(now())
+  meterReadings  MeterReading[]
+  bills          Bill[]
+}
+
+model Rate {
+  id            String   @id @default(cuid())
+  ncplPerUnit   Decimal
+  dgFixed       Decimal
+  fixedPerKw    Decimal
+  effectiveFrom DateTime
+}
+
+model MeterReading {
+  id           String     @id @default(cuid())
+  connectionId String
+  connection   Connection @relation(fields: [connectionId], references: [id])
+  readingDate  DateTime
+  ncplPrevious Decimal
+  ncplCurrent  Decimal
+  ncplUnits    Decimal
+  dgPrevious   Decimal    @default(0)
+  dgCurrent    Decimal    @default(0)
+  dgUnits      Decimal    @default(0)
+  recordedById String
+  createdAt    DateTime   @default(now())
+  bill         Bill?
+}
+
+model Bill {
+  id                 String       @id @default(cuid())
+  connectionId       String
+  connection         Connection   @relation(fields: [connectionId], references: [id])
+  meterReadingId     String       @unique
+  meterReading       MeterReading @relation(fields: [meterReadingId], references: [id])
+  billNumber         String       @unique
+  billDate           DateTime
+  dueDate            DateTime
+  billingPeriodStart DateTime
+  billingPeriodEnd   DateTime
+  ncplUnits          Decimal
+  ratePerUnit        Decimal
+  ncplCharge         Decimal
+  dgCharge           Decimal
+  fixedCharge        Decimal
+  previousDues       Decimal      @default(0)
+  totalAmount        Decimal
+  status             BillStatus   @default(PENDING)
+  createdAt          DateTime     @default(now())
+  payment            Payment?
+}
+
+model Payment {
+  id                String        @id @default(cuid())
+  billId            String        @unique
+  bill              Bill          @relation(fields: [billId], references: [id])
+  amount            Decimal
+  paymentDate       DateTime
+  method            PaymentMethod
+  razorpayOrderId   String?
+  razorpayPaymentId String?
+  razorpaySignature String?
+  status            PaymentStatus
+  receiptNumber     String        @unique
+  createdAt         DateTime      @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  action    String
+  entity    String
+  entityId  String
+  meta      Json?
+  createdAt DateTime @default(now())
+}
