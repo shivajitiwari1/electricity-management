@@ -25,13 +25,15 @@
       "Bash(node_modules/.bin/tsc --noEmit lib/prisma.ts prisma.config.ts)",
       "Bash(/c/Users/omtiw/.claude/plugins/cache/claude-plugins-official/superpowers/6.1.1/skills/subagent-driven-development/scripts/review-package c5df0ce *)",
       "Bash(python3 -c \"import json; d=json.load\\(open\\('/e/Demo Website/Electricity Bill/electricity-management/node_modules/@prisma/client/package.json'\\)\\); [print\\(k\\) for k in d.get\\('exports', {}\\).keys\\(\\)]\")",
-      "Bash(/c/Users/omtiw/.claude/plugins/cache/claude-plugins-official/superpowers/6.1.1/skills/subagent-driven-development/scripts/review-package 0626f6c HEAD)"
+      "Bash(/c/Users/omtiw/.claude/plugins/cache/claude-plugins-official/superpowers/6.1.1/skills/subagent-driven-development/scripts/review-package 0626f6c HEAD)",
+      "Bash(/c/Users/omtiw/.claude/plugins/cache/claude-plugins-official/superpowers/6.1.1/skills/subagent-driven-development/scripts/review-package 99e2183 HEAD)"
     ],
     "additionalDirectories": [
       "E:\\Demo Website\\Electricity Bill\\electricity-management\\app\\api\\residents",
       "E:\\Demo Website\\Electricity Bill\\electricity-management\\app\\api\\connections",
       "E:\\Demo Website\\Electricity Bill\\electricity-management\\app\\api\\meter-readings",
-      "E:\\Demo Website\\Electricity Bill\\electricity-management\\app\\api\\bills"
+      "E:\\Demo Website\\Electricity Bill\\electricity-management\\app\\api\\bills",
+      "E:\\Demo Website\\Electricity Bill\\electricity-management\\app\\api\\payments"
     ]
   }
 }

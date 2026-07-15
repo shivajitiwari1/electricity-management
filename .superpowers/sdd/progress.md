@@ -9,7 +9,7 @@
 - [x] Task 3: NextAuth v5 config, middleware, login page (commits d16e4c7..b9ced2a, review clean)
 - [x] Task 4: Core libraries (billing, email, pdf, razorpay) (commits b9ced2a..0626f6c, review clean)
 - [x] Task 5: API routes — residents & connections (commits 0626f6c..99e2183, review clean)
-- [ ] Task 6: API routes — meter-readings & bills
+- [x] Task 6: API routes — meter-readings & bills (commits 99e2183..4771a47, review clean — "critical" was rubric error, code correct)
 - [ ] Task 7: API routes — payments, razorpay, pdf
 - [ ] Task 8: API routes — reports, cron, rates
 - [ ] Task 9: Admin layout, dashboard, shared components
