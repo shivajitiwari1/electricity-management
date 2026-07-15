@@ -1,5 +1,4 @@
 import { PrismaClient, Role, ConnectionStatus } from "@prisma/client";
-import { PrismaPg } from "@prisma/adapter-pg";
 import bcrypt from "bcryptjs";
 import { readFileSync } from "fs";
 import { join, dirname } from "path";
@@ -11,13 +10,7 @@ const _dirname =
     ? __dirname
     : dirname(fileURLToPath(import.meta.url));
 
-function createClient() {
-  const connectionString = process.env.DATABASE_URL!;
-  const adapter = new PrismaPg({ connectionString });
-  return new PrismaClient({ adapter });
-}
-
-const prisma = createClient();
+const prisma = new PrismaClient();
 
 interface ResidentData {
   tower: string;

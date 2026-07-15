@@ -11,7 +11,7 @@
 - [x] Task 5: API routes — residents & connections (commits 0626f6c..99e2183, review clean)
 - [x] Task 6: API routes — meter-readings & bills (commits 99e2183..4771a47, review clean — "critical" was rubric error, code correct)
 - [x] Task 7: API routes — payments, razorpay, pdf (commits 4771a47..f660508, review clean)
-- [ ] Task 8: API routes — reports, cron, rates
+- [x] Task 8: API routes — reports, cron, rates (commits f660508..7559118, review clean)
 - [ ] Task 9: Admin layout, dashboard, shared components
 - [ ] Task 10: Admin pages — residents & connections
 - [ ] Task 11: Admin pages — rates & meter-readings

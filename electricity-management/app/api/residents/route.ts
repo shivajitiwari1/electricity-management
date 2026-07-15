@@ -31,10 +31,10 @@ export async function GET(req: NextRequest) {
     where: search
       ? {
           OR: [
-            { user: { name: { contains: search, mode: "insensitive" } } },
+            { user: { name: { contains: search } } },
             {
               connections: {
-                some: { flatNo: { contains: search, mode: "insensitive" } },
+                some: { flatNo: { contains: search } },
               },
             },
           ],
