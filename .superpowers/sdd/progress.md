@@ -8,7 +8,7 @@
 - [x] Task 2: Prisma schema, seed file, and lib/prisma.ts (commits c5df0ce..d16e4c7, review clean)
 - [x] Task 3: NextAuth v5 config, middleware, login page (commits d16e4c7..b9ced2a, review clean)
 - [x] Task 4: Core libraries (billing, email, pdf, razorpay) (commits b9ced2a..0626f6c, review clean)
-- [ ] Task 5: API routes — residents & connections
+- [x] Task 5: API routes — residents & connections (commits 0626f6c..99e2183, review clean)
 - [ ] Task 6: API routes — meter-readings & bills
 - [ ] Task 7: API routes — payments, razorpay, pdf
 - [ ] Task 8: API routes — reports, cron, rates
