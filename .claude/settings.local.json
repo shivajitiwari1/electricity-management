@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(node --version)",
+      "PowerShell(npm list -g xlsx 2>$null)",
+      "Bash(node -e ' *)",
+      "Bash(node -e \"require\\('xlsx'\\); console.log\\('ok'\\)\")",
+      "Bash(npm root *)",
+      "Bash(npx create-next-app@latest electricity-management --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --use-npm)",
+      "Bash(npx shadcn@latest init -d)",
+      "Bash(npx shadcn@latest add button card table badge input label select dialog toast dropdown-menu form separator sheet skeleton tabs --yes)",
+      "Bash(npx shadcn@latest add button card table badge input label select dialog sonner dropdown-menu form separator sheet skeleton tabs --yes)",
+      "Bash(npx shadcn@latest add form --yes)",
+      "Read(//e/e/Demo Website/**)",
+      "Read(//e/e/Demo Website/Electricity Bill/**)"
+    ]
+  }
+}
