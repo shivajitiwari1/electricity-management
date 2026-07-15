@@ -5,7 +5,7 @@
 
 ### Tasks
 - [x] Task 1: Scaffold Next.js 15 project with all dependencies (commits 4b825dc..c5df0ce, review clean)
-- [ ] Task 2: Prisma schema, seed file, and lib/prisma.ts
+- [x] Task 2: Prisma schema, seed file, and lib/prisma.ts (commits c5df0ce..d16e4c7, review clean)
 - [ ] Task 3: NextAuth v5 config, middleware, login page
 - [ ] Task 4: Core libraries (billing, email, pdf, razorpay)
 - [ ] Task 5: API routes — residents & connections
