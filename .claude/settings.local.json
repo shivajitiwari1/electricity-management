@@ -37,7 +37,9 @@
       "Bash(git -C 'E:\\\\Demo Website\\\\Electricity Bill' commit -m ' *)",
       "Bash(/c/Users/omtiw/.claude/plugins/cache/claude-plugins-official/superpowers/6.1.1/skills/subagent-driven-development/scripts/review-package f1a431d *)",
       "WebFetch(domain:pris.ly)",
-      "WebFetch(domain:www.prisma.io)"
+      "WebFetch(domain:www.prisma.io)",
+      "Bash(node -e \"const net=require\\('net'\\);const s=net.createConnection\\(3306,'localhost',\\(\\)=>{console.log\\('MySQL running on port 3306'\\);s.destroy\\(\\)}\\);s.on\\('error',e=>console.log\\('MySQL NOT running:',e.message\\)\\)\")",
+      "Bash(node --import jiti/register prisma/seed.ts)"
     ],
     "additionalDirectories": [
       "E:\\Demo Website\\Electricity Bill\\electricity-management\\app\\api\\residents",

@@ -1,4 +1,5 @@
 import { PrismaClient, Role, ConnectionStatus } from "@prisma/client";
+import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import bcrypt from "bcryptjs";
 import { readFileSync } from "fs";
 import { join, dirname } from "path";
@@ -10,7 +11,19 @@ const _dirname =
     ? __dirname
     : dirname(fileURLToPath(import.meta.url));
 
-const prisma = new PrismaClient();
+function createAdapter() {
+  const url = process.env.DATABASE_URL ?? "mysql://root:@localhost:3306/electricity_management";
+  const parsed = new URL(url);
+  return new PrismaMariaDb({
+    host: parsed.hostname || "localhost",
+    port: parsed.port ? parseInt(parsed.port, 10) : 3306,
+    user: parsed.username || "root",
+    password: parsed.password || undefined,
+    database: parsed.pathname.slice(1) || "electricity_management",
+  });
+}
+
+const prisma = new PrismaClient({ adapter: createAdapter() });
 
 interface ResidentData {
   tower: string;
