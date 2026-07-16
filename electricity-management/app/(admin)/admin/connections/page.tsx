@@ -4,12 +4,13 @@ import ConnectionsTable from "@/components/admin/connections-table";
 export const dynamic = "force-dynamic";
 
 export default async function ConnectionsPage() {
-  const connections = await prisma.connection.findMany({
+  const raw = await prisma.connection.findMany({
     include: {
       resident: { include: { user: { select: { name: true, email: true } } } },
     },
     orderBy: { tower: "asc" },
   });
+  const connections = JSON.parse(JSON.stringify(raw));
 
   return (
     <div className="space-y-6">
