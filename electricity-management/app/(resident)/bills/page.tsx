@@ -1,0 +1,58 @@
+export const dynamic = "force-dynamic";
+
+import { auth } from "@/auth";
+import { prisma } from "@/lib/prisma";
+import { redirect } from "next/navigation";
+import ResidentBillsList from "@/components/resident/bills-list";
+
+export default async function ResidentBillsPage() {
+  const session = await auth();
+  if (!session) redirect("/login");
+
+  const resident = await prisma.resident.findUnique({
+    where: { userId: session.user.id },
+    include: {
+      connections: {
+        include: {
+          bills: {
+            orderBy: { billDate: "desc" },
+            include: {
+              meterReading: true,
+              payment: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!resident) redirect("/login");
+
+  // Serialize all bills from all connections
+  const bills = resident.connections.flatMap((conn) =>
+    conn.bills.map((bill) => ({
+      id: bill.id,
+      billNumber: bill.billNumber,
+      flatNo: conn.flatNo,
+      billingPeriodStart: bill.billingPeriodStart.toISOString(),
+      billingPeriodEnd: bill.billingPeriodEnd.toISOString(),
+      ncplUnits: Number(bill.ncplUnits),
+      totalAmount: Number(bill.totalAmount),
+      dueDate: bill.dueDate.toISOString(),
+      status: bill.status,
+      paymentId: bill.payment?.id ?? null,
+    }))
+  );
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900">My Bills</h1>
+        <p className="text-gray-500 text-sm mt-1">
+          View and pay your electricity bills
+        </p>
+      </div>
+      <ResidentBillsList bills={bills} />
+    </div>
+  );
+}
