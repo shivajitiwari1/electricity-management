@@ -7,6 +7,15 @@ const updateResidentSchema = z.object({
   name: z.string().min(1).optional(),
   phone: z.string().optional(),
   email: z.email().optional(),
+  // connection fields
+  connectionId: z.string().optional(),
+  tower: z.string().min(1).optional(),
+  floor: z.string().min(1).optional(),
+  flatNo: z.string().min(1).optional(),
+  unitType: z.string().min(1).optional(),
+  unitArea: z.number().positive().optional(),
+  sanctionedLoad: z.number().positive().optional(),
+  meterNo: z.string().optional(),
 });
 
 export async function GET(
@@ -68,11 +77,11 @@ export async function PUT(
     );
   }
 
-  const { name, phone, email } = parsed.data;
+  const { name, phone, email, connectionId, tower, floor, flatNo, unitType, unitArea, sanctionedLoad, meterNo } = parsed.data;
 
   const resident = await prisma.resident.findUnique({
     where: { id },
-    include: { user: true },
+    include: { user: true, connections: true },
   });
 
   if (!resident) {
@@ -87,8 +96,16 @@ export async function PUT(
     }
   }
 
+  // Check flatNo uniqueness if being changed
+  if (flatNo) {
+    const connId = connectionId ?? resident.connections[0]?.id;
+    const existingFlat = await prisma.connection.findUnique({ where: { flatNo } });
+    if (existingFlat && existingFlat.id !== connId) {
+      return NextResponse.json({ error: "Flat number already in use" }, { status: 409 });
+    }
+  }
+
   const updated = await prisma.$transaction(async (tx) => {
-    // Update user fields
     if (name !== undefined || email !== undefined) {
       await tx.user.update({
         where: { id: resident.userId },
@@ -99,12 +116,29 @@ export async function PUT(
       });
     }
 
-    // Update resident fields
     if (phone !== undefined) {
-      await tx.resident.update({
-        where: { id },
-        data: { phone },
-      });
+      await tx.resident.update({ where: { id }, data: { phone } });
+    }
+
+    // Update connection fields if any provided
+    const hasConnUpdate = tower !== undefined || floor !== undefined || flatNo !== undefined ||
+      unitType !== undefined || unitArea !== undefined || sanctionedLoad !== undefined || meterNo !== undefined;
+    if (hasConnUpdate) {
+      const connId = connectionId ?? resident.connections[0]?.id;
+      if (connId) {
+        await tx.connection.update({
+          where: { id: connId },
+          data: {
+            ...(tower !== undefined ? { tower } : {}),
+            ...(floor !== undefined ? { floor } : {}),
+            ...(flatNo !== undefined ? { flatNo } : {}),
+            ...(unitType !== undefined ? { unitType } : {}),
+            ...(unitArea !== undefined ? { unitArea } : {}),
+            ...(sanctionedLoad !== undefined ? { sanctionedLoad } : {}),
+            ...(meterNo !== undefined ? { meterNo: meterNo || null } : {}),
+          },
+        });
+      }
     }
 
     await tx.auditLog.create({
@@ -113,16 +147,14 @@ export async function PUT(
         action: "UPDATE",
         entity: "Resident",
         entityId: id,
-        meta: { name, phone, email },
+        meta: { name, phone, email, tower, floor, flatNo, unitType, unitArea, sanctionedLoad, meterNo },
       },
     });
 
     return tx.resident.findUnique({
       where: { id },
       include: {
-        user: {
-          select: { id: true, name: true, email: true, role: true, createdAt: true },
-        },
+        user: { select: { id: true, name: true, email: true, role: true, createdAt: true } },
         connections: true,
       },
     });

@@ -7,7 +7,7 @@ export default async function ResidentsPage() {
   const residents = await prisma.resident.findMany({
     include: {
       user: { select: { id: true, name: true, email: true } },
-      connections: { select: { id: true, flatNo: true, tower: true, status: true } },
+      connections: { select: { id: true, flatNo: true, tower: true, floor: true, unitType: true, unitArea: true, meterNo: true, sanctionedLoad: true, status: true } },
     },
     orderBy: { createdAt: "desc" },
   });

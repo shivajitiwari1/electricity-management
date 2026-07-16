@@ -97,7 +97,7 @@ export default function PaymentsTable({ initialData }: Props) {
       {/* Filters */}
       <div className="flex flex-wrap items-end gap-4">
         <div className="flex flex-col gap-1">
-          <span className="text-xs font-medium text-gray-600">Method</span>
+          <span className="text-xs font-medium text-muted-foreground">Method</span>
           <Select value={filterMethod} onValueChange={(val) => setFilterMethod(val ?? "all")}>
             <SelectTrigger className="w-36">
               <SelectValue placeholder="All" />
@@ -111,7 +111,7 @@ export default function PaymentsTable({ initialData }: Props) {
         </div>
 
         <div className="flex flex-col gap-1">
-          <span className="text-xs font-medium text-gray-600">Status</span>
+          <span className="text-xs font-medium text-muted-foreground">Status</span>
           <Select value={filterStatus} onValueChange={(val) => setFilterStatus(val ?? "all")}>
             <SelectTrigger className="w-36">
               <SelectValue placeholder="All" />
@@ -150,23 +150,23 @@ export default function PaymentsTable({ initialData }: Props) {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b bg-gray-50">
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Receipt #</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Flat No</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Resident</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Bill #</th>
-                  <th className="text-right px-4 py-3 font-medium text-gray-600">Amount (₹)</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Date</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Method</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Transaction ID</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Status</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Actions</th>
+                <tr className="border-b bg-muted/50">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Receipt #</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Flat No</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Resident</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Bill #</th>
+                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">Amount (₹)</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Date</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Method</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Transaction ID</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {filtered.length === 0 ? (
                   <tr>
-                    <td colSpan={10} className="text-center py-10 text-gray-400">
+                    <td colSpan={10} className="text-center py-10 text-muted-foreground">
                       No payments found
                     </td>
                   </tr>
@@ -174,7 +174,7 @@ export default function PaymentsTable({ initialData }: Props) {
                   filtered.map((payment) => (
                     <tr
                       key={payment.id}
-                      className="border-b last:border-0 hover:bg-gray-50"
+                      className="border-b last:border-0 hover:bg-muted/50"
                     >
                       <td className="px-4 py-3 font-mono text-xs">
                         {payment.receiptNumber}
@@ -188,13 +188,13 @@ export default function PaymentsTable({ initialData }: Props) {
                           maximumFractionDigits: 2,
                         })}
                       </td>
-                      <td className="px-4 py-3 text-gray-600 text-xs">
+                      <td className="px-4 py-3 text-muted-foreground text-xs">
                         {formatDate(payment.paymentDate)}
                       </td>
                       <td className="px-4 py-3">
                         <MethodBadge method={payment.method} />
                       </td>
-                      <td className="px-4 py-3 font-mono text-xs text-gray-500">
+                      <td className="px-4 py-3 font-mono text-xs text-muted-foreground">
                         {payment.razorpayPaymentId ?? "—"}
                       </td>
                       <td className="px-4 py-3">

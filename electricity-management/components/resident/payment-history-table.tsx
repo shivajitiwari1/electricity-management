@@ -43,7 +43,7 @@ function MethodBadge({ method }: { method: string }) {
     );
   }
   return (
-    <Badge className="bg-gray-100 text-gray-700 hover:bg-gray-100">CASH</Badge>
+    <Badge className="bg-gray-100 text-foreground hover:bg-gray-100">CASH</Badge>
   );
 }
 
@@ -88,7 +88,7 @@ export default function PaymentHistoryTable({ payments }: Props) {
       {/* Filters */}
       <div className="flex flex-wrap items-end gap-4">
         <div className="flex flex-col gap-1">
-          <span className="text-xs font-medium text-gray-600">Method</span>
+          <span className="text-xs font-medium text-muted-foreground">Method</span>
           <Select
             value={filterMethod}
             onValueChange={(val) => setFilterMethod(val ?? "all")}
@@ -126,26 +126,26 @@ export default function PaymentHistoryTable({ payments }: Props) {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b bg-gray-50">
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">
+                <tr className="border-b bg-muted/50">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
                     Receipt #
                   </th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
                     Bill #
                   </th>
-                  <th className="text-right px-4 py-3 font-medium text-gray-600">
+                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">
                     Amount (₹)
                   </th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
                     Date
                   </th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
                     Method
                   </th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
                     Transaction ID
                   </th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
                     Actions
                   </th>
                 </tr>
@@ -155,7 +155,7 @@ export default function PaymentHistoryTable({ payments }: Props) {
                   <tr>
                     <td
                       colSpan={7}
-                      className="text-center py-10 text-gray-400"
+                      className="text-center py-10 text-muted-foreground"
                     >
                       No payments found
                     </td>
@@ -164,7 +164,7 @@ export default function PaymentHistoryTable({ payments }: Props) {
                   filtered.map((payment) => (
                     <tr
                       key={payment.id}
-                      className="border-b last:border-0 hover:bg-gray-50"
+                      className="border-b last:border-0 hover:bg-muted/50"
                     >
                       <td className="px-4 py-3 font-mono text-xs">
                         {payment.receiptNumber}
@@ -178,13 +178,13 @@ export default function PaymentHistoryTable({ payments }: Props) {
                           maximumFractionDigits: 2,
                         })}
                       </td>
-                      <td className="px-4 py-3 text-gray-600 text-xs">
+                      <td className="px-4 py-3 text-muted-foreground text-xs">
                         {formatDate(payment.paymentDate)}
                       </td>
                       <td className="px-4 py-3">
                         <MethodBadge method={payment.method} />
                       </td>
-                      <td className="px-4 py-3 font-mono text-xs text-gray-500">
+                      <td className="px-4 py-3 font-mono text-xs text-muted-foreground">
                         {payment.razorpayPaymentId ?? "—"}
                       </td>
                       <td className="px-4 py-3">

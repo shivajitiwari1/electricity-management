@@ -83,7 +83,7 @@ export async function GET(
     billNumber: bill.billNumber,
   };
 
-  const buffer = generateBillPdf(billData);
+  const buffer = await generateBillPdf(billData);
 
   return new NextResponse(new Uint8Array(buffer), {
     headers: {

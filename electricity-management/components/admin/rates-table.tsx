@@ -93,20 +93,20 @@ export default function RatesTable({ rates }: Props) {
           <CardContent>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <div>
-                <p className="text-xs text-gray-500 uppercase tracking-wide">NPCL / Unit</p>
-                <p className="text-2xl font-bold text-gray-900">₹{current.ncplPerUnit}</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-wide">NPCL / Unit</p>
+                <p className="text-2xl font-bold text-foreground">₹{current.ncplPerUnit}</p>
               </div>
               <div>
-                <p className="text-xs text-gray-500 uppercase tracking-wide">DG Fixed Charge</p>
-                <p className="text-2xl font-bold text-gray-900">₹{current.dgFixed}</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-wide">DG Fixed Charge</p>
+                <p className="text-2xl font-bold text-foreground">₹{current.dgFixed}</p>
               </div>
               <div>
-                <p className="text-xs text-gray-500 uppercase tracking-wide">Fixed / kW</p>
-                <p className="text-2xl font-bold text-gray-900">₹{current.fixedPerKw}</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-wide">Fixed / kW</p>
+                <p className="text-2xl font-bold text-foreground">₹{current.fixedPerKw}</p>
               </div>
               <div>
-                <p className="text-xs text-gray-500 uppercase tracking-wide">Effective From</p>
-                <p className="text-sm font-medium text-gray-900 mt-1">
+                <p className="text-xs text-muted-foreground uppercase tracking-wide">Effective From</p>
+                <p className="text-sm font-medium text-foreground mt-1">
                   {new Date(current.effectiveFrom).toLocaleDateString("en-IN", {
                     day: "2-digit",
                     month: "short",
@@ -120,7 +120,7 @@ export default function RatesTable({ rates }: Props) {
       ) : (
         <Card>
           <CardContent className="py-8 text-center">
-            <p className="text-gray-500 mb-4">No rates configured yet.</p>
+            <p className="text-muted-foreground mb-4">No rates configured yet.</p>
             <Button onClick={() => setShowModal(true)}>
               <Plus className="h-4 w-4 mr-2" />
               Set Initial Rates
@@ -138,23 +138,23 @@ export default function RatesTable({ rates }: Props) {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b bg-gray-50">
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Effective From</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">NPCL / Unit (₹)</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">DG Fixed (₹)</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Fixed / kW (₹)</th>
+                <tr className="border-b bg-muted/50">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Effective From</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">NPCL / Unit (₹)</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">DG Fixed (₹)</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Fixed / kW (₹)</th>
                 </tr>
               </thead>
               <tbody>
                 {rates.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="text-center py-10 text-gray-400">
+                    <td colSpan={4} className="text-center py-10 text-muted-foreground">
                       No rate history
                     </td>
                   </tr>
                 ) : (
                   rates.map((rate, idx) => (
-                    <tr key={rate.id} className="border-b last:border-0 hover:bg-gray-50">
+                    <tr key={rate.id} className="border-b last:border-0 hover:bg-muted/50">
                       <td className="px-4 py-3 font-medium">
                         {new Date(rate.effectiveFrom).toLocaleDateString("en-IN", {
                           day: "2-digit",
@@ -186,8 +186,8 @@ export default function RatesTable({ rates }: Props) {
             <DialogTitle>Update Electricity Rates</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <Label htmlFor="ncplPerUnit">NPCL Per Unit (₹) *</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="ncplPerUnit">NPCL Per Unit (Rs.) *</Label>
               <Input
                 id="ncplPerUnit"
                 type="number"
@@ -199,8 +199,8 @@ export default function RatesTable({ rates }: Props) {
                 placeholder="e.g. 8.50"
               />
             </div>
-            <div>
-              <Label htmlFor="dgFixed">DG Fixed Charge (₹) *</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="dgFixed">DG Fixed Charge (Rs.) *</Label>
               <Input
                 id="dgFixed"
                 type="number"
@@ -212,8 +212,8 @@ export default function RatesTable({ rates }: Props) {
                 placeholder="e.g. 1500"
               />
             </div>
-            <div>
-              <Label htmlFor="fixedPerKw">Fixed Charge Per kW (₹) *</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="fixedPerKw">Fixed Charge Per kW (Rs.) *</Label>
               <Input
                 id="fixedPerKw"
                 type="number"

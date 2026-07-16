@@ -53,11 +53,12 @@ type SerializedReading = {
 interface Props {
   connections: SerializedConnection[];
   readings: SerializedReading[];
+  dgFixed: number;
 }
 
 const today = new Date().toISOString().split("T")[0];
 
-export default function MeterReadingsTable({ connections, readings }: Props) {
+export default function MeterReadingsTable({ connections, readings, dgFixed }: Props) {
   const router = useRouter();
 
   // Add Reading modal state
@@ -68,8 +69,6 @@ export default function MeterReadingsTable({ connections, readings }: Props) {
     readingDate: today,
     ncplPrevious: "",
     ncplCurrent: "",
-    dgPrevious: "",
-    dgCurrent: "",
   });
 
   // Generate Bill modal state
@@ -89,7 +88,6 @@ export default function MeterReadingsTable({ connections, readings }: Props) {
       ...p,
       connectionId,
       ncplPrevious: conn?.lastNcplReading ?? "0",
-      dgPrevious: conn?.lastDgReading ?? "0",
     }));
   }
 
@@ -100,8 +98,6 @@ export default function MeterReadingsTable({ connections, readings }: Props) {
       readingDate: today,
       ncplPrevious: "",
       ncplCurrent: "",
-      dgPrevious: "",
-      dgCurrent: "",
     });
   }
 
@@ -127,8 +123,8 @@ export default function MeterReadingsTable({ connections, readings }: Props) {
           readingDate: addForm.readingDate,
           ncplPrevious: ncplPrevious,
           ncplCurrent: ncplCurrent,
-          dgPrevious: addForm.dgPrevious ? Number(addForm.dgPrevious) : 0,
-          dgCurrent: addForm.dgCurrent ? Number(addForm.dgCurrent) : 0,
+          dgPrevious: 0,
+          dgCurrent: 0,
         }),
       });
       if (!res.ok) {
@@ -227,7 +223,7 @@ export default function MeterReadingsTable({ connections, readings }: Props) {
     <>
       {/* Toolbar */}
       <div className="flex items-center justify-between gap-4">
-        <p className="text-sm text-gray-500">{readings.length} recent readings</p>
+        <p className="text-sm text-muted-foreground">{readings.length} recent readings</p>
         <Button onClick={() => setShowAddModal(true)}>
           <Plus className="h-4 w-4 mr-2" />
           Add Meter Reading
@@ -243,33 +239,33 @@ export default function MeterReadingsTable({ connections, readings }: Props) {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b bg-gray-50">
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Flat No</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Resident</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Reading Date</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">NPCL Previous</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">NPCL Current</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Units</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">DG Units</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Bill</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Actions</th>
+                <tr className="border-b bg-muted/50">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Flat No</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Resident</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Reading Date</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">NPCL Previous</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">NPCL Current</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Units</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">DG Units</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Bill</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {readings.length === 0 ? (
                   <tr>
-                    <td colSpan={9} className="text-center py-10 text-gray-400">
+                    <td colSpan={9} className="text-center py-10 text-muted-foreground">
                       No meter readings yet
                     </td>
                   </tr>
                 ) : (
                   readings.map((reading) => (
-                    <tr key={reading.id} className="border-b last:border-0 hover:bg-gray-50">
+                    <tr key={reading.id} className="border-b last:border-0 hover:bg-muted/50">
                       <td className="px-4 py-3 font-mono text-xs font-medium">
                         {reading.flatNo}
                       </td>
                       <td className="px-4 py-3">{reading.residentName}</td>
-                      <td className="px-4 py-3 text-gray-600">
+                      <td className="px-4 py-3 text-muted-foreground">
                         {new Date(reading.readingDate).toLocaleDateString("en-IN", {
                           day: "2-digit",
                           month: "short",
@@ -332,13 +328,13 @@ export default function MeterReadingsTable({ connections, readings }: Props) {
             <DialogTitle>Add Meter Reading</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleAddSubmit} className="space-y-4">
-            <div>
+            <div className="space-y-1.5">
               <Label htmlFor="mr-flat">Flat *</Label>
               <Select
                 value={addForm.connectionId}
                 onValueChange={handleConnectionChange}
               >
-                <SelectTrigger id="mr-flat">
+                <SelectTrigger id="mr-flat" className="w-full">
                   <SelectValue placeholder="Select flat" />
                 </SelectTrigger>
                 <SelectContent>
@@ -350,7 +346,7 @@ export default function MeterReadingsTable({ connections, readings }: Props) {
                 </SelectContent>
               </Select>
             </div>
-            <div>
+            <div className="space-y-1.5">
               <Label htmlFor="mr-date">Reading Date *</Label>
               <Input
                 id="mr-date"
@@ -361,7 +357,7 @@ export default function MeterReadingsTable({ connections, readings }: Props) {
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <div>
+              <div className="space-y-1.5">
                 <Label htmlFor="mr-ncpl-prev">NPCL Previous Reading *</Label>
                 <Input
                   id="mr-ncpl-prev"
@@ -374,7 +370,7 @@ export default function MeterReadingsTable({ connections, readings }: Props) {
                   placeholder="Auto-filled from last reading"
                 />
               </div>
-              <div>
+              <div className="space-y-1.5">
                 <Label htmlFor="mr-ncpl-curr">NPCL Current Reading *</Label>
                 <Input
                   id="mr-ncpl-curr"
@@ -388,30 +384,10 @@ export default function MeterReadingsTable({ connections, readings }: Props) {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="mr-dg-prev">DG Previous (optional)</Label>
-                <Input
-                  id="mr-dg-prev"
-                  type="number"
-                  min={0}
-                  step={0.01}
-                  value={addForm.dgPrevious}
-                  onChange={(e) => setAddForm((p) => ({ ...p, dgPrevious: e.target.value }))}
-                  placeholder="0"
-                />
-              </div>
-              <div>
-                <Label htmlFor="mr-dg-curr">DG Current (optional)</Label>
-                <Input
-                  id="mr-dg-curr"
-                  type="number"
-                  min={0}
-                  step={0.01}
-                  value={addForm.dgCurrent}
-                  onChange={(e) => setAddForm((p) => ({ ...p, dgCurrent: e.target.value }))}
-                  placeholder="0"
-                />
+            <div className="space-y-1.5">
+              <Label>DG Charge (Fixed)</Label>
+              <div className="flex h-9 w-full items-center rounded-md border border-input bg-muted/50 px-3 text-sm text-muted-foreground select-none">
+                ₹{dgFixed.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} — fixed per billing cycle
               </div>
             </div>
             <DialogFooter>
@@ -435,7 +411,7 @@ export default function MeterReadingsTable({ connections, readings }: Props) {
             </DialogTitle>
           </DialogHeader>
           <form onSubmit={handleBillSubmit} className="space-y-4">
-            <div>
+            <div className="space-y-1.5">
               <Label htmlFor="bill-date">Bill Date *</Label>
               <Input
                 id="bill-date"
@@ -445,7 +421,7 @@ export default function MeterReadingsTable({ connections, readings }: Props) {
                 onChange={(e) => setBillForm((p) => ({ ...p, billDate: e.target.value }))}
               />
             </div>
-            <div>
+            <div className="space-y-1.5">
               <Label htmlFor="bill-period-start">Billing Period Start *</Label>
               <Input
                 id="bill-period-start"
@@ -455,7 +431,7 @@ export default function MeterReadingsTable({ connections, readings }: Props) {
                 onChange={(e) => setBillForm((p) => ({ ...p, billingPeriodStart: e.target.value }))}
               />
             </div>
-            <div>
+            <div className="space-y-1.5">
               <Label htmlFor="bill-period-end">Billing Period End *</Label>
               <Input
                 id="bill-period-end"
@@ -465,8 +441,8 @@ export default function MeterReadingsTable({ connections, readings }: Props) {
                 onChange={(e) => setBillForm((p) => ({ ...p, billingPeriodEnd: e.target.value }))}
               />
             </div>
-            <div>
-              <Label htmlFor="bill-prev-dues">Previous Dues (₹)</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="bill-prev-dues">Previous Dues (Rs.)</Label>
               <Input
                 id="bill-prev-dues"
                 type="number"

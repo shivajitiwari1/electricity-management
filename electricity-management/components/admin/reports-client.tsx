@@ -212,10 +212,10 @@ export default function ReportsClient({
             <CardContent className="p-5">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
                     {title}
                   </p>
-                  <p className="text-2xl font-bold text-gray-900 mt-1">
+                  <p className="text-2xl font-bold text-foreground mt-1">
                     {value}
                   </p>
                 </div>
@@ -237,7 +237,7 @@ export default function ReportsClient({
         </CardHeader>
         <CardContent>
           {revenueByMonth.every((m) => m.revenue === 0) ? (
-            <p className="text-sm text-gray-400 py-12 text-center">
+            <p className="text-sm text-muted-foreground py-12 text-center">
               No paid bill data in the last 12 months.
             </p>
           ) : (
@@ -296,7 +296,7 @@ export default function ReportsClient({
         </CardHeader>
         <CardContent>
           {revenueByTower.length === 0 ? (
-            <p className="text-sm text-gray-400 py-6 text-center">
+            <p className="text-sm text-muted-foreground py-6 text-center">
               No paid bills for the current month.
             </p>
           ) : (
@@ -361,26 +361,26 @@ export default function ReportsClient({
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b bg-gray-50">
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">
+                <tr className="border-b bg-muted/50">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
                     Flat No
                   </th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
                     Tower
                   </th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
                     Resident
                   </th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
                     Bill #
                   </th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
                     Due Date
                   </th>
-                  <th className="text-right px-4 py-3 font-medium text-gray-600">
+                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">
                     Amount (₹)
                   </th>
-                  <th className="text-right px-4 py-3 font-medium text-gray-600">
+                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">
                     Days Overdue
                   </th>
                 </tr>
@@ -390,7 +390,7 @@ export default function ReportsClient({
                   <tr>
                     <td
                       colSpan={7}
-                      className="text-center py-10 text-gray-400"
+                      className="text-center py-10 text-muted-foreground"
                     >
                       No overdue bills
                     </td>
@@ -413,7 +413,7 @@ export default function ReportsClient({
                         <td className="px-4 py-3 font-mono text-xs">
                           {bill.billNumber}
                         </td>
-                        <td className="px-4 py-3 text-gray-600">
+                        <td className="px-4 py-3 text-muted-foreground">
                           {formatDate(bill.dueDate)}
                         </td>
                         <td className="px-4 py-3 text-right font-semibold">

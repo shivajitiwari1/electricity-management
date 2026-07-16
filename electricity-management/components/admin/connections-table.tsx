@@ -8,12 +8,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetFooter,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -55,7 +55,7 @@ interface Props {
   initialData: Connection[];
 }
 
-const TOWERS = ["A", "B", "C", "V"] as const;
+const TOWERS = ["A", "B", "C", "V", "Plaza"] as const;
 const STATUSES = ["ACTIVE", "INACTIVE"] as const;
 
 function StatusBadge({ status }: { status: string }) {
@@ -203,29 +203,29 @@ export default function ConnectionsTable({ initialData }: Props) {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b bg-gray-50">
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Flat No</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Tower</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Floor</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Unit Type</th>
-                  <th className="text-right px-4 py-3 font-medium text-gray-600">
+                <tr className="border-b bg-muted/50">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Flat No</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Tower</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Floor</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Unit Type</th>
+                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">
                     Sanctioned Load
                   </th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Status</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Resident</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Actions</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Resident</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {filtered.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="text-center py-10 text-gray-400">
+                    <td colSpan={8} className="text-center py-10 text-muted-foreground">
                       No connections found
                     </td>
                   </tr>
                 ) : (
                   filtered.map((conn) => (
-                    <tr key={conn.id} className="border-b last:border-0 hover:bg-gray-50">
+                    <tr key={conn.id} className="border-b last:border-0 hover:bg-muted/50">
                       <td className="px-4 py-3 font-mono text-xs">{conn.flatNo}</td>
                       <td className="px-4 py-3">{conn.tower}</td>
                       <td className="px-4 py-3">{conn.floor}</td>
@@ -239,7 +239,7 @@ export default function ConnectionsTable({ initialData }: Props) {
                       <td className="px-4 py-3">
                         <div>
                           <p className="font-medium">{conn.resident.user.name}</p>
-                          <p className="text-xs text-gray-500">{conn.resident.user.email}</p>
+                          <p className="text-xs text-muted-foreground">{conn.resident.user.email}</p>
                         </div>
                       </td>
                       <td className="px-4 py-3">
@@ -261,19 +261,19 @@ export default function ConnectionsTable({ initialData }: Props) {
         </CardContent>
       </Card>
 
-      {/* Edit Connection Sheet */}
-      <Sheet
+      {/* Edit Connection Dialog */}
+      <Dialog
         open={!!editConnection}
         onOpenChange={(open) => {
           if (!open) setEditConnection(null);
         }}
       >
-        <SheetContent className="sm:max-w-md">
-          <SheetHeader>
-            <SheetTitle>Edit Connection — {editConnection?.flatNo}</SheetTitle>
-          </SheetHeader>
-          <form onSubmit={handleEdit} className="mt-6 space-y-4">
-            <div>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Edit Connection — {editConnection?.flatNo}</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleEdit} className="space-y-4">
+            <div className="space-y-1.5">
               <Label htmlFor="edit-meterNo">Meter Number</Label>
               <Input
                 id="edit-meterNo"
@@ -284,7 +284,7 @@ export default function ConnectionsTable({ initialData }: Props) {
                 placeholder="e.g. MTR-00123"
               />
             </div>
-            <div>
+            <div className="space-y-1.5">
               <Label htmlFor="edit-load">Sanctioned Load (kW) *</Label>
               <Input
                 id="edit-load"
@@ -298,7 +298,7 @@ export default function ConnectionsTable({ initialData }: Props) {
                 }
               />
             </div>
-            <div>
+            <div className="space-y-1.5">
               <Label htmlFor="edit-status">Status *</Label>
               <Select
                 value={editForm.status}
@@ -306,7 +306,7 @@ export default function ConnectionsTable({ initialData }: Props) {
                   setEditForm((p) => ({ ...p, status: val ?? p.status }))
                 }
               >
-                <SelectTrigger id="edit-status">
+                <SelectTrigger id="edit-status" className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -315,7 +315,7 @@ export default function ConnectionsTable({ initialData }: Props) {
                 </SelectContent>
               </Select>
             </div>
-            <SheetFooter className="mt-6">
+            <DialogFooter>
               <Button
                 type="button"
                 variant="outline"
@@ -326,10 +326,10 @@ export default function ConnectionsTable({ initialData }: Props) {
               <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting ? "Saving..." : "Save Changes"}
               </Button>
-            </SheetFooter>
+            </DialogFooter>
           </form>
-        </SheetContent>
-      </Sheet>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

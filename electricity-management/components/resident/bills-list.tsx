@@ -102,26 +102,26 @@ export default function ResidentBillsList({ bills }: Props) {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b bg-gray-50">
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">
+                <tr className="border-b bg-muted/50">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
                     Bill #
                   </th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
                     Period
                   </th>
-                  <th className="text-right px-4 py-3 font-medium text-gray-600">
+                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">
                     NPCL Units
                   </th>
-                  <th className="text-right px-4 py-3 font-medium text-gray-600">
+                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">
                     Amount (₹)
                   </th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
                     Due Date
                   </th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
                     Status
                   </th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
                     Actions
                   </th>
                 </tr>
@@ -131,7 +131,7 @@ export default function ResidentBillsList({ bills }: Props) {
                   <tr>
                     <td
                       colSpan={7}
-                      className="text-center py-10 text-gray-400"
+                      className="text-center py-10 text-muted-foreground"
                     >
                       No bills found
                     </td>
@@ -140,12 +140,12 @@ export default function ResidentBillsList({ bills }: Props) {
                   bills.map((bill) => (
                     <tr
                       key={bill.id}
-                      className="border-b last:border-0 hover:bg-gray-50"
+                      className="border-b last:border-0 hover:bg-muted/50"
                     >
                       <td className="px-4 py-3 font-mono text-xs">
                         {bill.billNumber}
                       </td>
-                      <td className="px-4 py-3 text-gray-600 text-xs">
+                      <td className="px-4 py-3 text-muted-foreground text-xs">
                         {formatPeriod(
                           bill.billingPeriodStart,
                           bill.billingPeriodEnd
@@ -160,7 +160,7 @@ export default function ResidentBillsList({ bills }: Props) {
                           maximumFractionDigits: 2,
                         })}
                       </td>
-                      <td className="px-4 py-3 text-gray-600 text-xs">
+                      <td className="px-4 py-3 text-muted-foreground text-xs">
                         {formatDate(bill.dueDate)}
                       </td>
                       <td className="px-4 py-3">
@@ -224,15 +224,15 @@ export default function ResidentBillsList({ bills }: Props) {
           {viewBill && (
             <div className="space-y-3 text-sm">
               <div className="grid grid-cols-2 gap-x-4 gap-y-2">
-                <span className="text-gray-500">Bill Number</span>
+                <span className="text-muted-foreground">Bill Number</span>
                 <span className="font-mono font-medium">
                   {viewBill.billNumber}
                 </span>
 
-                <span className="text-gray-500">Flat No</span>
+                <span className="text-muted-foreground">Flat No</span>
                 <span className="font-mono">{viewBill.flatNo}</span>
 
-                <span className="text-gray-500">Billing Period</span>
+                <span className="text-muted-foreground">Billing Period</span>
                 <span>
                   {formatPeriod(
                     viewBill.billingPeriodStart,
@@ -240,25 +240,25 @@ export default function ResidentBillsList({ bills }: Props) {
                   )}
                 </span>
 
-                <span className="text-gray-500">NPCL Units</span>
+                <span className="text-muted-foreground">NPCL Units</span>
                 <span>{viewBill.ncplUnits} kWh</span>
 
-                <span className="text-gray-500">Due Date</span>
+                <span className="text-muted-foreground">Due Date</span>
                 <span>{formatDate(viewBill.dueDate)}</span>
 
-                <span className="text-gray-500">Total Amount</span>
+                <span className="text-muted-foreground">Total Amount</span>
                 <span className="font-semibold text-base">
                   {formatINR(viewBill.totalAmount)}
                 </span>
 
-                <span className="text-gray-500">Status</span>
+                <span className="text-muted-foreground">Status</span>
                 <span>
                   <StatusBadge status={viewBill.status} />
                 </span>
 
                 {viewBill.paymentId && (
                   <>
-                    <span className="text-gray-500">Payment ID</span>
+                    <span className="text-muted-foreground">Payment ID</span>
                     <span className="font-mono text-xs">
                       {viewBill.paymentId}
                     </span>

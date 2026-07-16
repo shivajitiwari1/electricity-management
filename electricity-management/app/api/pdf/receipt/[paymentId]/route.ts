@@ -74,7 +74,7 @@ export async function GET(
     method: payment.method,
   };
 
-  const buffer = generateReceiptPdf(receiptData);
+  const buffer = await generateReceiptPdf(receiptData);
 
   return new NextResponse(new Uint8Array(buffer), {
     headers: {

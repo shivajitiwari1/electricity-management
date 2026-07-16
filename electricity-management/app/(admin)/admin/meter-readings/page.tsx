@@ -24,6 +24,10 @@ export default async function MeterReadingsPage() {
     lastDgReading: c.meterReadings[0]?.dgCurrent?.toString() ?? "0",
   }));
 
+  const currentRate = await prisma.rate.findFirst({
+    orderBy: { effectiveFrom: "desc" },
+  });
+
   const readings = await prisma.meterReading.findMany({
     include: {
       connection: {
@@ -61,6 +65,7 @@ export default async function MeterReadingsPage() {
       <MeterReadingsTable
         connections={serializedConnections}
         readings={serializedReadings}
+        dgFixed={currentRate ? Number(currentRate.dgFixed) : 0}
       />
     </div>
   );

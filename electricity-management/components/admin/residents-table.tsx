@@ -33,6 +33,11 @@ type Connection = {
   id: string;
   flatNo: string;
   tower: string;
+  floor: string;
+  unitType: string;
+  unitArea: number;
+  meterNo: string | null;
+  sanctionedLoad: { toString(): string };
   status: string;
 };
 
@@ -53,7 +58,7 @@ interface Props {
   initialData: Resident[];
 }
 
-const TOWERS = ["A", "B", "C", "V"] as const;
+const TOWERS = ["A", "B", "C", "V", "Plaza"] as const;
 
 function StatusBadge({ status }: { status: string }) {
   if (status === "ACTIVE") {
@@ -96,6 +101,13 @@ export default function ResidentsTable({ initialData }: Props) {
     name: "",
     email: "",
     phone: "",
+    tower: "",
+    floor: "",
+    flatNo: "",
+    unitType: "",
+    unitArea: "",
+    sanctionedLoad: "",
+    meterNo: "",
   });
 
   const filtered = useMemo(() => {
@@ -116,10 +128,18 @@ export default function ResidentsTable({ initialData }: Props) {
 
   function openEditModal(resident: Resident) {
     setEditResident(resident);
+    const conn = resident.connections[0];
     setEditForm({
       name: resident.user.name,
       email: resident.user.email,
       phone: resident.phone ?? "",
+      tower: conn?.tower ?? "",
+      floor: conn?.floor ?? "",
+      flatNo: conn?.flatNo ?? "",
+      unitType: conn?.unitType ?? "",
+      unitArea: conn ? String(conn.unitArea) : "",
+      sanctionedLoad: conn ? conn.sanctionedLoad.toString() : "",
+      meterNo: conn?.meterNo ?? "",
     });
   }
 
@@ -182,6 +202,7 @@ export default function ResidentsTable({ initialData }: Props) {
     e.preventDefault();
     if (!editResident) return;
     setIsSubmitting(true);
+    const conn = editResident.connections[0];
     try {
       const res = await fetch(`/api/residents/${editResident.id}`, {
         method: "PUT",
@@ -190,6 +211,16 @@ export default function ResidentsTable({ initialData }: Props) {
           name: editForm.name,
           email: editForm.email,
           phone: editForm.phone || undefined,
+          ...(conn ? {
+            connectionId: conn.id,
+            tower: editForm.tower || undefined,
+            floor: editForm.floor || undefined,
+            flatNo: editForm.flatNo || undefined,
+            unitType: editForm.unitType || undefined,
+            unitArea: editForm.unitArea ? Number(editForm.unitArea) : undefined,
+            sanctionedLoad: editForm.sanctionedLoad ? Number(editForm.sanctionedLoad) : undefined,
+            meterNo: editForm.meterNo,
+          } : {}),
         }),
       });
       if (!res.ok) {
@@ -233,7 +264,7 @@ export default function ResidentsTable({ initialData }: Props) {
       {/* Toolbar */}
       <div className="flex items-center justify-between gap-4">
         <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Search by name, email, flat..."
             className="pl-9"
@@ -258,20 +289,20 @@ export default function ResidentsTable({ initialData }: Props) {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b bg-gray-50">
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Flat No</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Tower</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Name</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Email</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Phone</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Status</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Actions</th>
+                <tr className="border-b bg-muted/50">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Flat No</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Tower</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Name</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Email</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Phone</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {filtered.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="text-center py-10 text-gray-400">
+                    <td colSpan={7} className="text-center py-10 text-muted-foreground">
                       No residents found
                     </td>
                   </tr>
@@ -281,14 +312,14 @@ export default function ResidentsTable({ initialData }: Props) {
                     const isActive =
                       resident.connections.some((c) => c.status === "ACTIVE");
                     return (
-                      <tr key={resident.id} className="border-b last:border-0 hover:bg-gray-50">
+                      <tr key={resident.id} className="border-b last:border-0 hover:bg-muted/50">
                         <td className="px-4 py-3 font-mono text-xs">
                           {conn ? conn.flatNo : "—"}
                         </td>
                         <td className="px-4 py-3">{conn ? conn.tower : "—"}</td>
                         <td className="px-4 py-3 font-medium">{resident.user.name}</td>
-                        <td className="px-4 py-3 text-gray-600">{resident.user.email}</td>
-                        <td className="px-4 py-3 text-gray-600">
+                        <td className="px-4 py-3 text-muted-foreground">{resident.user.email}</td>
+                        <td className="px-4 py-3 text-muted-foreground">
                           {resident.phone ?? "—"}
                         </td>
                         <td className="px-4 py-3">
@@ -335,7 +366,7 @@ export default function ResidentsTable({ initialData }: Props) {
           </DialogHeader>
           <form onSubmit={handleAdd} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-2">
+              <div className="col-span-2 space-y-1.5">
                 <Label htmlFor="add-name">Name *</Label>
                 <Input
                   id="add-name"
@@ -345,7 +376,7 @@ export default function ResidentsTable({ initialData }: Props) {
                   placeholder="Full name"
                 />
               </div>
-              <div className="col-span-2">
+              <div className="col-span-2 space-y-1.5">
                 <Label htmlFor="add-email">Email *</Label>
                 <Input
                   id="add-email"
@@ -356,7 +387,7 @@ export default function ResidentsTable({ initialData }: Props) {
                   placeholder="email@example.com"
                 />
               </div>
-              <div className="col-span-2">
+              <div className="col-span-2 space-y-1.5">
                 <Label htmlFor="add-phone">Phone</Label>
                 <Input
                   id="add-phone"
@@ -365,13 +396,13 @@ export default function ResidentsTable({ initialData }: Props) {
                   placeholder="+91 98765 43210"
                 />
               </div>
-              <div>
+              <div className="space-y-1.5">
                 <Label htmlFor="add-tower">Tower *</Label>
                 <Select
                   value={addForm.tower}
                   onValueChange={(val) => setAddForm((p) => ({ ...p, tower: val ?? p.tower }))}
                 >
-                  <SelectTrigger id="add-tower">
+                  <SelectTrigger id="add-tower" className="w-full">
                     <SelectValue placeholder="Select tower" />
                   </SelectTrigger>
                   <SelectContent>
@@ -383,7 +414,7 @@ export default function ResidentsTable({ initialData }: Props) {
                   </SelectContent>
                 </Select>
               </div>
-              <div>
+              <div className="space-y-1.5">
                 <Label htmlFor="add-floor">Floor *</Label>
                 <Input
                   id="add-floor"
@@ -393,7 +424,7 @@ export default function ResidentsTable({ initialData }: Props) {
                   placeholder="e.g. 3"
                 />
               </div>
-              <div>
+              <div className="space-y-1.5">
                 <Label htmlFor="add-flatNo">Flat No *</Label>
                 <Input
                   id="add-flatNo"
@@ -403,7 +434,7 @@ export default function ResidentsTable({ initialData }: Props) {
                   placeholder="e.g. A-301"
                 />
               </div>
-              <div>
+              <div className="space-y-1.5">
                 <Label htmlFor="add-unitType">Unit Type *</Label>
                 <Input
                   id="add-unitType"
@@ -413,7 +444,7 @@ export default function ResidentsTable({ initialData }: Props) {
                   placeholder="e.g. 2BHK"
                 />
               </div>
-              <div>
+              <div className="space-y-1.5">
                 <Label htmlFor="add-unitArea">Unit Area (sq ft) *</Label>
                 <Input
                   id="add-unitArea"
@@ -425,7 +456,7 @@ export default function ResidentsTable({ initialData }: Props) {
                   placeholder="e.g. 1200"
                 />
               </div>
-              <div>
+              <div className="space-y-1.5">
                 <Label htmlFor="add-sanctionedLoad">Sanctioned Load (kW) *</Label>
                 <Input
                   id="add-sanctionedLoad"
@@ -440,7 +471,7 @@ export default function ResidentsTable({ initialData }: Props) {
                   placeholder="e.g. 5"
                 />
               </div>
-              <div className="col-span-2">
+              <div className="col-span-2 space-y-1.5">
                 <Label htmlFor="add-password">Password *</Label>
                 <Input
                   id="add-password"
@@ -472,47 +503,141 @@ export default function ResidentsTable({ initialData }: Props) {
         open={!!editResident}
         onOpenChange={(open) => { if (!open) setEditResident(null); }}
       >
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Edit Resident</DialogTitle>
+            <DialogTitle>Edit Resident — {editResident?.connections[0]?.flatNo ?? ""}</DialogTitle>
           </DialogHeader>
-          <form onSubmit={handleEdit} className="space-y-4">
-            <div>
-              <Label htmlFor="edit-name">Name *</Label>
-              <Input
-                id="edit-name"
-                required
-                value={editForm.name}
-                onChange={(e) => setEditForm((p) => ({ ...p, name: e.target.value }))}
-              />
+          <form onSubmit={handleEdit}>
+            <div className="space-y-4 py-1">
+              {/* Personal Info */}
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Personal Information</p>
+              <div className="space-y-1.5">
+                <Label htmlFor="edit-name">Name *</Label>
+                <Input
+                  id="edit-name"
+                  required
+                  value={editForm.name}
+                  onChange={(e) => setEditForm((p) => ({ ...p, name: e.target.value }))}
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="edit-email">Email *</Label>
+                <Input
+                  id="edit-email"
+                  type="email"
+                  required
+                  value={editForm.email}
+                  onChange={(e) => setEditForm((p) => ({ ...p, email: e.target.value }))}
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="edit-phone">Phone</Label>
+                <Input
+                  id="edit-phone"
+                  value={editForm.phone}
+                  onChange={(e) => setEditForm((p) => ({ ...p, phone: e.target.value }))}
+                  placeholder="+91 98765 43210"
+                />
+              </div>
+
+              {/* Connection Info */}
+              {editResident?.connections[0] && (
+                <>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground pt-2">Connection Details</p>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <Label htmlFor="edit-tower">Tower *</Label>
+                      <Select
+                        value={editForm.tower}
+                        onValueChange={(val) => setEditForm((p) => ({ ...p, tower: val ?? p.tower }))}
+                      >
+                        <SelectTrigger id="edit-tower" className="w-full">
+                          <SelectValue placeholder="Select tower" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {TOWERS.map((t) => (
+                            <SelectItem key={t} value={t}>Tower {t}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="edit-floor">Floor *</Label>
+                      <Input
+                        id="edit-floor"
+                        required
+                        value={editForm.floor}
+                        onChange={(e) => setEditForm((p) => ({ ...p, floor: e.target.value }))}
+                        placeholder="e.g. First"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="edit-flatNo">Flat No *</Label>
+                      <Input
+                        id="edit-flatNo"
+                        required
+                        value={editForm.flatNo}
+                        onChange={(e) => setEditForm((p) => ({ ...p, flatNo: e.target.value }))}
+                        placeholder="e.g. A-101"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="edit-meterNo">Meter No</Label>
+                      <Input
+                        id="edit-meterNo"
+                        value={editForm.meterNo}
+                        onChange={(e) => setEditForm((p) => ({ ...p, meterNo: e.target.value }))}
+                        placeholder="e.g. MTR-00123"
+                      />
+                    </div>
+                    <div className="col-span-2 space-y-1.5">
+                      <Label htmlFor="edit-unitType">Unit Type *</Label>
+                      <Input
+                        id="edit-unitType"
+                        required
+                        value={editForm.unitType}
+                        onChange={(e) => setEditForm((p) => ({ ...p, unitType: e.target.value }))}
+                        placeholder="e.g. 2BHK"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="edit-unitArea">Unit Area (sq ft) *</Label>
+                      <Input
+                        id="edit-unitArea"
+                        type="number"
+                        required
+                        min={1}
+                        value={editForm.unitArea}
+                        onChange={(e) => setEditForm((p) => ({ ...p, unitArea: e.target.value }))}
+                        placeholder="e.g. 1150"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="edit-sanctionedLoad">Sanctioned Load (kW) *</Label>
+                      <Input
+                        id="edit-sanctionedLoad"
+                        type="number"
+                        required
+                        min={0.1}
+                        step={0.1}
+                        value={editForm.sanctionedLoad}
+                        onChange={(e) => setEditForm((p) => ({ ...p, sanctionedLoad: e.target.value }))}
+                        placeholder="e.g. 4"
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
+
+              <DialogFooter className="pt-2">
+                <Button type="button" variant="outline" onClick={() => setEditResident(null)}>
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? "Saving..." : "Save Changes"}
+                </Button>
+              </DialogFooter>
             </div>
-            <div>
-              <Label htmlFor="edit-email">Email *</Label>
-              <Input
-                id="edit-email"
-                type="email"
-                required
-                value={editForm.email}
-                onChange={(e) => setEditForm((p) => ({ ...p, email: e.target.value }))}
-              />
-            </div>
-            <div>
-              <Label htmlFor="edit-phone">Phone</Label>
-              <Input
-                id="edit-phone"
-                value={editForm.phone}
-                onChange={(e) => setEditForm((p) => ({ ...p, phone: e.target.value }))}
-                placeholder="+91 98765 43210"
-              />
-            </div>
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setEditResident(null)}>
-                Cancel
-              </Button>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Saving..." : "Save Changes"}
-              </Button>
-            </DialogFooter>
           </form>
         </DialogContent>
       </Dialog>

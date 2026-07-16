@@ -64,7 +64,7 @@ function BillRow({
 }) {
   return (
     <div
-      className={`flex items-center justify-between py-2 ${highlight ? "font-semibold text-gray-900" : "text-gray-700"}`}
+      className={`flex items-center justify-between py-2 ${highlight ? "font-semibold text-foreground" : "text-foreground"}`}
     >
       <span className={highlight ? "text-base" : "text-sm"}>{label}</span>
       <span className={highlight ? "text-base" : "text-sm"}>{value}</span>
@@ -108,21 +108,28 @@ export default function PaymentForm({ bill, razorpayKeyId }: Props) {
           razorpay_signature: string;
         }) => {
           // Step 3: Verify payment
-          const verifyRes = await fetch("/api/razorpay/verify", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              razorpayOrderId: response.razorpay_order_id,
-              razorpayPaymentId: response.razorpay_payment_id,
-              razorpaySignature: response.razorpay_signature,
-              billId: bill.id,
-            }),
-          });
-          if (verifyRes.ok) {
-            toast.success("Payment successful!");
-            router.push("/resident/payments");
-          } else {
-            toast.error("Payment verification failed");
+          try {
+            const verifyRes = await fetch("/api/razorpay/verify", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                razorpayOrderId: response.razorpay_order_id,
+                razorpayPaymentId: response.razorpay_payment_id,
+                razorpaySignature: response.razorpay_signature,
+                billId: bill.id,
+              }),
+            });
+            if (verifyRes.ok) {
+              toast.success("Payment successful!");
+              router.push("/resident/payments");
+            } else {
+              const err = await verifyRes.json();
+              toast.error(err.error ?? "Payment verification failed");
+              setLoading(false);
+            }
+          } catch {
+            toast.error("Verification failed. Please contact support.");
+            setLoading(false);
           }
         },
         prefill: { name: bill.residentName },
@@ -155,8 +162,8 @@ export default function PaymentForm({ bill, razorpayKeyId }: Props) {
       <div className="max-w-lg mx-auto space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Pay Bill</h1>
-          <p className="text-gray-500 text-sm mt-1">
+          <h1 className="text-2xl font-bold text-foreground">Pay Bill</h1>
+          <p className="text-muted-foreground text-sm mt-1">
             Bill #{bill.billNumber} · Flat {bill.flatNo}
           </p>
         </div>
@@ -182,14 +189,14 @@ export default function PaymentForm({ bill, razorpayKeyId }: Props) {
           </CardHeader>
           <CardContent className="space-y-1">
             {/* Billing Period */}
-            <div className="flex items-center justify-between py-2 text-sm text-gray-500">
+            <div className="flex items-center justify-between py-2 text-sm text-muted-foreground">
               <span>Billing Period</span>
               <span>
                 {formatDate(bill.billingPeriodStart)} –{" "}
                 {formatDate(bill.billingPeriodEnd)}
               </span>
             </div>
-            <div className="flex items-center justify-between py-2 text-sm text-gray-500">
+            <div className="flex items-center justify-between py-2 text-sm text-muted-foreground">
               <span>NPCL Units Consumed</span>
               <span>{bill.ncplUnits} kWh @ ₹{bill.ratePerUnit.toFixed(2)}/unit</span>
             </div>
@@ -224,7 +231,7 @@ export default function PaymentForm({ bill, razorpayKeyId }: Props) {
 
             {/* Due Date & Status */}
             <div className="flex items-center justify-between pt-2">
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-muted-foreground">
                 Due by: {formatDate(bill.dueDate)}
               </span>
               <Badge
@@ -253,7 +260,7 @@ export default function PaymentForm({ bill, razorpayKeyId }: Props) {
             : `Pay ${formatINR(bill.totalAmount)} via Razorpay`}
         </Button>
 
-        <p className="text-center text-xs text-gray-400">
+        <p className="text-center text-xs text-muted-foreground">
           Secured by Razorpay · Supports UPI, Net Banking, Cards & Wallets
         </p>
       </div>
