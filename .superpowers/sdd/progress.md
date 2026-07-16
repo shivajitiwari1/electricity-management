@@ -13,7 +13,7 @@
 - [x] Task 7: API routes — payments, razorpay, pdf (commits 4771a47..f660508, review clean)
 - [x] Task 8: API routes — reports, cron, rates (commits f660508..7559118, review clean)
 - [x] Task 9: Admin layout, dashboard, shared components (review clean)
-- [ ] Task 10: Admin pages — residents & connections
+- [x] Task 10: Admin pages — residents & connections (commits 1f93e16..f1a431d, review clean)
 - [ ] Task 11: Admin pages — rates & meter-readings
 - [ ] Task 12: Admin pages — bills & payments
 - [ ] Task 13: Admin reports page (Recharts)
