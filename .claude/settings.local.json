@@ -34,7 +34,8 @@
       "Bash(git -C \"E:\\\\Demo Website\\\\Electricity Bill\" status --short)",
       "Bash(ls \"E:\\\\Demo Website\\\\Electricity Bill\\\\electricity-management\\\\app\\\\\\(admin\\)\\\\\\\\\")",
       "Bash(git -C \"E:\\\\Demo Website\\\\Electricity Bill\" add \"electricity-management/app/\\(admin\\)/rates/page.tsx\" \"electricity-management/components/admin/rates-table.tsx\" \"electricity-management/app/\\(admin\\)/meter-readings/page.tsx\" \"electricity-management/components/admin/meter-readings-table.tsx\")",
-      "Bash(git -C 'E:\\\\Demo Website\\\\Electricity Bill' commit -m ' *)"
+      "Bash(git -C 'E:\\\\Demo Website\\\\Electricity Bill' commit -m ' *)",
+      "Bash(/c/Users/omtiw/.claude/plugins/cache/claude-plugins-official/superpowers/6.1.1/skills/subagent-driven-development/scripts/review-package f1a431d *)"
     ],
     "additionalDirectories": [
       "E:\\Demo Website\\Electricity Bill\\electricity-management\\app\\api\\residents",
