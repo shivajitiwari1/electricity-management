@@ -12,6 +12,7 @@
     "@auth/prisma-adapter": "^2.11.2",
     "@base-ui/react": "^1.6.0",
     "@hookform/resolvers": "^5.4.0",
+    "@prisma/adapter-mariadb": "^7.8.0",
     "@prisma/client": "^7.8.0",
     "@radix-ui/react-label": "^2.1.11",
     "bcryptjs": "^3.0.3",

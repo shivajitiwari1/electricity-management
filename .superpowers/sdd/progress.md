@@ -17,6 +17,6 @@
 - [x] Task 11: Admin pages — rates & meter-readings (commits f1a431d..6b285d4, review clean)
 - [x] Task 12: Admin pages — bills & payments (review clean)
 - [x] Task 13: Admin reports page (Recharts) (review clean)
-- [ ] Task 14: Resident layout, dashboard
-- [ ] Task 15: Resident pages — bills, pay, payments, profile
-- [ ] Task 16: vercel.json, .env.example, final wiring
+- [x] Task 14: Resident layout, dashboard (pages exist under (resident)/resident/)
+- [x] Task 15: Resident pages — bills, pay, payments, profile (pages exist under (resident)/resident/)
+- [x] Task 16: Final wiring — route conflict fix, Prisma 7 adapter, build passes (34 routes)

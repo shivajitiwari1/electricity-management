@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
@@ -64,3 +64,4 @@ export default async function PayPage({
     />
   );
 }
+
