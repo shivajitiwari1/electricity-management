@@ -16,7 +16,7 @@
 - [x] Task 10: Admin pages — residents & connections (commits 1f93e16..f1a431d, review clean)
 - [x] Task 11: Admin pages — rates & meter-readings (commits f1a431d..6b285d4, review clean)
 - [x] Task 12: Admin pages — bills & payments (review clean)
-- [ ] Task 13: Admin reports page (Recharts)
+- [x] Task 13: Admin reports page (Recharts) (review clean)
 - [ ] Task 14: Resident layout, dashboard
 - [ ] Task 15: Resident pages — bills, pay, payments, profile
 - [ ] Task 16: vercel.json, .env.example, final wiring
