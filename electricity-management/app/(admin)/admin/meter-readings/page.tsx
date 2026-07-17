@@ -1,30 +1,12 @@
 import { Suspense } from "react";
-import { prisma } from "@/lib/prisma";
 import MeterReadingsTable from "@/components/admin/meter-readings-table";
 import { TableSkeleton } from "@/components/ui/page-skeleton";
+import { getCachedMeterReadingsData } from "@/lib/server-cache";
 
-export const revalidate = 30;
+export const dynamic = "force-dynamic";
 
 async function MeterReadingsData() {
-  const [connections, currentRate, readings] = await Promise.all([
-    prisma.connection.findMany({
-      where: { status: "ACTIVE" },
-      include: {
-        resident: { include: { user: { select: { name: true } } } },
-        meterReadings: { orderBy: { readingDate: "desc" }, take: 1 },
-      },
-      orderBy: { flatNo: "asc" },
-    }),
-    prisma.rate.findFirst({ orderBy: { effectiveFrom: "desc" } }),
-    prisma.meterReading.findMany({
-      include: {
-        connection: { include: { resident: { include: { user: { select: { name: true } } } } } },
-        bill: { select: { id: true } },
-      },
-      orderBy: { readingDate: "desc" },
-      take: 50,
-    }),
-  ]);
+  const { connections, currentRate, readings } = await getCachedMeterReadingsData();
 
   const serializedConnections = connections.map((c) => ({
     id: c.id,

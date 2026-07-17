@@ -1,12 +1,12 @@
 import { Suspense } from "react";
-import { prisma } from "@/lib/prisma";
 import RatesTable from "@/components/admin/rates-table";
 import { TableSkeleton } from "@/components/ui/page-skeleton";
+import { getCachedRates } from "@/lib/server-cache";
 
-export const revalidate = 3600; // rates rarely change
+export const dynamic = "force-dynamic";
 
 async function RatesData() {
-  const rates = await prisma.rate.findMany({ orderBy: { effectiveFrom: "desc" } });
+  const rates = await getCachedRates();
   const serializedRates = rates.map((r) => ({
     id: r.id,
     ncplPerUnit: r.ncplPerUnit.toString(),

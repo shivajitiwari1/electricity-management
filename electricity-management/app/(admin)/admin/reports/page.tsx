@@ -1,42 +1,15 @@
 import { Suspense } from "react";
-import { prisma } from "@/lib/prisma";
 import ReportsClient from "@/components/admin/reports-client";
-import { StatCardsSkeleton, TableSkeleton } from "@/components/ui/page-skeleton";
+import { StatCardsSkeleton } from "@/components/ui/page-skeleton";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getCachedReportsData } from "@/lib/server-cache";
 
-export const revalidate = 300; // reports are heavy — refresh every 5 min
+export const dynamic = "force-dynamic";
 
 async function ReportsData() {
-  const twelveMonthsAgo = new Date();
-  twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
-
-  const [paidBills, overdueBills, allBills, totalRevenue, totalBills, totalResidents] =
-    await Promise.all([
-      prisma.bill.findMany({
-        where: { status: "PAID", billDate: { gte: twelveMonthsAgo } },
-        select: { billDate: true, totalAmount: true, ncplUnits: true, connection: { select: { tower: true, flatNo: true } } },
-      }),
-      prisma.bill.findMany({
-        where: { status: "OVERDUE" },
-        select: {
-          id: true, billNumber: true, dueDate: true, totalAmount: true,
-          connection: { include: { resident: { include: { user: { select: { name: true } } } } } },
-        },
-        orderBy: { dueDate: "asc" },
-      }),
-      prisma.bill.findMany({
-        select: {
-          id: true, billNumber: true, billDate: true, dueDate: true, totalAmount: true, status: true,
-          connection: { select: { flatNo: true, tower: true, resident: { include: { user: { select: { name: true } } } } } },
-        },
-        orderBy: { billDate: "desc" },
-        take: 500,
-      }),
-      prisma.bill.aggregate({ where: { status: "PAID" }, _sum: { totalAmount: true } }),
-      prisma.bill.count(),
-      prisma.resident.count(),
-    ]);
+  const { paidBills, overdueBills, allBills, totalRevenue, totalBills, totalResidents } =
+    await getCachedReportsData();
 
   const stats = {
     totalRevenue: Number(totalRevenue._sum.totalAmount ?? 0),

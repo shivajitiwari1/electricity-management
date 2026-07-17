@@ -1,14 +1,12 @@
 import { Suspense } from "react";
-import { prisma } from "@/lib/prisma";
 import FlatInfoTable from "@/components/admin/flat-info-table";
 import { TableSkeleton } from "@/components/ui/page-skeleton";
+import { getCachedFlats } from "@/lib/server-cache";
 
-export const revalidate = 3600; // flat master data rarely changes
+export const dynamic = "force-dynamic";
 
 async function FlatsData() {
-  const flats = await prisma.flatInfo.findMany({
-    orderBy: [{ tower: "asc" }, { flatNo: "asc" }],
-  });
+  const flats = await getCachedFlats();
   return <FlatInfoTable initialData={flats} />;
 }
 

@@ -1,25 +1,12 @@
 import { Suspense } from "react";
-import { prisma } from "@/lib/prisma";
 import PaymentsTable from "@/components/admin/payments-table";
 import { TableSkeleton } from "@/components/ui/page-skeleton";
+import { getCachedPaymentsData } from "@/lib/server-cache";
 
-export const revalidate = 30;
+export const dynamic = "force-dynamic";
 
 async function PaymentsData() {
-  const [payments, pendingBills] = await Promise.all([
-    prisma.payment.findMany({
-      include: {
-        bill: { include: { connection: { include: { resident: { include: { user: { select: { name: true } } } } } } } },
-      },
-      orderBy: { createdAt: "desc" },
-      take: 100,
-    }),
-    prisma.bill.findMany({
-      where: { status: { in: ["PENDING", "OVERDUE", "PARTIAL"] } },
-      include: { connection: { include: { resident: { include: { user: { select: { name: true } } } } } } },
-      orderBy: [{ status: "asc" }, { dueDate: "asc" }],
-    }),
-  ]);
+  const { payments, pendingBills } = await getCachedPaymentsData();
 
   const serializedPayments = payments.map((p) => ({
     id: p.id,

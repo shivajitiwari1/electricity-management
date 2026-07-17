@@ -1,15 +1,12 @@
 import { Suspense } from "react";
-import { prisma } from "@/lib/prisma";
 import ConnectionsTable from "@/components/admin/connections-table";
 import { TableSkeleton } from "@/components/ui/page-skeleton";
+import { getCachedConnections } from "@/lib/server-cache";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 async function ConnectionsData() {
-  const raw = await prisma.connection.findMany({
-    include: { resident: { include: { user: { select: { name: true, email: true } } } } },
-    orderBy: { tower: "asc" },
-  });
+  const raw = await getCachedConnections();
   const connections = JSON.parse(JSON.stringify(raw));
   return <ConnectionsTable initialData={connections} />;
 }

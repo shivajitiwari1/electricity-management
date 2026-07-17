@@ -1,25 +1,13 @@
 import { Suspense } from "react";
-import { prisma } from "@/lib/prisma";
 import ResidentsTable from "@/components/admin/residents-table";
 import { ALL_FLATS } from "@/lib/flat-data";
 import { TableSkeleton } from "@/components/ui/page-skeleton";
+import { getCachedResidents } from "@/lib/server-cache";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 async function ResidentsData() {
-  const residents = await prisma.resident.findMany({
-    include: {
-      user: { select: { id: true, name: true, email: true } },
-      connections: {
-        select: {
-          id: true, flatNo: true, tower: true, floor: true,
-          unitType: true, unitArea: true, meterNo: true,
-          sanctionedLoad: true, status: true,
-        },
-      },
-    },
-    orderBy: { createdAt: "desc" },
-  });
+  const residents = await getCachedResidents();
 
   const serialized = residents.map((r) => ({
     ...r,

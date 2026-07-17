@@ -1,13 +1,13 @@
 import { Suspense } from "react";
-import { prisma } from "@/lib/prisma";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { StatCardsSkeleton, TableSkeleton } from "@/components/ui/page-skeleton";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Users, Plug, FileText, IndianRupee, AlertCircle } from "lucide-react";
+import { getCachedDashboardStats, getCachedRecentBills } from "@/lib/server-cache";
 
-export const revalidate = 60; // refresh every 60 s
+export const dynamic = "force-dynamic";
 
 function getBadgeClass(status: string) {
   switch (status) {
@@ -18,18 +18,8 @@ function getBadgeClass(status: string) {
 }
 
 async function DashboardStats() {
-  const now = new Date();
-  const [totalResidents, activeConnections, billsThisMonth, revenueThisMonth, overdueBills] =
-    await Promise.all([
-      prisma.resident.count(),
-      prisma.connection.count({ where: { status: "ACTIVE" } }),
-      prisma.bill.count({ where: { billDate: { gte: new Date(now.getFullYear(), now.getMonth(), 1) } } }),
-      prisma.bill.aggregate({
-        where: { status: "PAID", billDate: { gte: new Date(now.getFullYear(), now.getMonth(), 1) } },
-        _sum: { totalAmount: true },
-      }),
-      prisma.bill.count({ where: { status: "OVERDUE" } }),
-    ]);
+  const { totalResidents, activeConnections, billsThisMonth, revenueThisMonth, overdueBills } =
+    await getCachedDashboardStats();
 
   const revenue = revenueThisMonth._sum.totalAmount ?? 0;
   const statCards = [
@@ -62,11 +52,7 @@ async function DashboardStats() {
 }
 
 async function RecentBillsSection() {
-  const recentBills = await prisma.bill.findMany({
-    take: 10,
-    orderBy: { createdAt: "desc" },
-    include: { connection: { include: { resident: { include: { user: true } } } } },
-  });
+  const recentBills = await getCachedRecentBills();
 
   return (
     <Card>
