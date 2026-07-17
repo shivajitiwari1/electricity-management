@@ -1,20 +1,30 @@
-export const dynamic = "force-dynamic";
-
+import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
 import MeterReadingsTable from "@/components/admin/meter-readings-table";
+import { TableSkeleton } from "@/components/ui/page-skeleton";
 
-export default async function MeterReadingsPage() {
-  const connections = await prisma.connection.findMany({
-    where: { status: "ACTIVE" },
-    include: {
-      resident: { include: { user: { select: { name: true } } } },
-      meterReadings: {
-        orderBy: { readingDate: "desc" },
-        take: 1,
+export const revalidate = 30;
+
+async function MeterReadingsData() {
+  const [connections, currentRate, readings] = await Promise.all([
+    prisma.connection.findMany({
+      where: { status: "ACTIVE" },
+      include: {
+        resident: { include: { user: { select: { name: true } } } },
+        meterReadings: { orderBy: { readingDate: "desc" }, take: 1 },
       },
-    },
-    orderBy: { flatNo: "asc" },
-  });
+      orderBy: { flatNo: "asc" },
+    }),
+    prisma.rate.findFirst({ orderBy: { effectiveFrom: "desc" } }),
+    prisma.meterReading.findMany({
+      include: {
+        connection: { include: { resident: { include: { user: { select: { name: true } } } } } },
+        bill: { select: { id: true } },
+      },
+      orderBy: { readingDate: "desc" },
+      take: 50,
+    }),
+  ]);
 
   const serializedConnections = connections.map((c) => ({
     id: c.id,
@@ -23,23 +33,6 @@ export default async function MeterReadingsPage() {
     lastNcplReading: c.meterReadings[0]?.ncplCurrent?.toString() ?? "0",
     lastDgReading: c.meterReadings[0]?.dgCurrent?.toString() ?? "0",
   }));
-
-  const currentRate = await prisma.rate.findFirst({
-    orderBy: { effectiveFrom: "desc" },
-  });
-
-  const readings = await prisma.meterReading.findMany({
-    include: {
-      connection: {
-        include: {
-          resident: { include: { user: { select: { name: true } } } },
-        },
-      },
-      bill: { select: { id: true } },
-    },
-    orderBy: { readingDate: "desc" },
-    take: 50,
-  });
 
   const serializedReadings = readings.map((r) => ({
     id: r.id,
@@ -55,6 +48,16 @@ export default async function MeterReadingsPage() {
   }));
 
   return (
+    <MeterReadingsTable
+      connections={serializedConnections}
+      readings={serializedReadings}
+      dgFixed={currentRate ? Number(currentRate.dgFixed) : 0}
+    />
+  );
+}
+
+export default function MeterReadingsPage() {
+  return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Meter Readings</h1>
@@ -62,11 +65,9 @@ export default async function MeterReadingsPage() {
           Record and manage electricity meter readings
         </p>
       </div>
-      <MeterReadingsTable
-        connections={serializedConnections}
-        readings={serializedReadings}
-        dgFixed={currentRate ? Number(currentRate.dgFixed) : 0}
-      />
+      <Suspense fallback={<TableSkeleton rows={10} cols={6} showSearch showFilters filterCount={2} />}>
+        <MeterReadingsData />
+      </Suspense>
     </div>
   );
 }

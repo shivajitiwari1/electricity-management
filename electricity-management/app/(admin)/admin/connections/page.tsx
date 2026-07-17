@@ -1,17 +1,20 @@
+import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
 import ConnectionsTable from "@/components/admin/connections-table";
+import { TableSkeleton } from "@/components/ui/page-skeleton";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
-export default async function ConnectionsPage() {
+async function ConnectionsData() {
   const raw = await prisma.connection.findMany({
-    include: {
-      resident: { include: { user: { select: { name: true, email: true } } } },
-    },
+    include: { resident: { include: { user: { select: { name: true, email: true } } } } },
     orderBy: { tower: "asc" },
   });
   const connections = JSON.parse(JSON.stringify(raw));
+  return <ConnectionsTable initialData={connections} />;
+}
 
+export default function ConnectionsPage() {
   return (
     <div className="space-y-6">
       <div>
@@ -20,7 +23,9 @@ export default async function ConnectionsPage() {
           Manage electricity connections for all flats
         </p>
       </div>
-      <ConnectionsTable initialData={connections} />
+      <Suspense fallback={<TableSkeleton rows={10} cols={6} showSearch showFilters filterCount={1} />}>
+        <ConnectionsData />
+      </Suspense>
     </div>
   );
 }

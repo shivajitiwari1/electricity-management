@@ -1,11 +1,13 @@
-export const dynamic = "force-dynamic";
-
+import { Suspense } from "react";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import ResidentBillsList from "@/components/resident/bills-list";
+import { TableSkeleton } from "@/components/ui/page-skeleton";
 
-export default async function ResidentBillsPage() {
+export const dynamic = "force-dynamic";
+
+async function ResidentBillsData() {
   const session = await auth();
   if (!session) redirect("/login");
 
@@ -28,7 +30,6 @@ export default async function ResidentBillsPage() {
 
   if (!resident) redirect("/login");
 
-  // Serialize all bills from all connections
   const bills = resident.connections.flatMap((conn) =>
     conn.bills.map((bill) => ({
       id: bill.id,
@@ -44,15 +45,19 @@ export default async function ResidentBillsPage() {
     }))
   );
 
+  return <ResidentBillsList bills={bills} />;
+}
+
+export default function ResidentBillsPage() {
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">My Bills</h1>
-        <p className="text-gray-500 text-sm mt-1">
-          View and pay your electricity bills
-        </p>
+        <p className="text-gray-500 text-sm mt-1">View and pay your electricity bills</p>
       </div>
-      <ResidentBillsList bills={bills} />
+      <Suspense fallback={<TableSkeleton rows={8} cols={5} showSearch showFilters filterCount={1} />}>
+        <ResidentBillsData />
+      </Suspense>
     </div>
   );
 }

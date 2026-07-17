@@ -1,13 +1,18 @@
+import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
 import FlatInfoTable from "@/components/admin/flat-info-table";
+import { TableSkeleton } from "@/components/ui/page-skeleton";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600; // flat master data rarely changes
 
-export default async function FlatsPage() {
+async function FlatsData() {
   const flats = await prisma.flatInfo.findMany({
     orderBy: [{ tower: "asc" }, { flatNo: "asc" }],
   });
+  return <FlatInfoTable initialData={flats} />;
+}
 
+export default function FlatsPage() {
   return (
     <div className="space-y-6">
       <div>
@@ -16,7 +21,9 @@ export default async function FlatsPage() {
           Manage flat master data for Oasis Venetia Heights
         </p>
       </div>
-      <FlatInfoTable initialData={flats} />
+      <Suspense fallback={<TableSkeleton rows={12} cols={5} showSearch showFilters filterCount={1} />}>
+        <FlatsData />
+      </Suspense>
     </div>
   );
 }

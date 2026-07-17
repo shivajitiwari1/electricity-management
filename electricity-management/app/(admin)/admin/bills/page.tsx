@@ -1,23 +1,15 @@
+import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
 import BillsTable from "@/components/admin/bills-table";
+import { TableSkeleton } from "@/components/ui/page-skeleton";
 
 export const dynamic = "force-dynamic";
 
-interface SearchParams {
-  tower?: string;
-  month?: string;
-  status?: string;
-}
+interface SearchParams { tower?: string; month?: string; status?: string }
 
-export default async function BillsPage({
-  searchParams,
-}: {
-  searchParams: Promise<SearchParams>;
-}) {
+async function BillsData({ searchParams }: { searchParams: Promise<SearchParams> }) {
   const params = await searchParams;
-  const tower = params.tower;
-  const month = params.month;
-  const status = params.status;
+  const { tower, month, status } = params;
 
   let dateFilter: { gte: Date; lt: Date } | undefined;
   if (month) {
@@ -33,11 +25,7 @@ export default async function BillsPage({
       ...(dateFilter ? { billDate: dateFilter } : {}),
     },
     include: {
-      connection: {
-        include: {
-          resident: { include: { user: { select: { name: true } } } },
-        },
-      },
+      connection: { include: { resident: { include: { user: { select: { name: true } } } } } },
       meterReading: true,
       payments: { select: { id: true, status: true }, orderBy: { paymentDate: "desc" as const }, take: 1 },
     },
@@ -58,7 +46,6 @@ export default async function BillsPage({
     dueDate: b.dueDate.toISOString(),
     billingPeriodStart: b.billingPeriodStart.toISOString(),
     billingPeriodEnd: b.billingPeriodEnd.toISOString(),
-    // meter reading details
     readingDate: b.meterReading?.readingDate?.toISOString() ?? null,
     ncplPrevious: b.meterReading?.ncplPrevious?.toString() ?? "0",
     ncplCurrent: b.meterReading?.ncplCurrent?.toString() ?? "0",
@@ -66,7 +53,6 @@ export default async function BillsPage({
     dgPrevious: b.meterReading?.dgPrevious?.toString() ?? "0",
     dgCurrent: b.meterReading?.dgCurrent?.toString() ?? "0",
     dgUnits: b.meterReading?.dgUnits?.toString() ?? "0",
-    // charges
     ratePerUnit: b.ratePerUnit.toString(),
     ncplCharge: b.ncplCharge.toString(),
     dgCharge: b.dgCharge.toString(),
@@ -77,6 +63,10 @@ export default async function BillsPage({
     paymentId: b.payments[0]?.id ?? null,
   }));
 
+  return <BillsTable initialData={serializedBills} />;
+}
+
+export default function BillsPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
   return (
     <div className="space-y-6">
       <div>
@@ -85,7 +75,9 @@ export default async function BillsPage({
           Manage electricity bills for Oasis Venetia Heights
         </p>
       </div>
-      <BillsTable initialData={serializedBills} />
+      <Suspense fallback={<TableSkeleton rows={10} cols={7} showSearch showFilters filterCount={3} />}>
+        <BillsData searchParams={searchParams} />
+      </Suspense>
     </div>
   );
 }

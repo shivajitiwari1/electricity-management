@@ -1,24 +1,20 @@
+import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
 import ResidentsTable from "@/components/admin/residents-table";
 import { ALL_FLATS } from "@/lib/flat-data";
+import { TableSkeleton } from "@/components/ui/page-skeleton";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
-export default async function ResidentsPage() {
+async function ResidentsData() {
   const residents = await prisma.resident.findMany({
     include: {
       user: { select: { id: true, name: true, email: true } },
       connections: {
         select: {
-          id: true,
-          flatNo: true,
-          tower: true,
-          floor: true,
-          unitType: true,
-          unitArea: true,
-          meterNo: true,
-          sanctionedLoad: true,
-          status: true,
+          id: true, flatNo: true, tower: true, floor: true,
+          unitType: true, unitArea: true, meterNo: true,
+          sanctionedLoad: true, status: true,
         },
       },
     },
@@ -34,6 +30,10 @@ export default async function ResidentsPage() {
     })),
   }));
 
+  return <ResidentsTable initialData={serialized} flatData={ALL_FLATS} />;
+}
+
+export default function ResidentsPage() {
   return (
     <div className="space-y-6">
       <div>
@@ -42,7 +42,9 @@ export default async function ResidentsPage() {
           Manage residents of Oasis Venetia Heights
         </p>
       </div>
-      <ResidentsTable initialData={serialized} flatData={ALL_FLATS} />
+      <Suspense fallback={<TableSkeleton rows={10} cols={5} showSearch showFilters filterCount={1} />}>
+        <ResidentsData />
+      </Suspense>
     </div>
   );
 }
