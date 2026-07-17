@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import BillsTable from "@/components/admin/bills-table";
 
@@ -19,9 +20,9 @@ export default async function BillsPage({
   const month = params.month;
   const status = params.status;
 
-  const where: Record<string, unknown> = {};
+  const where: Prisma.BillWhereInput = {};
   if (tower) where.connection = { tower };
-  if (status) where.status = status;
+  if (status) where.status = status as Prisma.EnumBillStatusFilter;
   if (month) {
     const [year, mon] = month.split("-").map(Number);
     where.billDate = {
