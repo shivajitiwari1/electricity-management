@@ -1,4 +1,3 @@
-import { BillStatus } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import BillsTable from "@/components/admin/bills-table";
 
@@ -29,7 +28,8 @@ export default async function BillsPage({
   const bills = await prisma.bill.findMany({
     where: {
       ...(tower ? { connection: { tower } } : {}),
-      ...(status ? { status: status as BillStatus } : {}),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ...(status ? { status: status as any } : {}),
       ...(dateFilter ? { billDate: dateFilter } : {}),
     },
     include: {
