@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { BillStatus } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import BillsTable from "@/components/admin/bills-table";
 
@@ -20,19 +20,18 @@ export default async function BillsPage({
   const month = params.month;
   const status = params.status;
 
-  const where: Prisma.BillWhereInput = {};
-  if (tower) where.connection = { tower };
-  if (status) where.status = status as Prisma.EnumBillStatusFilter;
+  let dateFilter: { gte: Date; lt: Date } | undefined;
   if (month) {
     const [year, mon] = month.split("-").map(Number);
-    where.billDate = {
-      gte: new Date(year, mon - 1, 1),
-      lt: new Date(year, mon, 1),
-    };
+    dateFilter = { gte: new Date(year, mon - 1, 1), lt: new Date(year, mon, 1) };
   }
 
   const bills = await prisma.bill.findMany({
-    where,
+    where: {
+      ...(tower ? { connection: { tower } } : {}),
+      ...(status ? { status: status as BillStatus } : {}),
+      ...(dateFilter ? { billDate: dateFilter } : {}),
+    },
     include: {
       connection: {
         include: {
