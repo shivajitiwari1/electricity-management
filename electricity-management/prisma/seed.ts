@@ -1,25 +1,8 @@
 import { PrismaClient, Role, ConnectionStatus } from "@prisma/client";
-import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import bcrypt from "bcryptjs";
 import * as XLSX from "xlsx";
 
-function createAdapter() {
-  const url =
-    process.env.DATABASE_URL ??
-    "mysql://root:@localhost:3306/electricity_management";
-  const parsed = new URL(url);
-  const useSSL = process.env.DATABASE_SSL === "true" || parsed.hostname !== "localhost";
-  return new PrismaMariaDb({
-    host: parsed.hostname || "localhost",
-    port: parsed.port ? parseInt(parsed.port, 10) : 3306,
-    user: parsed.username || "root",
-    password: parsed.password || undefined,
-    database: parsed.pathname.slice(1).split("?")[0] || "electricity_management",
-    ...(useSSL ? { ssl: { rejectUnauthorized: false } } : {}),
-  });
-}
-
-const prisma = new PrismaClient({ adapter: createAdapter() });
+const prisma = new PrismaClient();
 
 function normalizeTower(raw: string): string {
   if (!raw) return "A";

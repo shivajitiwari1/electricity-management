@@ -10,8 +10,9 @@ function createPrismaAdapter() {
     port: parsed.port ? parseInt(parsed.port, 10) : 3306,
     user: parsed.username || "root",
     password: parsed.password || undefined,
-    database: parsed.pathname.slice(1) || undefined,
+    database: parsed.pathname.slice(1).split("?")[0] || undefined,
     ...(useSSL ? { ssl: { rejectUnauthorized: false } } : {}),
+    connectTimeout: 30000,
   });
 }
 
@@ -30,4 +31,3 @@ export const prisma =
   });
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
-

@@ -8,20 +8,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 config({ path: path.join(__dirname, "../.env") });
 config({ path: path.join(__dirname, "../.env.local") });
 
-import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import { PrismaClient } from "@prisma/client";
 import bcryptjs from "bcryptjs";
 import ExcelJS from "exceljs";
-const dbUrl = process.env.DATABASE_URL ?? "";
-const parsed = new URL(dbUrl);
-const adapter = new PrismaMariaDb({
-  host: parsed.hostname || "localhost",
-  port: parsed.port ? parseInt(parsed.port, 10) : 3306,
-  user: parsed.username || "root",
-  password: parsed.password || undefined,
-  database: parsed.pathname.slice(1) || undefined,
-});
-const prisma = new PrismaClient({ adapter });
+const prisma = new PrismaClient();
 
 const XLS_PATH = path.join(__dirname, "../../425 CUSTOMER LIST OVH.xlsx");
 const DEFAULT_PASSWORD = "Oasis@1234";
