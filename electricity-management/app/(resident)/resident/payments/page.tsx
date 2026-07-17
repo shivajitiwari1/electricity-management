@@ -15,7 +15,7 @@ export default async function ResidentPaymentsPage() {
       connections: {
         include: {
           bills: {
-            include: { payment: true },
+            include: { payments: true },
           },
         },
       },
@@ -27,19 +27,19 @@ export default async function ResidentPaymentsPage() {
   // Serialize payments from all connections
   const payments = resident.connections
     .flatMap((c) =>
-      c.bills
-        .filter((b) => b.payment !== null)
-        .map((b) => ({
-          id: b.payment!.id,
-          receiptNumber: b.payment!.receiptNumber,
+      c.bills.flatMap((b) =>
+        b.payments.map((p) => ({
+          id: p.id,
+          receiptNumber: p.receiptNumber,
           billNumber: b.billNumber,
           flatNo: c.flatNo,
-          amount: Number(b.payment!.amount),
-          paymentDate: b.payment!.paymentDate.toISOString(),
-          method: b.payment!.method,
-          razorpayPaymentId: b.payment!.razorpayPaymentId ?? null,
-          status: b.payment!.status,
+          amount: Number(p.amount),
+          paymentDate: p.paymentDate.toISOString(),
+          method: p.method,
+          razorpayPaymentId: p.razorpayPaymentId ?? null,
+          status: p.status,
         }))
+      )
     )
     .sort(
       (a, b) =>

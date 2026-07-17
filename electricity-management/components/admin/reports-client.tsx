@@ -1,7 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
-import Papa from "papaparse";
+import { useState, useMemo } from "react";
 import {
   BarChart,
   Bar,
@@ -15,15 +14,10 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  IndianRupee,
-  FileText,
-  Users,
-  AlertCircle,
-  Download,
-} from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { IndianRupee, FileText, Users, AlertCircle, FileSpreadsheet, FileDown } from "lucide-react";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// ─── Types ───────────────────────────────────────────────────────────────────
 
 type SerializedPaidBill = {
   billDate: string;
@@ -69,120 +63,208 @@ interface Props {
   stats: Stats;
 }
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+// ─── Period config ────────────────────────────────────────────────────────────
+
+const QUICK_PERIODS = [
+  { key: "weekly" as const,      label: "Weekly",      days: 7   },
+  { key: "monthly" as const,     label: "Monthly",     days: 30  },
+  { key: "half-yearly" as const, label: "Half Yearly", days: 182 },
+  { key: "yearly" as const,      label: "Yearly",      days: 365 },
+];
+
+type QuickPeriod = typeof QUICK_PERIODS[number]["key"];
+
+function toDateStr(d: Date): string {
+  return d.toISOString().slice(0, 10);
+}
+
+function periodStart(days: number): Date {
+  const d = new Date();
+  d.setDate(d.getDate() - days);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
+// ─── Chart data builder ───────────────────────────────────────────────────────
+
+function getGroupBy(start: Date, end: Date): "day" | "week" | "month" {
+  const days = (end.getTime() - start.getTime()) / 86400000;
+  if (days <= 14)  return "day";
+  if (days <= 90)  return "week";
+  return "month";
+}
+
+function buildChartData(
+  bills: SerializedPaidBill[],
+  start: Date,
+  end: Date
+): { label: string; revenue: number }[] {
+  const groupBy = getGroupBy(start, end);
+
+  if (groupBy === "day") {
+    const result: { label: string; revenue: number }[] = [];
+    const cursor = new Date(start);
+    cursor.setHours(0, 0, 0, 0);
+    while (cursor <= end) {
+      const next = new Date(cursor);
+      next.setDate(cursor.getDate() + 1);
+      result.push({
+        label: cursor.toLocaleDateString("en-IN", { day: "numeric", month: "short" }),
+        revenue: bills
+          .filter(b => { const bd = new Date(b.billDate); return bd >= cursor && bd < next; })
+          .reduce((s, b) => s + b.totalAmount, 0),
+      });
+      cursor.setDate(cursor.getDate() + 1);
+    }
+    return result;
+  }
+
+  if (groupBy === "week") {
+    const result: { label: string; revenue: number }[] = [];
+    const cursor = new Date(start);
+    cursor.setHours(0, 0, 0, 0);
+    while (cursor <= end) {
+      const wEnd = new Date(cursor);
+      wEnd.setDate(cursor.getDate() + 6);
+      wEnd.setHours(23, 59, 59, 999);
+      const actualEnd = wEnd > end ? new Date(end) : wEnd;
+      result.push({
+        label: `${cursor.toLocaleDateString("en-IN", { day: "numeric", month: "short" })} – ${actualEnd.toLocaleDateString("en-IN", { day: "numeric", month: "short" })}`,
+        revenue: bills
+          .filter(b => { const bd = new Date(b.billDate); return bd >= cursor && bd <= actualEnd; })
+          .reduce((s, b) => s + b.totalAmount, 0),
+      });
+      cursor.setDate(cursor.getDate() + 7);
+    }
+    return result;
+  }
+
+  // monthly
+  const result: { label: string; revenue: number }[] = [];
+  const cursor = new Date(start.getFullYear(), start.getMonth(), 1);
+  while (cursor <= end) {
+    const mEnd = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0, 23, 59, 59);
+    const actualEnd = mEnd > end ? new Date(end) : mEnd;
+    result.push({
+      label: cursor.toLocaleDateString("en-IN", { month: "short", year: "2-digit" }),
+      revenue: bills
+        .filter(b => { const bd = new Date(b.billDate); return bd >= cursor && bd <= actualEnd; })
+        .reduce((s, b) => s + b.totalAmount, 0),
+    });
+    cursor.setMonth(cursor.getMonth() + 1);
+  }
+  return result;
+}
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function formatINR(value: number): string {
-  return value.toLocaleString("en-IN", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
+  return value.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("en-IN", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
-}
-
-function getMonthLabel(date: Date): string {
-  return date.toLocaleDateString("en-IN", { month: "short", year: "numeric" });
+  return new Date(iso).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
 }
 
 function daysOverdue(dueDateIso: string): number {
-  const now = new Date();
-  const due = new Date(dueDateIso);
-  const diff = Math.floor(
-    (now.getTime() - due.getTime()) / (1000 * 60 * 60 * 24)
-  );
-  return Math.max(0, diff);
+  return Math.max(0, Math.floor((Date.now() - new Date(dueDateIso).getTime()) / 86400000));
 }
 
-// ─── CSV Export ───────────────────────────────────────────────────────────────
-
-function exportToCSV(bills: SerializedAllBill[]) {
-  const csv = Papa.unparse(
-    bills.map((b) => ({
-      "Bill Number": b.billNumber,
-      "Flat No": b.flatNo,
-      Tower: b.tower,
-      Resident: b.residentName,
-      Amount: b.totalAmount,
-      Status: b.status,
-      "Bill Date": formatDate(b.billDate),
-      "Due Date": formatDate(b.dueDate),
-    }))
-  );
-  const blob = new Blob([csv], { type: "text/csv" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "bills-export.csv";
-  a.click();
-  URL.revokeObjectURL(url);
-}
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-export default function ReportsClient({
-  paidBills,
-  overdueBills,
-  allBills,
-  stats,
-}: Props) {
-  // A. Monthly revenue for the last 12 months
-  const revenueByMonth = useMemo(() => {
-    const now = new Date();
-    // Build ordered list of last 12 months (oldest → newest)
-    const months: { key: string; label: string; revenue: number }[] = [];
-    for (let i = 11; i >= 0; i--) {
-      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-      months.push({
-        key: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`,
-        label: getMonthLabel(d),
-        revenue: 0,
-      });
-    }
-    for (const bill of paidBills) {
-      const d = new Date(bill.billDate);
-      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
-      const entry = months.find((m) => m.key === key);
-      if (entry) entry.revenue += bill.totalAmount;
-    }
-    return months.map(({ label, revenue }) => ({ month: label, revenue }));
-  }, [paidBills]);
+export default function ReportsClient({ paidBills, overdueBills, allBills, stats }: Props) {
+  const today = toDateStr(new Date());
+  const [activeTab, setActiveTab] = useState<QuickPeriod | "custom">("monthly");
+  const [dateStart, setDateStart] = useState(() => toDateStr(periodStart(30)));
+  const [dateEnd, setDateEnd] = useState(today);
 
-  // C. Revenue by tower (current month)
+  function selectPeriod(p: QuickPeriod) {
+    const days = QUICK_PERIODS.find(x => x.key === p)!.days;
+    setActiveTab(p);
+    setDateStart(toDateStr(periodStart(days)));
+    setDateEnd(today);
+  }
+
+  function handleStartChange(val: string) {
+    setDateStart(val);
+    setActiveTab("custom");
+  }
+
+  function handleEndChange(val: string) {
+    setDateEnd(val);
+    setActiveTab("custom");
+  }
+
+  const effectiveStart = useMemo(() => {
+    const d = new Date(dateStart + "T00:00:00");
+    return isNaN(d.getTime()) ? periodStart(30) : d;
+  }, [dateStart]);
+
+  const effectiveEnd = useMemo(() => {
+    const d = new Date(dateEnd + "T23:59:59");
+    return isNaN(d.getTime()) ? new Date() : d;
+  }, [dateEnd]);
+
+  const filteredPaidBills = useMemo(
+    () => paidBills.filter(b => {
+      const bd = new Date(b.billDate);
+      return bd >= effectiveStart && bd <= effectiveEnd;
+    }),
+    [paidBills, effectiveStart, effectiveEnd]
+  );
+
+  const filteredAllBills = useMemo(
+    () => allBills.filter(b => {
+      const bd = new Date(b.billDate);
+      return bd >= effectiveStart && bd <= effectiveEnd;
+    }),
+    [allBills, effectiveStart, effectiveEnd]
+  );
+
+  const chartData = useMemo(
+    () => buildChartData(filteredPaidBills, effectiveStart, effectiveEnd),
+    [filteredPaidBills, effectiveStart, effectiveEnd]
+  );
+
   const revenueByTower = useMemo(() => {
-    const now = new Date();
-    const currentMonth = `${now.getFullYear()}-${String(
-      now.getMonth() + 1
-    ).padStart(2, "0")}`;
-    const towerMap: Record<string, number> = {};
-    for (const bill of paidBills) {
-      const d = new Date(bill.billDate);
-      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
-      if (key === currentMonth) {
-        towerMap[bill.tower] = (towerMap[bill.tower] ?? 0) + bill.totalAmount;
-      }
+    const map: Record<string, number> = {};
+    for (const b of filteredPaidBills) {
+      map[b.tower] = (map[b.tower] ?? 0) + b.totalAmount;
     }
-    return Object.entries(towerMap)
+    return Object.entries(map)
       .map(([tower, revenue]) => ({ tower: `Tower ${tower}`, revenue }))
       .sort((a, b) => a.tower.localeCompare(b.tower));
-  }, [paidBills]);
+  }, [filteredPaidBills]);
+
+  const periodRevenue = filteredPaidBills.reduce((s, b) => s + b.totalAmount, 0);
+
+  const rangeLabelShort =
+    activeTab === "custom"
+      ? `${formatDate(dateStart + "T00:00:00")} – ${formatDate(dateEnd + "T00:00:00")}`
+      : QUICK_PERIODS.find(p => p.key === activeTab)?.label ?? "";
+
+  function downloadExcel() {
+    window.location.href = `/api/reports/xlsx?start=${dateStart}&end=${dateEnd}`;
+  }
+
+  function downloadPdf() {
+    window.location.href = `/api/reports/pdf?start=${dateStart}&end=${dateEnd}`;
+  }
 
   const summaryCards = [
     {
-      title: "Total Revenue",
-      value: `₹${formatINR(stats.totalRevenue)}`,
+      title: "Revenue",
+      value: `₹${formatINR(periodRevenue)}`,
+      sub: rangeLabelShort,
       icon: IndianRupee,
       color: "text-emerald-600",
       bg: "bg-emerald-50",
     },
     {
-      title: "Total Bills Generated",
-      value: stats.totalBills.toLocaleString("en-IN"),
+      title: "Bills Generated",
+      value: filteredAllBills.length.toLocaleString("en-IN"),
+      sub: rangeLabelShort,
       icon: FileText,
       color: "text-blue-600",
       bg: "bg-blue-50",
@@ -190,6 +272,7 @@ export default function ReportsClient({
     {
       title: "Total Residents",
       value: stats.totalResidents.toLocaleString("en-IN"),
+      sub: "All time",
       icon: Users,
       color: "text-purple-600",
       bg: "bg-purple-50",
@@ -197,6 +280,7 @@ export default function ReportsClient({
     {
       title: "Overdue Bills",
       value: stats.overdueCount.toLocaleString("en-IN"),
+      sub: "Current",
       icon: AlertCircle,
       color: "text-red-600",
       bg: "bg-red-50",
@@ -204,20 +288,82 @@ export default function ReportsClient({
   ];
 
   return (
-    <div className="space-y-8">
-      {/* ── A. Summary Cards ── */}
+    <div className="space-y-6">
+      {/* ── Controls ── */}
+      <Card>
+        <CardContent className="p-4 space-y-3">
+          {/* Quick period tabs */}
+          <div className="flex items-center justify-between gap-4 flex-wrap">
+            <div className="flex gap-1 bg-muted p-1 rounded-lg">
+              {QUICK_PERIODS.map((p) => (
+                <button
+                  key={p.key}
+                  onClick={() => selectPeriod(p.key)}
+                  className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                    activeTab === p.key
+                      ? "bg-background text-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {p.label}
+                </button>
+              ))}
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={downloadExcel}
+                className="gap-2"
+              >
+                <FileSpreadsheet className="h-4 w-4" />
+                Excel
+              </Button>
+              <Button size="sm" onClick={downloadPdf} className="gap-2">
+                <FileDown className="h-4 w-4" />
+                Download PDF
+              </Button>
+            </div>
+          </div>
+
+          {/* Date range inputs */}
+          <div className="flex items-center gap-3 flex-wrap">
+            <span className="text-sm font-medium text-muted-foreground shrink-0">Date Range</span>
+            <div className="flex items-center gap-2">
+              <Input
+                type="date"
+                value={dateStart}
+                max={dateEnd}
+                onChange={e => handleStartChange(e.target.value)}
+                className="h-8 w-38 text-sm"
+              />
+              <span className="text-muted-foreground text-sm">to</span>
+              <Input
+                type="date"
+                value={dateEnd}
+                min={dateStart}
+                max={today}
+                onChange={e => handleEndChange(e.target.value)}
+                className="h-8 w-38 text-sm"
+              />
+            </div>
+            {activeTab === "custom" && (
+              <Badge variant="secondary" className="text-xs">Custom Range</Badge>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* ── Summary Cards ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-        {summaryCards.map(({ title, value, icon: Icon, color, bg }) => (
+        {summaryCards.map(({ title, value, sub, icon: Icon, color, bg }) => (
           <Card key={title}>
             <CardContent className="p-5">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                    {title}
-                  </p>
-                  <p className="text-2xl font-bold text-foreground mt-1">
-                    {value}
-                  </p>
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{title}</p>
+                  <p className="text-2xl font-bold text-foreground mt-1">{value}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{sub}</p>
                 </div>
                 <div className={`p-3 rounded-full ${bg}`}>
                   <Icon className={`h-5 w-5 ${color}`} />
@@ -228,58 +374,41 @@ export default function ReportsClient({
         ))}
       </div>
 
-      {/* ── B. Monthly Revenue Bar Chart ── */}
+      {/* ── Revenue Chart ── */}
       <Card>
         <CardHeader>
           <CardTitle className="text-base font-semibold">
-            Monthly Revenue — Last 12 Months (Paid Bills)
+            Revenue — {rangeLabelShort} (Paid Bills)
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {revenueByMonth.every((m) => m.revenue === 0) ? (
+          {chartData.every(d => d.revenue === 0) ? (
             <p className="text-sm text-muted-foreground py-12 text-center">
-              No paid bill data in the last 12 months.
+              No paid bill data for this period.
             </p>
           ) : (
             <div style={{ width: "100%", height: 300 }}>
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={revenueByMonth}
-                  margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
-                >
+                <BarChart data={chartData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                  <XAxis
-                    dataKey="month"
-                    tick={{ fontSize: 11 }}
-                    tickLine={false}
-                    axisLine={false}
-                  />
+                  <XAxis dataKey="label" tick={{ fontSize: 11 }} tickLine={false} axisLine={false} />
                   <YAxis
                     tick={{ fontSize: 11 }}
                     tickLine={false}
                     axisLine={false}
                     tickFormatter={(v) =>
-                      v >= 100000
-                        ? `₹${(v / 100000).toFixed(1)}L`
-                        : v >= 1000
-                        ? `₹${(v / 1000).toFixed(0)}K`
+                      v >= 100000 ? `₹${(v / 100000).toFixed(1)}L`
+                        : v >= 1000 ? `₹${(v / 1000).toFixed(0)}K`
                         : `₹${v}`
                     }
                   />
                   <Tooltip
-                    formatter={(value) => [
-                      `₹${formatINR(Number(value ?? 0))}`,
-                      "Revenue",
-                    ]}
+                    cursor={false}
+                    formatter={(value) => [`₹${formatINR(Number(value ?? 0))}`, "Revenue"]}
                     labelStyle={{ fontWeight: 600 }}
                   />
                   <Legend />
-                  <Bar
-                    dataKey="revenue"
-                    name="Revenue (₹)"
-                    fill="#2563eb"
-                    radius={[4, 4, 0, 0]}
-                  />
+                  <Bar dataKey="revenue" name="Revenue (₹)" fill="#2563eb" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -287,57 +416,40 @@ export default function ReportsClient({
         </CardContent>
       </Card>
 
-      {/* ── C. Revenue by Tower (current month) ── */}
+      {/* ── Revenue by Tower ── */}
       <Card>
         <CardHeader>
           <CardTitle className="text-base font-semibold">
-            Revenue by Tower — Current Month
+            Revenue by Tower — {rangeLabelShort}
           </CardTitle>
         </CardHeader>
         <CardContent>
           {revenueByTower.length === 0 ? (
             <p className="text-sm text-muted-foreground py-6 text-center">
-              No paid bills for the current month.
+              No paid bills for this period.
             </p>
           ) : (
             <div style={{ width: "100%", height: 240 }}>
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={revenueByTower}
-                  margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
-                >
+                <BarChart data={revenueByTower} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                  <XAxis
-                    dataKey="tower"
-                    tick={{ fontSize: 12 }}
-                    tickLine={false}
-                    axisLine={false}
-                  />
+                  <XAxis dataKey="tower" tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
                   <YAxis
                     tick={{ fontSize: 11 }}
                     tickLine={false}
                     axisLine={false}
                     tickFormatter={(v) =>
-                      v >= 100000
-                        ? `₹${(v / 100000).toFixed(1)}L`
-                        : v >= 1000
-                        ? `₹${(v / 1000).toFixed(0)}K`
+                      v >= 100000 ? `₹${(v / 100000).toFixed(1)}L`
+                        : v >= 1000 ? `₹${(v / 1000).toFixed(0)}K`
                         : `₹${v}`
                     }
                   />
                   <Tooltip
-                    formatter={(value) => [
-                      `₹${formatINR(Number(value ?? 0))}`,
-                      "Revenue",
-                    ]}
+                    cursor={false}
+                    formatter={(value) => [`₹${formatINR(Number(value ?? 0))}`, "Revenue"]}
                     labelStyle={{ fontWeight: 600 }}
                   />
-                  <Bar
-                    dataKey="revenue"
-                    name="Revenue (₹)"
-                    fill="#7c3aed"
-                    radius={[4, 4, 0, 0]}
-                  />
+                  <Bar dataKey="revenue" name="Revenue (₹)" fill="#7c3aed" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -345,7 +457,7 @@ export default function ReportsClient({
         </CardContent>
       </Card>
 
-      {/* ── D. Overdue Bills Table ── */}
+      {/* ── Overdue Bills Table ── */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between pb-2">
           <CardTitle className="text-base font-semibold">
@@ -362,71 +474,33 @@ export default function ReportsClient({
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b bg-muted/50">
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
-                    Flat No
-                  </th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
-                    Tower
-                  </th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
-                    Resident
-                  </th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
-                    Bill #
-                  </th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
-                    Due Date
-                  </th>
-                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">
-                    Amount (₹)
-                  </th>
-                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">
-                    Days Overdue
-                  </th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Flat No</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Tower</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Resident</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Bill #</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Due Date</th>
+                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">Amount (₹)</th>
+                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">Days Overdue</th>
                 </tr>
               </thead>
               <tbody>
                 {overdueBills.length === 0 ? (
                   <tr>
-                    <td
-                      colSpan={7}
-                      className="text-center py-10 text-muted-foreground"
-                    >
-                      No overdue bills
-                    </td>
+                    <td colSpan={7} className="text-center py-10 text-muted-foreground">No overdue bills</td>
                   </tr>
                 ) : (
                   overdueBills.map((bill) => {
                     const days = daysOverdue(bill.dueDate);
                     return (
-                      <tr
-                        key={bill.id}
-                        className="border-b last:border-0 hover:bg-red-50/40"
-                      >
-                        <td className="px-4 py-3 font-mono text-xs">
-                          {bill.flatNo}
-                        </td>
+                      <tr key={bill.id} className="border-b last:border-0 hover:bg-red-50/40">
+                        <td className="px-4 py-3 font-mono text-xs">{bill.flatNo}</td>
                         <td className="px-4 py-3">{bill.tower}</td>
-                        <td className="px-4 py-3 font-medium">
-                          {bill.residentName}
-                        </td>
-                        <td className="px-4 py-3 font-mono text-xs">
-                          {bill.billNumber}
-                        </td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {formatDate(bill.dueDate)}
-                        </td>
-                        <td className="px-4 py-3 text-right font-semibold">
-                          {formatINR(bill.totalAmount)}
-                        </td>
+                        <td className="px-4 py-3 font-medium">{bill.residentName}</td>
+                        <td className="px-4 py-3 font-mono text-xs">{bill.billNumber}</td>
+                        <td className="px-4 py-3 text-muted-foreground">{formatDate(bill.dueDate)}</td>
+                        <td className="px-4 py-3 text-right font-semibold">{formatINR(bill.totalAmount)}</td>
                         <td className="px-4 py-3 text-right">
-                          <Badge
-                            className={
-                              days > 30
-                                ? "bg-red-100 text-red-800 hover:bg-red-100"
-                                : "bg-orange-100 text-orange-800 hover:bg-orange-100"
-                            }
-                          >
+                          <Badge className={days > 30 ? "bg-red-100 text-red-800 hover:bg-red-100" : "bg-orange-100 text-orange-800 hover:bg-orange-100"}>
                             {days}d
                           </Badge>
                         </td>
@@ -439,18 +513,6 @@ export default function ReportsClient({
           </div>
         </CardContent>
       </Card>
-
-      {/* ── E. Export to CSV ── */}
-      <div className="flex justify-end">
-        <Button
-          onClick={() => exportToCSV(allBills)}
-          className="gap-2"
-          variant="outline"
-        >
-          <Download className="h-4 w-4" />
-          Export Bills to CSV
-        </Button>
-      </div>
     </div>
   );
 }

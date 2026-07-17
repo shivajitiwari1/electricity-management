@@ -17,6 +17,7 @@ import {
   LogOut,
   Menu,
   Zap,
+  Building2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -37,6 +38,7 @@ const navItems = [
   { href: "/admin/payments", label: "Payments", icon: CreditCard },
   { href: "/admin/reports", label: "Reports", icon: BarChart3 },
   { href: "/admin/rates", label: "Rates", icon: Settings },
+  { href: "/admin/flats", label: "Flat Info", icon: Building2 },
 ];
 
 interface Props {

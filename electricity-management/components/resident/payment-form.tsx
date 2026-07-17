@@ -72,9 +72,35 @@ function BillRow({
   );
 }
 
+const isTestMode = (key: string) =>
+  !key || key.includes("REPLACE") || key.trim() === "";
+
 export default function PaymentForm({ bill, razorpayKeyId }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const testMode = isTestMode(razorpayKeyId);
+
+  async function handleTestPay() {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/payments/test-pay", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ billId: bill.id }),
+      });
+      if (res.ok) {
+        toast.success("Test payment successful!");
+        router.push("/resident/payments");
+      } else {
+        const err = await res.json();
+        toast.error(err.error ?? "Test payment failed");
+        setLoading(false);
+      }
+    } catch {
+      toast.error("Something went wrong");
+      setLoading(false);
+    }
+  }
 
   async function handlePayNow() {
     setLoading(true);
@@ -247,22 +273,45 @@ export default function PaymentForm({ bill, razorpayKeyId }: Props) {
           </CardContent>
         </Card>
 
-        {/* Pay Button */}
-        <Button
-          size="lg"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white text-base py-6"
-          disabled={loading}
-          onClick={handlePayNow}
-        >
-          <CreditCard className="h-5 w-5 mr-2" />
-          {loading
-            ? "Processing..."
-            : `Pay ${formatINR(bill.totalAmount)} via Razorpay`}
-        </Button>
+        {testMode ? (
+          <>
+            {/* Test Mode Banner */}
+            <div className="flex items-center gap-2 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+              <span className="font-semibold">🧪 Test Mode</span>
+              <span>— Razorpay keys not configured. Clicking below simulates a successful payment.</span>
+            </div>
 
-        <p className="text-center text-xs text-muted-foreground">
-          Secured by Razorpay · Supports UPI, Net Banking, Cards & Wallets
-        </p>
+            <Button
+              size="lg"
+              className="w-full bg-amber-500 hover:bg-amber-600 text-white text-base py-6"
+              disabled={loading}
+              onClick={handleTestPay}
+            >
+              <CreditCard className="h-5 w-5 mr-2" />
+              {loading ? "Processing..." : `Simulate Payment — ${formatINR(bill.totalAmount)}`}
+            </Button>
+
+            <p className="text-center text-xs text-muted-foreground">
+              Test mode — no real money charged · Add Razorpay keys to enable live payments
+            </p>
+          </>
+        ) : (
+          <>
+            <Button
+              size="lg"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white text-base py-6"
+              disabled={loading}
+              onClick={handlePayNow}
+            >
+              <CreditCard className="h-5 w-5 mr-2" />
+              {loading ? "Processing..." : `Pay ${formatINR(bill.totalAmount)} via Razorpay`}
+            </Button>
+
+            <p className="text-center text-xs text-muted-foreground">
+              Secured by Razorpay · Supports UPI, Net Banking, Cards & Wallets
+            </p>
+          </>
+        )}
       </div>
     </>
   );

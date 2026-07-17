@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
 const updateBillStatusSchema = z.object({
-  status: z.enum(["PENDING", "PAID", "OVERDUE"]),
+  status: z.enum(["PENDING", "PAID", "OVERDUE", "PARTIAL"]),
 });
 
 export async function GET(
@@ -31,7 +31,7 @@ export async function GET(
         },
       },
       meterReading: true,
-      payment: true,
+      payments: true,
     },
   });
 
@@ -112,7 +112,7 @@ export async function PUT(
           },
         },
         meterReading: true,
-        payment: true,
+        payments: true,
       },
     });
 
@@ -134,4 +134,40 @@ export async function PUT(
   });
 
   return NextResponse.json(updated);
+}
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const session = await auth();
+  if (!session || session.user.role !== "ADMIN") {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { id } = await params;
+
+  const bill = await prisma.bill.findUnique({
+    where: { id },
+    select: { id: true, billNumber: true },
+  });
+  if (!bill) {
+    return NextResponse.json({ error: "Bill not found" }, { status: 404 });
+  }
+
+  await prisma.$transaction(async (tx) => {
+    await tx.payment.deleteMany({ where: { billId: id } });
+    await tx.bill.delete({ where: { id } });
+    await tx.auditLog.create({
+      data: {
+        userId: session.user.id,
+        action: "DELETE",
+        entity: "Bill",
+        entityId: id,
+        meta: { billNumber: bill.billNumber },
+      },
+    });
+  });
+
+  return NextResponse.json({ success: true });
 }

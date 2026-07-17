@@ -3,6 +3,8 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import bcryptjs from "bcryptjs";
+import { sendEmail } from "@/lib/email";
+import { welcomeEmail } from "@/lib/email-templates";
 
 const createResidentSchema = z.object({
   name: z.string().min(1),
@@ -103,8 +105,13 @@ export async function POST(req: NextRequest) {
 
   const hashedPassword = await bcryptjs.hash(password, 12);
 
-  const count = await prisma.resident.count();
-  const residentNumber = `RES-${String(count + 1).padStart(4, "0")}`;
+  const last = await prisma.resident.findFirst({
+    where: { residentNumber: { startsWith: "RES-" } },
+    orderBy: { residentNumber: "desc" },
+    select: { residentNumber: true },
+  });
+  const seq = last ? parseInt(last.residentNumber.slice(4), 10) + 1 : 1;
+  const residentNumber = `RES-${String(seq).padStart(4, "0")}`;
 
   const resident = await prisma.$transaction(async (tx) => {
     const user = await tx.user.create({
@@ -158,6 +165,20 @@ export async function POST(req: NextRequest) {
       },
     });
   });
+
+  // Send welcome email with credentials
+  try {
+    const html = welcomeEmail({
+      residentName: name,
+      flatNo,
+      email,
+      password,
+      loginUrl: `${process.env.NEXTAUTH_URL}/login`,
+    });
+    await sendEmail(email, `Welcome to Oasis Venetia Heights — Your Login Details`, html);
+  } catch (err) {
+    console.error("Welcome email failed:", err);
+  }
 
   return NextResponse.json(resident, { status: 201 });
 }

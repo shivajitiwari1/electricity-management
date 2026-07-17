@@ -56,7 +56,7 @@ export default async function ResidentDashboard() {
           bills: {
             orderBy: { billDate: "desc" },
             take: 1,
-            include: { payment: true },
+            include: { payments: { orderBy: { paymentDate: "desc" as const }, take: 1 } },
           },
         },
       },
@@ -195,8 +195,8 @@ export default async function ResidentDashboard() {
                 <p className="text-xs text-gray-400">
                   Last bill{" "}
                   <span className="font-medium text-green-700">PAID</span> on{" "}
-                  {latestBill.payment?.paymentDate
-                    ? new Date(latestBill.payment.paymentDate).toLocaleDateString("en-IN", {
+                  {latestBill.payments[0]?.paymentDate
+                    ? new Date(latestBill.payments[0].paymentDate).toLocaleDateString("en-IN", {
                         day: "2-digit",
                         month: "short",
                         year: "numeric",

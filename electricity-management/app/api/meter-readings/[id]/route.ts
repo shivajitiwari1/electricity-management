@@ -56,14 +56,12 @@ export async function DELETE(
     return NextResponse.json({ error: "Meter reading not found" }, { status: 404 });
   }
 
-  if (reading.bill) {
-    return NextResponse.json(
-      { error: "Cannot delete meter reading: a bill is linked to it" },
-      { status: 409 }
-    );
-  }
-
   await prisma.$transaction(async (tx) => {
+    // Cascade: delete payments → bill → meter reading
+    if (reading.bill) {
+      await tx.payment.deleteMany({ where: { billId: reading.bill.id } });
+      await tx.bill.delete({ where: { id: reading.bill.id } });
+    }
     await tx.meterReading.delete({ where: { id } });
 
     await tx.auditLog.create({
@@ -75,6 +73,7 @@ export async function DELETE(
         meta: {
           connectionId: reading.connectionId,
           readingDate: reading.readingDate,
+          billDeleted: !!reading.bill,
         },
       },
     });

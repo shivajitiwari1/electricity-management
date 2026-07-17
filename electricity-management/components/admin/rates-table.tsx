@@ -19,7 +19,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Plus } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 
 type SerializedRate = {
   id: string;
@@ -44,6 +44,29 @@ export default function RatesTable({ rates }: Props) {
   });
 
   const current = rates[0];
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  async function handleDelete(rate: SerializedRate) {
+    const confirmed = window.confirm(
+      `Delete rate effective from ${new Date(rate.effectiveFrom).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}?\n\nThis cannot be undone.`
+    );
+    if (!confirmed) return;
+    setDeletingId(rate.id);
+    try {
+      const res = await fetch(`/api/rates/${rate.id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const data = await res.json();
+        toast.error(data.error ?? "Failed to delete rate");
+        return;
+      }
+      toast.success("Rate deleted");
+      router.refresh();
+    } catch {
+      toast.error("Failed to delete rate");
+    } finally {
+      setDeletingId(null);
+    }
+  }
 
   function closeModal() {
     setShowModal(false);
@@ -143,12 +166,13 @@ export default function RatesTable({ rates }: Props) {
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">NPCL / Unit (₹)</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">DG Fixed (₹)</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Fixed / kW (₹)</th>
+                  <th className="px-4 py-3"></th>
                 </tr>
               </thead>
               <tbody>
                 {rates.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="text-center py-10 text-muted-foreground">
+                    <td colSpan={5} className="text-center py-10 text-muted-foreground">
                       No rate history
                     </td>
                   </tr>
@@ -170,6 +194,19 @@ export default function RatesTable({ rates }: Props) {
                       <td className="px-4 py-3">₹{rate.ncplPerUnit}</td>
                       <td className="px-4 py-3">₹{rate.dgFixed}</td>
                       <td className="px-4 py-3">₹{rate.fixedPerKw}</td>
+                      <td className="px-4 py-3 text-right">
+                        {idx !== 0 && (
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
+                            disabled={deletingId === rate.id}
+                            onClick={() => handleDelete(rate)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </td>
                     </tr>
                   ))
                 )}

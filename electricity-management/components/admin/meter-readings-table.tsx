@@ -27,7 +27,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus, Trash2, FileText } from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { Plus, Trash2, FileText, ChevronsUpDown, Check } from "lucide-react";
 
 type SerializedConnection = {
   id: string;
@@ -61,6 +74,10 @@ const today = new Date().toISOString().split("T")[0];
 export default function MeterReadingsTable({ connections, readings, dgFixed }: Props) {
   const router = useRouter();
 
+  // Flat combobox state
+  const [flatOpen, setFlatOpen] = useState(false);
+  const [flatSearch, setFlatSearch] = useState("");
+
   // Add Reading modal state
   const [showAddModal, setShowAddModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -93,6 +110,8 @@ export default function MeterReadingsTable({ connections, readings, dgFixed }: P
 
   function closeAddModal() {
     setShowAddModal(false);
+    setFlatSearch("");
+    setFlatOpen(false);
     setAddForm({
       connectionId: "",
       readingDate: today,
@@ -142,10 +161,11 @@ export default function MeterReadingsTable({ connections, readings, dgFixed }: P
     }
   }
 
-  async function handleDelete(id: string, flatNo: string) {
-    const confirmed = window.confirm(
-      `Delete meter reading for Flat ${flatNo}? This cannot be undone.`
-    );
+  async function handleDelete(id: string, flatNo: string, hasBill: boolean) {
+    const msg = hasBill
+      ? `Delete meter reading for Flat ${flatNo}?\n\nThis will also delete the linked bill and ALL its payments. This cannot be undone.`
+      : `Delete meter reading for Flat ${flatNo}? This cannot be undone.`;
+    const confirmed = window.confirm(msg);
     if (!confirmed) return;
     try {
       const res = await fetch(`/api/meter-readings/${id}`, {
@@ -299,17 +319,15 @@ export default function MeterReadingsTable({ connections, readings, dgFixed }: P
                               Generate Bill
                             </Button>
                           )}
-                          {!reading.hasBill && (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
-                              onClick={() => handleDelete(reading.id, reading.flatNo)}
-                            >
-                              <Trash2 className="h-3 w-3 mr-1" />
-                              Delete
-                            </Button>
-                          )}
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+                            onClick={() => handleDelete(reading.id, reading.flatNo, reading.hasBill)}
+                          >
+                            <Trash2 className="h-3 w-3 mr-1" />
+                            Delete
+                          </Button>
                         </div>
                       </td>
                     </tr>
@@ -329,22 +347,52 @@ export default function MeterReadingsTable({ connections, readings, dgFixed }: P
           </DialogHeader>
           <form onSubmit={handleAddSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <Label htmlFor="mr-flat">Flat *</Label>
-              <Select
-                value={addForm.connectionId}
-                onValueChange={handleConnectionChange}
-              >
-                <SelectTrigger id="mr-flat" className="w-full">
-                  <SelectValue placeholder="Select flat" />
-                </SelectTrigger>
-                <SelectContent>
-                  {connections.map((c) => (
-                    <SelectItem key={c.id} value={c.id}>
-                      {c.flatNo} — {c.residentName}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Label>Flat *</Label>
+              <Popover open={flatOpen} onOpenChange={(o) => { setFlatOpen(o); if (!o) setFlatSearch(""); }}>
+                <PopoverTrigger className="inline-flex w-full items-center justify-between gap-2 rounded-lg border border-input bg-transparent px-3 py-2 text-sm font-normal whitespace-nowrap transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                  {addForm.connectionId
+                    ? (() => { const c = connections.find(x => x.id === addForm.connectionId); return c ? `${c.flatNo} — ${c.residentName}` : "Select flat"; })()
+                    : <span className="text-muted-foreground">Search flat or resident…</span>}
+                  <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
+                </PopoverTrigger>
+                <PopoverContent className="w-[420px] p-0" align="start">
+                  <Command shouldFilter={false}>
+                    <CommandInput
+                      placeholder="Search flat no or resident name…"
+                      value={flatSearch}
+                      onValueChange={setFlatSearch}
+                    />
+                    <CommandList className="max-h-64">
+                      <CommandEmpty>No flats found</CommandEmpty>
+                      <CommandGroup heading={`${connections.filter(c => {
+                        const q = flatSearch.toLowerCase();
+                        return !q || c.flatNo.toLowerCase().includes(q) || c.residentName.toLowerCase().includes(q);
+                      }).length} connections`}>
+                        {connections
+                          .filter(c => {
+                            const q = flatSearch.toLowerCase();
+                            return !q || c.flatNo.toLowerCase().includes(q) || c.residentName.toLowerCase().includes(q);
+                          })
+                          .map((c) => (
+                            <CommandItem
+                              key={c.id}
+                              value={c.id}
+                              onSelect={() => {
+                                handleConnectionChange(c.id);
+                                setFlatSearch("");
+                                setFlatOpen(false);
+                              }}
+                            >
+                              <Check className={`mr-2 h-4 w-4 ${addForm.connectionId === c.id ? "opacity-100" : "opacity-0"}`} />
+                              <span className="font-medium">{c.flatNo}</span>
+                              <span className="ml-2 text-muted-foreground text-xs">{c.residentName}</span>
+                            </CommandItem>
+                          ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="mr-date">Reading Date *</Label>

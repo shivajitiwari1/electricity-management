@@ -3,7 +3,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { sendEmail } from "@/lib/email";
 import { paymentSuccessEmail } from "@/lib/email-templates";
-import { generateReceiptNumber } from "@/lib/billing";
+import { nextReceiptNumber } from "@/lib/billing";
 import crypto from "crypto";
 
 export async function POST(req: NextRequest) {
@@ -66,8 +66,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Generate receipt number
-  const count = await prisma.payment.count();
-  const receiptNumber = generateReceiptNumber(new Date(), count + 1);
+  const receiptNumber = await nextReceiptNumber();
 
   // Create payment and update bill in a transaction
   const payment = await prisma.$transaction(async (tx) => {

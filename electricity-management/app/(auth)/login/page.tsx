@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -123,6 +124,11 @@ export default function LoginPage() {
                     <p className="text-sm text-destructive font-medium">{error}</p>
                   </div>
                 )}
+                <div className="flex justify-end">
+                  <Link href="/forgot-password" className="text-xs text-muted-foreground hover:text-foreground">
+                    Forgot password?
+                  </Link>
+                </div>
                 <Button
                   type="submit"
                   className="w-full"

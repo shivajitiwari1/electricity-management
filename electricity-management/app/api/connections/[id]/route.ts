@@ -33,7 +33,7 @@ export async function GET(
       meterReadings: { orderBy: { readingDate: "desc" } },
       bills: {
         orderBy: { billDate: "desc" },
-        include: { payment: true },
+        include: { payments: { orderBy: { paymentDate: "desc" }, take: 1 } },
       },
     },
   });

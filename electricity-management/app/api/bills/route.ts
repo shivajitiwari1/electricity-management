@@ -3,9 +3,11 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import { Decimal } from "@prisma/client/runtime/client";
+import { Prisma } from "@prisma/client";
 import { calculateBill, generateBillNumber } from "@/lib/billing";
 import { sendEmail } from "@/lib/email";
 import { billGeneratedEmail } from "@/lib/email-templates";
+import { generatePaymentToken } from "@/lib/payment-token";
 
 const generateBillSchema = z.object({
   meterReadingId: z.string().min(1),
@@ -26,7 +28,7 @@ export async function GET(req: NextRequest) {
   const month = searchParams.get("month"); // YYYY-MM
   const status = searchParams.get("status");
 
-  const validStatuses = ["PENDING", "PAID", "OVERDUE"];
+  const validStatuses = ["PENDING", "PAID", "OVERDUE", "PARTIAL"];
   if (status && !validStatuses.includes(status)) {
     return NextResponse.json({ error: "Invalid status filter" }, { status: 400 });
   }
@@ -45,7 +47,7 @@ export async function GET(req: NextRequest) {
 
   const bills = await prisma.bill.findMany({
     where: {
-      ...(status ? { status: status as "PENDING" | "PAID" | "OVERDUE" } : {}),
+      ...(status ? { status: status as "PENDING" | "PAID" | "OVERDUE" | "PARTIAL" } : {}),
       ...(dateFilter ? { billDate: dateFilter } : {}),
       ...(tower
         ? {
@@ -64,7 +66,7 @@ export async function GET(req: NextRequest) {
         },
       },
       meterReading: true,
-      payment: true,
+      payments: true,
     },
     orderBy: { billDate: "desc" },
   });
@@ -149,9 +151,14 @@ export async function POST(req: NextRequest) {
     billDate: billDateObj,
   });
 
-  const billNumber = generateBillNumber(meterReading.connection.flatNo, billDateObj);
+  // Generate a unique bill number — append suffix if base number already exists
+  const baseBillNumber = generateBillNumber(meterReading.connection.flatNo, billDateObj);
+  const existingCount = await prisma.bill.count({
+    where: { billNumber: { startsWith: baseBillNumber } },
+  });
+  const billNumber = existingCount === 0 ? baseBillNumber : `${baseBillNumber}-${existingCount + 1}`;
 
-  const bill = await prisma.$transaction(async (tx) => {
+  const billResult = await prisma.$transaction(async (tx) => {
     const newBill = await tx.bill.create({
       data: {
         connectionId: meterReading.connectionId,
@@ -200,21 +207,37 @@ export async function POST(req: NextRequest) {
     });
 
     return newBill;
+  }).catch((err: unknown) => {
+    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+      return { __error: "A bill already exists for this flat and billing period." } as const;
+    }
+    console.error("Bill creation error:", err);
+    return { __error: "Failed to create bill" } as const;
   });
+
+  if ("__error" in billResult) {
+    return NextResponse.json({ error: billResult.__error }, { status: 409 });
+  }
+
+  const bill = billResult;
 
   // Send email — don't fail bill creation if email fails
   try {
     const residentEmail = bill.connection.resident.user.email;
     const residentName = bill.connection.resident.user.name ?? "Resident";
-    const payUrl = `${process.env.NEXTAUTH_URL}/resident/bills/${bill.id}/pay`;
+    const payToken = generatePaymentToken(bill.id);
+    const payUrl = `${process.env.NEXTAUTH_URL}/pay/${payToken}`;
+
+    const fmtDate = (d: string) =>
+      new Date(d).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
 
     const html = billGeneratedEmail({
       residentName,
       flatNo: bill.connection.flatNo,
       billNumber: bill.billNumber,
-      billingPeriod: `${billingPeriodStart} to ${billingPeriodEnd}`,
+      billingPeriod: `${fmtDate(billingPeriodStart)} – ${fmtDate(billingPeriodEnd)}`,
       totalAmount: calculation.totalAmount.toFixed(2),
-      dueDate: calculation.dueDate.toDateString(),
+      dueDate: calculation.dueDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
       payUrl,
     });
 

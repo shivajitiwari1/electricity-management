@@ -5,17 +5,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Users, Plug, FileText, IndianRupee, AlertCircle } from "lucide-react";
 
-function getBadgeVariant(status: string) {
-  switch (status) {
-    case "PAID":
-      return "default";
-    case "OVERDUE":
-      return "destructive";
-    default:
-      return "secondary";
-  }
-}
-
 function getBadgeClass(status: string) {
   switch (status) {
     case "PAID":
@@ -105,8 +94,8 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
+        <p className="text-sm text-muted-foreground mt-1">
           Overview of Oasis Venetia Heights electricity management
         </p>
       </div>
@@ -118,12 +107,12 @@ export default async function DashboardPage() {
             <CardContent className="p-5">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
                     {title}
                   </p>
-                  <p className="text-2xl font-bold text-gray-900 mt-1">{value}</p>
+                  <p className="text-2xl font-bold text-foreground mt-1">{value}</p>
                 </div>
-                <div className={`p-3 rounded-full ${bg}`}>
+                <div className={`p-3 rounded-full ${bg} dark:opacity-80`}>
                   <Icon className={`h-5 w-5 ${color}`} />
                 </div>
               </div>
@@ -154,25 +143,25 @@ export default async function DashboardPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b bg-gray-50">
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Bill #</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Flat</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Resident</th>
-                  <th className="text-right px-4 py-3 font-medium text-gray-600">Amount</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Due Date</th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-600">Status</th>
+                <tr className="border-b bg-muted/50">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Bill #</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Flat</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Resident</th>
+                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">Amount</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Due Date</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
                 </tr>
               </thead>
               <tbody>
                 {recentBills.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="text-center py-8 text-gray-400">
+                    <td colSpan={6} className="text-center py-8 text-muted-foreground">
                       No bills found
                     </td>
                   </tr>
                 ) : (
                   recentBills.map((bill) => (
-                    <tr key={bill.id} className="border-b last:border-0 hover:bg-gray-50">
+                    <tr key={bill.id} className="border-b last:border-0 hover:bg-muted/50">
                       <td className="px-4 py-3 font-mono text-xs">{bill.billNumber}</td>
                       <td className="px-4 py-3">{bill.connection.flatNo}</td>
                       <td className="px-4 py-3">{bill.connection.resident.user.name}</td>
@@ -182,7 +171,7 @@ export default async function DashboardPage() {
                           maximumFractionDigits: 2,
                         })}
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 text-muted-foreground">
                         {new Date(bill.dueDate).toLocaleDateString("en-IN", {
                           day: "2-digit",
                           month: "short",

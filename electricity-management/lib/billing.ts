@@ -1,4 +1,18 @@
 import { Decimal } from "@prisma/client/runtime/client";
+import { prisma } from "@/lib/prisma";
+
+export async function nextReceiptNumber(): Promise<string> {
+  const today = new Date();
+  const datePart = `${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, "0")}${String(today.getDate()).padStart(2, "0")}`;
+  const prefix = `RCPT-${datePart}-`;
+  const last = await prisma.payment.findFirst({
+    where: { receiptNumber: { startsWith: prefix } },
+    orderBy: { receiptNumber: "desc" },
+    select: { receiptNumber: true },
+  });
+  const seq = last ? parseInt(last.receiptNumber.slice(prefix.length), 10) + 1 : 1;
+  return `${prefix}${String(seq).padStart(4, "0")}`;
+}
 
 export interface BillCalculation {
   ncplCharge: Decimal;

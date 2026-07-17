@@ -25,7 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Download, Eye, CheckCircle } from "lucide-react";
+import { Download, Eye, CheckCircle, Trash2 } from "lucide-react";
 
 type SerializedBill = {
   id: string;
@@ -76,6 +76,13 @@ function StatusBadge({ status }: { status: string }) {
       </Badge>
     );
   }
+  if (status === "PARTIAL") {
+    return (
+      <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-100">
+        PARTIAL
+      </Badge>
+    );
+  }
   return (
     <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">
       PENDING
@@ -102,6 +109,7 @@ export default function BillsTable({ initialData }: Props) {
 
   const [viewBill, setViewBill] = useState<SerializedBill | null>(null);
   const [markingPaid, setMarkingPaid] = useState<string | null>(null);
+  const [deletingBill, setDeletingBill] = useState<string | null>(null);
 
   // Current filter values from URL
   const currentTower = searchParams.get("tower") ?? "";
@@ -120,6 +128,28 @@ export default function BillsTable({ initialData }: Props) {
     if (merged.month) params.set("month", merged.month);
     if (merged.status) params.set("status", merged.status);
     router.push(`${pathname}?${params.toString()}`);
+  }
+
+  async function handleDeleteBill(bill: SerializedBill) {
+    const confirmed = window.confirm(
+      `Delete bill ${bill.billNumber} (Flat ${bill.flatNo})?\n\nThis will also delete all payments linked to this bill. This cannot be undone.`
+    );
+    if (!confirmed) return;
+    setDeletingBill(bill.id);
+    try {
+      const res = await fetch(`/api/bills/${bill.id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const data = await res.json();
+        toast.error(data.error ?? "Failed to delete bill");
+        return;
+      }
+      toast.success(`Bill ${bill.billNumber} deleted`);
+      router.refresh();
+    } catch {
+      toast.error("Failed to delete bill");
+    } finally {
+      setDeletingBill(null);
+    }
   }
 
   async function handleMarkPaid(bill: SerializedBill) {
@@ -307,6 +337,16 @@ export default function BillsTable({ initialData }: Props) {
                               {markingPaid === bill.id ? "..." : "Mark Paid"}
                             </Button>
                           )}
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+                            disabled={deletingBill === bill.id}
+                            onClick={() => handleDeleteBill(bill)}
+                          >
+                            <Trash2 className="h-3 w-3 mr-1" />
+                            {deletingBill === bill.id ? "..." : "Delete"}
+                          </Button>
                         </div>
                       </td>
                     </tr>

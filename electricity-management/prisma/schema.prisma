@@ -20,6 +20,7 @@ enum BillStatus {
   PENDING
   PAID
   OVERDUE
+  PARTIAL
 }
 
 enum PaymentMethod {
@@ -113,14 +114,15 @@ model Bill {
   fixedCharge        Decimal
   previousDues       Decimal      @default(0)
   totalAmount        Decimal
+  paidAmount         Decimal      @default(0)
   status             BillStatus   @default(PENDING)
   createdAt          DateTime     @default(now())
-  payment            Payment?
+  payments           Payment[]
 }
 
 model Payment {
   id                String        @id @default(cuid())
-  billId            String        @unique
+  billId            String
   bill              Bill          @relation(fields: [billId], references: [id])
   amount            Decimal
   paymentDate       DateTime
@@ -142,4 +144,13 @@ model AuditLog {
   entityId  String
   meta      Json?
   createdAt DateTime @default(now())
+}
+
+model FlatInfo {
+  id       String @id @default(cuid())
+  flatNo   String @unique
+  tower    String
+  floor    String
+  unitType String
+  area     Int
 }

@@ -39,7 +39,7 @@ export default async function BillsPage({
         },
       },
       meterReading: true,
-      payment: { select: { id: true, status: true } },
+      payments: { select: { id: true, status: true }, orderBy: { paymentDate: "desc" as const }, take: 1 },
     },
     orderBy: { billDate: "desc" },
     take: 100,
@@ -74,7 +74,7 @@ export default async function BillsPage({
     previousDues: b.previousDues.toString(),
     totalAmount: b.totalAmount.toString(),
     status: b.status,
-    paymentId: b.payment?.id ?? null,
+    paymentId: b.payments[0]?.id ?? null,
   }));
 
   return (

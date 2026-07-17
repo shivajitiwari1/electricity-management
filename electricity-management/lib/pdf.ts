@@ -209,48 +209,123 @@ export function generateBillPdf(data: BillData): Promise<Buffer> {
 export function generateReceiptPdf(data: ReceiptData): Promise<Buffer> {
   return new Promise((resolve, reject) => {
     const chunks: Buffer[] = [];
-    const doc = new PDFDocument({ margin: 40, size: "A4" });
+    const doc = new PDFDocument({ margin: 0, size: "A4" });
 
     doc.on("data", (chunk) => chunks.push(Buffer.from(chunk)));
     doc.on("end", () => resolve(Buffer.concat(chunks)));
     doc.on("error", reject);
 
-    doc.fontSize(14).font("Helvetica-Bold")
-      .text("OASIS BUILDMART INDIA PVT. LTD.", 40, doc.y, { width: 515, align: "center" });
-    doc.fontSize(10).font("Helvetica")
-      .text("Oasis Venetia Heights, Greater Noida - 201306", 40, doc.y, { width: 515, align: "center" });
-    doc.fontSize(12).font("Helvetica-Bold")
-      .text("PAYMENT RECEIPT", 40, doc.y, { width: 515, align: "center" });
-    doc.moveDown(1);
+    const PW = 595;   // page width
+    const L  = 40;   // left margin
+    const CW = 515;  // content width
 
-    const rows: [string, string][] = [
-      ["Receipt Number", data.receiptNumber],
-      ["Resident Name",  data.residentName],
-      ["Flat Number",    data.flatNo],
-      ["Bill Number",    data.billNumber],
-      ["Amount Paid",    `Rs. ${formatCurrency(data.amount)}`],
-      ["Payment Date",   formatDate(data.paymentDate)],
+    // ── Navy header background ────────────────────────────────────────────
+    doc.rect(0, 0, PW, 108).fill("#1e3a5f");
+
+    doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(15)
+      .text("OASIS BUILDMART INDIA PVT. LTD.", L, 22, { width: CW, align: "center" });
+    doc.fillColor("#93b8d4").font("Helvetica").fontSize(8.5)
+      .text("Oasis Venetia Heights, Plot No-HRA, 12, A, Site-C, Greater Noida - 201306 (UP)", L, 42, { width: CW, align: "center" });
+    doc.fillColor("#93b8d4").fontSize(8.5)
+      .text("Phone: 8130334857", L, 56, { width: CW, align: "center" });
+
+    // "PAYMENT RECEIPT" badge on header
+    doc.rect(PW / 2 - 75, 74, 150, 22).fill("#2563eb");
+    doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(10)
+      .text("PAYMENT RECEIPT", L, 79, { width: CW, align: "center" });
+
+    // ── Receipt # and Date ────────────────────────────────────────────────
+    let y = 126;
+    doc.fillColor("#6b7280").font("Helvetica").fontSize(7.5)
+      .text("RECEIPT NUMBER", L, y, { width: 240 });
+    doc.text("DATE", 310, y, { width: 245 });
+
+    y += 13;
+    doc.fillColor("#1e3a5f").font("Helvetica-Bold").fontSize(12)
+      .text(data.receiptNumber, L, y, { width: 240 });
+    doc.fillColor("#374151").font("Helvetica").fontSize(10)
+      .text(formatDate(data.paymentDate), 310, y, { width: 245 });
+
+    // divider
+    y += 28;
+    doc.moveTo(L, y).lineTo(L + CW, y).strokeColor("#e5e7eb").lineWidth(0.8).stroke();
+
+    // ── Billed To / Flat No ───────────────────────────────────────────────
+    y += 14;
+    doc.fillColor("#6b7280").font("Helvetica").fontSize(7.5)
+      .text("BILLED TO", L, y, { width: 280 });
+    doc.text("FLAT NO.", 370, y, { width: 185 });
+
+    y += 13;
+    doc.fillColor("#111827").font("Helvetica-Bold").fontSize(12)
+      .text(data.residentName, L, y, { width: 300 });
+    doc.fillColor("#1e3a5f").font("Helvetica-Bold").fontSize(16)
+      .text(data.flatNo, 370, y - 2, { width: 185 });
+
+    // divider
+    y += 34;
+    doc.moveTo(L, y).lineTo(L + CW, y).strokeColor("#e5e7eb").lineWidth(0.8).stroke();
+
+    // ── Payment Details rows ──────────────────────────────────────────────
+    y += 14;
+    doc.fillColor("#374151").font("Helvetica-Bold").fontSize(8.5)
+      .text("PAYMENT DETAILS", L, y, { width: CW });
+
+    y += 16;
+    const detailRows: [string, string][] = [
+      ["Bill Number", data.billNumber],
       ["Payment Method", data.method],
+      ["Payment Date", formatDate(data.paymentDate)],
     ];
     if (data.razorpayPaymentId) {
-      rows.push(["Transaction ID", data.razorpayPaymentId]);
+      detailRows.push(["Transaction ID", data.razorpayPaymentId]);
     }
 
-    const labelX = 40, labelW = 180, valueX = 230, valueW = 325;
-    for (const [label, value] of rows) {
-      const y = doc.y;
-      doc.font("Helvetica-Bold").fontSize(10);
-      cell(doc, label + ":", labelX, y, labelW);
-      doc.font("Helvetica");
-      cell(doc, value, valueX, y, valueW);
-      doc.text("", 40, y + 16);
+    for (let i = 0; i < detailRows.length; i++) {
+      const [label, value] = detailRows[i];
+      if (i % 2 === 0) {
+        doc.rect(L, y - 4, CW, 22).fill("#f9fafb");
+      }
+      doc.fillColor("#6b7280").font("Helvetica").fontSize(8.5)
+        .text(label, L + 8, y, { width: 200, lineBreak: false });
+      doc.fillColor("#111827").font("Helvetica-Bold").fontSize(8.5)
+        .text(value, 260, y, { width: CW - 222, lineBreak: false });
+      y += 22;
     }
 
-    doc.moveDown(2);
-    doc.fontSize(12).font("Helvetica-Bold")
-      .text("PAYMENT CONFIRMED", 40, doc.y, { width: 515, align: "center" });
-    doc.fontSize(9).font("Helvetica").fillColor("gray")
-      .text("This is a computer-generated receipt.", 40, doc.y, { width: 515, align: "center" });
+    // ── Amount box ────────────────────────────────────────────────────────
+    y += 14;
+    doc.rect(L, y, CW, 80).fill("#eef2ff");
+    doc.fillColor("#4b5563").font("Helvetica").fontSize(8)
+      .text("TOTAL AMOUNT PAID", L, y + 14, { width: CW, align: "center" });
+    doc.fillColor("#1e3a5f").font("Helvetica-Bold").fontSize(28)
+      .text(`Rs. ${formatCurrency(data.amount)}`, L, y + 28, { width: CW, align: "center" });
+
+    // ── Confirmation box ──────────────────────────────────────────────────
+    y += 96;
+    doc.rect(L, y, CW, 62).fill("#f0fdf4");
+    doc.rect(L, y, CW, 62).strokeColor("#86efac").lineWidth(1).stroke();
+
+    // Checkmark circle
+    const cx = L + 30, cy = y + 31;
+    doc.circle(cx, cy, 11).fill("#16a34a");
+    doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(14)
+      .text("✓", cx - 5, cy - 9, { width: 12, lineBreak: false });
+
+    doc.fillColor("#166534").font("Helvetica-Bold").fontSize(13)
+      .text("PAYMENT CONFIRMED", L + 52, y + 14, { width: CW - 60 });
+    doc.fillColor("#4b7a5a").font("Helvetica").fontSize(8)
+      .text("This is a computer-generated receipt and does not require a signature.", L + 52, y + 33, { width: CW - 60 });
+
+    // ── Footer ────────────────────────────────────────────────────────────
+    y += 78;
+    doc.moveTo(L, y).lineTo(L + CW, y).strokeColor("#e5e7eb").lineWidth(0.5).stroke();
+    y += 8;
+    doc.fillColor("#9ca3af").font("Helvetica").fontSize(7)
+      .text(
+        "Oasis Buildmart India Pvt. Ltd.  |  Oasis Venetia Heights, Greater Noida - 201306 (UP)  |  Phone: 8130334857",
+        L, y, { width: CW, align: "center" }
+      );
 
     doc.end();
   });

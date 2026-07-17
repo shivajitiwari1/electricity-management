@@ -18,7 +18,7 @@ export default async function ResidentBillsPage() {
             orderBy: { billDate: "desc" },
             include: {
               meterReading: true,
-              payment: true,
+              payments: { orderBy: { paymentDate: "desc" as const }, take: 1 },
             },
           },
         },
@@ -40,7 +40,7 @@ export default async function ResidentBillsPage() {
       totalAmount: Number(bill.totalAmount),
       dueDate: bill.dueDate.toISOString(),
       status: bill.status,
-      paymentId: bill.payment?.id ?? null,
+      paymentId: bill.payments[0]?.id ?? null,
     }))
   );
 

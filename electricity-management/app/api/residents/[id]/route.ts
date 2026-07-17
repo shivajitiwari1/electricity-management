@@ -38,7 +38,7 @@ export async function GET(
       connections: {
         include: {
           meterReadings: { orderBy: { readingDate: "desc" } },
-          bills: { orderBy: { billDate: "desc" }, include: { payment: true } },
+          bills: { orderBy: { billDate: "desc" }, include: { payments: { orderBy: { paymentDate: "desc" }, take: 1 } } },
         },
       },
     },
@@ -173,18 +173,56 @@ export async function DELETE(
   }
 
   const { id } = await params;
+  const hard = req.nextUrl.searchParams.get("hard") === "true";
 
   const resident = await prisma.resident.findUnique({
     where: { id },
-    include: { connections: true },
+    include: { connections: true, user: true },
   });
 
   if (!resident) {
     return NextResponse.json({ error: "Resident not found" }, { status: 404 });
   }
 
+  if (hard) {
+    // Hard delete: only allowed if all connections are INACTIVE
+    const hasActive = resident.connections.some((c) => c.status === "ACTIVE");
+    if (hasActive) {
+      return NextResponse.json(
+        { error: "Cannot delete a resident with active connections. Deactivate first." },
+        { status: 400 }
+      );
+    }
+
+    const connectionIds = resident.connections.map((c) => c.id);
+
+    await prisma.$transaction(async (tx) => {
+      // Delete in dependency order: Payment → Bill → MeterReading → Connection → Resident → User
+      if (connectionIds.length > 0) {
+        const bills = await tx.bill.findMany({
+          where: { connectionId: { in: connectionIds } },
+          select: { id: true },
+        });
+        const billIds = bills.map((b) => b.id);
+
+        if (billIds.length > 0) {
+          await tx.payment.deleteMany({ where: { billId: { in: billIds } } });
+          await tx.bill.deleteMany({ where: { id: { in: billIds } } });
+        }
+
+        await tx.meterReading.deleteMany({ where: { connectionId: { in: connectionIds } } });
+        await tx.connection.deleteMany({ where: { residentId: id } });
+      }
+
+      await tx.resident.delete({ where: { id } });
+      await tx.user.delete({ where: { id: resident.userId } });
+    });
+
+    return NextResponse.json({ success: true });
+  }
+
+  // Soft delete: deactivate all connections
   await prisma.$transaction(async (tx) => {
-    // Soft-delete: deactivate all connections
     await tx.connection.updateMany({
       where: { residentId: id },
       data: { status: "INACTIVE" },

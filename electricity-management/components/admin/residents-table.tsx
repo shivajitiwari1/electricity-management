@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
+import { type FlatEntry } from "@/lib/flat-data";
 import { useRouter } from "next/navigation";
+import { useDebounce } from "@/lib/hooks/use-debounce";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,12 +24,26 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Search, Plus, Pencil, UserX } from "lucide-react";
+import { Search, Plus, Pencil, UserX, Trash2, ChevronsUpDown, Check } from "lucide-react";
+
 
 type Connection = {
   id: string;
@@ -35,9 +51,9 @@ type Connection = {
   tower: string;
   floor: string;
   unitType: string;
-  unitArea: number;
+  unitArea: string | null;
   meterNo: string | null;
-  sanctionedLoad: { toString(): string };
+  sanctionedLoad: string;
   status: string;
 };
 
@@ -56,9 +72,8 @@ type Resident = {
 
 interface Props {
   initialData: Resident[];
+  flatData: FlatEntry[];
 }
-
-const TOWERS = ["A", "B", "C", "V", "Plaza"] as const;
 
 function StatusBadge({ status }: { status: string }) {
   if (status === "ACTIVE") {
@@ -75,12 +90,45 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
-export default function ResidentsTable({ initialData }: Props) {
+export default function ResidentsTable({ initialData, flatData }: Props) {
+  const towers = useMemo(() => [...new Set(flatData.map((f) => f.tower))].sort(), [flatData]);
   const router = useRouter();
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 300);
   const [showAddModal, setShowAddModal] = useState(false);
   const [editResident, setEditResident] = useState<Resident | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Combobox open state + search
+  const [addFlatOpen, setAddFlatOpen] = useState(false);
+  const [editFlatOpen, setEditFlatOpen] = useState(false);
+  const [addFlatSearch, setAddFlatSearch] = useState("");
+  const [editFlatSearch, setEditFlatSearch] = useState("");
+
+  // All occupied flat numbers
+  const occupiedFlats = useMemo(
+    () => new Set(initialData.flatMap((r) => r.connections.map((c) => c.flatNo))),
+    [initialData]
+  );
+
+  // All XLS flats filtered by search (show all, mark occupied)
+  const addFlats = useMemo(() => {
+    const q = addFlatSearch.toLowerCase();
+    return flatData.filter(
+      (f) => !q || f.flatNo.toLowerCase().includes(q) || f.tower.toLowerCase().includes(q)
+    );
+  }, [flatData, addFlatSearch]);
+
+  // Edit: all XLS flats filtered by search
+  const editFlats = useCallback(
+    (currentFlatNo: string) => {
+      const q = editFlatSearch.toLowerCase();
+      return flatData.filter(
+        (f) => !q || f.flatNo.toLowerCase().includes(q) || f.tower.toLowerCase().includes(q)
+      );
+    },
+    [flatData, editFlatSearch]
+  );
 
   // Add form state
   const [addForm, setAddForm] = useState({
@@ -92,7 +140,7 @@ export default function ResidentsTable({ initialData }: Props) {
     flatNo: "",
     unitType: "",
     unitArea: "",
-    sanctionedLoad: "",
+    sanctionedLoad: "5",
     password: "",
   });
 
@@ -111,7 +159,7 @@ export default function ResidentsTable({ initialData }: Props) {
   });
 
   const filtered = useMemo(() => {
-    const q = search.toLowerCase().trim();
+    const q = debouncedSearch.toLowerCase().trim();
     if (!q) return initialData;
     return initialData.filter((r) => {
       const flatNos = r.connections.map((c) => c.flatNo.toLowerCase()).join(" ");
@@ -124,7 +172,7 @@ export default function ResidentsTable({ initialData }: Props) {
         towers.includes(q)
       );
     });
-  }, [initialData, search]);
+  }, [initialData, debouncedSearch]);
 
   function openEditModal(resident: Resident) {
     setEditResident(resident);
@@ -137,7 +185,7 @@ export default function ResidentsTable({ initialData }: Props) {
       floor: conn?.floor ?? "",
       flatNo: conn?.flatNo ?? "",
       unitType: conn?.unitType ?? "",
-      unitArea: conn ? String(conn.unitArea) : "",
+      unitArea: conn?.unitArea ?? "",
       sanctionedLoad: conn ? conn.sanctionedLoad.toString() : "",
       meterNo: conn?.meterNo ?? "",
     });
@@ -154,7 +202,7 @@ export default function ResidentsTable({ initialData }: Props) {
       flatNo: "",
       unitType: "",
       unitArea: "",
-      sanctionedLoad: "",
+      sanctionedLoad: "5",
       password: "",
     });
   }
@@ -235,6 +283,27 @@ export default function ResidentsTable({ initialData }: Props) {
       toast.error("Failed to update resident");
     } finally {
       setIsSubmitting(false);
+    }
+  }
+
+  async function handleDelete(resident: Resident) {
+    const confirmed = window.confirm(
+      `Permanently delete ${resident.user.name} (${resident.connections[0]?.flatNo ?? ""})?\n\nThis will remove all their data including bills, payments, and meter readings. This cannot be undone.`
+    );
+    if (!confirmed) return;
+    try {
+      const res = await fetch(`/api/residents/${resident.id}?hard=true`, {
+        method: "DELETE",
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        toast.error(data.error ?? "Failed to delete resident");
+        return;
+      }
+      toast.success("Resident permanently deleted");
+      router.refresh();
+    } catch {
+      toast.error("Failed to delete resident");
     }
   }
 
@@ -335,7 +404,7 @@ export default function ResidentsTable({ initialData }: Props) {
                               <Pencil className="h-3 w-3 mr-1" />
                               Edit
                             </Button>
-                            {isActive && (
+                            {isActive ? (
                               <Button
                                 variant="outline"
                                 size="sm"
@@ -344,6 +413,16 @@ export default function ResidentsTable({ initialData }: Props) {
                               >
                                 <UserX className="h-3 w-3 mr-1" />
                                 Deactivate
+                              </Button>
+                            ) : (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+                                onClick={() => handleDelete(resident)}
+                              >
+                                <Trash2 className="h-3 w-3 mr-1" />
+                                Delete
                               </Button>
                             )}
                           </div>
@@ -406,7 +485,7 @@ export default function ResidentsTable({ initialData }: Props) {
                     <SelectValue placeholder="Select tower" />
                   </SelectTrigger>
                   <SelectContent>
-                    {TOWERS.map((t) => (
+                    {towers.map((t) => (
                       <SelectItem key={t} value={t}>
                         Tower {t}
                       </SelectItem>
@@ -424,39 +503,79 @@ export default function ResidentsTable({ initialData }: Props) {
                   placeholder="e.g. 3"
                 />
               </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="add-flatNo">Flat No *</Label>
-                <Input
-                  id="add-flatNo"
-                  required
-                  value={addForm.flatNo}
-                  onChange={(e) => setAddForm((p) => ({ ...p, flatNo: e.target.value }))}
-                  placeholder="e.g. A-301"
-                />
+              <div className="col-span-2 space-y-1.5">
+                <Label>Flat No *</Label>
+                <Popover open={addFlatOpen} onOpenChange={(o) => { setAddFlatOpen(o); if (!o) setAddFlatSearch(""); }}>
+                  <PopoverTrigger className="inline-flex w-full items-center justify-between gap-2 rounded-lg border border-input bg-transparent px-3 py-2 text-sm font-normal whitespace-nowrap transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                    {addForm.flatNo || <span className="text-muted-foreground">Search flat no…</span>}
+                    <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
+                  </PopoverTrigger>
+                  <PopoverContent className="w-80 p-0" align="start">
+                    <Command shouldFilter={false}>
+                      <CommandInput
+                        placeholder="Search flat no…"
+                        value={addFlatSearch}
+                        onValueChange={setAddFlatSearch}
+                      />
+                      <CommandList className="max-h-72">
+                        <CommandEmpty>No flats found</CommandEmpty>
+                        <CommandGroup heading={`${addFlats.length} flats`}>
+                          {addFlats.map((f) => {
+                            const isOccupied = occupiedFlats.has(f.flatNo);
+                            return (
+                            <CommandItem
+                              key={f.flatNo}
+                              value={f.flatNo}
+                              disabled={isOccupied}
+                              onSelect={() => {
+                                if (isOccupied) return;
+                                setAddForm((p) => ({
+                                  ...p,
+                                  flatNo: f.flatNo,
+                                  tower: f.tower,
+                                  floor: f.floor,
+                                  unitType: f.unitType,
+                                  unitArea: String(f.area),
+                                }));
+                                setAddFlatSearch("");
+                                setAddFlatOpen(false);
+                              }}
+                            >
+                              <Check className={`mr-2 h-4 w-4 ${addForm.flatNo === f.flatNo ? "opacity-100" : "opacity-0"}`} />
+                              <span className={`font-medium ${isOccupied ? "text-muted-foreground line-through" : ""}`}>{f.flatNo}</span>
+                              <span className="ml-2 text-xs text-muted-foreground">{f.unitType}</span>
+                              {isOccupied && <span className="ml-auto text-xs text-orange-500">occupied</span>}
+                            </CommandItem>
+                            );
+                          })}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="add-unitType">Unit Type *</Label>
+                <Label htmlFor="add-unitType">Unit Type</Label>
                 <Input
                   id="add-unitType"
-                  required
                   value={addForm.unitType}
-                  onChange={(e) => setAddForm((p) => ({ ...p, unitType: e.target.value }))}
-                  placeholder="e.g. 2BHK"
+                  readOnly
+                  placeholder="Auto-filled on flat selection"
+                  className="bg-muted/50 cursor-default"
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="add-unitArea">Unit Area (sq ft) *</Label>
+                <Label htmlFor="add-unitArea">Unit Area (sq ft)</Label>
                 <Input
                   id="add-unitArea"
                   type="number"
-                  required
-                  min={1}
                   value={addForm.unitArea}
-                  onChange={(e) => setAddForm((p) => ({ ...p, unitArea: e.target.value }))}
-                  placeholder="e.g. 1200"
+                  readOnly
+                  placeholder="Auto-filled on flat selection"
+                  className="bg-muted/50 cursor-default"
                 />
               </div>
-              <div className="space-y-1.5">
+              <div className="col-span-2 space-y-1.5">
                 <Label htmlFor="add-sanctionedLoad">Sanctioned Load (kW) *</Label>
                 <Input
                   id="add-sanctionedLoad"
@@ -555,7 +674,7 @@ export default function ResidentsTable({ initialData }: Props) {
                           <SelectValue placeholder="Select tower" />
                         </SelectTrigger>
                         <SelectContent>
-                          {TOWERS.map((t) => (
+                          {towers.map((t) => (
                             <SelectItem key={t} value={t}>Tower {t}</SelectItem>
                           ))}
                         </SelectContent>
@@ -572,14 +691,55 @@ export default function ResidentsTable({ initialData }: Props) {
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <Label htmlFor="edit-flatNo">Flat No *</Label>
-                      <Input
-                        id="edit-flatNo"
-                        required
-                        value={editForm.flatNo}
-                        onChange={(e) => setEditForm((p) => ({ ...p, flatNo: e.target.value }))}
-                        placeholder="e.g. A-101"
-                      />
+                      <Label>Flat No *</Label>
+                      <Popover open={editFlatOpen} onOpenChange={(o) => { setEditFlatOpen(o); if (!o) setEditFlatSearch(""); }}>
+                        <PopoverTrigger className="inline-flex w-full items-center justify-between gap-2 rounded-lg border border-input bg-transparent px-3 py-2 text-sm font-normal whitespace-nowrap transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                          {editForm.flatNo || <span className="text-muted-foreground">Search flat no…</span>}
+                          <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
+                        </PopoverTrigger>
+                        <PopoverContent className="w-80 p-0" align="start">
+                          <Command shouldFilter={false}>
+                            <CommandInput
+                              placeholder="Search flat no…"
+                              value={editFlatSearch}
+                              onValueChange={setEditFlatSearch}
+                            />
+                            <CommandList className="max-h-72">
+                              <CommandEmpty>No flats found</CommandEmpty>
+                              <CommandGroup heading="All flats">
+                                {editFlats(editResident?.connections[0]?.flatNo ?? "").map((f) => {
+                                  const isOccupied = occupiedFlats.has(f.flatNo) && f.flatNo !== editResident?.connections[0]?.flatNo;
+                                  return (
+                                  <CommandItem
+                                    key={f.flatNo}
+                                    value={f.flatNo}
+                                    disabled={isOccupied}
+                                    onSelect={() => {
+                                      if (isOccupied) return;
+                                      setEditForm((p) => ({
+                                        ...p,
+                                        flatNo: f.flatNo,
+                                        tower: f.tower,
+                                        floor: f.floor,
+                                        unitType: f.unitType,
+                                        unitArea: String(f.area),
+                                      }));
+                                      setEditFlatSearch("");
+                                      setEditFlatOpen(false);
+                                    }}
+                                  >
+                                    <Check className={`mr-2 h-4 w-4 ${editForm.flatNo === f.flatNo ? "opacity-100" : "opacity-0"}`} />
+                                    <span className={`font-medium ${isOccupied ? "text-muted-foreground line-through" : ""}`}>{f.flatNo}</span>
+                                    <span className="ml-2 text-xs text-muted-foreground">{f.unitType}</span>
+                                    {isOccupied && <span className="ml-auto text-xs text-orange-500">occupied</span>}
+                                  </CommandItem>
+                                  );
+                                })}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
                     </div>
                     <div className="space-y-1.5">
                       <Label htmlFor="edit-meterNo">Meter No</Label>
@@ -591,28 +751,27 @@ export default function ResidentsTable({ initialData }: Props) {
                       />
                     </div>
                     <div className="col-span-2 space-y-1.5">
-                      <Label htmlFor="edit-unitType">Unit Type *</Label>
+                      <Label htmlFor="edit-unitType">Unit Type</Label>
                       <Input
                         id="edit-unitType"
-                        required
                         value={editForm.unitType}
-                        onChange={(e) => setEditForm((p) => ({ ...p, unitType: e.target.value }))}
-                        placeholder="e.g. 2BHK"
+                        readOnly
+                        placeholder="Auto-filled on flat selection"
+                        className="bg-muted/50 cursor-default"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <Label htmlFor="edit-unitArea">Unit Area (sq ft) *</Label>
+                      <Label htmlFor="edit-unitArea">Unit Area (sq ft)</Label>
                       <Input
                         id="edit-unitArea"
                         type="number"
-                        required
-                        min={1}
                         value={editForm.unitArea}
-                        onChange={(e) => setEditForm((p) => ({ ...p, unitArea: e.target.value }))}
-                        placeholder="e.g. 1150"
+                        readOnly
+                        placeholder="Auto-filled on flat selection"
+                        className="bg-muted/50 cursor-default"
                       />
                     </div>
-                    <div className="space-y-1.5">
+                    <div className="col-span-2 space-y-1.5">
                       <Label htmlFor="edit-sanctionedLoad">Sanctioned Load (kW) *</Label>
                       <Input
                         id="edit-sanctionedLoad"
@@ -622,7 +781,7 @@ export default function ResidentsTable({ initialData }: Props) {
                         step={0.1}
                         value={editForm.sanctionedLoad}
                         onChange={(e) => setEditForm((p) => ({ ...p, sanctionedLoad: e.target.value }))}
-                        placeholder="e.g. 4"
+                        placeholder="e.g. 5"
                       />
                     </div>
                   </div>
