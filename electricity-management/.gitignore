@@ -40,4 +40,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-.vercel
+# playwright test artifacts
+../.playwright-mcp/
+
+# testing screenshots/videos
+../testing/
+../*.png
