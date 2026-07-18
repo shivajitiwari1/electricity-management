@@ -1,0 +1,70 @@
+- generic [active] [ref=f40e1]:
+  - generic [ref=f40e2]:
+    - generic [ref=f40e4]:
+      - generic [ref=f40e10]:
+        - paragraph [ref=f40e11]: Oasis Venetia Heights
+        - paragraph [ref=f40e12]: Admin Panel
+      - navigation [ref=f40e13]:
+        - link "Dashboard" [ref=f40e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f40e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f40e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f40e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f40e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f40e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f40e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f40e43] [cursor=pointer]:
+          - /url: /admin/rates
+      - separator [ref=f40e47]
+      - generic [ref=f40e48]:
+        - generic [ref=f40e49]:
+          - generic [ref=f40e50]:
+            - paragraph [ref=f40e51]: Admin
+            - paragraph [ref=f40e52]: admin@oasis.local
+          - button "Toggle theme" [ref=f40e53]
+        - button "Sign Out" [ref=f40e55]
+    - main [ref=f40e56]:
+      - generic [ref=f40e57]:
+        - generic [ref=f40e58]:
+          - heading "Reports" [level=1] [ref=f40e59]
+          - paragraph [ref=f40e60]: Financial reports and analytics for Oasis Venetia Heights
+        - generic [ref=f40e61]:
+          - generic [ref=f40e62]:
+            - generic [ref=f40e66]:
+              - paragraph [ref=f40e67]: Total Revenue
+              - paragraph [ref=f40e68]: ₹1,710.00
+            - generic [ref=f40e76]:
+              - paragraph [ref=f40e77]: Total Bills Generated
+              - paragraph [ref=f40e78]: "3"
+            - generic [ref=f40e86]:
+              - paragraph [ref=f40e87]: Total Residents
+              - paragraph [ref=f40e88]: "398"
+            - generic [ref=f40e98]:
+              - paragraph [ref=f40e99]: Overdue Bills
+              - paragraph [ref=f40e100]: "0"
+          - generic [ref=f40e104]: Monthly Revenue — Last 12 Months (Paid Bills)
+          - generic [ref=f40e110]: Revenue by Tower — Current Month
+          - generic [ref=f40e116]:
+            - generic [ref=f40e117]: Overdue Bills
+            - table [ref=f40e121]:
+              - rowgroup [ref=f40e122]:
+                - row [ref=f40e123]:
+                  - columnheader "Flat No" [ref=f40e124]
+                  - columnheader "Tower" [ref=f40e125]
+                  - columnheader "Resident" [ref=f40e126]
+                  - 'columnheader "Bill #" [ref=f40e127]'
+                  - columnheader "Due Date" [ref=f40e128]
+                  - columnheader "Amount (₹)" [ref=f40e129]
+                  - columnheader "Days Overdue" [ref=f40e130]
+              - rowgroup [ref=f40e131]:
+                - row [ref=f40e132]:
+                  - cell "No overdue bills" [ref=f40e133]
+          - button "Export Bills to CSV" [ref=f40e135]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f40e141] [cursor=pointer]

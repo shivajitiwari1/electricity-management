@@ -1,0 +1,80 @@
+- generic [active] [ref=f3e1]:
+  - generic [ref=f3e2]:
+    - generic [ref=f3e4]:
+      - generic [ref=f3e10]:
+        - paragraph [ref=f3e11]: Oasis Venetia Heights
+        - paragraph [ref=f3e12]: Admin Panel
+      - navigation [ref=f3e13]:
+        - link "Dashboard" [ref=f3e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f3e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f3e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f3e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f3e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f3e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f3e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f3e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f3e47] [cursor=pointer]:
+          - /url: /admin/flats
+      - separator [ref=f3e52]
+      - generic [ref=f3e53]:
+        - generic [ref=f3e54]:
+          - generic [ref=f3e55]:
+            - paragraph [ref=f3e56]: Admin
+            - paragraph [ref=f3e57]: admin@oasis.local
+          - button "Toggle theme" [ref=f3e58]
+        - button "Sign Out" [ref=f3e60]
+    - main [ref=f3e61]:
+      - generic [ref=f3e62]:
+        - generic [ref=f3e63]:
+          - heading "Dashboard" [level=1] [ref=f3e64]
+          - paragraph [ref=f3e65]: Overview of Oasis Venetia Heights electricity management
+        - generic [ref=f3e66]:
+          - generic [ref=f3e70]:
+            - paragraph [ref=f3e71]: Total Residents
+            - paragraph [ref=f3e72]: "414"
+          - generic [ref=f3e82]:
+            - paragraph [ref=f3e83]: Active Connections
+            - paragraph [ref=f3e84]: "414"
+          - generic [ref=f3e91]:
+            - paragraph [ref=f3e92]: Bills This Month
+            - paragraph [ref=f3e93]: "0"
+          - generic [ref=f3e101]:
+            - paragraph [ref=f3e102]: Revenue This Month
+            - paragraph [ref=f3e103]: ₹0.00
+          - generic [ref=f3e111]:
+            - paragraph [ref=f3e112]: Overdue Bills
+            - paragraph [ref=f3e113]: "0"
+        - generic [ref=f3e117]:
+          - link [ref=f3e118] [cursor=pointer]:
+            - /url: /admin/residents
+            - button "Add Resident" [ref=f3e119]
+          - link [ref=f3e120] [cursor=pointer]:
+            - /url: /admin/meter-readings
+            - button "Enter Reading" [ref=f3e121]
+          - link [ref=f3e122] [cursor=pointer]:
+            - /url: /admin/reports
+            - button "View Reports" [ref=f3e123]
+        - generic [ref=f3e124]:
+          - generic [ref=f3e125]: Recent Bills
+          - table [ref=f3e129]:
+            - rowgroup [ref=f3e130]:
+              - row [ref=f3e131]:
+                - 'columnheader "Bill #" [ref=f3e132]'
+                - columnheader "Flat" [ref=f3e133]
+                - columnheader "Resident" [ref=f3e134]
+                - columnheader "Amount" [ref=f3e135]
+                - columnheader "Due Date" [ref=f3e136]
+                - columnheader "Status" [ref=f3e137]
+            - rowgroup [ref=f3e138]:
+              - row [ref=f3e139]:
+                - cell "No bills found" [ref=f3e140]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f3e146] [cursor=pointer]

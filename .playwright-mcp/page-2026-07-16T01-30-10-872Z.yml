@@ -1,0 +1,76 @@
+- generic [active] [ref=f37e1]:
+  - generic [ref=f37e2]:
+    - generic [ref=f37e4]:
+      - generic [ref=f37e10]:
+        - paragraph [ref=f37e11]: Oasis Venetia Heights
+        - paragraph [ref=f37e12]: Admin Panel
+      - navigation [ref=f37e13]:
+        - link "Dashboard" [ref=f37e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f37e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f37e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f37e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f37e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f37e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f37e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f37e43] [cursor=pointer]:
+          - /url: /admin/rates
+      - separator [ref=f37e47]
+      - generic [ref=f37e48]:
+        - generic [ref=f37e49]:
+          - generic [ref=f37e50]:
+            - paragraph [ref=f37e51]: Admin
+            - paragraph [ref=f37e52]: admin@oasis.local
+          - button "Toggle theme" [ref=f37e53]
+        - button "Sign Out" [ref=f37e55]
+    - main [ref=f37e56]:
+      - generic [ref=f37e57]:
+        - generic [ref=f37e58]:
+          - heading "Meter Readings" [level=1] [ref=f37e59]
+          - paragraph [ref=f37e60]: Record and manage electricity meter readings
+        - generic [ref=f37e61]:
+          - paragraph [ref=f37e62]: 2 recent readings
+          - button "Add Meter Reading" [ref=f37e63]
+        - generic [ref=f37e64]:
+          - generic [ref=f37e65]: Recent Meter Readings
+          - table [ref=f37e69]:
+            - rowgroup [ref=f37e70]:
+              - row [ref=f37e71]:
+                - columnheader "Flat No" [ref=f37e72]
+                - columnheader "Resident" [ref=f37e73]
+                - columnheader "Reading Date" [ref=f37e74]
+                - columnheader "NPCL Previous" [ref=f37e75]
+                - columnheader "NPCL Current" [ref=f37e76]
+                - columnheader "Units" [ref=f37e77]
+                - columnheader "DG Units" [ref=f37e78]
+                - columnheader "Bill" [ref=f37e79]
+                - columnheader "Actions" [ref=f37e80]
+            - rowgroup [ref=f37e81]:
+              - row [ref=f37e82]:
+                - cell "A-101" [ref=f37e83]
+                - cell "Mr. Bachoo Singh Bhagaur" [ref=f37e84]
+                - cell "16 Jul 2026" [ref=f37e85]
+                - cell "1200" [ref=f37e86]
+                - cell "1350" [ref=f37e87]
+                - cell "150" [ref=f37e88]
+                - cell "15" [ref=f37e89]
+                - cell "Generated" [ref=f37e90]
+                - cell [ref=f37e92]
+              - row [ref=f37e93]:
+                - cell "B-101" [ref=f37e94]
+                - cell "Mr. Varun Sharma" [ref=f37e95]
+                - cell "16 Jul 2026" [ref=f37e96]
+                - cell "800" [ref=f37e97]
+                - cell "980" [ref=f37e98]
+                - cell "180" [ref=f37e99]
+                - cell "12" [ref=f37e100]
+                - cell "Generated" [ref=f37e101]
+                - cell [ref=f37e103]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f37e109] [cursor=pointer]

@@ -61,6 +61,7 @@ type SerializedReading = {
   dgUnits: string;
   connectionId: string;
   hasBill: boolean;
+  hasReading: boolean;
 };
 
 interface Props {
@@ -73,6 +74,9 @@ const today = new Date().toISOString().split("T")[0];
 
 export default function MeterReadingsTable({ connections, readings, dgFixed }: Props) {
   const router = useRouter();
+
+  // Table search state
+  const [tableSearch, setTableSearch] = useState("");
 
   // Flat combobox state
   const [flatOpen, setFlatOpen] = useState(false);
@@ -91,6 +95,7 @@ export default function MeterReadingsTable({ connections, readings, dgFixed }: P
   // Generate Bill modal state
   const [billReading, setBillReading] = useState<SerializedReading | null>(null);
   const [isBillSubmitting, setIsBillSubmitting] = useState(false);
+  const [isLoadingDues, setIsLoadingDues] = useState(false);
   const [billForm, setBillForm] = useState({
     billDate: today,
     billingPeriodStart: "",
@@ -183,7 +188,7 @@ export default function MeterReadingsTable({ connections, readings, dgFixed }: P
     }
   }
 
-  function openBillModal(reading: SerializedReading) {
+  async function openBillModal(reading: SerializedReading) {
     setBillReading(reading);
     const readingDate = new Date(reading.readingDate);
     const periodStart = new Date(readingDate.getFullYear(), readingDate.getMonth(), 1)
@@ -196,6 +201,21 @@ export default function MeterReadingsTable({ connections, readings, dgFixed }: P
       billingPeriodEnd: periodEnd,
       previousDues: "0",
     });
+    // Fetch outstanding dues for this connection
+    setIsLoadingDues(true);
+    try {
+      const res = await fetch(`/api/connections/${reading.connectionId}/outstanding`);
+      if (res.ok) {
+        const { outstanding } = await res.json();
+        if (outstanding > 0) {
+          setBillForm((p) => ({ ...p, previousDues: outstanding.toFixed(2) }));
+        }
+      }
+    } catch {
+      // silently ignore — user can enter manually
+    } finally {
+      setIsLoadingDues(false);
+    }
   }
 
   function closeBillModal() {
@@ -243,17 +263,32 @@ export default function MeterReadingsTable({ connections, readings, dgFixed }: P
     <>
       {/* Toolbar */}
       <div className="flex items-center justify-between gap-4">
-        <p className="text-sm text-muted-foreground">{readings.length} recent readings</p>
+        <div className="flex items-center gap-3">
+          <Input
+            placeholder="Search flat or resident..."
+            value={tableSearch}
+            onChange={(e) => setTableSearch(e.target.value)}
+            className="w-64"
+          />
+          <p className="text-sm text-muted-foreground whitespace-nowrap">
+            {readings.filter((r) => {
+              const q = tableSearch.toLowerCase();
+              return !q || r.flatNo.toLowerCase().includes(q) || r.residentName.toLowerCase().includes(q);
+            }).length} of {readings.length} flats
+          </p>
+        </div>
         <Button onClick={() => setShowAddModal(true)}>
           <Plus className="h-4 w-4 mr-2" />
           Add Meter Reading
         </Button>
       </div>
 
-      {/* Readings Table */}
+      {/* Readings Table — one row per flat */}
       <Card>
         <CardHeader className="pb-0">
-          <CardTitle className="text-base font-semibold">Recent Meter Readings</CardTitle>
+          <CardTitle className="text-base font-semibold">
+            Meter Readings — All Flats (Latest Reading)
+          </CardTitle>
         </CardHeader>
         <CardContent className="p-0 mt-3">
           <div className="overflow-x-auto">
@@ -272,32 +307,36 @@ export default function MeterReadingsTable({ connections, readings, dgFixed }: P
                 </tr>
               </thead>
               <tbody>
-                {readings.length === 0 ? (
-                  <tr>
-                    <td colSpan={9} className="text-center py-10 text-muted-foreground">
-                      No meter readings yet
-                    </td>
-                  </tr>
-                ) : (
-                  readings.map((reading) => (
-                    <tr key={reading.id} className="border-b last:border-0 hover:bg-muted/50">
+                {readings
+                  .filter((r) => {
+                    const q = tableSearch.toLowerCase();
+                    return !q || r.flatNo.toLowerCase().includes(q) || r.residentName.toLowerCase().includes(q);
+                  })
+                  .map((reading) => (
+                    <tr key={reading.connectionId} className="border-b last:border-0 hover:bg-muted/50">
                       <td className="px-4 py-3 font-mono text-xs font-medium">
                         {reading.flatNo}
                       </td>
                       <td className="px-4 py-3">{reading.residentName}</td>
                       <td className="px-4 py-3 text-muted-foreground">
-                        {new Date(reading.readingDate).toLocaleDateString("en-IN", {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        })}
+                        {reading.readingDate
+                          ? new Date(reading.readingDate).toLocaleDateString("en-IN", {
+                              day: "2-digit",
+                              month: "short",
+                              year: "numeric",
+                            })
+                          : <span className="text-muted-foreground/50 italic">No reading</span>}
                       </td>
-                      <td className="px-4 py-3 tabular-nums">{reading.ncplPrevious}</td>
-                      <td className="px-4 py-3 tabular-nums">{reading.ncplCurrent}</td>
-                      <td className="px-4 py-3 tabular-nums font-medium">{reading.ncplUnits}</td>
-                      <td className="px-4 py-3 tabular-nums">{reading.dgUnits}</td>
+                      <td className="px-4 py-3 tabular-nums">{reading.ncplPrevious || "—"}</td>
+                      <td className="px-4 py-3 tabular-nums">{reading.ncplCurrent || "—"}</td>
+                      <td className="px-4 py-3 tabular-nums font-medium">{reading.ncplUnits || "—"}</td>
+                      <td className="px-4 py-3 tabular-nums">{reading.dgUnits || "—"}</td>
                       <td className="px-4 py-3">
-                        {reading.hasBill ? (
+                        {!reading.hasReading ? (
+                          <Badge variant="outline" className="text-muted-foreground">
+                            No Reading
+                          </Badge>
+                        ) : reading.hasBill ? (
                           <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
                             Generated
                           </Badge>
@@ -309,7 +348,7 @@ export default function MeterReadingsTable({ connections, readings, dgFixed }: P
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2">
-                          {!reading.hasBill && (
+                          {reading.hasReading && !reading.hasBill && (
                             <Button
                               variant="outline"
                               size="sm"
@@ -319,20 +358,21 @@ export default function MeterReadingsTable({ connections, readings, dgFixed }: P
                               Generate Bill
                             </Button>
                           )}
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
-                            onClick={() => handleDelete(reading.id, reading.flatNo, reading.hasBill)}
-                          >
-                            <Trash2 className="h-3 w-3 mr-1" />
-                            Delete
-                          </Button>
+                          {reading.hasReading && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+                              onClick={() => handleDelete(reading.id, reading.flatNo, reading.hasBill)}
+                            >
+                              <Trash2 className="h-3 w-3 mr-1" />
+                              Delete
+                            </Button>
+                          )}
                         </div>
                       </td>
                     </tr>
-                  ))
-                )}
+                  ))}
               </tbody>
             </table>
           </div>
@@ -490,7 +530,15 @@ export default function MeterReadingsTable({ connections, readings, dgFixed }: P
               />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="bill-prev-dues">Previous Dues (Rs.)</Label>
+              <Label htmlFor="bill-prev-dues">
+                Previous Dues (Rs.)
+                {isLoadingDues && (
+                  <span className="ml-2 text-xs text-muted-foreground font-normal">Loading...</span>
+                )}
+                {!isLoadingDues && Number(billForm.previousDues) > 0 && (
+                  <span className="ml-2 text-xs text-orange-600 font-normal">Auto-filled from unpaid bills</span>
+                )}
+              </Label>
               <Input
                 id="bill-prev-dues"
                 type="number"
@@ -499,6 +547,7 @@ export default function MeterReadingsTable({ connections, readings, dgFixed }: P
                 value={billForm.previousDues}
                 onChange={(e) => setBillForm((p) => ({ ...p, previousDues: e.target.value }))}
                 placeholder="0"
+                disabled={isLoadingDues}
               />
             </div>
             <DialogFooter>

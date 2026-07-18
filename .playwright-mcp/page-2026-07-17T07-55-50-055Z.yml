@@ -1,0 +1,93 @@
+- generic [ref=f2e1]:
+  - generic [ref=f2e2]:
+    - generic [ref=f2e4]:
+      - generic [ref=f2e10]:
+        - paragraph [ref=f2e11]: Oasis Venetia Heights
+        - paragraph [ref=f2e12]: Admin Panel
+      - navigation [ref=f2e13]:
+        - link [ref=f2e90] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=f2e91] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=f2e92] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=f2e93] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=f2e94] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=f2e95] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=f2e96] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=f2e97] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=f2e98] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+      - separator [ref=f2e52]
+      - generic [ref=f2e53]:
+        - generic [ref=f2e54]:
+          - generic [ref=f2e55]:
+            - paragraph [ref=f2e56]: Admin
+            - paragraph [ref=f2e57]: admin@oasis.local
+          - button [ref=f2e99]:
+            - generic [ref=f2e59]: Toggle theme
+        - button [ref=f2e100]: Sign Out
+    - main [ref=f2e61]:
+      - generic [ref=f2e62]:
+        - generic [ref=f2e63]:
+          - heading [level=1] [ref=f2e101]: Meter Readings
+          - paragraph [ref=f2e65]: Record and manage electricity meter readings
+        - generic [ref=f2e66]:
+          - paragraph [ref=f2e67]: 0 recent readings
+          - button [ref=f2e102]: Add Meter Reading
+        - generic [ref=f2e69]:
+          - generic [ref=f2e70]: Recent Meter Readings
+          - table [ref=f2e74]:
+            - rowgroup [ref=f2e75]:
+              - row [ref=f2e103]:
+                - columnheader [ref=f2e104]: Flat No
+                - columnheader [ref=f2e105]: Resident
+                - columnheader [ref=f2e106]: Reading Date
+                - columnheader [ref=f2e107]: NPCL Previous
+                - columnheader [ref=f2e108]: NPCL Current
+                - columnheader [ref=f2e109]: Units
+                - columnheader [ref=f2e110]: DG Units
+                - columnheader [ref=f2e111]: Bill
+                - columnheader [ref=f2e112]: Actions
+            - rowgroup [ref=f2e86]:
+              - row [ref=f2e113]:
+                - cell [ref=f2e114]: No meter readings yet
+  - region "Notifications alt+T"
+  - alert [ref=f2e89]
+  - dialog [ref=f2e118]:
+    - heading "Add Meter Reading" [level=2] [ref=f2e120]
+    - generic [ref=f2e121]:
+      - generic [ref=f2e122]:
+        - generic [ref=f2e123]: Flat *
+        - button "Search flat or resident…" [active] [ref=f2e124]
+      - generic [ref=f2e129]:
+        - generic [ref=f2e130]: Reading Date *
+        - textbox "Reading Date *" [ref=f2e131]: 2026-07-17
+      - generic [ref=f2e132]:
+        - generic [ref=f2e133]:
+          - generic [ref=f2e134]: NPCL Previous Reading *
+          - spinbutton "NPCL Previous Reading *" [ref=f2e135]
+        - generic [ref=f2e136]:
+          - generic [ref=f2e137]: NPCL Current Reading *
+          - spinbutton "NPCL Current Reading *" [ref=f2e138]
+      - generic [ref=f2e139]:
+        - generic [ref=f2e140]: DG Charge (Fixed)
+        - generic [ref=f2e141]: ₹200.00 — fixed per billing cycle
+      - generic [ref=f2e142]:
+        - button "Cancel" [ref=f2e143]
+        - button "Save Reading" [ref=f2e144]
+    - button "Close" [ref=f2e145]

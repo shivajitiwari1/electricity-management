@@ -1,0 +1,66 @@
+- generic [active] [ref=f9e1]:
+  - generic [ref=f9e2]:
+    - generic [ref=f9e3]:
+      - generic [ref=f9e4]:
+        - heading "Oasis Venetia Heights" [level=1] [ref=f9e1056]
+        - paragraph [ref=f9e6]: Admin Panel
+      - navigation [ref=f9e7]:
+        - link "Dashboard" [ref=f9e1057] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f9e1058] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f9e1059] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f9e1060] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f9e1061] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f9e1062] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f9e1063] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f9e1064] [cursor=pointer]:
+          - /url: /admin/rates
+      - generic [ref=f9e41]:
+        - paragraph [ref=f9e42]: Admin
+        - paragraph [ref=f9e43]: admin@oasis.local
+        - button "Sign Out" [ref=f9e1065]
+    - main [ref=f9e45]:
+      - generic [ref=f9e46]:
+        - generic [ref=f9e47]:
+          - heading "Meter Readings" [level=1] [ref=f9e1066]
+          - paragraph [ref=f9e49]: Record and manage electricity meter readings
+        - generic [ref=f9e50]:
+          - paragraph [ref=f9e51]: 1 recent readings
+          - button "Add Meter Reading" [ref=f9e1067]
+        - generic [ref=f9e53]:
+          - generic [ref=f9e54]: Recent Meter Readings
+          - table [ref=f9e58]:
+            - rowgroup [ref=f9e59]:
+              - row [ref=f9e1068]:
+                - columnheader "Flat No" [ref=f9e1069]
+                - columnheader "Resident" [ref=f9e1070]
+                - columnheader "Reading Date" [ref=f9e1071]
+                - columnheader "NPCL Previous" [ref=f9e1072]
+                - columnheader "NPCL Current" [ref=f9e1073]
+                - columnheader "Units" [ref=f9e1074]
+                - columnheader "DG Units" [ref=f9e1075]
+                - columnheader "Bill" [ref=f9e1076]
+                - columnheader "Actions" [ref=f9e1077]
+            - rowgroup [ref=f9e70]:
+              - row [ref=f9e1078]:
+                - cell "A-101" [ref=f9e1079]
+                - cell "Mr. Bachoo Singh Bhagaur" [ref=f9e1080]
+                - cell "16 Jul 2026" [ref=f9e1081]
+                - cell "1200" [ref=f9e1082]
+                - cell "1350" [ref=f9e1083]
+                - cell "150" [ref=f9e1084]
+                - cell "15" [ref=f9e1085]
+                - cell "Generated" [ref=f9e1086]
+                - cell [ref=f9e1028]
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=f9e1087]:
+        - generic [ref=f9e1092]: Bill generated for Flat A-101
+  - button "Open Next.js Dev Tools" [ref=f9e78] [cursor=pointer]
+  - alert [ref=f9e82]

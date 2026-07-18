@@ -1,0 +1,62 @@
+- generic [active] [ref=f49e1]:
+  - generic [ref=f49e2]:
+    - banner [ref=f49e3]:
+      - generic [ref=f49e4]:
+        - generic [ref=f49e5]:
+          - generic [ref=f49e6]: Oasis Venetia Heights
+          - navigation [ref=f49e11]:
+            - link "Dashboard" [ref=f49e12] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f49e16] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f49e20] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Profile" [ref=f49e23] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f49e27]:
+          - generic [ref=f49e28]: Mr. Varun Sharma
+          - button "Toggle theme" [ref=f49e29]
+          - button "Sign Out" [ref=f49e31]
+    - main [ref=f49e33]:
+      - generic [ref=f49e34]:
+        - generic [ref=f49e38]:
+          - heading "Welcome, Mr. Varun Sharma!" [level=1] [ref=f49e39]
+          - paragraph [ref=f49e40]: "Resident #RES-0058"
+          - generic [ref=f49e41]:
+            - generic [ref=f49e42]: "Flat: B-101"
+            - generic [ref=f49e43]: "Tower: B"
+            - generic [ref=f49e44]: "Floor: First"
+        - generic [ref=f49e49]:
+          - generic [ref=f49e50]: Current Bill
+          - generic [ref=f49e56]:
+            - generic [ref=f49e57]:
+              - generic [ref=f49e58]:
+                - paragraph [ref=f49e59]: ₹2,035.00
+                - paragraph [ref=f49e60]: "Bill #OV-B-101-202607"
+              - generic [ref=f49e61]: PENDING
+            - generic [ref=f49e62]:
+              - generic [ref=f49e63]:
+                - paragraph [ref=f49e64]: Bill Date
+                - paragraph [ref=f49e65]: 16 Jul 2026
+              - generic [ref=f49e66]:
+                - paragraph [ref=f49e67]: Due Date
+                - paragraph [ref=f49e68]: 25 Jul 2026
+              - generic [ref=f49e69]:
+                - paragraph [ref=f49e70]: Units (NCPL)
+                - paragraph [ref=f49e71]: 180 kWh
+            - link [ref=f49e72] [cursor=pointer]:
+              - /url: /resident/bills/cmrmt74l0000a882n8fy1fbf9/pay
+              - button "Pay Now — ₹2,035.00" [ref=f49e73]
+        - generic [ref=f49e74]:
+          - link [ref=f49e75] [cursor=pointer]:
+            - /url: /resident/bills
+            - generic [ref=f49e82]:
+              - paragraph [ref=f49e83]: View All Bills
+              - paragraph [ref=f49e84]: Browse your complete billing history
+          - link [ref=f49e85] [cursor=pointer]:
+            - /url: /resident/payments
+            - generic [ref=f49e91]:
+              - paragraph [ref=f49e92]: Payment History
+              - paragraph [ref=f49e93]: View all your past payments
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f49e99] [cursor=pointer]

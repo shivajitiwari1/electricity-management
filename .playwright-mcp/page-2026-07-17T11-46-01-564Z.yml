@@ -1,0 +1,85 @@
+- generic [active] [ref=f7e1]:
+  - generic [ref=f7e2]:
+    - generic [ref=f7e4]:
+      - generic [ref=f7e10]:
+        - paragraph [ref=f7e11]: Oasis Venetia Heights
+        - paragraph [ref=f7e12]: Admin Panel
+      - navigation [ref=f7e13]:
+        - link "Dashboard" [ref=f7e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f7e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f7e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f7e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f7e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f7e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f7e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f7e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f7e47] [cursor=pointer]:
+          - /url: /admin/flats
+      - separator [ref=f7e52]
+      - generic [ref=f7e53]:
+        - generic [ref=f7e54]:
+          - generic [ref=f7e55]:
+            - paragraph [ref=f7e56]: Admin
+            - paragraph [ref=f7e57]: admin@oasis.local
+          - button "Toggle theme" [ref=f7e58]
+        - button "Sign Out" [ref=f7e60]
+    - main [ref=f7e61]:
+      - generic [ref=f7e62]:
+        - generic [ref=f7e63]:
+          - heading "Dashboard" [level=1] [ref=f7e64]
+          - paragraph [ref=f7e65]: Overview of Oasis Venetia Heights electricity management
+        - generic [ref=f7e66]:
+          - generic [ref=f7e70]:
+            - paragraph [ref=f7e71]: Total Residents
+            - paragraph [ref=f7e72]: "406"
+          - generic [ref=f7e82]:
+            - paragraph [ref=f7e83]: Active Connections
+            - paragraph [ref=f7e84]: "406"
+          - generic [ref=f7e91]:
+            - paragraph [ref=f7e92]: Bills This Month
+            - paragraph [ref=f7e93]: "1"
+          - generic [ref=f7e101]:
+            - paragraph [ref=f7e102]: Revenue This Month
+            - paragraph [ref=f7e103]: ₹1,710.00
+          - generic [ref=f7e111]:
+            - paragraph [ref=f7e112]: Overdue Bills
+            - paragraph [ref=f7e113]: "0"
+        - generic [ref=f7e117]:
+          - link [ref=f7e118] [cursor=pointer]:
+            - /url: /admin/residents
+            - button "Add Resident" [ref=f7e119]
+          - link [ref=f7e120] [cursor=pointer]:
+            - /url: /admin/meter-readings
+            - button "Enter Reading" [ref=f7e121]
+          - link [ref=f7e122] [cursor=pointer]:
+            - /url: /admin/reports
+            - button "View Reports" [ref=f7e123]
+        - generic [ref=f7e124]:
+          - generic [ref=f7e125]: Recent Bills
+          - table [ref=f7e129]:
+            - rowgroup [ref=f7e130]:
+              - row [ref=f7e131]:
+                - 'columnheader "Bill #" [ref=f7e132]'
+                - columnheader "Flat" [ref=f7e133]
+                - columnheader "Resident" [ref=f7e134]
+                - columnheader "Amount" [ref=f7e135]
+                - columnheader "Due Date" [ref=f7e136]
+                - columnheader "Status" [ref=f7e137]
+            - rowgroup [ref=f7e138]:
+              - row [ref=f7e139]:
+                - cell "OV-A-101-202607" [ref=f7e140]
+                - cell "A-101" [ref=f7e141]
+                - cell "Mr. Bachoo Singh Bhagaur" [ref=f7e142]
+                - cell "₹1,710.00" [ref=f7e143]
+                - cell "26 Jul 2026" [ref=f7e144]
+                - cell "PAID" [ref=f7e145]
+  - region "Notifications alt+T"
+  - alert [ref=f7e147]

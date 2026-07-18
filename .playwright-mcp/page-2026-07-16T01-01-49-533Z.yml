@@ -1,0 +1,54 @@
+- generic [active] [ref=f9e1]:
+  - generic [ref=f9e2]:
+    - generic [ref=f9e3]:
+      - generic [ref=f9e4]:
+        - heading "Oasis Venetia Heights" [level=1] [ref=f9e5]
+        - paragraph [ref=f9e6]: Admin Panel
+      - navigation [ref=f9e7]:
+        - link "Dashboard" [ref=f9e8] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f9e14] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f9e20] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f9e23] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f9e27] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f9e31] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f9e34] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f9e37] [cursor=pointer]:
+          - /url: /admin/rates
+      - generic [ref=f9e41]:
+        - paragraph [ref=f9e42]: Admin
+        - paragraph [ref=f9e43]: admin@oasis.local
+        - button "Sign Out" [ref=f9e44]
+    - main [ref=f9e45]:
+      - generic [ref=f9e46]:
+        - generic [ref=f9e47]:
+          - heading "Meter Readings" [level=1] [ref=f9e48]
+          - paragraph [ref=f9e49]: Record and manage electricity meter readings
+        - generic [ref=f9e50]:
+          - paragraph [ref=f9e51]: 0 recent readings
+          - button "Add Meter Reading" [ref=f9e52]
+        - generic [ref=f9e53]:
+          - generic [ref=f9e54]: Recent Meter Readings
+          - table [ref=f9e58]:
+            - rowgroup [ref=f9e59]:
+              - row [ref=f9e60]:
+                - columnheader "Flat No" [ref=f9e61]
+                - columnheader "Resident" [ref=f9e62]
+                - columnheader "Reading Date" [ref=f9e63]
+                - columnheader "NPCL Previous" [ref=f9e64]
+                - columnheader "NPCL Current" [ref=f9e65]
+                - columnheader "Units" [ref=f9e66]
+                - columnheader "DG Units" [ref=f9e67]
+                - columnheader "Bill" [ref=f9e68]
+                - columnheader "Actions" [ref=f9e69]
+            - rowgroup [ref=f9e70]:
+              - row [ref=f9e71]:
+                - cell "No meter readings yet" [ref=f9e72]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f9e78] [cursor=pointer]

@@ -1,0 +1,48 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - banner [ref=f1e3]:
+      - generic [ref=f1e4]:
+        - generic [ref=f1e5]:
+          - generic [ref=f1e6]: Oasis Venetia Heights
+          - navigation [ref=f1e11]:
+            - link "Dashboard" [ref=f1e12] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f1e16] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f1e20] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Profile" [ref=f1e23] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f1e27]:
+          - generic [ref=f1e28]: Mr. Bachoo Singh Bhagaur
+          - button "Toggle theme" [ref=f1e29]
+          - button "Sign Out" [ref=f1e31]
+    - main [ref=f1e33]:
+      - generic [ref=f1e34]:
+        - generic [ref=f1e38]:
+          - heading "Welcome, Mr. Bachoo Singh Bhagaur!" [level=1] [ref=f1e39]
+          - paragraph [ref=f1e40]: "Resident #RES-0001"
+          - generic [ref=f1e41]:
+            - generic [ref=f1e42]: "Flat: A-101"
+            - generic [ref=f1e43]: "Tower: A"
+            - generic [ref=f1e44]: "Floor: First"
+        - generic [ref=f1e49]:
+          - generic [ref=f1e50]: Current Bill
+          - generic [ref=f1e56]:
+            - generic [ref=f1e61]:
+              - paragraph [ref=f1e62]: No outstanding bills
+              - paragraph [ref=f1e63]: You are all caught up! Your account is up to date.
+            - paragraph [ref=f1e64]: Last bill PAID on —
+        - generic [ref=f1e65]:
+          - link [ref=f1e66] [cursor=pointer]:
+            - /url: /resident/bills
+            - generic [ref=f1e73]:
+              - paragraph [ref=f1e74]: View All Bills
+              - paragraph [ref=f1e75]: Browse your complete billing history
+          - link [ref=f1e76] [cursor=pointer]:
+            - /url: /resident/payments
+            - generic [ref=f1e82]:
+              - paragraph [ref=f1e83]: Payment History
+              - paragraph [ref=f1e84]: View all your past payments
+  - region "Notifications alt+T"
+  - alert [ref=f1e85]

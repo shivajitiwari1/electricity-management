@@ -1,0 +1,58 @@
+- generic [active] [ref=f47e1]:
+  - generic [ref=f47e2]:
+    - banner [ref=f47e3]:
+      - generic [ref=f47e10]:
+        - button "Toggle theme" [ref=f47e11]
+        - button [ref=f47e13]
+      - navigation [ref=f47e15]:
+        - link "Dashboard" [ref=f47e16] [cursor=pointer]:
+          - /url: /resident/dashboard
+        - link "Bills" [ref=f47e20] [cursor=pointer]:
+          - /url: /resident/bills
+        - link "Payments" [ref=f47e24] [cursor=pointer]:
+          - /url: /resident/payments
+        - link "Profile" [ref=f47e27] [cursor=pointer]:
+          - /url: /resident/profile
+    - main [ref=f47e31]:
+      - generic [ref=f47e32]:
+        - generic [ref=f47e36]:
+          - heading "Welcome, Mr. Varun Sharma!" [level=1] [ref=f47e37]
+          - paragraph [ref=f47e38]: "Resident #RES-0058"
+          - generic [ref=f47e39]:
+            - generic [ref=f47e40]: "Flat: B-101"
+            - generic [ref=f47e41]: "Tower: B"
+            - generic [ref=f47e42]: "Floor: First"
+        - generic [ref=f47e47]:
+          - generic [ref=f47e48]: Current Bill
+          - generic [ref=f47e54]:
+            - generic [ref=f47e55]:
+              - generic [ref=f47e56]:
+                - paragraph [ref=f47e57]: ₹2,035.00
+                - paragraph [ref=f47e58]: "Bill #OV-B-101-202607"
+              - generic [ref=f47e59]: PENDING
+            - generic [ref=f47e60]:
+              - generic [ref=f47e61]:
+                - paragraph [ref=f47e62]: Bill Date
+                - paragraph [ref=f47e63]: 16 Jul 2026
+              - generic [ref=f47e64]:
+                - paragraph [ref=f47e65]: Due Date
+                - paragraph [ref=f47e66]: 25 Jul 2026
+              - generic [ref=f47e67]:
+                - paragraph [ref=f47e68]: Units (NCPL)
+                - paragraph [ref=f47e69]: 180 kWh
+            - link [ref=f47e70] [cursor=pointer]:
+              - /url: /resident/bills/cmrmt74l0000a882n8fy1fbf9/pay
+              - button "Pay Now — ₹2,035.00" [ref=f47e71]
+        - generic [ref=f47e72]:
+          - link [ref=f47e73] [cursor=pointer]:
+            - /url: /resident/bills
+            - generic [ref=f47e80]:
+              - paragraph [ref=f47e81]: View All Bills
+              - paragraph [ref=f47e82]: Browse your complete billing history
+          - link [ref=f47e83] [cursor=pointer]:
+            - /url: /resident/payments
+            - generic [ref=f47e89]:
+              - paragraph [ref=f47e90]: Payment History
+              - paragraph [ref=f47e91]: View all your past payments
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f47e97] [cursor=pointer]

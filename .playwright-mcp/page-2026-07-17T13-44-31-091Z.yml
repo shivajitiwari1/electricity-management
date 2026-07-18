@@ -1,0 +1,80 @@
+- generic [ref=f19e1]:
+  - generic [ref=f19e2]:
+    - generic [ref=f19e4]:
+      - generic [ref=f19e10]:
+        - paragraph [ref=f19e11]: Oasis Venetia Heights
+        - paragraph [ref=f19e12]: Admin Panel
+      - navigation [ref=f19e13]:
+        - link "Dashboard" [ref=f19e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f19e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f19e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [active] [ref=f19e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f19e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f19e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f19e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f19e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f19e47] [cursor=pointer]:
+          - /url: /admin/flats
+      - separator [ref=f19e52]
+      - generic [ref=f19e53]:
+        - generic [ref=f19e54]:
+          - generic [ref=f19e55]:
+            - paragraph [ref=f19e56]: Admin
+            - paragraph [ref=f19e57]: admin@oasis.local
+          - button "Toggle theme" [ref=f19e58]
+        - button "Sign Out" [ref=f19e60]
+    - main [ref=f19e61]:
+      - generic [ref=f19e5055]:
+        - generic [ref=f19e5056]:
+          - heading "Meter Readings" [level=1] [ref=f19e5057]
+          - paragraph [ref=f19e5058]: Record and manage electricity meter readings
+        - generic [ref=f19e5059]:
+          - paragraph [ref=f19e5060]: 2 recent readings
+          - button "Add Meter Reading" [ref=f19e5061]
+        - generic [ref=f19e5062]:
+          - generic [ref=f19e5063]: Recent Meter Readings
+          - table [ref=f19e5067]:
+            - rowgroup [ref=f19e5068]:
+              - row [ref=f19e5069]:
+                - columnheader "Flat No" [ref=f19e5070]
+                - columnheader "Resident" [ref=f19e5071]
+                - columnheader "Reading Date" [ref=f19e5072]
+                - columnheader "NPCL Previous" [ref=f19e5073]
+                - columnheader "NPCL Current" [ref=f19e5074]
+                - columnheader "Units" [ref=f19e5075]
+                - columnheader "DG Units" [ref=f19e5076]
+                - columnheader "Bill" [ref=f19e5077]
+                - columnheader "Actions" [ref=f19e5078]
+            - rowgroup [ref=f19e5079]:
+              - row [ref=f19e5080]:
+                - cell "A-102" [ref=f19e5081]
+                - cell "Mrs. Neha Rajoria" [ref=f19e5082]
+                - cell "17 Jul 2026" [ref=f19e5083]
+                - cell "0" [ref=f19e5084]
+                - cell "500" [ref=f19e5085]
+                - cell "500" [ref=f19e5086]
+                - cell "0" [ref=f19e5087]
+                - cell "Generated" [ref=f19e5088]
+                - cell [ref=f19e5090]:
+                  - button "Delete" [ref=f19e5092]
+              - row [ref=f19e5093]:
+                - cell "A-101" [ref=f19e5094]
+                - cell "Mr. Bachoo Singh Bhagaur" [ref=f19e5095]
+                - cell "17 Jul 2026" [ref=f19e5096]
+                - cell "0" [ref=f19e5097]
+                - cell "150" [ref=f19e5098]
+                - cell "150" [ref=f19e5099]
+                - cell "0" [ref=f19e5100]
+                - cell "Generated" [ref=f19e5101]
+                - cell [ref=f19e5103]:
+                  - button "Delete" [ref=f19e5105]
+  - region "Notifications alt+T"
+  - alert [ref=f19e155]

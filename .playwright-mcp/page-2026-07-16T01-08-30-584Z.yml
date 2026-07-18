@@ -1,0 +1,46 @@
+- generic [active] [ref=f19e1]:
+  - generic [ref=f19e2]:
+    - banner [ref=f19e3]:
+      - generic [ref=f19e4]:
+        - generic [ref=f19e5]:
+          - generic [ref=f19e6]: Oasis Venetia Heights
+          - navigation [ref=f19e7]:
+            - link "Dashboard" [ref=f19e8] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f19e12] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f19e16] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Profile" [ref=f19e19] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f19e23]:
+          - generic [ref=f19e24]: Mr. Varun Sharma
+          - button "Sign Out" [ref=f19e25]
+    - main [ref=f19e26]:
+      - generic [ref=f19e27]:
+        - generic [ref=f19e28]:
+          - heading "Payment History" [level=1] [ref=f19e29]
+          - paragraph [ref=f19e30]: All your electricity bill payments
+        - generic [ref=f19e32]:
+          - generic [ref=f19e33]: Method
+          - combobox [ref=f19e34]:
+            - generic [ref=f19e35]: all
+            - img: ▼
+          - textbox [ref=f19e36]: all
+        - generic [ref=f19e37]:
+          - generic [ref=f19e38]: 0 Payments
+          - table [ref=f19e42]:
+            - rowgroup [ref=f19e43]:
+              - row [ref=f19e44]:
+                - 'columnheader "Receipt #" [ref=f19e45]'
+                - 'columnheader "Bill #" [ref=f19e46]'
+                - columnheader "Amount (₹)" [ref=f19e47]
+                - columnheader "Date" [ref=f19e48]
+                - columnheader "Method" [ref=f19e49]
+                - columnheader "Transaction ID" [ref=f19e50]
+                - columnheader "Actions" [ref=f19e51]
+            - rowgroup [ref=f19e52]:
+              - row [ref=f19e53]:
+                - cell "No payments found" [ref=f19e54]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f19e60] [cursor=pointer]

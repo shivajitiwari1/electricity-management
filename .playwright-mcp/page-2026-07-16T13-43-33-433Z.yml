@@ -1,0 +1,101 @@
+- generic [ref=f11e1]:
+  - generic [ref=f11e2]:
+    - generic [ref=f11e4]:
+      - generic [ref=f11e10]:
+        - paragraph [ref=f11e11]: Oasis Venetia Heights
+        - paragraph [ref=f11e12]: Admin Panel
+      - navigation [ref=f11e13]:
+        - link [ref=f11e114] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=f11e115] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=f11e116] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=f11e117] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=f11e118] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=f11e119] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=f11e120] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=f11e121] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=f11e122] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+      - separator [ref=f11e52]
+      - generic [ref=f11e53]:
+        - generic [ref=f11e54]:
+          - generic [ref=f11e55]:
+            - paragraph [ref=f11e56]: Admin
+            - paragraph [ref=f11e57]: admin@oasis.local
+          - button [ref=f11e123]:
+            - generic [ref=f11e59]: Toggle theme
+        - button [ref=f11e124]: Sign Out
+    - main [ref=f11e61]:
+      - generic [ref=f11e62]:
+        - generic [ref=f11e63]:
+          - heading [level=1] [ref=f11e125]: Electricity Rates
+          - paragraph [ref=f11e65]: Manage NPCL and DG electricity rates
+        - generic [ref=f11e66]:
+          - generic [ref=f11e67]:
+            - generic [ref=f11e68]: Current Rate
+            - button [ref=f11e126]: Update Rates
+          - generic [ref=f11e71]:
+            - generic [ref=f11e72]:
+              - paragraph [ref=f11e73]: NPCL / Unit
+              - paragraph [ref=f11e74]: ₹7
+            - generic [ref=f11e75]:
+              - paragraph [ref=f11e76]: DG Fixed Charge
+              - paragraph [ref=f11e77]: ₹200
+            - generic [ref=f11e78]:
+              - paragraph [ref=f11e79]: Fixed / kW
+              - paragraph [ref=f11e80]: ₹115
+            - generic [ref=f11e81]:
+              - paragraph [ref=f11e82]: Effective From
+              - paragraph [ref=f11e83]: 16 Jul 2026
+        - generic [ref=f11e84]:
+          - generic [ref=f11e85]: Rate History
+          - table [ref=f11e89]:
+            - rowgroup [ref=f11e90]:
+              - row [ref=f11e127]:
+                - columnheader [ref=f11e128]: Effective From
+                - columnheader [ref=f11e129]: NPCL / Unit (₹)
+                - columnheader [ref=f11e130]: DG Fixed (₹)
+                - columnheader [ref=f11e131]: Fixed / kW (₹)
+                - columnheader [ref=f11e96]
+            - rowgroup [ref=f11e97]:
+              - row [ref=f11e132]:
+                - cell [ref=f11e133]: 16 Jul 2026Current
+                - cell [ref=f11e134]: ₹7
+                - cell [ref=f11e135]: ₹200
+                - cell [ref=f11e136]: ₹115
+                - cell [ref=f11e103]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f11e109] [cursor=pointer]
+  - alert [ref=f11e113]
+  - dialog [ref=f11e140]:
+    - heading "Update Electricity Rates" [level=2] [ref=f11e142]
+    - generic [ref=f11e143]:
+      - generic [ref=f11e144]:
+        - generic [ref=f11e145]: NPCL Per Unit (Rs.) *
+        - spinbutton "NPCL Per Unit (Rs.) *" [active] [ref=f11e146]
+      - generic [ref=f11e147]:
+        - generic [ref=f11e148]: DG Fixed Charge (Rs.) *
+        - spinbutton "DG Fixed Charge (Rs.) *" [ref=f11e149]
+      - generic [ref=f11e150]:
+        - generic [ref=f11e151]: Fixed Charge Per kW (Rs.) *
+        - spinbutton "Fixed Charge Per kW (Rs.) *" [ref=f11e152]
+      - generic [ref=f11e153]:
+        - button "Cancel" [ref=f11e154]
+        - button "Save Rates" [ref=f11e155]
+    - button "Close" [ref=f11e156]

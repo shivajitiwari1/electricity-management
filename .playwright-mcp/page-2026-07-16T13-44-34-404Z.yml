@@ -1,0 +1,85 @@
+- generic [active] [ref=f13e1]:
+  - generic [ref=f13e2]:
+    - generic [ref=f13e4]:
+      - generic [ref=f13e10]:
+        - paragraph [ref=f13e11]: Oasis Venetia Heights
+        - paragraph [ref=f13e12]: Admin Panel
+      - navigation [ref=f13e13]:
+        - link "Dashboard" [ref=f13e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f13e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f13e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f13e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f13e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f13e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f13e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f13e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f13e47] [cursor=pointer]:
+          - /url: /admin/flats
+      - separator [ref=f13e52]
+      - generic [ref=f13e53]:
+        - generic [ref=f13e54]:
+          - generic [ref=f13e55]:
+            - paragraph [ref=f13e56]: Admin
+            - paragraph [ref=f13e57]: admin@oasis.local
+          - button "Toggle theme" [ref=f13e58]
+        - button "Sign Out" [ref=f13e60]
+    - main [ref=f13e61]:
+      - generic [ref=f13e62]:
+        - generic [ref=f13e63]:
+          - heading "Bills" [level=1] [ref=f13e64]
+          - paragraph [ref=f13e65]: Manage electricity bills for Oasis Venetia Heights
+        - generic [ref=f13e66]:
+          - generic [ref=f13e67]:
+            - generic [ref=f13e68]: Tower
+            - combobox [ref=f13e69]:
+              - generic [ref=f13e70]: all
+              - img: ▼
+            - textbox [ref=f13e71]: all
+          - generic [ref=f13e72]:
+            - generic [ref=f13e73]: Month (YYYY-MM)
+            - textbox "e.g. 2026-07" [ref=f13e74]
+          - generic [ref=f13e75]:
+            - generic [ref=f13e76]: Status
+            - combobox [ref=f13e77]:
+              - generic [ref=f13e78]: all
+              - img: ▼
+            - textbox [ref=f13e79]: all
+        - generic [ref=f13e80]:
+          - generic [ref=f13e81]: 1 Bill
+          - table [ref=f13e85]:
+            - rowgroup [ref=f13e86]:
+              - row [ref=f13e87]:
+                - 'columnheader "Bill #" [ref=f13e88]'
+                - columnheader "Flat No" [ref=f13e89]
+                - columnheader "Tower" [ref=f13e90]
+                - columnheader "Resident" [ref=f13e91]
+                - columnheader "Period" [ref=f13e92]
+                - columnheader "Amount (₹)" [ref=f13e93]
+                - columnheader "Due Date" [ref=f13e94]
+                - columnheader "Status" [ref=f13e95]
+                - columnheader "Actions" [ref=f13e96]
+            - rowgroup [ref=f13e97]:
+              - row [ref=f13e98]:
+                - cell "OV-A-101-202607" [ref=f13e99]
+                - cell "A-101" [ref=f13e100]
+                - cell "A" [ref=f13e101]
+                - cell "Mr. Bachoo Singh Bhagaur" [ref=f13e102]
+                - cell "30 Jun 2026 – 16 Jul 2026" [ref=f13e103]
+                - cell "3,085.00" [ref=f13e104]
+                - cell "25 Jul 2026" [ref=f13e105]
+                - cell "PENDING" [ref=f13e106]
+                - cell [ref=f13e108]:
+                  - generic [ref=f13e109]:
+                    - button "PDF" [ref=f13e110]
+                    - button "Details" [ref=f13e111]
+                    - button "Delete" [ref=f13e112]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f13e118] [cursor=pointer]

@@ -1,0 +1,79 @@
+- generic [active] [ref=f11e1]:
+  - generic [ref=f11e2]:
+    - banner [ref=f11e3]:
+      - generic [ref=f11e4]:
+        - generic [ref=f11e5]:
+          - generic [ref=f11e6]: Oasis Venetia Heights
+          - navigation [ref=f11e11]:
+            - link "Dashboard" [ref=f11e12] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f11e16] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f11e20] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Profile" [ref=f11e23] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f11e27]:
+          - generic [ref=f11e28]: Mr. Bachoo Singh Bhagaur
+          - button "Toggle theme" [ref=f11e29]
+          - button "Sign Out" [ref=f11e31]
+    - main [ref=f11e33]:
+      - generic [ref=f11e34]:
+        - generic [ref=f11e35]:
+          - heading "My Profile" [level=1] [ref=f11e36]
+          - paragraph [ref=f11e37]: Your account and connection details (managed by admin)
+        - generic [ref=f11e38]:
+          - generic [ref=f11e39]: Personal Information
+          - generic [ref=f11e45]:
+            - generic [ref=f11e46]:
+              - generic [ref=f11e47]: Full Name
+              - generic [ref=f11e48]: Mr. Bachoo Singh Bhagaur
+            - generic [ref=f11e49]:
+              - generic [ref=f11e50]: Email
+              - generic [ref=f11e51]: bsbhagaur@gmail.com
+            - generic [ref=f11e52]:
+              - generic [ref=f11e53]: Phone
+              - generic [ref=f11e54]: "9463156238"
+            - generic [ref=f11e55]:
+              - generic [ref=f11e56]: Resident Number
+              - generic [ref=f11e57]: RES-0001
+        - generic [ref=f11e58]:
+          - generic [ref=f11e60]:
+            - text: Connection Details
+            - generic [ref=f11e64]: ACTIVE
+          - generic [ref=f11e67]:
+            - generic [ref=f11e68]:
+              - generic [ref=f11e69]: Flat Details
+              - generic [ref=f11e74]:
+                - generic [ref=f11e75]:
+                  - generic [ref=f11e76]: Flat No
+                  - generic [ref=f11e77]: A-101
+                - generic [ref=f11e78]:
+                  - generic [ref=f11e79]: Tower
+                  - generic [ref=f11e80]: Tower A
+                - generic [ref=f11e81]:
+                  - generic [ref=f11e82]: Floor
+                  - generic [ref=f11e83]: First
+                - generic [ref=f11e84]:
+                  - generic [ref=f11e85]: Unit Type
+                  - generic [ref=f11e86]: 2 BHK+2T+Study (1150 Sq.Ft.)
+                - generic [ref=f11e87]:
+                  - generic [ref=f11e88]: Unit Area
+                  - generic [ref=f11e89]: 1150 sq.ft
+            - generic [ref=f11e90]:
+              - generic [ref=f11e91]: Electrical Connection
+              - generic [ref=f11e95]:
+                - generic [ref=f11e96]:
+                  - generic [ref=f11e97]: Meter No
+                  - generic [ref=f11e98]: —
+                - generic [ref=f11e99]:
+                  - generic [ref=f11e100]: Sanctioned Load
+                  - generic [ref=f11e101]: 4 kW
+                - generic [ref=f11e102]:
+                  - generic [ref=f11e103]: Connected Since
+                  - generic [ref=f11e104]: 17 Jul 2026
+        - generic [ref=f11e109]:
+          - paragraph [ref=f11e110]: Need to update your details?
+          - paragraph [ref=f11e111]: Profile and connection information is managed by the admin. Please contact the Oasis Venetia Heights management office for any changes.
+  - region "Notifications alt+T"
+  - alert [ref=f11e112]

@@ -1,0 +1,164 @@
+- generic [ref=f8e1]:
+  - generic [ref=f8e2]:
+    - generic [ref=f8e4]:
+      - generic [ref=f8e10]:
+        - paragraph [ref=f8e11]: Oasis Venetia Heights
+        - paragraph [ref=f8e12]: Admin Panel
+      - navigation [ref=f8e13]:
+        - link [ref=f8e124] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=f8e125] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=f8e126] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=f8e127] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=f8e128] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=f8e129] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=f8e130] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=f8e131] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=f8e132] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+      - separator [ref=f8e52]
+      - generic [ref=f8e53]:
+        - generic [ref=f8e54]:
+          - generic [ref=f8e55]:
+            - paragraph [ref=f8e56]: Admin
+            - paragraph [ref=f8e57]: admin@oasis.local
+          - button [ref=f8e133]:
+            - generic [ref=f8e59]: Toggle theme
+        - button [ref=f8e134]: Sign Out
+    - main [ref=f8e61]:
+      - generic [ref=f8e62]:
+        - generic [ref=f8e63]:
+          - heading [level=1] [ref=f8e135]: Bills
+          - paragraph [ref=f8e65]: Manage electricity bills for Oasis Venetia Heights
+        - generic [ref=f8e66]:
+          - generic [ref=f8e67]:
+            - generic [ref=f8e68]: Tower
+            - combobox [ref=f8e69]:
+              - generic [ref=f8e70]: all
+              - img: ▼
+            - textbox [ref=f8e71]: all
+          - generic [ref=f8e72]:
+            - generic [ref=f8e73]: Month (YYYY-MM)
+            - textbox [ref=f8e136]:
+              - /placeholder: e.g. 2026-07
+          - generic [ref=f8e75]:
+            - generic [ref=f8e76]: Status
+            - combobox [ref=f8e77]:
+              - generic [ref=f8e78]: all
+              - img: ▼
+            - textbox [ref=f8e79]: all
+        - generic [ref=f8e80]:
+          - generic [ref=f8e81]: 1 Bill
+          - table [ref=f8e85]:
+            - rowgroup [ref=f8e86]:
+              - row [ref=f8e137]:
+                - columnheader [ref=f8e138]: "Bill #"
+                - columnheader [ref=f8e139]: Flat No
+                - columnheader [ref=f8e140]: Tower
+                - columnheader [ref=f8e141]: Resident
+                - columnheader [ref=f8e142]: Period
+                - columnheader [ref=f8e143]: Amount (₹)
+                - columnheader [ref=f8e144]: Due Date
+                - columnheader [ref=f8e145]: Status
+                - columnheader [ref=f8e146]: Actions
+            - rowgroup [ref=f8e97]:
+              - row [ref=f8e147]:
+                - cell [ref=f8e148]: OV-A-101-202607
+                - cell [ref=f8e149]: A-101
+                - cell [ref=f8e150]: A
+                - cell [ref=f8e151]: Mr. Bachoo Singh Bhagaur
+                - cell [ref=f8e152]: 30 Jun 2026 – 16 Jul 2026
+                - cell [ref=f8e153]: 3,085.00
+                - cell [ref=f8e154]: 25 Jul 2026
+                - cell [ref=f8e155]:
+                  - generic [ref=f8e107]: PENDING
+                - cell [ref=f8e156]:
+                  - generic [ref=f8e109]:
+                    - button [ref=f8e157]: PDF
+                    - button [ref=f8e158]: Details
+                    - button [ref=f8e159]: Mark Paid
+                    - button [ref=f8e160]: Delete
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f8e119] [cursor=pointer]
+  - alert [ref=f8e123]
+  - dialog [ref=f8e164]:
+    - heading "Bill Details — OV-A-101-202607" [level=2] [ref=f8e166]
+    - generic [ref=f8e167]:
+      - generic [ref=f8e168]:
+        - paragraph [ref=f8e169]: Basic Information
+        - generic [ref=f8e170]:
+          - generic [ref=f8e171]: Bill Number
+          - generic [ref=f8e172]: OV-A-101-202607
+          - generic [ref=f8e173]: Resident
+          - generic [ref=f8e174]: Mr. Bachoo Singh Bhagaur
+          - generic [ref=f8e175]: Flat / Tower
+          - generic [ref=f8e176]: A-101 — Tower A
+          - generic [ref=f8e177]: Meter No
+          - generic [ref=f8e178]: —
+          - generic [ref=f8e179]: Sanctioned Load
+          - generic [ref=f8e180]: 5.0 kW
+          - generic [ref=f8e181]: Unit Area
+          - generic [ref=f8e182]: 1150 Sq.Ft.
+          - generic [ref=f8e183]: Bill Date
+          - generic [ref=f8e184]: 16 Jul 2026
+          - generic [ref=f8e185]: Due Date
+          - generic [ref=f8e186]: 25 Jul 2026
+          - generic [ref=f8e187]: Billing Period
+          - generic [ref=f8e188]: 30 Jun 2026 – 16 Jul 2026
+          - generic [ref=f8e189]: Status
+          - generic [ref=f8e190]: PENDING
+      - generic [ref=f8e192]:
+        - generic [ref=f8e193]:
+          - paragraph [ref=f8e194]: Meter Reading Details
+          - paragraph [ref=f8e195]: "Reading Date: 16 Jul 2026"
+        - table [ref=f8e197]:
+          - rowgroup [ref=f8e198]:
+            - row [ref=f8e199]:
+              - columnheader "Source" [ref=f8e200]
+              - columnheader "Previous" [ref=f8e201]
+              - columnheader "Current" [ref=f8e202]
+              - columnheader "Units" [ref=f8e203]
+          - rowgroup [ref=f8e204]:
+            - row [ref=f8e205]:
+              - cell "NPCL Power" [ref=f8e206]
+              - cell "1250.00" [ref=f8e207]
+              - cell "1580.00" [ref=f8e208]
+              - cell "330.00" [ref=f8e209]
+            - row [ref=f8e210]:
+              - cell "DG Power" [ref=f8e211]
+              - cell "0.00" [ref=f8e212]
+              - cell "0.00" [ref=f8e213]
+              - cell "0.00" [ref=f8e214]
+      - generic [ref=f8e215]:
+        - paragraph [ref=f8e216]: Charge Breakdown
+        - generic [ref=f8e217]:
+          - generic [ref=f8e218]:
+            - generic [ref=f8e219]: NPCL Energy Charges (330.00 units × ₹7.00/unit)
+            - generic [ref=f8e220]: ₹2,310.00
+          - generic [ref=f8e221]:
+            - generic [ref=f8e222]: DG Energy Charges (Fixed)
+            - generic [ref=f8e223]: ₹200.00
+          - generic [ref=f8e224]:
+            - generic [ref=f8e225]: Fixed Charge (@ ₹115 per kW/month)
+            - generic [ref=f8e226]: ₹575.00
+          - generic [ref=f8e227]:
+            - generic [ref=f8e228]: Net Payable Amount
+            - generic [ref=f8e229]: ₹3,085.00
+      - button "Download PDF" [active] [ref=f8e231]
+    - button "Close" [ref=f8e232]

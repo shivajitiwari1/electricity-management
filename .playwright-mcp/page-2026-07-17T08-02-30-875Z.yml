@@ -1,0 +1,100 @@
+- generic [ref=f8e1]:
+  - generic [ref=f8e2]:
+    - generic [ref=f8e4]:
+      - generic [ref=f8e10]:
+        - paragraph [ref=f8e11]: Oasis Venetia Heights
+        - paragraph [ref=f8e12]: Admin Panel
+      - navigation [ref=f8e13]:
+        - link [ref=f8e105] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=f8e106] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=f8e107] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=f8e108] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=f8e109] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=f8e110] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=f8e111] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=f8e112] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=f8e113] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+      - separator [ref=f8e52]
+      - generic [ref=f8e53]:
+        - generic [ref=f8e54]:
+          - generic [ref=f8e55]:
+            - paragraph [ref=f8e56]: Admin
+            - paragraph [ref=f8e57]: admin@oasis.local
+          - button [ref=f8e114]:
+            - generic [ref=f8e59]: Toggle theme
+        - button [ref=f8e115]: Sign Out
+    - main [ref=f8e61]:
+      - generic [ref=f8e62]:
+        - generic [ref=f8e63]:
+          - heading [level=1] [ref=f8e116]: Electricity Rates
+          - paragraph [ref=f8e65]: Manage NPCL and DG electricity rates
+        - generic [ref=f8e66]:
+          - generic [ref=f8e67]:
+            - generic [ref=f8e68]: Current Rate
+            - button [ref=f8e117]: Update Rates
+          - generic [ref=f8e71]:
+            - generic [ref=f8e72]:
+              - paragraph [ref=f8e73]: NPCL / Unit
+              - paragraph [ref=f8e74]: ₹7
+            - generic [ref=f8e75]:
+              - paragraph [ref=f8e76]: DG Fixed Charge
+              - paragraph [ref=f8e77]: ₹200
+            - generic [ref=f8e78]:
+              - paragraph [ref=f8e79]: Fixed / kW
+              - paragraph [ref=f8e80]: ₹115
+            - generic [ref=f8e81]:
+              - paragraph [ref=f8e82]: Effective From
+              - paragraph [ref=f8e83]: 17 Jul 2026
+        - generic [ref=f8e84]:
+          - generic [ref=f8e85]: Rate History
+          - table [ref=f8e89]:
+            - rowgroup [ref=f8e90]:
+              - row [ref=f8e118]:
+                - columnheader [ref=f8e119]: Effective From
+                - columnheader [ref=f8e120]: NPCL / Unit (₹)
+                - columnheader [ref=f8e121]: DG Fixed (₹)
+                - columnheader [ref=f8e122]: Fixed / kW (₹)
+                - columnheader [ref=f8e96]
+            - rowgroup [ref=f8e97]:
+              - row [ref=f8e123]:
+                - cell [ref=f8e124]: 17 Jul 2026Current
+                - cell [ref=f8e125]: ₹7
+                - cell [ref=f8e126]: ₹200
+                - cell [ref=f8e127]: ₹115
+                - cell [ref=f8e103]
+  - region "Notifications alt+T"
+  - alert [ref=f8e104]
+  - dialog [ref=f8e131]:
+    - heading "Update Electricity Rates" [level=2] [ref=f8e133]
+    - generic [ref=f8e134]:
+      - generic [ref=f8e135]:
+        - generic [ref=f8e136]: NPCL Per Unit (Rs.) *
+        - spinbutton "NPCL Per Unit (Rs.) *" [active] [ref=f8e137]
+      - generic [ref=f8e138]:
+        - generic [ref=f8e139]: DG Fixed Charge (Rs.) *
+        - spinbutton "DG Fixed Charge (Rs.) *" [ref=f8e140]
+      - generic [ref=f8e141]:
+        - generic [ref=f8e142]: Fixed Charge Per kW (Rs.) *
+        - spinbutton "Fixed Charge Per kW (Rs.) *" [ref=f8e143]
+      - generic [ref=f8e144]:
+        - button "Cancel" [ref=f8e145]
+        - button "Save Rates" [ref=f8e146]
+    - button "Close" [ref=f8e147]

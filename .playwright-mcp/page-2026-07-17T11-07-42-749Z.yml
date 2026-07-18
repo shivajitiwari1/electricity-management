@@ -1,0 +1,48 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]:
+          - generic [ref=e6]: Oasis Venetia Heights
+          - navigation [ref=e11]:
+            - link "Dashboard" [ref=e12] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=e16] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=e20] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Profile" [ref=e23] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=e27]:
+          - generic [ref=e28]: Mr. Bachoo Singh Bhagaur
+          - button "Toggle theme" [ref=e29]
+          - button "Sign Out" [ref=e31]
+    - main [ref=e33]:
+      - generic [ref=e34]:
+        - generic [ref=e38]:
+          - heading "Welcome, Mr. Bachoo Singh Bhagaur!" [level=1] [ref=e39]
+          - paragraph [ref=e40]: "Resident #RES-0001"
+          - generic [ref=e41]:
+            - generic [ref=e42]: "Flat: A-101"
+            - generic [ref=e43]: "Tower: A"
+            - generic [ref=e44]: "Floor: First"
+        - generic [ref=e49]:
+          - generic [ref=e50]: Current Bill
+          - generic [ref=e56]:
+            - generic [ref=e61]:
+              - paragraph [ref=e62]: No outstanding bills
+              - paragraph [ref=e63]: You are all caught up! Your account is up to date.
+            - paragraph [ref=e64]: Last bill PAID on —
+        - generic [ref=e65]:
+          - link [ref=e66] [cursor=pointer]:
+            - /url: /resident/bills
+            - generic [ref=e73]:
+              - paragraph [ref=e74]: View All Bills
+              - paragraph [ref=e75]: Browse your complete billing history
+          - link [ref=e76] [cursor=pointer]:
+            - /url: /resident/payments
+            - generic [ref=e82]:
+              - paragraph [ref=e83]: Payment History
+              - paragraph [ref=e84]: View all your past payments
+  - region "Notifications alt+T"
+  - alert [ref=e85]

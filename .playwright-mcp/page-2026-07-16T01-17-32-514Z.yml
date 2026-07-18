@@ -1,0 +1,90 @@
+- generic [active] [ref=f26e1]:
+  - generic [ref=f26e2]:
+    - generic [ref=f26e4]:
+      - generic [ref=f26e10]:
+        - paragraph [ref=f26e11]: Oasis Venetia Heights
+        - paragraph [ref=f26e12]: Admin Panel
+      - navigation [ref=f26e13]:
+        - link "Dashboard" [ref=f26e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f26e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f26e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f26e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f26e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f26e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f26e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f26e43] [cursor=pointer]:
+          - /url: /admin/rates
+      - separator [ref=f26e47]
+      - generic [ref=f26e48]:
+        - generic [ref=f26e49]:
+          - generic [ref=f26e50]:
+            - paragraph [ref=f26e51]: Admin
+            - paragraph [ref=f26e52]: admin@oasis.local
+          - button "Toggle theme" [ref=f26e53]
+        - button "Sign Out" [ref=f26e55]
+    - main [ref=f26e56]:
+      - generic [ref=f26e57]:
+        - generic [ref=f26e58]:
+          - heading "Dashboard" [level=1] [ref=f26e59]
+          - paragraph [ref=f26e60]: Overview of Oasis Venetia Heights electricity management
+        - generic [ref=f26e61]:
+          - generic [ref=f26e65]:
+            - paragraph [ref=f26e66]: Total Residents
+            - paragraph [ref=f26e67]: "398"
+          - generic [ref=f26e77]:
+            - paragraph [ref=f26e78]: Active Connections
+            - paragraph [ref=f26e79]: "398"
+          - generic [ref=f26e86]:
+            - paragraph [ref=f26e87]: Bills This Month
+            - paragraph [ref=f26e88]: "2"
+          - generic [ref=f26e96]:
+            - paragraph [ref=f26e97]: Revenue This Month
+            - paragraph [ref=f26e98]: ₹1,710.00
+          - generic [ref=f26e106]:
+            - paragraph [ref=f26e107]: Overdue Bills
+            - paragraph [ref=f26e108]: "0"
+        - generic [ref=f26e112]:
+          - link [ref=f26e113] [cursor=pointer]:
+            - /url: /admin/residents
+            - button "Add Resident" [ref=f26e114]
+          - link [ref=f26e115] [cursor=pointer]:
+            - /url: /admin/meter-readings
+            - button "Enter Reading" [ref=f26e116]
+          - link [ref=f26e117] [cursor=pointer]:
+            - /url: /admin/reports
+            - button "View Reports" [ref=f26e118]
+        - generic [ref=f26e119]:
+          - generic [ref=f26e120]: Recent Bills
+          - table [ref=f26e124]:
+            - rowgroup [ref=f26e125]:
+              - row [ref=f26e126]:
+                - 'columnheader "Bill #" [ref=f26e127]'
+                - columnheader "Flat" [ref=f26e128]
+                - columnheader "Resident" [ref=f26e129]
+                - columnheader "Amount" [ref=f26e130]
+                - columnheader "Due Date" [ref=f26e131]
+                - columnheader "Status" [ref=f26e132]
+            - rowgroup [ref=f26e133]:
+              - row [ref=f26e134]:
+                - cell "OV-B-101-202607" [ref=f26e135]
+                - cell "B-101" [ref=f26e136]
+                - cell "Mr. Varun Sharma" [ref=f26e137]
+                - cell "₹2,035.00" [ref=f26e138]
+                - cell "25 Jul 2026" [ref=f26e139]
+                - cell "PENDING" [ref=f26e140]
+              - row [ref=f26e142]:
+                - cell "OV-A-101-202607" [ref=f26e143]
+                - cell "A-101" [ref=f26e144]
+                - cell "Mr. Bachoo Singh Bhagaur" [ref=f26e145]
+                - cell "₹1,710.00" [ref=f26e146]
+                - cell "25 Jul 2026" [ref=f26e147]
+                - cell "PAID" [ref=f26e148]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f26e155] [cursor=pointer]

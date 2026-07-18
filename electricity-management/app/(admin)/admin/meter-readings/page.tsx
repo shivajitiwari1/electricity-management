@@ -6,8 +6,9 @@ import { getCachedMeterReadingsData } from "@/lib/server-cache";
 export const dynamic = "force-dynamic";
 
 async function MeterReadingsData() {
-  const { connections, currentRate, readings } = await getCachedMeterReadingsData();
+  const { connections, currentRate } = await getCachedMeterReadingsData();
 
+  // For the "Add Reading" dropdown — all connections with last reading for auto-fill
   const serializedConnections = connections.map((c) => ({
     id: c.id,
     flatNo: c.flatNo,
@@ -16,18 +17,23 @@ async function MeterReadingsData() {
     lastDgReading: c.meterReadings[0]?.dgCurrent?.toString() ?? "0",
   }));
 
-  const serializedReadings = readings.map((r) => ({
-    id: r.id,
-    flatNo: r.connection.flatNo,
-    residentName: r.connection.resident.user.name,
-    readingDate: r.readingDate.toISOString(),
-    ncplPrevious: r.ncplPrevious.toString(),
-    ncplCurrent: r.ncplCurrent.toString(),
-    ncplUnits: r.ncplUnits.toString(),
-    dgUnits: r.dgUnits.toString(),
-    connectionId: r.connectionId,
-    hasBill: !!r.bill,
-  }));
+  // One row per flat showing the latest reading (all flats, including those with no reading)
+  const serializedReadings = connections.map((c) => {
+    const r = c.meterReadings[0] ?? null;
+    return {
+      id: r?.id ?? "",
+      flatNo: c.flatNo,
+      residentName: c.resident.user.name,
+      readingDate: r?.readingDate?.toISOString() ?? "",
+      ncplPrevious: r?.ncplPrevious?.toString() ?? "",
+      ncplCurrent: r?.ncplCurrent?.toString() ?? "",
+      ncplUnits: r?.ncplUnits?.toString() ?? "",
+      dgUnits: r?.dgUnits?.toString() ?? "",
+      connectionId: c.id,
+      hasBill: !!r?.bill,
+      hasReading: !!r,
+    };
+  });
 
   return (
     <MeterReadingsTable

@@ -1,0 +1,25 @@
+- generic [active] [ref=f50e1]:
+  - generic [ref=f50e3]:
+    - generic [ref=f50e8]:
+      - heading "Oasis Venetia Heights" [level=1] [ref=f50e9]
+      - paragraph [ref=f50e10]: Electricity Bill Management
+    - generic [ref=f50e11]:
+      - generic [ref=f50e12]:
+        - generic [ref=f50e13]: Sign in to your account
+        - generic [ref=f50e14]: Enter your credentials to continue
+      - generic [ref=f50e16]:
+        - generic [ref=f50e17]:
+          - generic [ref=f50e18]: Email
+          - textbox "Email" [ref=f50e19]:
+            - /placeholder: your@email.com
+            - text: b-101@oasis.local
+        - generic [ref=f50e20]:
+          - generic [ref=f50e21]: Password
+          - textbox "Password" [ref=f50e22]:
+            - /placeholder: ••••••••
+            - text: Flat@123
+        - button "Sign In" [ref=f50e23]
+    - paragraph [ref=f50e24]: Oasis Venetia Heights · Greater Noida
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f50e30] [cursor=pointer]
+  - alert [ref=f50e34]

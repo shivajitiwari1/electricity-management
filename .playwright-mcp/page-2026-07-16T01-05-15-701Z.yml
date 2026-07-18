@@ -1,0 +1,65 @@
+- generic [active] [ref=f12e1]:
+  - generic [ref=f12e2]:
+    - generic [ref=f12e3]:
+      - generic [ref=f12e4]:
+        - heading "Oasis Venetia Heights" [level=1] [ref=f12e5]
+        - paragraph [ref=f12e6]: Admin Panel
+      - navigation [ref=f12e7]:
+        - link "Dashboard" [ref=f12e8] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f12e14] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f12e20] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f12e23] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f12e27] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f12e31] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f12e34] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f12e37] [cursor=pointer]:
+          - /url: /admin/rates
+      - generic [ref=f12e41]:
+        - paragraph [ref=f12e42]: Admin
+        - paragraph [ref=f12e43]: admin@oasis.local
+        - button "Sign Out" [ref=f12e44]
+    - main [ref=f12e45]:
+      - generic [ref=f12e46]:
+        - generic [ref=f12e47]:
+          - heading "Payments" [level=1] [ref=f12e48]
+          - paragraph [ref=f12e49]: View all payment transactions for Oasis Venetia Heights
+        - generic [ref=f12e50]:
+          - generic [ref=f12e51]:
+            - generic [ref=f12e52]: Method
+            - combobox [ref=f12e53]:
+              - generic [ref=f12e54]: all
+              - img: ▼
+            - textbox [ref=f12e55]: all
+          - generic [ref=f12e56]:
+            - generic [ref=f12e57]: Status
+            - combobox [ref=f12e58]:
+              - generic [ref=f12e59]: all
+              - img: ▼
+            - textbox [ref=f12e60]: all
+        - generic [ref=f12e61]:
+          - generic [ref=f12e62]: 0 Payments
+          - table [ref=f12e66]:
+            - rowgroup [ref=f12e67]:
+              - row [ref=f12e68]:
+                - 'columnheader "Receipt #" [ref=f12e69]'
+                - columnheader "Flat No" [ref=f12e70]
+                - columnheader "Resident" [ref=f12e71]
+                - 'columnheader "Bill #" [ref=f12e72]'
+                - columnheader "Amount (₹)" [ref=f12e73]
+                - columnheader "Date" [ref=f12e74]
+                - columnheader "Method" [ref=f12e75]
+                - columnheader "Transaction ID" [ref=f12e76]
+                - columnheader "Status" [ref=f12e77]
+                - columnheader "Actions" [ref=f12e78]
+            - rowgroup [ref=f12e79]:
+              - row [ref=f12e80]:
+                - cell "No payments found" [ref=f12e81]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f12e87] [cursor=pointer]

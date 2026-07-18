@@ -1,0 +1,110 @@
+- generic [active] [ref=f38e1]:
+  - generic [ref=f38e2]:
+    - generic [ref=f38e4]:
+      - generic [ref=f38e10]:
+        - paragraph [ref=f38e11]: Oasis Venetia Heights
+        - paragraph [ref=f38e12]: Admin Panel
+      - navigation [ref=f38e13]:
+        - link "Dashboard" [ref=f38e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f38e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f38e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f38e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f38e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f38e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f38e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f38e43] [cursor=pointer]:
+          - /url: /admin/rates
+      - separator [ref=f38e47]
+      - generic [ref=f38e48]:
+        - generic [ref=f38e49]:
+          - generic [ref=f38e50]:
+            - paragraph [ref=f38e51]: Admin
+            - paragraph [ref=f38e52]: admin@oasis.local
+          - button "Toggle theme" [ref=f38e53]
+        - button "Sign Out" [ref=f38e55]
+    - main [ref=f38e56]:
+      - generic [ref=f38e57]:
+        - generic [ref=f38e58]:
+          - heading "Bills" [level=1] [ref=f38e59]
+          - paragraph [ref=f38e60]: Manage electricity bills for Oasis Venetia Heights
+        - generic [ref=f38e61]:
+          - generic [ref=f38e62]:
+            - generic [ref=f38e63]: Tower
+            - combobox [ref=f38e64]:
+              - generic [ref=f38e65]: all
+              - img: ▼
+            - textbox [ref=f38e66]: all
+          - generic [ref=f38e67]:
+            - generic [ref=f38e68]: Month (YYYY-MM)
+            - textbox "e.g. 2026-07" [ref=f38e69]
+          - generic [ref=f38e70]:
+            - generic [ref=f38e71]: Status
+            - combobox [ref=f38e72]:
+              - generic [ref=f38e73]: all
+              - img: ▼
+            - textbox [ref=f38e74]: all
+        - generic [ref=f38e75]:
+          - generic [ref=f38e76]: 3 Bills
+          - table [ref=f38e80]:
+            - rowgroup [ref=f38e81]:
+              - row [ref=f38e82]:
+                - 'columnheader "Bill #" [ref=f38e83]'
+                - columnheader "Flat No" [ref=f38e84]
+                - columnheader "Tower" [ref=f38e85]
+                - columnheader "Resident" [ref=f38e86]
+                - columnheader "Period" [ref=f38e87]
+                - columnheader "Amount (₹)" [ref=f38e88]
+                - columnheader "Due Date" [ref=f38e89]
+                - columnheader "Status" [ref=f38e90]
+                - columnheader "Actions" [ref=f38e91]
+            - rowgroup [ref=f38e92]:
+              - row [ref=f38e93]:
+                - cell "OV-A-101-202607" [ref=f38e94]
+                - cell "A-101" [ref=f38e95]
+                - cell "A" [ref=f38e96]
+                - cell "Mr. Bachoo Singh Bhagaur" [ref=f38e97]
+                - cell "30 Jun 2026 – 16 Jul 2026" [ref=f38e98]
+                - cell "1,710.00" [ref=f38e99]
+                - cell "25 Jul 2026" [ref=f38e100]
+                - cell "PAID" [ref=f38e101]
+                - cell [ref=f38e103]:
+                  - generic [ref=f38e104]:
+                    - button "PDF" [ref=f38e105]
+                    - button "Details" [ref=f38e106]
+              - row [ref=f38e107]:
+                - cell "OV-B-101-202607" [ref=f38e108]
+                - cell "B-101" [ref=f38e109]
+                - cell "B" [ref=f38e110]
+                - cell "Mr. Varun Sharma" [ref=f38e111]
+                - cell "30 Jun 2026 – 16 Jul 2026" [ref=f38e112]
+                - cell "2,035.00" [ref=f38e113]
+                - cell "25 Jul 2026" [ref=f38e114]
+                - cell "PENDING" [ref=f38e115]
+                - cell [ref=f38e117]:
+                  - generic [ref=f38e118]:
+                    - button "PDF" [ref=f38e119]
+                    - button "Details" [ref=f38e120]
+                    - button "Mark Paid" [ref=f38e121]
+              - row [ref=f38e122]:
+                - cell "OV-C-101-202607" [ref=f38e123]
+                - cell "C-101" [ref=f38e124]
+                - cell "C" [ref=f38e125]
+                - cell "Mr. Vineet Kumar" [ref=f38e126]
+                - cell "30 Jun 2026 – 16 Jul 2026" [ref=f38e127]
+                - cell "1,850.00" [ref=f38e128]
+                - cell "25 Jul 2026" [ref=f38e129]
+                - cell "PENDING" [ref=f38e130]
+                - cell [ref=f38e132]:
+                  - generic [ref=f38e133]:
+                    - button "PDF" [ref=f38e134]
+                    - button "Details" [ref=f38e135]
+                    - button "Mark Paid" [ref=f38e136]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f38e142] [cursor=pointer]

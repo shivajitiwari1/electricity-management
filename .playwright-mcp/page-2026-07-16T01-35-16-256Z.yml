@@ -1,0 +1,79 @@
+- generic [active] [ref=f46e1]:
+  - generic [ref=f46e2]:
+    - banner [ref=f46e3]:
+      - generic [ref=f46e4]:
+        - generic [ref=f46e5]:
+          - generic [ref=f46e6]: Oasis Venetia Heights
+          - navigation [ref=f46e11]:
+            - link "Dashboard" [ref=f46e12] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f46e16] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f46e20] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Profile" [ref=f46e23] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f46e27]:
+          - generic [ref=f46e28]: Mr. Varun Sharma
+          - button "Toggle theme" [ref=f46e29]
+          - button "Sign Out" [ref=f46e31]
+    - main [ref=f46e33]:
+      - generic [ref=f46e34]:
+        - generic [ref=f46e35]:
+          - heading "My Profile" [level=1] [ref=f46e36]
+          - paragraph [ref=f46e37]: Your account and connection details (managed by admin)
+        - generic [ref=f46e38]:
+          - generic [ref=f46e39]: Personal Information
+          - generic [ref=f46e45]:
+            - generic [ref=f46e46]:
+              - generic [ref=f46e47]: Full Name
+              - generic [ref=f46e48]: Mr. Varun Sharma
+            - generic [ref=f46e49]:
+              - generic [ref=f46e50]: Email
+              - generic [ref=f46e51]: b-101@oasis.local
+            - generic [ref=f46e52]:
+              - generic [ref=f46e53]: Phone
+              - generic [ref=f46e54]: —
+            - generic [ref=f46e55]:
+              - generic [ref=f46e56]: Resident Number
+              - generic [ref=f46e57]: RES-0058
+        - generic [ref=f46e58]:
+          - generic [ref=f46e60]:
+            - text: Connection Details
+            - generic [ref=f46e64]: ACTIVE
+          - generic [ref=f46e67]:
+            - generic [ref=f46e68]:
+              - generic [ref=f46e69]: Flat Details
+              - generic [ref=f46e74]:
+                - generic [ref=f46e75]:
+                  - generic [ref=f46e76]: Flat No
+                  - generic [ref=f46e77]: B-101
+                - generic [ref=f46e78]:
+                  - generic [ref=f46e79]: Tower
+                  - generic [ref=f46e80]: Tower B
+                - generic [ref=f46e81]:
+                  - generic [ref=f46e82]: Floor
+                  - generic [ref=f46e83]: First
+                - generic [ref=f46e84]:
+                  - generic [ref=f46e85]: Unit Type
+                  - generic [ref=f46e86]: 3BHK+2T
+                - generic [ref=f46e87]:
+                  - generic [ref=f46e88]: Unit Area
+                  - generic [ref=f46e89]: 1290 sq.ft
+            - generic [ref=f46e90]:
+              - generic [ref=f46e91]: Electrical Connection
+              - generic [ref=f46e95]:
+                - generic [ref=f46e96]:
+                  - generic [ref=f46e97]: Meter No
+                  - generic [ref=f46e98]: —
+                - generic [ref=f46e99]:
+                  - generic [ref=f46e100]: Sanctioned Load
+                  - generic [ref=f46e101]: 5 kW
+                - generic [ref=f46e102]:
+                  - generic [ref=f46e103]: Connected Since
+                  - generic [ref=f46e104]: 16 Jul 2026
+        - generic [ref=f46e109]:
+          - paragraph [ref=f46e110]: Need to update your details?
+          - paragraph [ref=f46e111]: Profile and connection information is managed by the admin. Please contact the Oasis Venetia Heights management office for any changes.
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f46e117] [cursor=pointer]

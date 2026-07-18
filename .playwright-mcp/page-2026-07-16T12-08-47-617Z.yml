@@ -1,0 +1,129 @@
+- generic [active] [ref=f23e1]:
+  - generic [ref=f23e2]:
+    - generic [ref=f23e4]:
+      - generic [ref=f23e10]:
+        - paragraph [ref=f23e11]: Oasis Venetia Heights
+        - paragraph [ref=f23e12]: Admin Panel
+      - navigation [ref=f23e13]:
+        - link "Dashboard" [ref=f23e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f23e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f23e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f23e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f23e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f23e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f23e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f23e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f23e47] [cursor=pointer]:
+          - /url: /admin/flats
+      - separator [ref=f23e52]
+      - generic [ref=f23e53]:
+        - generic [ref=f23e54]:
+          - generic [ref=f23e55]:
+            - paragraph [ref=f23e56]: Admin
+            - paragraph [ref=f23e57]: admin@oasis.local
+          - button "Toggle theme" [ref=f23e58]
+        - button "Sign Out" [ref=f23e60]
+    - main [ref=f23e61]:
+      - generic [ref=f23e62]:
+        - generic [ref=f23e63]:
+          - heading "Payments" [level=1] [ref=f23e64]
+          - paragraph [ref=f23e65]: View all payment transactions for Oasis Venetia Heights
+        - generic [ref=f23e66]:
+          - generic [ref=f23e68]:
+            - text: Bills Requiring Payment
+            - generic [ref=f23e69]: 1 pending
+          - table [ref=f23e72]:
+            - rowgroup [ref=f23e73]:
+              - row [ref=f23e74]:
+                - 'columnheader "Bill #" [ref=f23e75]'
+                - columnheader "Flat No" [ref=f23e76]
+                - columnheader "Resident" [ref=f23e77]
+                - columnheader "Balance Due" [ref=f23e78]
+                - columnheader "Due Date" [ref=f23e79]
+                - columnheader "Status" [ref=f23e80]
+                - columnheader "Actions" [ref=f23e81]
+            - rowgroup [ref=f23e82]:
+              - row [ref=f23e83]:
+                - cell "OV-A-102-202607" [ref=f23e84]
+                - cell "A-102" [ref=f23e85]
+                - cell "Mrs. Neha Rajoria" [ref=f23e86]
+                - cell "₹4,160.00" [ref=f23e87]
+                - cell "25 Jul 2026" [ref=f23e88]
+                - cell "PENDING" [ref=f23e89]
+                - cell [ref=f23e91]:
+                  - button "Cash Payment" [ref=f23e92]
+        - generic [ref=f23e93]:
+          - generic [ref=f23e94]:
+            - generic [ref=f23e95]: Method
+            - combobox [ref=f23e96]:
+              - generic [ref=f23e97]: all
+              - img: ▼
+            - textbox [ref=f23e98]: all
+          - generic [ref=f23e99]:
+            - generic [ref=f23e100]: Status
+            - combobox [ref=f23e101]:
+              - generic [ref=f23e102]: all
+              - img: ▼
+            - textbox [ref=f23e103]: all
+        - generic [ref=f23e104]:
+          - generic [ref=f23e105]: Payment History — 3 records
+          - table [ref=f23e109]:
+            - rowgroup [ref=f23e110]:
+              - row [ref=f23e111]:
+                - 'columnheader "Receipt #" [ref=f23e112]'
+                - columnheader "Flat No" [ref=f23e113]
+                - columnheader "Resident" [ref=f23e114]
+                - 'columnheader "Bill #" [ref=f23e115]'
+                - columnheader "Amount (₹)" [ref=f23e116]
+                - columnheader "Date" [ref=f23e117]
+                - columnheader "Method" [ref=f23e118]
+                - columnheader "Transaction ID" [ref=f23e119]
+                - columnheader "Status" [ref=f23e120]
+                - columnheader "Actions" [ref=f23e121]
+            - rowgroup [ref=f23e122]:
+              - row [ref=f23e123]:
+                - cell "RCPT-20260716-0006" [ref=f23e124]
+                - cell "A-101" [ref=f23e125]
+                - cell "Mr. Bachoo Singh Bhagaur" [ref=f23e126]
+                - cell "OV-A-101-202607-2" [ref=f23e127]
+                - cell "5,801.00" [ref=f23e128]
+                - cell "16 Jul 2026" [ref=f23e129]
+                - cell "CASH" [ref=f23e130]
+                - cell "—" [ref=f23e132]
+                - cell "SUCCESS" [ref=f23e133]
+                - cell [ref=f23e135]:
+                  - button "Receipt" [ref=f23e136]
+              - row [ref=f23e137]:
+                - cell "RCPT-20260716-0002" [ref=f23e138]
+                - cell "A-1003" [ref=f23e139]
+                - cell "Mrs. Rajlakshmi" [ref=f23e140]
+                - cell "OV-A-1003-202607" [ref=f23e141]
+                - cell "2,410.00" [ref=f23e142]
+                - cell "16 Jul 2026" [ref=f23e143]
+                - cell "CASH" [ref=f23e144]
+                - cell "—" [ref=f23e146]
+                - cell "SUCCESS" [ref=f23e147]
+                - cell [ref=f23e149]:
+                  - button "Receipt" [ref=f23e150]
+              - row [ref=f23e151]:
+                - cell "RCPT-20260716-0001" [ref=f23e152]
+                - cell "A-101" [ref=f23e153]
+                - cell "Mr. Bachoo Singh Bhagaur" [ref=f23e154]
+                - cell "OV-A-101-202607" [ref=f23e155]
+                - cell "35,660.00" [ref=f23e156]
+                - cell "16 Jul 2026" [ref=f23e157]
+                - cell "ONLINE" [ref=f23e158]
+                - cell "TEST_1784182463361" [ref=f23e160]
+                - cell "SUCCESS" [ref=f23e161]
+                - cell [ref=f23e163]:
+                  - button "Receipt" [ref=f23e164]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f23e170] [cursor=pointer]

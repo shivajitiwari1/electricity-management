@@ -1,0 +1,101 @@
+- generic [active] [ref=f4e1]:
+  - generic [ref=f4e2]:
+    - generic [ref=f4e4]:
+      - generic [ref=f4e10]:
+        - paragraph [ref=f4e11]: Oasis Venetia Heights
+        - paragraph [ref=f4e12]: Admin Panel
+      - navigation [ref=f4e13]:
+        - link [ref=f4e102] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=f4e103] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=f4e104] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=f4e105] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=f4e106] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=f4e107] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=f4e108] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=f4e109] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=f4e110] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+      - separator [ref=f4e52]
+      - generic [ref=f4e53]:
+        - generic [ref=f4e54]:
+          - generic [ref=f4e55]:
+            - paragraph [ref=f4e56]: Admin
+            - paragraph [ref=f4e57]: admin@oasis.local
+          - button [ref=f4e111]:
+            - generic [ref=f4e59]: Toggle theme
+        - button [ref=f4e112]: Sign Out
+    - main [ref=f4e61]:
+      - generic [ref=f4e62]:
+        - generic [ref=f4e63]:
+          - heading [level=1] [ref=f4e113]: Meter Readings
+          - paragraph [ref=f4e65]: Record and manage electricity meter readings
+        - generic [ref=f4e66]:
+          - paragraph [ref=f4e67]: 1 recent readings
+          - button [ref=f4e114]: Add Meter Reading
+        - generic [ref=f4e69]:
+          - generic [ref=f4e70]: Recent Meter Readings
+          - table [ref=f4e74]:
+            - rowgroup [ref=f4e75]:
+              - row [ref=f4e115]:
+                - columnheader [ref=f4e116]: Flat No
+                - columnheader [ref=f4e117]: Resident
+                - columnheader [ref=f4e118]: Reading Date
+                - columnheader [ref=f4e119]: NPCL Previous
+                - columnheader [ref=f4e120]: NPCL Current
+                - columnheader [ref=f4e121]: Units
+                - columnheader [ref=f4e122]: DG Units
+                - columnheader [ref=f4e123]: Bill
+                - columnheader [ref=f4e124]: Actions
+            - rowgroup [ref=f4e86]:
+              - row [ref=f4e125]:
+                - cell [ref=f4e126]: A-101
+                - cell [ref=f4e127]: Mr. Bachoo Singh Bhagaur
+                - cell [ref=f4e128]: 17 Jul 2026
+                - cell [ref=f4e129]: "0"
+                - cell [ref=f4e130]: "150"
+                - cell [ref=f4e131]: "150"
+                - cell [ref=f4e132]: "0"
+                - cell [ref=f4e133]:
+                  - generic [ref=f4e96]: Pending
+                - cell [ref=f4e134]:
+                  - generic [ref=f4e98]:
+                    - button [ref=f4e135]: Generate Bill
+                    - button [ref=f4e136]: Delete
+  - region "Notifications alt+T"
+  - alert [ref=f4e101]
+  - dialog [ref=f4e140]:
+    - heading "Generate Bill — Flat A-101" [level=2] [ref=f4e142]
+    - generic [ref=f4e143]:
+      - generic [ref=f4e144]:
+        - generic [ref=f4e145]: Bill Date *
+        - textbox "Bill Date *" [ref=f4e146]: 2026-07-17
+      - generic [ref=f4e147]:
+        - generic [ref=f4e148]: Billing Period Start *
+        - textbox "Billing Period Start *" [ref=f4e149]: 2026-06-30
+      - generic [ref=f4e150]:
+        - generic [ref=f4e151]: Billing Period End *
+        - textbox "Billing Period End *" [ref=f4e152]: 2026-07-17
+      - generic [ref=f4e153]:
+        - generic [ref=f4e154]: Previous Dues (Rs.)
+        - spinbutton "Previous Dues (Rs.)" [ref=f4e155]: "0"
+      - generic [ref=f4e156]:
+        - button "Cancel" [ref=f4e157]
+        - button "Generating..." [disabled]
+    - button "Close" [ref=f4e159]

@@ -1,0 +1,66 @@
+- generic [active] [ref=f8e1]:
+  - generic [ref=f8e2]:
+    - generic [ref=f8e3]:
+      - generic [ref=f8e4]:
+        - heading "Oasis Venetia Heights" [level=1] [ref=f8e5]
+        - paragraph [ref=f8e6]: Admin Panel
+      - navigation [ref=f8e7]:
+        - link "Dashboard" [ref=f8e8] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f8e14] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f8e20] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f8e23] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f8e27] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f8e31] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f8e34] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f8e37] [cursor=pointer]:
+          - /url: /admin/rates
+      - generic [ref=f8e41]:
+        - paragraph [ref=f8e42]: Admin
+        - paragraph [ref=f8e43]: admin@oasis.local
+        - button "Sign Out" [ref=f8e44]
+    - main [ref=f8e45]:
+      - generic [ref=f8e46]:
+        - generic [ref=f8e47]:
+          - heading "Electricity Rates" [level=1] [ref=f8e48]
+          - paragraph [ref=f8e49]: Manage NPCL and DG electricity rates
+        - generic [ref=f8e50]:
+          - generic [ref=f8e51]:
+            - generic [ref=f8e52]: Current Rate
+            - button "Update Rates" [ref=f8e53]
+          - generic [ref=f8e55]:
+            - generic [ref=f8e56]:
+              - paragraph [ref=f8e57]: NPCL / Unit
+              - paragraph [ref=f8e58]: ₹7
+            - generic [ref=f8e59]:
+              - paragraph [ref=f8e60]: DG Fixed Charge
+              - paragraph [ref=f8e61]: ₹200
+            - generic [ref=f8e62]:
+              - paragraph [ref=f8e63]: Fixed / kW
+              - paragraph [ref=f8e64]: ₹115
+            - generic [ref=f8e65]:
+              - paragraph [ref=f8e66]: Effective From
+              - paragraph [ref=f8e67]: 16 Jul 2026
+        - generic [ref=f8e68]:
+          - generic [ref=f8e69]: Rate History
+          - table [ref=f8e73]:
+            - rowgroup [ref=f8e74]:
+              - row [ref=f8e75]:
+                - columnheader "Effective From" [ref=f8e76]
+                - columnheader "NPCL / Unit (₹)" [ref=f8e77]
+                - columnheader "DG Fixed (₹)" [ref=f8e78]
+                - columnheader "Fixed / kW (₹)" [ref=f8e79]
+            - rowgroup [ref=f8e80]:
+              - row [ref=f8e81]:
+                - cell "16 Jul 2026Current" [ref=f8e82]
+                - cell "₹7" [ref=f8e83]
+                - cell "₹200" [ref=f8e84]
+                - cell "₹115" [ref=f8e85]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f8e91] [cursor=pointer]

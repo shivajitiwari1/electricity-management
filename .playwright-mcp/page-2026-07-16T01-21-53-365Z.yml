@@ -1,0 +1,51 @@
+- generic [active] [ref=f30e1]:
+  - generic [ref=f30e2]:
+    - banner [ref=f30e3]:
+      - generic [ref=f30e4]:
+        - generic [ref=f30e5]:
+          - generic [ref=f30e6]: Oasis Venetia Heights
+          - navigation [ref=f30e11]:
+            - link "Dashboard" [ref=f30e12] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f30e16] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f30e20] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Profile" [ref=f30e23] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f30e27]:
+          - generic [ref=f30e28]: Mr. Varun Sharma
+          - button "Toggle theme" [ref=f30e29]
+          - button "Sign Out" [ref=f30e31]
+    - main [ref=f30e33]:
+      - generic [ref=f30e34]:
+        - generic [ref=f30e35]:
+          - heading "My Bills" [level=1] [ref=f30e36]
+          - paragraph [ref=f30e37]: View and pay your electricity bills
+        - generic [ref=f30e38]:
+          - generic [ref=f30e39]: 1 Bill
+          - table [ref=f30e43]:
+            - rowgroup [ref=f30e44]:
+              - row [ref=f30e45]:
+                - 'columnheader "Bill #" [ref=f30e46]'
+                - columnheader "Period" [ref=f30e47]
+                - columnheader "NPCL Units" [ref=f30e48]
+                - columnheader "Amount (₹)" [ref=f30e49]
+                - columnheader "Due Date" [ref=f30e50]
+                - columnheader "Status" [ref=f30e51]
+                - columnheader "Actions" [ref=f30e52]
+            - rowgroup [ref=f30e53]:
+              - row [ref=f30e54]:
+                - cell "OV-B-101-202607" [ref=f30e55]
+                - cell "30 Jun 2026 – 16 Jul 2026" [ref=f30e56]
+                - cell "180 kWh" [ref=f30e57]
+                - cell "2,035.00" [ref=f30e58]
+                - cell "25 Jul 2026" [ref=f30e59]
+                - cell [ref=f30e60]
+                - cell [ref=f30e62]:
+                  - generic [ref=f30e63]:
+                    - button "PDF" [ref=f30e64]
+                    - button "Details" [ref=f30e65]
+                    - button "Pay Now" [ref=f30e66]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f30e72] [cursor=pointer]

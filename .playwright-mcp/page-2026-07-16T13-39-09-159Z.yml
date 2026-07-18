@@ -1,0 +1,142 @@
+- generic [ref=f9e1]:
+  - generic [ref=f9e2]:
+    - generic [ref=f9e4]:
+      - generic [ref=f9e10]:
+        - paragraph [ref=f9e11]: Oasis Venetia Heights
+        - paragraph [ref=f9e12]: Admin Panel
+      - navigation [ref=f9e13]:
+        - link [ref=f9e135] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=f9e136] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=f9e137] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=f9e138] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=f9e139] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=f9e140] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=f9e141] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=f9e142] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=f9e143] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+      - separator [ref=f9e52]
+      - generic [ref=f9e53]:
+        - generic [ref=f9e54]:
+          - generic [ref=f9e55]:
+            - paragraph [ref=f9e56]: Admin
+            - paragraph [ref=f9e57]: admin@oasis.local
+          - button [ref=f9e144]:
+            - generic [ref=f9e59]: Toggle theme
+        - button [ref=f9e145]: Sign Out
+    - main [ref=f9e61]:
+      - generic [ref=f9e62]:
+        - generic [ref=f9e63]:
+          - heading [level=1] [ref=f9e146]: Payments
+          - paragraph [ref=f9e65]: View all payment transactions for Oasis Venetia Heights
+        - generic [ref=f9e66]:
+          - generic [ref=f9e68]:
+            - text: Bills Requiring Payment
+            - generic [ref=f9e69]: 1 pending
+          - table [ref=f9e72]:
+            - rowgroup [ref=f9e73]:
+              - row [ref=f9e147]:
+                - columnheader [ref=f9e148]: "Bill #"
+                - columnheader [ref=f9e149]: Flat No
+                - columnheader [ref=f9e150]: Resident
+                - columnheader [ref=f9e151]: Balance Due
+                - columnheader [ref=f9e152]: Due Date
+                - columnheader [ref=f9e153]: Status
+                - columnheader [ref=f9e154]: Actions
+            - rowgroup [ref=f9e82]:
+              - row [ref=f9e155]:
+                - cell [ref=f9e156]: OV-A-101-202607
+                - cell [ref=f9e157]: A-101
+                - cell [ref=f9e158]: Mr. Bachoo Singh Bhagaur
+                - cell [ref=f9e159]: ₹3,085.00
+                - cell [ref=f9e160]: 25 Jul 2026
+                - cell [ref=f9e161]:
+                  - generic [ref=f9e90]: PENDING
+                - cell [ref=f9e162]:
+                  - button [ref=f9e163]: Cash Payment
+        - generic [ref=f9e93]:
+          - generic [ref=f9e94]:
+            - generic [ref=f9e95]: Method
+            - combobox [ref=f9e96]:
+              - generic [ref=f9e97]: all
+              - img: ▼
+            - textbox [ref=f9e98]: all
+          - generic [ref=f9e99]:
+            - generic [ref=f9e100]: Status
+            - combobox [ref=f9e101]:
+              - generic [ref=f9e102]: all
+              - img: ▼
+            - textbox [ref=f9e103]: all
+        - generic [ref=f9e104]:
+          - generic [ref=f9e105]: Payment History — 0 records
+          - table [ref=f9e109]:
+            - rowgroup [ref=f9e110]:
+              - row [ref=f9e164]:
+                - columnheader [ref=f9e165]: "Receipt #"
+                - columnheader [ref=f9e166]: Flat No
+                - columnheader [ref=f9e167]: Resident
+                - columnheader [ref=f9e168]: "Bill #"
+                - columnheader [ref=f9e169]: Amount (₹)
+                - columnheader [ref=f9e170]: Date
+                - columnheader [ref=f9e171]: Method
+                - columnheader [ref=f9e172]: Transaction ID
+                - columnheader [ref=f9e173]: Status
+                - columnheader [ref=f9e174]: Actions
+            - rowgroup [ref=f9e122]:
+              - row [ref=f9e175]:
+                - cell [ref=f9e176]: No payments found
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f9e130] [cursor=pointer]
+  - alert [ref=f9e134]
+  - dialog [ref=f9e180]:
+    - heading "Record Cash Payment" [level=2] [ref=f9e182]
+    - generic [ref=f9e183]:
+      - generic [ref=f9e184]:
+        - generic [ref=f9e185]:
+          - generic [ref=f9e186]: Flat No
+          - generic [ref=f9e187]: A-101
+        - generic [ref=f9e188]:
+          - generic [ref=f9e189]: Resident
+          - generic [ref=f9e190]: Mr. Bachoo Singh Bhagaur
+        - generic [ref=f9e191]:
+          - generic [ref=f9e192]: "Bill #"
+          - generic [ref=f9e193]: OV-A-101-202607
+        - generic [ref=f9e194]:
+          - generic [ref=f9e195]: Due Date
+          - generic [ref=f9e196]: 25 Jul 2026
+        - generic [ref=f9e197]:
+          - generic [ref=f9e198]: Total Bill
+          - generic [ref=f9e199]: ₹3,085.00
+        - generic [ref=f9e200]:
+          - generic [ref=f9e201]: Balance Due
+          - generic [ref=f9e202]: ₹3,085.00
+      - generic [ref=f9e203]:
+        - generic [ref=f9e204]: Amount Received (₹)
+        - spinbutton "Amount Received (₹)" [active] [ref=f9e205]: "3085.00"
+        - generic [ref=f9e206]:
+          - button "Full amount" [ref=f9e207]
+          - button "25%" [ref=f9e208]
+          - button "50%" [ref=f9e209]
+          - button "75%" [ref=f9e210]
+      - generic [ref=f9e211]: Full payment — bill will be marked as PAID
+    - generic [ref=f9e212]:
+      - button "Cancel" [ref=f9e213]
+      - button "Confirm Cash Received" [ref=f9e214]
+    - button "Close" [ref=f9e215]

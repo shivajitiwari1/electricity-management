@@ -1,0 +1,73 @@
+- generic [active] [ref=f3e1]:
+  - generic [ref=f3e2]:
+    - generic [ref=f3e4]:
+      - generic [ref=f3e10]:
+        - paragraph [ref=f3e11]: Oasis Venetia Heights
+        - paragraph [ref=f3e12]: Admin Panel
+      - navigation [ref=f3e13]:
+        - link "Dashboard" [ref=f3e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f3e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f3e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f3e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f3e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f3e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f3e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f3e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f3e47] [cursor=pointer]:
+          - /url: /admin/flats
+      - separator [ref=f3e52]
+      - generic [ref=f3e53]:
+        - generic [ref=f3e54]:
+          - generic [ref=f3e55]:
+            - paragraph [ref=f3e56]: Admin
+            - paragraph [ref=f3e57]: admin@oasis.local
+          - button "Toggle theme" [ref=f3e58]
+        - button "Sign Out" [ref=f3e60]
+    - main [ref=f3e61]:
+      - generic [ref=f3e62]:
+        - generic [ref=f3e63]:
+          - heading "Bills" [level=1] [ref=f3e64]
+          - paragraph [ref=f3e65]: Manage electricity bills for Oasis Venetia Heights
+        - generic [ref=f3e66]:
+          - generic [ref=f3e67]:
+            - generic [ref=f3e68]: Tower
+            - combobox [ref=f3e69]:
+              - generic [ref=f3e70]: all
+              - img: ▼
+            - textbox [ref=f3e71]: all
+          - generic [ref=f3e72]:
+            - generic [ref=f3e73]: Month (YYYY-MM)
+            - textbox "e.g. 2026-07" [ref=f3e74]
+          - generic [ref=f3e75]:
+            - generic [ref=f3e76]: Status
+            - combobox [ref=f3e77]:
+              - generic [ref=f3e78]: all
+              - img: ▼
+            - textbox [ref=f3e79]: all
+        - generic [ref=f3e80]:
+          - generic [ref=f3e81]: 0 Bills
+          - table [ref=f3e85]:
+            - rowgroup [ref=f3e86]:
+              - row [ref=f3e87]:
+                - 'columnheader "Bill #" [ref=f3e88]'
+                - columnheader "Flat No" [ref=f3e89]
+                - columnheader "Tower" [ref=f3e90]
+                - columnheader "Resident" [ref=f3e91]
+                - columnheader "Period" [ref=f3e92]
+                - columnheader "Amount (₹)" [ref=f3e93]
+                - columnheader "Due Date" [ref=f3e94]
+                - columnheader "Status" [ref=f3e95]
+                - columnheader "Actions" [ref=f3e96]
+            - rowgroup [ref=f3e97]:
+              - row [ref=f3e98]:
+                - cell "No bills found" [ref=f3e99]
+  - region "Notifications alt+T"
+  - alert [ref=f3e100]

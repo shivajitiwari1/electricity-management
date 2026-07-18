@@ -1,0 +1,98 @@
+- generic [ref=f50e1]:
+  - generic [ref=f50e35]:
+    - generic [ref=f50e37]:
+      - generic [ref=f50e43]:
+        - paragraph [ref=f50e44]: Oasis Venetia Heights
+        - paragraph [ref=f50e45]: Admin Panel
+      - navigation [ref=f50e46]:
+        - link "Dashboard" [ref=f50e47] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f50e53] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f50e59] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f50e62] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f50e66] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f50e70] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f50e73] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f50e76] [cursor=pointer]:
+          - /url: /admin/rates
+      - separator [ref=f50e80]
+      - generic [ref=f50e81]:
+        - generic [ref=f50e82]:
+          - generic [ref=f50e83]:
+            - paragraph [ref=f50e84]: Admin
+            - paragraph [ref=f50e85]: admin@oasis.local
+          - button "Toggle theme" [active] [ref=f50e86]
+        - button "Sign Out" [ref=f50e88]
+    - main [ref=f50e89]:
+      - generic [ref=f50e90]:
+        - generic [ref=f50e91]:
+          - heading "Dashboard" [level=1] [ref=f50e92]
+          - paragraph [ref=f50e93]: Overview of Oasis Venetia Heights electricity management
+        - generic [ref=f50e94]:
+          - generic [ref=f50e98]:
+            - paragraph [ref=f50e99]: Total Residents
+            - paragraph [ref=f50e100]: "398"
+          - generic [ref=f50e110]:
+            - paragraph [ref=f50e111]: Active Connections
+            - paragraph [ref=f50e112]: "398"
+          - generic [ref=f50e119]:
+            - paragraph [ref=f50e120]: Bills This Month
+            - paragraph [ref=f50e121]: "3"
+          - generic [ref=f50e129]:
+            - paragraph [ref=f50e130]: Revenue This Month
+            - paragraph [ref=f50e131]: ₹1,710.00
+          - generic [ref=f50e139]:
+            - paragraph [ref=f50e140]: Overdue Bills
+            - paragraph [ref=f50e141]: "0"
+        - generic [ref=f50e145]:
+          - link [ref=f50e146] [cursor=pointer]:
+            - /url: /admin/residents
+            - button "Add Resident" [ref=f50e147]
+          - link [ref=f50e148] [cursor=pointer]:
+            - /url: /admin/meter-readings
+            - button "Enter Reading" [ref=f50e149]
+          - link [ref=f50e150] [cursor=pointer]:
+            - /url: /admin/reports
+            - button "View Reports" [ref=f50e151]
+        - generic [ref=f50e152]:
+          - generic [ref=f50e153]: Recent Bills
+          - table [ref=f50e157]:
+            - rowgroup [ref=f50e158]:
+              - row [ref=f50e159]:
+                - 'columnheader "Bill #" [ref=f50e160]'
+                - columnheader "Flat" [ref=f50e161]
+                - columnheader "Resident" [ref=f50e162]
+                - columnheader "Amount" [ref=f50e163]
+                - columnheader "Due Date" [ref=f50e164]
+                - columnheader "Status" [ref=f50e165]
+            - rowgroup [ref=f50e166]:
+              - row [ref=f50e167]:
+                - cell "OV-C-101-202607" [ref=f50e168]
+                - cell "C-101" [ref=f50e169]
+                - cell "Mr. Vineet Kumar" [ref=f50e170]
+                - cell "₹1,850.00" [ref=f50e171]
+                - cell "25 Jul 2026" [ref=f50e172]
+                - cell "PENDING" [ref=f50e173]
+              - row [ref=f50e175]:
+                - cell "OV-B-101-202607" [ref=f50e176]
+                - cell "B-101" [ref=f50e177]
+                - cell "Mr. Varun Sharma" [ref=f50e178]
+                - cell "₹2,035.00" [ref=f50e179]
+                - cell "25 Jul 2026" [ref=f50e180]
+                - cell "PENDING" [ref=f50e181]
+              - row [ref=f50e183]:
+                - cell "OV-A-101-202607" [ref=f50e184]
+                - cell "A-101" [ref=f50e185]
+                - cell "Mr. Bachoo Singh Bhagaur" [ref=f50e186]
+                - cell "₹1,710.00" [ref=f50e187]
+                - cell "25 Jul 2026" [ref=f50e188]
+                - cell "PAID" [ref=f50e189]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f50e30] [cursor=pointer]
+  - alert [ref=f50e34]

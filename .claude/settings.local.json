@@ -39,7 +39,32 @@
       "WebFetch(domain:pris.ly)",
       "WebFetch(domain:www.prisma.io)",
       "Bash(node -e \"const net=require\\('net'\\);const s=net.createConnection\\(3306,'localhost',\\(\\)=>{console.log\\('MySQL running on port 3306'\\);s.destroy\\(\\)}\\);s.on\\('error',e=>console.log\\('MySQL NOT running:',e.message\\)\\)\")",
-      "Bash(node --import jiti/register prisma/seed.ts)"
+      "Bash(node --import jiti/register prisma/seed.ts)",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(ffmpeg -version)",
+      "Bash(npm run *)",
+      "Bash(echo \"Server starting, PID: $!\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
+      "mcp__plugin_playwright_playwright__browser_console_messages",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/login)",
+      "mcp__plugin_playwright_playwright__browser_type",
+      "mcp__plugin_playwright_playwright__browser_find",
+      "mcp__plugin_playwright_playwright__browser_handle_dialog",
+      "Bash(ffmpeg -y -framerate 1 -pattern_type glob -i \"screenshots/*.png\" -vf \"scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:\\(ow-iw\\)/2:\\(oh-ih\\)/2:black,fps=24\" -c:v libx264 -pix_fmt yuv420p -crf 23 \"demo-walkthrough.mp4\")",
+      "Bash(awk '{print \"file '\"'\"'screenshots/\" $0 \"'\"'\"'\"}')",
+      "Bash(grep '\\\\.png$')",
+      "Bash(awk '{print \"file '\"'\"'screenshots/\" $0 \"'\"'\"'\\\\nduration 3\"}')",
+      "Bash(ffmpeg -y -f concat -safe 0 -i filelist.txt -vf \"scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:\\(ow-iw\\)/2:\\(oh-ih\\)/2:black,fps=24\" -c:v libx264 -pix_fmt yuv420p -crf 23 \"demo-walkthrough.mp4\")",
+      "Bash(awk '{print \"file \\\\x27\" $0 \"\\\\x27\\\\nduration 3\"}')",
+      "Bash(ffmpeg -y -f concat -safe 0 -i filelist.txt -vf \"scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:\\(ow-iw\\)/2:\\(oh-ih\\)/2:color=0x1a1a2e\" -c:v libx264 -pix_fmt yuv420p -crf 23 -preset fast ../demo-walkthrough-v2.mp4)",
+      "Bash(ls scripts/)",
+      "Bash(npx tsx *)",
+      "Bash(xargs grep *)",
+      "Bash(npx next *)",
+      "Bash(npx eslint *)",
+      "Bash(npx shadcn@latest add command popover --yes)",
+      "Bash(node -e \"const d = require\\('./lib/flat-data.json'\\); console.log\\('Type:', typeof d, Array.isArray\\(d\\)\\); console.log\\('Length:', d.length\\); console.log\\('First:', JSON.stringify\\(d[0]\\)\\)\")"
     ],
     "additionalDirectories": [
       "E:\\Demo Website\\Electricity Bill\\electricity-management\\app\\api\\residents",
@@ -47,7 +72,9 @@
       "E:\\Demo Website\\Electricity Bill\\electricity-management\\app\\api\\meter-readings",
       "E:\\Demo Website\\Electricity Bill\\electricity-management\\app\\api\\bills",
       "E:\\Demo Website\\Electricity Bill\\electricity-management\\app\\api\\payments",
-      "E:\\Demo Website\\Electricity Bill\\electricity-management\\app\\(resident)\\bills\\[id]\\pay"
+      "E:\\Demo Website\\Electricity Bill\\electricity-management\\app\\(resident)\\bills\\[id]\\pay",
+      "e:\\Demo Website\\Electricity Bill\\electricity-management\\app\\pay",
+      "e:\\Demo Website\\Electricity Bill\\electricity-management\\app\\(auth)\\reset-password"
     ]
   }
 }

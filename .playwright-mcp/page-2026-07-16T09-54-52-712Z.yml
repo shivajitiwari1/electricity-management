@@ -1,0 +1,125 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e4]:
+      - generic [ref=e10]:
+        - paragraph [ref=e11]: Oasis Venetia Heights
+        - paragraph [ref=e12]: Admin Panel
+      - navigation [ref=e13]:
+        - link "Dashboard" [ref=e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=e43] [cursor=pointer]:
+          - /url: /admin/rates
+      - separator [ref=e47]
+      - generic [ref=e48]:
+        - generic [ref=e49]:
+          - generic [ref=e50]:
+            - paragraph [ref=e51]: Admin
+            - paragraph [ref=e52]: admin@oasis.local
+          - button "Toggle theme" [ref=e53]
+        - button "Sign Out" [ref=e55]
+    - main [ref=e56]:
+      - generic [ref=e57]:
+        - generic [ref=e58]:
+          - heading "Dashboard" [level=1] [ref=e59]
+          - paragraph [ref=e60]: Overview of Oasis Venetia Heights electricity management
+        - generic [ref=e61]:
+          - generic [ref=e65]:
+            - paragraph [ref=e66]: Total Residents
+            - paragraph [ref=e67]: "427"
+          - generic [ref=e77]:
+            - paragraph [ref=e78]: Active Connections
+            - paragraph [ref=e79]: "427"
+          - generic [ref=e86]:
+            - paragraph [ref=e87]: Bills This Month
+            - paragraph [ref=e88]: "7"
+          - generic [ref=e96]:
+            - paragraph [ref=e97]: Revenue This Month
+            - paragraph [ref=e98]: ₹1,24,448.00
+          - generic [ref=e106]:
+            - paragraph [ref=e107]: Overdue Bills
+            - paragraph [ref=e108]: "0"
+        - generic [ref=e112]:
+          - link [ref=e113] [cursor=pointer]:
+            - /url: /admin/residents
+            - button "Add Resident" [ref=e114]
+          - link [ref=e115] [cursor=pointer]:
+            - /url: /admin/meter-readings
+            - button "Enter Reading" [ref=e116]
+          - link [ref=e117] [cursor=pointer]:
+            - /url: /admin/reports
+            - button "View Reports" [ref=e118]
+        - generic [ref=e119]:
+          - generic [ref=e120]: Recent Bills
+          - table [ref=e124]:
+            - rowgroup [ref=e125]:
+              - row [ref=e126]:
+                - 'columnheader "Bill #" [ref=e127]'
+                - columnheader "Flat" [ref=e128]
+                - columnheader "Resident" [ref=e129]
+                - columnheader "Amount" [ref=e130]
+                - columnheader "Due Date" [ref=e131]
+                - columnheader "Status" [ref=e132]
+            - rowgroup [ref=e133]:
+              - row [ref=e134]:
+                - cell "OV-A-222-202607-3" [ref=e135]
+                - cell "A-222" [ref=e136]
+                - cell "Shivaji Tiwari" [ref=e137]
+                - cell "₹12,717.00" [ref=e138]
+                - cell "25 Jul 2026" [ref=e139]
+                - cell "PAID" [ref=e140]
+              - row [ref=e142]:
+                - cell "OV-A-222-202607-2" [ref=e143]
+                - cell "A-222" [ref=e144]
+                - cell "Shivaji Tiwari" [ref=e145]
+                - cell "₹12,637.00" [ref=e146]
+                - cell "25 Jul 2026" [ref=e147]
+                - cell "PAID" [ref=e148]
+              - row [ref=e150]:
+                - cell "OV-A-222-202607" [ref=e151]
+                - cell "A-222" [ref=e152]
+                - cell "Shivaji Tiwari" [ref=e153]
+                - cell "₹37,413.00" [ref=e154]
+                - cell "25 Jul 2026" [ref=e155]
+                - cell "PAID" [ref=e156]
+              - row [ref=e158]:
+                - cell "OV-A-101-202607-2" [ref=e159]
+                - cell "A-101" [ref=e160]
+                - cell "Mr. Bachoo Singh Bhagaur" [ref=e161]
+                - cell "₹5,801.00" [ref=e162]
+                - cell "25 Jul 2026" [ref=e163]
+                - cell "PAID" [ref=e164]
+              - row [ref=e166]:
+                - cell "OV-A-12A-01-202607" [ref=e167]
+                - cell "A-12A-01" [ref=e168]
+                - cell "Mr. Abhishek Pandey" [ref=e169]
+                - cell "₹17,810.00" [ref=e170]
+                - cell "25 Jul 2026" [ref=e171]
+                - cell "PAID" [ref=e172]
+              - row [ref=e174]:
+                - cell "OV-A-1003-202607" [ref=e175]
+                - cell "A-1003" [ref=e176]
+                - cell "Mrs. Rajlakshmi" [ref=e177]
+                - cell "₹2,410.00" [ref=e178]
+                - cell "25 Jul 2026" [ref=e179]
+                - cell "PAID" [ref=e180]
+              - row [ref=e182]:
+                - cell "OV-A-101-202607" [ref=e183]
+                - cell "A-101" [ref=e184]
+                - cell "Mr. Bachoo Singh Bhagaur" [ref=e185]
+                - cell "₹35,660.00" [ref=e186]
+                - cell "25 Jul 2026" [ref=e187]
+                - cell "PAID" [ref=e188]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e195] [cursor=pointer]

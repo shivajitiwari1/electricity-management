@@ -1,0 +1,118 @@
+- generic [ref=f37e1]:
+  - generic [ref=f37e2]:
+    - generic [ref=f37e4]:
+      - generic [ref=f37e10]:
+        - paragraph [ref=f37e11]: Oasis Venetia Heights
+        - paragraph [ref=f37e12]: Admin Panel
+      - navigation [ref=f37e13]:
+        - link [ref=f37e114] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=f37e115] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=f37e116] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=f37e117] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=f37e118] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=f37e119] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=f37e120] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=f37e121] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+      - separator [ref=f37e47]
+      - generic [ref=f37e48]:
+        - generic [ref=f37e49]:
+          - generic [ref=f37e50]:
+            - paragraph [ref=f37e51]: Admin
+            - paragraph [ref=f37e52]: admin@oasis.local
+          - button [ref=f37e122]:
+            - generic [ref=f37e54]: Toggle theme
+        - button [ref=f37e123]: Sign Out
+    - main [ref=f37e56]:
+      - generic [ref=f37e57]:
+        - generic [ref=f37e58]:
+          - heading [level=1] [ref=f37e124]: Meter Readings
+          - paragraph [ref=f37e60]: Record and manage electricity meter readings
+        - generic [ref=f37e61]:
+          - paragraph [ref=f37e62]: 2 recent readings
+          - button [ref=f37e125]: Add Meter Reading
+        - generic [ref=f37e64]:
+          - generic [ref=f37e65]: Recent Meter Readings
+          - table [ref=f37e69]:
+            - rowgroup [ref=f37e70]:
+              - row [ref=f37e126]:
+                - columnheader [ref=f37e127]: Flat No
+                - columnheader [ref=f37e128]: Resident
+                - columnheader [ref=f37e129]: Reading Date
+                - columnheader [ref=f37e130]: NPCL Previous
+                - columnheader [ref=f37e131]: NPCL Current
+                - columnheader [ref=f37e132]: Units
+                - columnheader [ref=f37e133]: DG Units
+                - columnheader [ref=f37e134]: Bill
+                - columnheader [ref=f37e135]: Actions
+            - rowgroup [ref=f37e81]:
+              - row [ref=f37e136]:
+                - cell [ref=f37e137]: A-101
+                - cell [ref=f37e138]: Mr. Bachoo Singh Bhagaur
+                - cell [ref=f37e139]: 16 Jul 2026
+                - cell [ref=f37e140]: "1200"
+                - cell [ref=f37e141]: "1350"
+                - cell [ref=f37e142]: "150"
+                - cell [ref=f37e143]: "15"
+                - cell [ref=f37e144]:
+                  - generic [ref=f37e91]: Generated
+                - cell [ref=f37e92]
+              - row [ref=f37e145]:
+                - cell [ref=f37e146]: B-101
+                - cell [ref=f37e147]: Mr. Varun Sharma
+                - cell [ref=f37e148]: 16 Jul 2026
+                - cell [ref=f37e149]: "800"
+                - cell [ref=f37e150]: "980"
+                - cell [ref=f37e151]: "180"
+                - cell [ref=f37e152]: "12"
+                - cell [ref=f37e153]:
+                  - generic [ref=f37e102]: Generated
+                - cell [ref=f37e103]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f37e109] [cursor=pointer]
+  - alert [ref=f37e113]
+  - dialog [ref=f37e157]:
+    - heading "Add Meter Reading" [level=2] [ref=f37e159]
+    - generic [ref=f37e160]:
+      - generic [ref=f37e161]:
+        - generic [ref=f37e162]: Flat *
+        - combobox "Flat *" [active] [ref=f37e163]:
+          - generic [ref=f37e164]: Select flat
+          - img: ▼
+        - textbox [ref=f37e165]
+      - generic [ref=f37e166]:
+        - generic [ref=f37e167]: Reading Date *
+        - textbox "Reading Date *" [ref=f37e168]: 2026-07-16
+      - generic [ref=f37e169]:
+        - generic [ref=f37e170]:
+          - generic [ref=f37e171]: NPCL Previous Reading *
+          - spinbutton "NPCL Previous Reading *" [ref=f37e172]
+        - generic [ref=f37e173]:
+          - generic [ref=f37e174]: NPCL Current Reading *
+          - spinbutton "NPCL Current Reading *" [ref=f37e175]
+      - generic [ref=f37e176]:
+        - generic [ref=f37e177]:
+          - generic [ref=f37e178]: DG Previous (optional)
+          - spinbutton "DG Previous (optional)" [ref=f37e179]
+        - generic [ref=f37e180]:
+          - generic [ref=f37e181]: DG Current (optional)
+          - spinbutton "DG Current (optional)" [ref=f37e182]
+      - generic [ref=f37e183]:
+        - button "Cancel" [ref=f37e184]
+        - button "Save Reading" [ref=f37e185]
+    - button "Close" [ref=f37e186]

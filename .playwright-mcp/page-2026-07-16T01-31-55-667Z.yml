@@ -1,0 +1,69 @@
+- generic [active] [ref=f39e1]:
+  - generic [ref=f39e2]:
+    - generic [ref=f39e4]:
+      - generic [ref=f39e10]:
+        - paragraph [ref=f39e11]: Oasis Venetia Heights
+        - paragraph [ref=f39e12]: Admin Panel
+      - navigation [ref=f39e13]:
+        - link "Dashboard" [ref=f39e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f39e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f39e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f39e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f39e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f39e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f39e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f39e43] [cursor=pointer]:
+          - /url: /admin/rates
+      - separator [ref=f39e47]
+      - generic [ref=f39e48]:
+        - generic [ref=f39e49]:
+          - generic [ref=f39e50]:
+            - paragraph [ref=f39e51]: Admin
+            - paragraph [ref=f39e52]: admin@oasis.local
+          - button "Toggle theme" [ref=f39e53]
+        - button "Sign Out" [ref=f39e55]
+    - main [ref=f39e56]:
+      - generic [ref=f39e57]:
+        - generic [ref=f39e58]:
+          - heading "Payments" [level=1] [ref=f39e59]
+          - paragraph [ref=f39e60]: View all payment transactions for Oasis Venetia Heights
+        - generic [ref=f39e61]:
+          - generic [ref=f39e62]:
+            - generic [ref=f39e63]: Method
+            - combobox [ref=f39e64]:
+              - generic [ref=f39e65]: all
+              - img: ▼
+            - textbox [ref=f39e66]: all
+          - generic [ref=f39e67]:
+            - generic [ref=f39e68]: Status
+            - combobox [ref=f39e69]:
+              - generic [ref=f39e70]: all
+              - img: ▼
+            - textbox [ref=f39e71]: all
+        - generic [ref=f39e72]:
+          - generic [ref=f39e73]: 0 Payments
+          - table [ref=f39e77]:
+            - rowgroup [ref=f39e78]:
+              - row [ref=f39e79]:
+                - 'columnheader "Receipt #" [ref=f39e80]'
+                - columnheader "Flat No" [ref=f39e81]
+                - columnheader "Resident" [ref=f39e82]
+                - 'columnheader "Bill #" [ref=f39e83]'
+                - columnheader "Amount (₹)" [ref=f39e84]
+                - columnheader "Date" [ref=f39e85]
+                - columnheader "Method" [ref=f39e86]
+                - columnheader "Transaction ID" [ref=f39e87]
+                - columnheader "Status" [ref=f39e88]
+                - columnheader "Actions" [ref=f39e89]
+            - rowgroup [ref=f39e90]:
+              - row [ref=f39e91]:
+                - cell "No payments found" [ref=f39e92]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f39e98] [cursor=pointer]

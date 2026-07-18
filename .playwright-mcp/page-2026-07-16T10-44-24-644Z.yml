@@ -1,0 +1,91 @@
+- generic [active] [ref=f21e1]:
+  - generic [ref=f21e2]:
+    - generic [ref=f21e4]:
+      - generic [ref=f21e10]:
+        - paragraph [ref=f21e11]: Oasis Venetia Heights
+        - paragraph [ref=f21e12]: Admin Panel
+      - navigation [ref=f21e13]:
+        - link "Dashboard" [ref=f21e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f21e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f21e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f21e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f21e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f21e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f21e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f21e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f21e47] [cursor=pointer]:
+          - /url: /admin/flats
+      - separator [ref=f21e52]
+      - generic [ref=f21e53]:
+        - generic [ref=f21e54]:
+          - generic [ref=f21e55]:
+            - paragraph [ref=f21e56]: Admin
+            - paragraph [ref=f21e57]: admin@oasis.local
+          - button "Toggle theme" [ref=f21e58]
+        - button "Sign Out" [ref=f21e60]
+    - main [ref=f21e61]:
+      - generic [ref=f21e62]:
+        - generic [ref=f21e63]:
+          - heading "Reports" [level=1] [ref=f21e64]
+          - paragraph [ref=f21e65]: Financial reports and analytics for Oasis Venetia Heights
+        - generic [ref=f21e66]:
+          - generic [ref=f21e68]:
+            - generic [ref=f21e69]:
+              - generic [ref=f21e70]:
+                - button "Weekly" [ref=f21e71]
+                - button "Monthly" [ref=f21e72]
+                - button "Half Yearly" [ref=f21e73]
+                - button "Yearly" [ref=f21e74]
+              - generic [ref=f21e75]:
+                - button "CSV" [ref=f21e76]
+                - button "Download PDF" [ref=f21e77]
+            - generic [ref=f21e78]:
+              - generic [ref=f21e79]: Date Range
+              - generic [ref=f21e80]:
+                - textbox [ref=f21e81]: 2026-06-15
+                - generic [ref=f21e82]: to
+                - textbox [ref=f21e83]: 2026-07-16
+          - generic [ref=f21e84]:
+            - generic [ref=f21e88]:
+              - paragraph [ref=f21e89]: Revenue
+              - paragraph [ref=f21e90]: ₹61,681.00
+              - paragraph [ref=f21e91]: Monthly
+            - generic [ref=f21e99]:
+              - paragraph [ref=f21e100]: Bills Generated
+              - paragraph [ref=f21e101]: "4"
+              - paragraph [ref=f21e102]: Monthly
+            - generic [ref=f21e110]:
+              - paragraph [ref=f21e111]: Total Residents
+              - paragraph [ref=f21e112]: "425"
+              - paragraph [ref=f21e113]: All time
+            - generic [ref=f21e123]:
+              - paragraph [ref=f21e124]: Overdue Bills
+              - paragraph [ref=f21e125]: "0"
+              - paragraph [ref=f21e126]: Current
+          - generic [ref=f21e130]: Revenue — Monthly (Paid Bills)
+          - generic [ref=f21e136]: Revenue by Tower — Monthly
+          - generic [ref=f21e142]:
+            - generic [ref=f21e143]: Overdue Bills
+            - table [ref=f21e147]:
+              - rowgroup [ref=f21e148]:
+                - row [ref=f21e149]:
+                  - columnheader "Flat No" [ref=f21e150]
+                  - columnheader "Tower" [ref=f21e151]
+                  - columnheader "Resident" [ref=f21e152]
+                  - 'columnheader "Bill #" [ref=f21e153]'
+                  - columnheader "Due Date" [ref=f21e154]
+                  - columnheader "Amount (₹)" [ref=f21e155]
+                  - columnheader "Days Overdue" [ref=f21e156]
+              - rowgroup [ref=f21e157]:
+                - row [ref=f21e158]:
+                  - cell "No overdue bills" [ref=f21e159]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f21e165] [cursor=pointer]

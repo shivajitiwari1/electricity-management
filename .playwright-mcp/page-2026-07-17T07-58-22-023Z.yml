@@ -1,0 +1,71 @@
+- generic [active] [ref=f4e1]:
+  - generic [ref=f4e2]:
+    - generic [ref=f4e4]:
+      - generic [ref=f4e10]:
+        - paragraph [ref=f4e11]: Oasis Venetia Heights
+        - paragraph [ref=f4e12]: Admin Panel
+      - navigation [ref=f4e13]:
+        - link "Dashboard" [ref=f4e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f4e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f4e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f4e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f4e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f4e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f4e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f4e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f4e47] [cursor=pointer]:
+          - /url: /admin/flats
+      - separator [ref=f4e52]
+      - generic [ref=f4e53]:
+        - generic [ref=f4e54]:
+          - generic [ref=f4e55]:
+            - paragraph [ref=f4e56]: Admin
+            - paragraph [ref=f4e57]: admin@oasis.local
+          - button "Toggle theme" [ref=f4e58]
+        - button "Sign Out" [ref=f4e60]
+    - main [ref=f4e61]:
+      - generic [ref=f4e62]:
+        - generic [ref=f4e63]:
+          - heading "Meter Readings" [level=1] [ref=f4e64]
+          - paragraph [ref=f4e65]: Record and manage electricity meter readings
+        - generic [ref=f4e66]:
+          - paragraph [ref=f4e67]: 1 recent readings
+          - button "Add Meter Reading" [ref=f4e68]
+        - generic [ref=f4e69]:
+          - generic [ref=f4e70]: Recent Meter Readings
+          - table [ref=f4e74]:
+            - rowgroup [ref=f4e75]:
+              - row [ref=f4e76]:
+                - columnheader "Flat No" [ref=f4e77]
+                - columnheader "Resident" [ref=f4e78]
+                - columnheader "Reading Date" [ref=f4e79]
+                - columnheader "NPCL Previous" [ref=f4e80]
+                - columnheader "NPCL Current" [ref=f4e81]
+                - columnheader "Units" [ref=f4e82]
+                - columnheader "DG Units" [ref=f4e83]
+                - columnheader "Bill" [ref=f4e84]
+                - columnheader "Actions" [ref=f4e85]
+            - rowgroup [ref=f4e86]:
+              - row [ref=f4e87]:
+                - cell "A-101" [ref=f4e88]
+                - cell "Mr. Bachoo Singh Bhagaur" [ref=f4e89]
+                - cell "17 Jul 2026" [ref=f4e90]
+                - cell "0" [ref=f4e91]
+                - cell "150" [ref=f4e92]
+                - cell "150" [ref=f4e93]
+                - cell "0" [ref=f4e94]
+                - cell "Pending" [ref=f4e95]
+                - cell [ref=f4e97]:
+                  - generic [ref=f4e98]:
+                    - button "Generate Bill" [ref=f4e99]
+                    - button "Delete" [ref=f4e100]
+  - region "Notifications alt+T"
+  - alert [ref=f4e101]

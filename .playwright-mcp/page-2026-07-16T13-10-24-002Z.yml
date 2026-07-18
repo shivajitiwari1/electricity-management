@@ -1,0 +1,212 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e4]:
+      - generic [ref=e10]:
+        - paragraph [ref=e11]: Oasis Venetia Heights
+        - paragraph [ref=e12]: Admin Panel
+      - navigation [ref=e13]:
+        - link "Dashboard" [ref=e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=e47] [cursor=pointer]:
+          - /url: /admin/flats
+      - separator [ref=e52]
+      - generic [ref=e53]:
+        - generic [ref=e54]:
+          - generic [ref=e55]:
+            - paragraph [ref=e56]: Admin
+            - paragraph [ref=e57]: admin@oasis.local
+          - button "Toggle theme" [ref=e58]
+        - button "Sign Out" [ref=e60]
+    - main [ref=e61]:
+      - generic [ref=e62]:
+        - generic [ref=e63]:
+          - heading "Payments" [level=1] [ref=e64]
+          - paragraph [ref=e65]: View all payment transactions for Oasis Venetia Heights
+        - generic [ref=e66]:
+          - generic [ref=e68]:
+            - text: Bills Requiring Payment
+            - generic [ref=e69]: 0 pending
+          - table [ref=e72]:
+            - rowgroup [ref=e73]:
+              - row [ref=e74]:
+                - 'columnheader "Bill #" [ref=e75]'
+                - columnheader "Flat No" [ref=e76]
+                - columnheader "Resident" [ref=e77]
+                - columnheader "Balance Due" [ref=e78]
+                - columnheader "Due Date" [ref=e79]
+                - columnheader "Status" [ref=e80]
+                - columnheader "Actions" [ref=e81]
+            - rowgroup [ref=e82]:
+              - row [ref=e83]:
+                - cell "No pending bills — all caught up!" [ref=e84]
+        - generic [ref=e85]:
+          - generic [ref=e86]:
+            - generic [ref=e87]: Method
+            - combobox [ref=e88]:
+              - generic [ref=e89]: all
+              - img: ▼
+            - textbox [ref=e90]: all
+          - generic [ref=e91]:
+            - generic [ref=e92]: Status
+            - combobox [ref=e93]:
+              - generic [ref=e94]: all
+              - img: ▼
+            - textbox [ref=e95]: all
+        - generic [ref=e96]:
+          - generic [ref=e97]: Payment History — 9 records
+          - table [ref=e101]:
+            - rowgroup [ref=e102]:
+              - row [ref=e103]:
+                - 'columnheader "Receipt #" [ref=e104]'
+                - columnheader "Flat No" [ref=e105]
+                - columnheader "Resident" [ref=e106]
+                - 'columnheader "Bill #" [ref=e107]'
+                - columnheader "Amount (₹)" [ref=e108]
+                - columnheader "Date" [ref=e109]
+                - columnheader "Method" [ref=e110]
+                - columnheader "Transaction ID" [ref=e111]
+                - columnheader "Status" [ref=e112]
+                - columnheader "Actions" [ref=e113]
+            - rowgroup [ref=e114]:
+              - row [ref=e115]:
+                - cell "RCPT-20260716-0010" [ref=e116]
+                - cell "A-102" [ref=e117]
+                - cell "Mrs. Neha Rajoria" [ref=e118]
+                - cell "OV-A-102-202607-2" [ref=e119]
+                - cell "15,160.00" [ref=e120]
+                - cell "16 Jul 2026" [ref=e121]
+                - cell "CASH" [ref=e122]
+                - cell "—" [ref=e124]
+                - cell "SUCCESS" [ref=e125]
+                - cell [ref=e127]:
+                  - generic [ref=e128]:
+                    - button "Receipt" [ref=e129]
+                    - button "Delete" [ref=e130]
+              - row [ref=e131]:
+                - cell "RCPT-20260716-0009" [ref=e132]
+                - cell "A-102" [ref=e133]
+                - cell "Mrs. Neha Rajoria" [ref=e134]
+                - cell "OV-A-102-202607-3" [ref=e135]
+                - cell "39,160.00" [ref=e136]
+                - cell "16 Jul 2026" [ref=e137]
+                - cell "CASH" [ref=e138]
+                - cell "—" [ref=e140]
+                - cell "SUCCESS" [ref=e141]
+                - cell [ref=e143]:
+                  - generic [ref=e144]:
+                    - button "Receipt" [ref=e145]
+                    - button "Delete" [ref=e146]
+              - row [ref=e147]:
+                - cell "RCPT-20260716-0008" [ref=e148]
+                - cell "A-102" [ref=e149]
+                - cell "Mrs. Neha Rajoria" [ref=e150]
+                - cell "OV-A-102-202607-2" [ref=e151]
+                - cell "3,000.00" [ref=e152]
+                - cell "16 Jul 2026" [ref=e153]
+                - cell "CASH" [ref=e154]
+                - cell "—" [ref=e156]
+                - cell "SUCCESS" [ref=e157]
+                - cell [ref=e159]:
+                  - generic [ref=e160]:
+                    - button "Receipt" [ref=e161]
+                    - button "Delete" [ref=e162]
+              - row [ref=e163]:
+                - cell "RCPT-20260716-0007" [ref=e164]
+                - cell "A-102" [ref=e165]
+                - cell "Mrs. Neha Rajoria" [ref=e166]
+                - cell "OV-A-102-202607" [ref=e167]
+                - cell "1,080.00" [ref=e168]
+                - cell "16 Jul 2026" [ref=e169]
+                - cell "CASH" [ref=e170]
+                - cell "—" [ref=e172]
+                - cell "SUCCESS" [ref=e173]
+                - cell [ref=e175]:
+                  - generic [ref=e176]:
+                    - button "Receipt" [ref=e177]
+                    - button "Delete" [ref=e178]
+              - row [ref=e179]:
+                - cell "RCPT-20260716-0005" [ref=e180]
+                - cell "A-102" [ref=e181]
+                - cell "Mrs. Neha Rajoria" [ref=e182]
+                - cell "OV-A-102-202607" [ref=e183]
+                - cell "1,000.00" [ref=e184]
+                - cell "16 Jul 2026" [ref=e185]
+                - cell "CASH" [ref=e186]
+                - cell "—" [ref=e188]
+                - cell "SUCCESS" [ref=e189]
+                - cell [ref=e191]:
+                  - generic [ref=e192]:
+                    - button "Receipt" [ref=e193]
+                    - button "Delete" [ref=e194]
+              - row [ref=e195]:
+                - cell "RCPT-20260716-0004" [ref=e196]
+                - cell "A-102" [ref=e197]
+                - cell "Mrs. Neha Rajoria" [ref=e198]
+                - cell "OV-A-102-202607" [ref=e199]
+                - cell "2,080.00" [ref=e200]
+                - cell "16 Jul 2026" [ref=e201]
+                - cell "CASH" [ref=e202]
+                - cell "—" [ref=e204]
+                - cell "SUCCESS" [ref=e205]
+                - cell [ref=e207]:
+                  - generic [ref=e208]:
+                    - button "Receipt" [ref=e209]
+                    - button "Delete" [ref=e210]
+              - row [ref=e211]:
+                - cell "RCPT-20260716-0006" [ref=e212]
+                - cell "A-101" [ref=e213]
+                - cell "Mr. Bachoo Singh Bhagaur" [ref=e214]
+                - cell "OV-A-101-202607-2" [ref=e215]
+                - cell "5,801.00" [ref=e216]
+                - cell "16 Jul 2026" [ref=e217]
+                - cell "CASH" [ref=e218]
+                - cell "—" [ref=e220]
+                - cell "SUCCESS" [ref=e221]
+                - cell [ref=e223]:
+                  - generic [ref=e224]:
+                    - button "Receipt" [ref=e225]
+                    - button "Delete" [ref=e226]
+              - row [ref=e227]:
+                - cell "RCPT-20260716-0002" [ref=e228]
+                - cell "A-1003" [ref=e229]
+                - cell "Mrs. Rajlakshmi" [ref=e230]
+                - cell "OV-A-1003-202607" [ref=e231]
+                - cell "2,410.00" [ref=e232]
+                - cell "16 Jul 2026" [ref=e233]
+                - cell "CASH" [ref=e234]
+                - cell "—" [ref=e236]
+                - cell "SUCCESS" [ref=e237]
+                - cell [ref=e239]:
+                  - generic [ref=e240]:
+                    - button "Receipt" [ref=e241]
+                    - button "Delete" [ref=e242]
+              - row [ref=e243]:
+                - cell "RCPT-20260716-0001" [ref=e244]
+                - cell "A-101" [ref=e245]
+                - cell "Mr. Bachoo Singh Bhagaur" [ref=e246]
+                - cell "OV-A-101-202607" [ref=e247]
+                - cell "35,660.00" [ref=e248]
+                - cell "16 Jul 2026" [ref=e249]
+                - cell "ONLINE" [ref=e250]
+                - cell "TEST_1784182463361" [ref=e252]
+                - cell "SUCCESS" [ref=e253]
+                - cell [ref=e255]:
+                  - generic [ref=e256]:
+                    - button "Receipt" [ref=e257]
+                    - button "Delete" [ref=e258]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e264] [cursor=pointer]

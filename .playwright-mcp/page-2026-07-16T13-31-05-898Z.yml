@@ -1,0 +1,60 @@
+- generic [active] [ref=f7e1]:
+  - generic [ref=f7e2]:
+    - generic [ref=f7e4]:
+      - generic [ref=f7e10]:
+        - paragraph [ref=f7e11]: Oasis Venetia Heights
+        - paragraph [ref=f7e12]: Admin Panel
+      - navigation [ref=f7e13]:
+        - link "Dashboard" [ref=f7e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f7e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f7e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f7e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f7e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f7e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f7e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f7e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f7e47] [cursor=pointer]:
+          - /url: /admin/flats
+      - separator [ref=f7e52]
+      - generic [ref=f7e53]:
+        - generic [ref=f7e54]:
+          - generic [ref=f7e55]:
+            - paragraph [ref=f7e56]: Admin
+            - paragraph [ref=f7e57]: admin@oasis.local
+          - button "Toggle theme" [ref=f7e58]
+        - button "Sign Out" [ref=f7e60]
+    - main [ref=f7e61]:
+      - generic [ref=f7e62]:
+        - generic [ref=f7e63]:
+          - heading "Meter Readings" [level=1] [ref=f7e64]
+          - paragraph [ref=f7e65]: Record and manage electricity meter readings
+        - generic [ref=f7e66]:
+          - paragraph [ref=f7e67]: 0 recent readings
+          - button "Add Meter Reading" [ref=f7e68]
+        - generic [ref=f7e69]:
+          - generic [ref=f7e70]: Recent Meter Readings
+          - table [ref=f7e74]:
+            - rowgroup [ref=f7e75]:
+              - row [ref=f7e76]:
+                - columnheader "Flat No" [ref=f7e77]
+                - columnheader "Resident" [ref=f7e78]
+                - columnheader "Reading Date" [ref=f7e79]
+                - columnheader "NPCL Previous" [ref=f7e80]
+                - columnheader "NPCL Current" [ref=f7e81]
+                - columnheader "Units" [ref=f7e82]
+                - columnheader "DG Units" [ref=f7e83]
+                - columnheader "Bill" [ref=f7e84]
+                - columnheader "Actions" [ref=f7e85]
+            - rowgroup [ref=f7e86]:
+              - row [ref=f7e87]:
+                - cell "No meter readings yet" [ref=f7e88]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f7e94] [cursor=pointer]

@@ -81,26 +81,22 @@ export const getCachedRates = unstable_cache(
 // Meter readings page data — refresh every 30 s
 export const getCachedMeterReadingsData = unstable_cache(
   async () => {
-    const [connections, currentRate, readings] = await Promise.all([
+    const [connections, currentRate] = await Promise.all([
       prisma.connection.findMany({
         where: { status: "ACTIVE" },
         include: {
           resident: { include: { user: { select: { name: true } } } },
-          meterReadings: { orderBy: { readingDate: "desc" }, take: 1 },
+          meterReadings: {
+            orderBy: { readingDate: "desc" },
+            take: 1,
+            include: { bill: { select: { id: true } } },
+          },
         },
         orderBy: { flatNo: "asc" },
       }),
       prisma.rate.findFirst({ orderBy: { effectiveFrom: "desc" } }),
-      prisma.meterReading.findMany({
-        include: {
-          connection: { include: { resident: { include: { user: { select: { name: true } } } } } },
-          bill: { select: { id: true } },
-        },
-        orderBy: { readingDate: "desc" },
-        take: 50,
-      }),
     ]);
-    return { connections, currentRate, readings };
+    return { connections, currentRate };
   },
   ["admin-meter-readings"],
   { revalidate: 30, tags: ["meter-readings"] }

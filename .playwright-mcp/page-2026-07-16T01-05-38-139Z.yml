@@ -1,0 +1,102 @@
+- generic [ref=f14e1]:
+  - generic [ref=f14e2]:
+    - generic [ref=f14e3]:
+      - generic [ref=f14e4]:
+        - heading [level=1] [ref=f14e92]: Oasis Venetia Heights
+        - paragraph [ref=f14e6]: Admin Panel
+      - navigation [ref=f14e7]:
+        - link [ref=f14e93] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=f14e94] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=f14e95] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=f14e96] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=f14e97] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=f14e98] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=f14e99] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=f14e100] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+      - generic [ref=f14e41]:
+        - paragraph [ref=f14e42]: Admin
+        - paragraph [ref=f14e43]: admin@oasis.local
+        - button [ref=f14e101]: Sign Out
+    - main [ref=f14e45]:
+      - generic [ref=f14e46]:
+        - generic [ref=f14e47]:
+          - heading [level=1] [ref=f14e102]: Meter Readings
+          - paragraph [ref=f14e49]: Record and manage electricity meter readings
+        - generic [ref=f14e50]:
+          - paragraph [ref=f14e51]: 1 recent readings
+          - button [ref=f14e103]: Add Meter Reading
+        - generic [ref=f14e53]:
+          - generic [ref=f14e54]: Recent Meter Readings
+          - table [ref=f14e58]:
+            - rowgroup [ref=f14e59]:
+              - row [ref=f14e104]:
+                - columnheader [ref=f14e105]: Flat No
+                - columnheader [ref=f14e106]: Resident
+                - columnheader [ref=f14e107]: Reading Date
+                - columnheader [ref=f14e108]: NPCL Previous
+                - columnheader [ref=f14e109]: NPCL Current
+                - columnheader [ref=f14e110]: Units
+                - columnheader [ref=f14e111]: DG Units
+                - columnheader [ref=f14e112]: Bill
+                - columnheader [ref=f14e113]: Actions
+            - rowgroup [ref=f14e70]:
+              - row [ref=f14e114]:
+                - cell [ref=f14e115]: A-101
+                - cell [ref=f14e116]: Mr. Bachoo Singh Bhagaur
+                - cell [ref=f14e117]: 16 Jul 2026
+                - cell [ref=f14e118]: "1200"
+                - cell [ref=f14e119]: "1350"
+                - cell [ref=f14e120]: "150"
+                - cell [ref=f14e121]: "15"
+                - cell [ref=f14e122]:
+                  - generic [ref=f14e80]: Generated
+                - cell [ref=f14e81]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f14e87] [cursor=pointer]
+  - alert [ref=f14e91]
+  - dialog [ref=f14e126]:
+    - heading "Add Meter Reading" [level=2] [ref=f14e128]
+    - generic [ref=f14e129]:
+      - generic [ref=f14e130]:
+        - generic [ref=f14e131]: Flat *
+        - combobox "Flat *" [active] [ref=f14e132]:
+          - generic [ref=f14e133]: Select flat
+          - img: ▼
+        - textbox [ref=f14e134]
+      - generic [ref=f14e135]:
+        - generic [ref=f14e136]: Reading Date *
+        - textbox "Reading Date *" [ref=f14e137]: 2026-07-16
+      - generic [ref=f14e138]:
+        - generic [ref=f14e139]:
+          - generic [ref=f14e140]: NPCL Previous Reading *
+          - spinbutton "NPCL Previous Reading *" [ref=f14e141]
+        - generic [ref=f14e142]:
+          - generic [ref=f14e143]: NPCL Current Reading *
+          - spinbutton "NPCL Current Reading *" [ref=f14e144]
+      - generic [ref=f14e145]:
+        - generic [ref=f14e146]:
+          - generic [ref=f14e147]: DG Previous (optional)
+          - spinbutton "DG Previous (optional)" [ref=f14e148]
+        - generic [ref=f14e149]:
+          - generic [ref=f14e150]: DG Current (optional)
+          - spinbutton "DG Current (optional)" [ref=f14e151]
+      - generic [ref=f14e152]:
+        - button "Cancel" [ref=f14e153]
+        - button "Save Reading" [ref=f14e154]
+    - button "Close" [ref=f14e155]

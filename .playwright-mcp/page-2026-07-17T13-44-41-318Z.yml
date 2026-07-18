@@ -1,0 +1,121 @@
+- generic [ref=f19e1]:
+  - generic [ref=f19e2]:
+    - generic [ref=f19e4]:
+      - generic [ref=f19e10]:
+        - paragraph [ref=f19e11]: Oasis Venetia Heights
+        - paragraph [ref=f19e12]: Admin Panel
+      - navigation [ref=f19e13]:
+        - link "Dashboard" [ref=f19e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f19e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f19e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f19e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f19e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f19e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [active] [ref=f19e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f19e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f19e47] [cursor=pointer]:
+          - /url: /admin/flats
+      - separator [ref=f19e52]
+      - generic [ref=f19e53]:
+        - generic [ref=f19e54]:
+          - generic [ref=f19e55]:
+            - paragraph [ref=f19e56]: Admin
+            - paragraph [ref=f19e57]: admin@oasis.local
+          - button "Toggle theme" [ref=f19e58]
+        - button "Sign Out" [ref=f19e60]
+    - main [ref=f19e61]:
+      - generic [ref=f19e5106]:
+        - generic [ref=f19e5107]:
+          - heading "Reports" [level=1] [ref=f19e5108]
+          - paragraph [ref=f19e5109]: Financial reports and analytics for Oasis Venetia Heights
+        - generic [ref=f19e5110]:
+          - generic [ref=f19e5112]:
+            - generic [ref=f19e5113]:
+              - generic [ref=f19e5114]:
+                - button "Weekly" [ref=f19e5115]
+                - button "Monthly" [ref=f19e5116]
+                - button "Half Yearly" [ref=f19e5117]
+                - button "Yearly" [ref=f19e5118]
+              - generic [ref=f19e5119]:
+                - button "Excel" [ref=f19e5120]
+                - button "Download PDF" [ref=f19e5121]
+            - generic [ref=f19e5122]:
+              - generic [ref=f19e5123]: Date Range
+              - generic [ref=f19e5124]:
+                - textbox [ref=f19e5125]: 2026-06-16
+                - generic [ref=f19e5126]: to
+                - textbox [ref=f19e5127]: 2026-07-17
+          - generic [ref=f19e5128]:
+            - generic [ref=f19e5132]:
+              - paragraph [ref=f19e5133]: Revenue
+              - paragraph [ref=f19e5134]: ₹1,710.00
+              - paragraph [ref=f19e5135]: Monthly
+            - generic [ref=f19e5143]:
+              - paragraph [ref=f19e5144]: Bills Generated
+              - paragraph [ref=f19e5145]: "2"
+              - paragraph [ref=f19e5146]: Monthly
+            - generic [ref=f19e5154]:
+              - paragraph [ref=f19e5155]: Total Residents
+              - paragraph [ref=f19e5156]: "406"
+              - paragraph [ref=f19e5157]: All time
+            - generic [ref=f19e5167]:
+              - paragraph [ref=f19e5168]: Overdue Bills
+              - paragraph [ref=f19e5169]: "0"
+              - paragraph [ref=f19e5170]: Current
+          - generic [ref=f19e5174]:
+            - generic [ref=f19e5175]: Revenue — Monthly (Paid Bills)
+            - generic [ref=f19e5180]:
+              - list [ref=f19e5182]:
+                - listitem [ref=f19e5183]:
+                  - img "Revenue (₹) legend icon" [ref=f19e5184]
+                  - text: Revenue (₹)
+              - application [ref=f19e5186]:
+                - generic [ref=f19e5198]:
+                  - generic [ref=f19e5199]:
+                    - generic [ref=f19e5200]: 16 Jun – 22 Jun
+                    - generic [ref=f19e5202]: 30 Jun – 6 Jul
+                    - generic [ref=f19e5204]: 7 Jul – 13 Jul
+                    - generic [ref=f19e5206]: 14 Jul – 17 Jul
+                  - generic [ref=f19e5208]:
+                    - generic [ref=f19e5209]: ₹0
+                    - generic [ref=f19e5211]: ₹450
+                    - generic [ref=f19e5213]: ₹900
+                    - generic [ref=f19e5215]: ₹1K
+                    - generic [ref=f19e5217]: ₹2K
+          - generic [ref=f19e5219]:
+            - generic [ref=f19e5220]: Revenue by Tower — Monthly
+            - application [ref=f19e5226]:
+              - generic [ref=f19e5238]:
+                - generic [ref=f19e5239]: Tower A
+                - generic [ref=f19e5242]:
+                  - generic [ref=f19e5243]: ₹0
+                  - generic [ref=f19e5245]: ₹450
+                  - generic [ref=f19e5247]: ₹900
+                  - generic [ref=f19e5249]: ₹1K
+                  - generic [ref=f19e5251]: ₹2K
+          - generic [ref=f19e5253]:
+            - generic [ref=f19e5254]: Overdue Bills
+            - table [ref=f19e5258]:
+              - rowgroup [ref=f19e5259]:
+                - row [ref=f19e5260]:
+                  - columnheader "Flat No" [ref=f19e5261]
+                  - columnheader "Tower" [ref=f19e5262]
+                  - columnheader "Resident" [ref=f19e5263]
+                  - 'columnheader "Bill #" [ref=f19e5264]'
+                  - columnheader "Due Date" [ref=f19e5265]
+                  - columnheader "Amount (₹)" [ref=f19e5266]
+                  - columnheader "Days Overdue" [ref=f19e5267]
+              - rowgroup [ref=f19e5268]:
+                - row [ref=f19e5269]:
+                  - cell "No overdue bills" [ref=f19e5270]
+  - region "Notifications alt+T"
+  - alert [ref=f19e155]
+  - generic [ref=f19e5271]: Tower A

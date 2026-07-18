@@ -1,0 +1,91 @@
+- generic [active] [ref=f33e1]:
+  - generic [ref=f33e35]:
+    - generic [ref=f33e37]:
+      - generic [ref=f33e43]:
+        - paragraph [ref=f33e44]: Oasis Venetia Heights
+        - paragraph [ref=f33e45]: Admin Panel
+      - navigation [ref=f33e46]:
+        - link "Dashboard" [ref=f33e47] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f33e53] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f33e59] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f33e62] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f33e66] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f33e70] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f33e73] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f33e76] [cursor=pointer]:
+          - /url: /admin/rates
+      - separator [ref=f33e80]
+      - generic [ref=f33e81]:
+        - generic [ref=f33e82]:
+          - generic [ref=f33e83]:
+            - paragraph [ref=f33e84]: Admin
+            - paragraph [ref=f33e85]: admin@oasis.local
+          - button "Toggle theme" [ref=f33e86]
+        - button "Sign Out" [ref=f33e88]
+    - main [ref=f33e89]:
+      - generic [ref=f33e90]:
+        - generic [ref=f33e91]:
+          - heading "Dashboard" [level=1] [ref=f33e92]
+          - paragraph [ref=f33e93]: Overview of Oasis Venetia Heights electricity management
+        - generic [ref=f33e94]:
+          - generic [ref=f33e98]:
+            - paragraph [ref=f33e99]: Total Residents
+            - paragraph [ref=f33e100]: "398"
+          - generic [ref=f33e110]:
+            - paragraph [ref=f33e111]: Active Connections
+            - paragraph [ref=f33e112]: "398"
+          - generic [ref=f33e119]:
+            - paragraph [ref=f33e120]: Bills This Month
+            - paragraph [ref=f33e121]: "2"
+          - generic [ref=f33e129]:
+            - paragraph [ref=f33e130]: Revenue This Month
+            - paragraph [ref=f33e131]: ₹1,710.00
+          - generic [ref=f33e139]:
+            - paragraph [ref=f33e140]: Overdue Bills
+            - paragraph [ref=f33e141]: "0"
+        - generic [ref=f33e145]:
+          - link [ref=f33e146] [cursor=pointer]:
+            - /url: /admin/residents
+            - button "Add Resident" [ref=f33e147]
+          - link [ref=f33e148] [cursor=pointer]:
+            - /url: /admin/meter-readings
+            - button "Enter Reading" [ref=f33e149]
+          - link [ref=f33e150] [cursor=pointer]:
+            - /url: /admin/reports
+            - button "View Reports" [ref=f33e151]
+        - generic [ref=f33e152]:
+          - generic [ref=f33e153]: Recent Bills
+          - table [ref=f33e157]:
+            - rowgroup [ref=f33e158]:
+              - row [ref=f33e159]:
+                - 'columnheader "Bill #" [ref=f33e160]'
+                - columnheader "Flat" [ref=f33e161]
+                - columnheader "Resident" [ref=f33e162]
+                - columnheader "Amount" [ref=f33e163]
+                - columnheader "Due Date" [ref=f33e164]
+                - columnheader "Status" [ref=f33e165]
+            - rowgroup [ref=f33e166]:
+              - row [ref=f33e167]:
+                - cell "OV-B-101-202607" [ref=f33e168]
+                - cell "B-101" [ref=f33e169]
+                - cell "Mr. Varun Sharma" [ref=f33e170]
+                - cell "₹2,035.00" [ref=f33e171]
+                - cell "25 Jul 2026" [ref=f33e172]
+                - cell "PENDING" [ref=f33e173]
+              - row [ref=f33e175]:
+                - cell "OV-A-101-202607" [ref=f33e176]
+                - cell "A-101" [ref=f33e177]
+                - cell "Mr. Bachoo Singh Bhagaur" [ref=f33e178]
+                - cell "₹1,710.00" [ref=f33e179]
+                - cell "25 Jul 2026" [ref=f33e180]
+                - cell "PAID" [ref=f33e181]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f33e30] [cursor=pointer]
+  - alert [ref=f33e34]

@@ -1,0 +1,95 @@
+- generic [active] [ref=f9e1]:
+  - generic [ref=f9e2]:
+    - generic [ref=f9e4]:
+      - generic [ref=f9e10]:
+        - paragraph [ref=f9e11]: Oasis Venetia Heights
+        - paragraph [ref=f9e12]: Admin Panel
+      - navigation [ref=f9e13]:
+        - link "Dashboard" [ref=f9e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f9e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f9e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f9e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f9e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f9e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f9e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f9e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f9e47] [cursor=pointer]:
+          - /url: /admin/flats
+      - separator [ref=f9e52]
+      - generic [ref=f9e53]:
+        - generic [ref=f9e54]:
+          - generic [ref=f9e55]:
+            - paragraph [ref=f9e56]: Admin
+            - paragraph [ref=f9e57]: admin@oasis.local
+          - button "Toggle theme" [ref=f9e58]
+        - button "Sign Out" [ref=f9e60]
+    - main [ref=f9e61]:
+      - generic [ref=f9e62]:
+        - generic [ref=f9e63]:
+          - heading "Payments" [level=1] [ref=f9e64]
+          - paragraph [ref=f9e65]: View all payment transactions for Oasis Venetia Heights
+        - generic [ref=f9e66]:
+          - generic [ref=f9e68]:
+            - text: Bills Requiring Payment
+            - generic [ref=f9e69]: 1 pending
+          - table [ref=f9e72]:
+            - rowgroup [ref=f9e73]:
+              - row [ref=f9e74]:
+                - 'columnheader "Bill #" [ref=f9e75]'
+                - columnheader "Flat No" [ref=f9e76]
+                - columnheader "Resident" [ref=f9e77]
+                - columnheader "Balance Due" [ref=f9e78]
+                - columnheader "Due Date" [ref=f9e79]
+                - columnheader "Status" [ref=f9e80]
+                - columnheader "Actions" [ref=f9e81]
+            - rowgroup [ref=f9e82]:
+              - row [ref=f9e83]:
+                - cell "OV-A-101-202607" [ref=f9e84]
+                - cell "A-101" [ref=f9e85]
+                - cell "Mr. Bachoo Singh Bhagaur" [ref=f9e86]
+                - cell "₹3,085.00" [ref=f9e87]
+                - cell "25 Jul 2026" [ref=f9e88]
+                - cell "PENDING" [ref=f9e89]
+                - cell [ref=f9e91]:
+                  - button "Cash Payment" [ref=f9e92]
+        - generic [ref=f9e93]:
+          - generic [ref=f9e94]:
+            - generic [ref=f9e95]: Method
+            - combobox [ref=f9e96]:
+              - generic [ref=f9e97]: all
+              - img: ▼
+            - textbox [ref=f9e98]: all
+          - generic [ref=f9e99]:
+            - generic [ref=f9e100]: Status
+            - combobox [ref=f9e101]:
+              - generic [ref=f9e102]: all
+              - img: ▼
+            - textbox [ref=f9e103]: all
+        - generic [ref=f9e104]:
+          - generic [ref=f9e105]: Payment History — 0 records
+          - table [ref=f9e109]:
+            - rowgroup [ref=f9e110]:
+              - row [ref=f9e111]:
+                - 'columnheader "Receipt #" [ref=f9e112]'
+                - columnheader "Flat No" [ref=f9e113]
+                - columnheader "Resident" [ref=f9e114]
+                - 'columnheader "Bill #" [ref=f9e115]'
+                - columnheader "Amount (₹)" [ref=f9e116]
+                - columnheader "Date" [ref=f9e117]
+                - columnheader "Method" [ref=f9e118]
+                - columnheader "Transaction ID" [ref=f9e119]
+                - columnheader "Status" [ref=f9e120]
+                - columnheader "Actions" [ref=f9e121]
+            - rowgroup [ref=f9e122]:
+              - row [ref=f9e123]:
+                - cell "No payments found" [ref=f9e124]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f9e130] [cursor=pointer]

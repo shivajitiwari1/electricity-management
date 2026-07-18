@@ -12,9 +12,20 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 config({ path: path.join(__dirname, "../.env.local") });
 config({ path: path.join(__dirname, "../.env") });
 
+import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+const _u = process.env.DATABASE_URL ?? "";
+const _p = new URL(_u);
+const _ssl = process.env.DATABASE_SSL === "true" || _p.hostname !== "localhost";
+const prisma = new PrismaClient({
+  adapter: new PrismaMariaDb({
+    host: _p.hostname, port: _p.port ? parseInt(_p.port, 10) : 3306,
+    user: _p.username, password: _p.password || undefined,
+    database: _p.pathname.slice(1).split("?")[0],
+    ...(_ssl ? { ssl: { rejectUnauthorized: false } } : {}),
+  }),
+});
 
 const IMPORT_SHEETS = [
   "TOWER-A-57",

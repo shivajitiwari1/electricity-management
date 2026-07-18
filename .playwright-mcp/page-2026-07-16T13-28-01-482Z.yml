@@ -1,0 +1,71 @@
+- generic [ref=f4e1]:
+  - generic [ref=f4e2]:
+    - generic [ref=f4e4]:
+      - generic [ref=f4e10]:
+        - paragraph [ref=f4e11]: Oasis Venetia Heights
+        - paragraph [ref=f4e12]: Admin Panel
+      - navigation [ref=f4e13]:
+        - link "Dashboard" [ref=f4e7370] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f4e7371] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f4e7372] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f4e7373] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f4e7374] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f4e7375] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f4e7376] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f4e7377] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f4e7378] [cursor=pointer]:
+          - /url: /admin/flats
+      - separator [ref=f4e52]
+      - generic [ref=f4e53]:
+        - generic [ref=f4e54]:
+          - generic [ref=f4e55]:
+            - paragraph [ref=f4e56]: Admin
+            - paragraph [ref=f4e57]: admin@oasis.local
+          - button "Toggle theme" [ref=f4e7379]
+        - button "Sign Out" [ref=f4e7380]
+    - main [ref=f4e61]:
+      - generic [ref=f4e62]:
+        - generic [ref=f4e63]:
+          - heading "Residents" [level=1] [ref=f4e7381]
+          - paragraph [ref=f4e65]: Manage residents of Oasis Venetia Heights
+        - generic [ref=f4e66]:
+          - textbox "Search by name, email, flat..." [ref=f4e7382]: A-101
+          - button "Add Resident" [active] [ref=f4e7383]
+        - generic [ref=f4e73]:
+          - generic [ref=f4e74]: 1 Resident
+          - table [ref=f4e78]:
+            - rowgroup [ref=f4e79]:
+              - row [ref=f4e7384]:
+                - columnheader "Flat No" [ref=f4e7385]
+                - columnheader "Tower" [ref=f4e7386]
+                - columnheader "Name" [ref=f4e7387]
+                - columnheader "Email" [ref=f4e7388]
+                - columnheader "Phone" [ref=f4e7389]
+                - columnheader "Status" [ref=f4e7390]
+                - columnheader "Actions" [ref=f4e7391]
+            - rowgroup [ref=f4e88]:
+              - row [ref=f4e7392]:
+                - cell "A-101" [ref=f4e7393]
+                - cell "A" [ref=f4e7394]
+                - cell "Mr. Bachoo Singh Bhagaur" [ref=f4e7395]
+                - cell "bsbhagaur@gmail.com" [ref=f4e7396]
+                - cell "9463156238" [ref=f4e7397]
+                - cell "ACTIVE" [ref=f4e7398]
+                - cell [ref=f4e7399]:
+                  - generic [ref=f4e5054]:
+                    - button "Edit" [ref=f4e7400]
+                    - button "Deactivate" [ref=f4e7401]
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=f4e7402]:
+        - generic [ref=f4e7407]: Resident added successfully
+  - button "Open Next.js Dev Tools" [ref=f4e5062] [cursor=pointer]
+  - alert [ref=f4e5066]

@@ -1,0 +1,102 @@
+- generic [ref=f7e1]:
+  - generic [ref=f7e2]:
+    - generic [ref=f7e4]:
+      - generic [ref=f7e10]:
+        - paragraph [ref=f7e11]: Oasis Venetia Heights
+        - paragraph [ref=f7e12]: Admin Panel
+      - navigation [ref=f7e13]:
+        - link [ref=f7e4343] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=f7e4344] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=f7e4345] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=f7e4346] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=f7e4347] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=f7e4348] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=f7e4349] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=f7e4350] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=f7e4351] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+      - separator [ref=f7e52]
+      - generic [ref=f7e53]:
+        - generic [ref=f7e54]:
+          - generic [ref=f7e55]:
+            - paragraph [ref=f7e56]: Admin
+            - paragraph [ref=f7e57]: admin@oasis.local
+          - button [ref=f7e4352]:
+            - generic [ref=f7e59]: Toggle theme
+        - button [ref=f7e4353]: Sign Out
+    - main [ref=f7e61]:
+      - generic [ref=f7e62]:
+        - generic [ref=f7e63]:
+          - heading [level=1] [ref=f7e4354]: Meter Readings
+          - paragraph [ref=f7e65]: Record and manage electricity meter readings
+        - generic [ref=f7e66]:
+          - paragraph [ref=f7e67]: 1 recent readings
+          - button [ref=f7e4355]: Add Meter Reading
+        - generic [ref=f7e69]:
+          - generic [ref=f7e70]: Recent Meter Readings
+          - table [ref=f7e74]:
+            - rowgroup [ref=f7e75]:
+              - row [ref=f7e4356]:
+                - columnheader [ref=f7e4357]: Flat No
+                - columnheader [ref=f7e4358]: Resident
+                - columnheader [ref=f7e4359]: Reading Date
+                - columnheader [ref=f7e4360]: NPCL Previous
+                - columnheader [ref=f7e4361]: NPCL Current
+                - columnheader [ref=f7e4362]: Units
+                - columnheader [ref=f7e4363]: DG Units
+                - columnheader [ref=f7e4364]: Bill
+                - columnheader [ref=f7e4365]: Actions
+            - rowgroup [ref=f7e86]:
+              - row [ref=f7e4366]:
+                - cell [ref=f7e4367]: A-101
+                - cell [ref=f7e4368]: Mr. Bachoo Singh Bhagaur
+                - cell [ref=f7e4369]: 16 Jul 2026
+                - cell [ref=f7e4370]: "1250"
+                - cell [ref=f7e4371]: "1580"
+                - cell [ref=f7e4372]: "330"
+                - cell [ref=f7e4373]: "0"
+                - cell [ref=f7e4374]:
+                  - generic [ref=f7e4331]: Pending
+                - cell [ref=f7e4375]:
+                  - generic [ref=f7e4333]:
+                    - button [ref=f7e4376]: Generate Bill
+                    - button [ref=f7e4377]: Delete
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f7e94] [cursor=pointer]
+  - alert [ref=f7e98]
+  - dialog [ref=f7e4381]:
+    - heading "Generate Bill — Flat A-101" [level=2] [ref=f7e4383]
+    - generic [ref=f7e4384]:
+      - generic [ref=f7e4385]:
+        - generic [ref=f7e4386]: Bill Date *
+        - textbox "Bill Date *" [active] [ref=f7e4387]: 2026-07-16
+      - generic [ref=f7e4388]:
+        - generic [ref=f7e4389]: Billing Period Start *
+        - textbox "Billing Period Start *" [ref=f7e4390]: 2026-06-30
+      - generic [ref=f7e4391]:
+        - generic [ref=f7e4392]: Billing Period End *
+        - textbox "Billing Period End *" [ref=f7e4393]: 2026-07-16
+      - generic [ref=f7e4394]:
+        - generic [ref=f7e4395]: Previous Dues (Rs.)
+        - spinbutton "Previous Dues (Rs.)" [ref=f7e4396]: "0"
+      - generic [ref=f7e4397]:
+        - button "Cancel" [ref=f7e4398]
+        - button "Generate Bill" [ref=f7e4399]
+    - button "Close" [ref=f7e4400]

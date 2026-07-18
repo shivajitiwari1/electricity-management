@@ -1,0 +1,90 @@
+- generic [active] [ref=f15e1]:
+  - generic [ref=f15e2]:
+    - generic [ref=f15e4]:
+      - generic [ref=f15e10]:
+        - paragraph [ref=f15e11]: Oasis Venetia Heights
+        - paragraph [ref=f15e12]: Admin Panel
+      - navigation [ref=f15e13]:
+        - link "Dashboard" [ref=f15e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f15e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f15e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f15e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f15e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f15e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f15e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f15e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f15e47] [cursor=pointer]:
+          - /url: /admin/flats
+      - separator [ref=f15e52]
+      - generic [ref=f15e53]:
+        - generic [ref=f15e54]:
+          - generic [ref=f15e55]:
+            - paragraph [ref=f15e56]: Admin
+            - paragraph [ref=f15e57]: admin@oasis.local
+          - button "Toggle theme" [ref=f15e58]
+        - button "Sign Out" [ref=f15e60]
+    - main [ref=f15e61]:
+      - generic [ref=f15e62]:
+        - generic [ref=f15e63]:
+          - heading "Reports" [level=1] [ref=f15e64]
+          - paragraph [ref=f15e65]: Financial reports and analytics for Oasis Venetia Heights
+        - generic [ref=f15e66]:
+          - generic [ref=f15e68]:
+            - generic [ref=f15e69]:
+              - generic [ref=f15e70]:
+                - button "Weekly" [ref=f15e71]
+                - button "Monthly" [ref=f15e72]
+                - button "Half Yearly" [ref=f15e73]
+                - button "Yearly" [ref=f15e74]
+              - generic [ref=f15e75]:
+                - button "Excel" [ref=f15e76]
+                - button "Download PDF" [ref=f15e77]
+            - generic [ref=f15e78]:
+              - generic [ref=f15e79]: Date Range
+              - generic [ref=f15e80]:
+                - textbox [ref=f15e81]: 2026-06-16
+                - generic [ref=f15e82]: to
+                - textbox [ref=f15e83]: 2026-07-17
+          - generic [ref=f15e84]:
+            - generic [ref=f15e88]:
+              - paragraph [ref=f15e89]: Revenue
+              - paragraph [ref=f15e90]: ₹1,710.00
+              - paragraph [ref=f15e91]: Monthly
+            - generic [ref=f15e99]:
+              - paragraph [ref=f15e100]: Bills Generated
+              - paragraph [ref=f15e101]: "1"
+              - paragraph [ref=f15e102]: Monthly
+            - generic [ref=f15e110]:
+              - paragraph [ref=f15e111]: Total Residents
+              - paragraph [ref=f15e112]: "406"
+              - paragraph [ref=f15e113]: All time
+            - generic [ref=f15e123]:
+              - paragraph [ref=f15e124]: Overdue Bills
+              - paragraph [ref=f15e125]: "0"
+              - paragraph [ref=f15e126]: Current
+          - generic [ref=f15e130]: Revenue — Monthly (Paid Bills)
+          - generic [ref=f15e136]: Revenue by Tower — Monthly
+          - generic [ref=f15e142]:
+            - generic [ref=f15e143]: Overdue Bills
+            - table [ref=f15e147]:
+              - rowgroup [ref=f15e148]:
+                - row [ref=f15e149]:
+                  - columnheader "Flat No" [ref=f15e150]
+                  - columnheader "Tower" [ref=f15e151]
+                  - columnheader "Resident" [ref=f15e152]
+                  - 'columnheader "Bill #" [ref=f15e153]'
+                  - columnheader "Due Date" [ref=f15e154]
+                  - columnheader "Amount (₹)" [ref=f15e155]
+                  - columnheader "Days Overdue" [ref=f15e156]
+              - rowgroup [ref=f15e157]:
+                - row [ref=f15e158]:
+                  - cell "No overdue bills" [ref=f15e159]
+  - region "Notifications alt+T"

@@ -1,0 +1,47 @@
+- generic [active] [ref=f45e1]:
+  - generic [ref=f45e2]:
+    - banner [ref=f45e3]:
+      - generic [ref=f45e4]:
+        - generic [ref=f45e5]:
+          - generic [ref=f45e6]: Oasis Venetia Heights
+          - navigation [ref=f45e11]:
+            - link "Dashboard" [ref=f45e12] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f45e16] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f45e20] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Profile" [ref=f45e23] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f45e27]:
+          - generic [ref=f45e28]: Mr. Varun Sharma
+          - button "Toggle theme" [ref=f45e29]
+          - button "Sign Out" [ref=f45e31]
+    - main [ref=f45e33]:
+      - generic [ref=f45e34]:
+        - generic [ref=f45e35]:
+          - heading "Payment History" [level=1] [ref=f45e36]
+          - paragraph [ref=f45e37]: All your electricity bill payments
+        - generic [ref=f45e39]:
+          - generic [ref=f45e40]: Method
+          - combobox [ref=f45e41]:
+            - generic [ref=f45e42]: all
+            - img: ▼
+          - textbox [ref=f45e43]: all
+        - generic [ref=f45e44]:
+          - generic [ref=f45e45]: 0 Payments
+          - table [ref=f45e49]:
+            - rowgroup [ref=f45e50]:
+              - row [ref=f45e51]:
+                - 'columnheader "Receipt #" [ref=f45e52]'
+                - 'columnheader "Bill #" [ref=f45e53]'
+                - columnheader "Amount (₹)" [ref=f45e54]
+                - columnheader "Date" [ref=f45e55]
+                - columnheader "Method" [ref=f45e56]
+                - columnheader "Transaction ID" [ref=f45e57]
+                - columnheader "Actions" [ref=f45e58]
+            - rowgroup [ref=f45e59]:
+              - row [ref=f45e60]:
+                - cell "No payments found" [ref=f45e61]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f45e67] [cursor=pointer]
