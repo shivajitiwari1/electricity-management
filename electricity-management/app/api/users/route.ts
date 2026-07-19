@@ -10,7 +10,6 @@ const createManagerSchema = z.object({
   name: z.string().min(1),
   email: z.email(),
   password: z.string().min(6),
-  phone: z.string().optional(),
 });
 
 export async function GET() {
@@ -49,7 +48,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { name, email, password, phone } = parsed.data;
+  const { name, email, password } = parsed.data;
 
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {

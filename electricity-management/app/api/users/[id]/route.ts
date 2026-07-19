@@ -6,7 +6,6 @@ import { z } from "zod";
 const updateManagerSchema = z.object({
   name: z.string().min(1).optional(),
   email: z.email().optional(),
-  phone: z.string().optional(),
   isActive: z.boolean().optional(),
 });
 
