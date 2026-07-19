@@ -10,7 +10,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Pencil, Trash2, UserCheck, UserX, Plus } from "lucide-react";
-import { useRouter } from "next/navigation";
 
 type ManagerUser = {
   id: string;
@@ -21,7 +20,6 @@ type ManagerUser = {
 };
 
 export default function UsersTable({ initialUsers }: { initialUsers: ManagerUser[] }) {
-  const router = useRouter();
   const [users, setUsers] = useState(initialUsers);
   const [loading, setLoading] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
