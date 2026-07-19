@@ -20,9 +20,9 @@ async function ReportsData() {
 
   return (
     <ReportsClient
-      paidBills={paidBills.map((b) => ({ billDate: b.billDate.toISOString(), totalAmount: Number(b.totalAmount), ncplUnits: Number(b.ncplUnits), tower: b.connection.tower, flatNo: b.connection.flatNo }))}
-      overdueBills={overdueBills.map((b) => ({ id: b.id, billNumber: b.billNumber, flatNo: b.connection.flatNo, tower: b.connection.tower, residentName: b.connection.resident.user.name, dueDate: b.dueDate.toISOString(), totalAmount: Number(b.totalAmount) }))}
-      allBills={allBills.map((b) => ({ id: b.id, billNumber: b.billNumber, flatNo: b.connection.flatNo, tower: b.connection.tower, residentName: b.connection.resident.user.name, billDate: b.billDate.toISOString(), dueDate: b.dueDate.toISOString(), totalAmount: Number(b.totalAmount), status: b.status }))}
+      paidBills={paidBills.map((b) => ({ billDate: new Date(b.billDate).toISOString(), totalAmount: Number(b.totalAmount), ncplUnits: Number(b.ncplUnits), tower: b.connection.tower, flatNo: b.connection.flatNo }))}
+      overdueBills={overdueBills.map((b) => ({ id: b.id, billNumber: b.billNumber, flatNo: b.connection.flatNo, tower: b.connection.tower, residentName: b.connection.resident.user.name, dueDate: new Date(b.dueDate).toISOString(), totalAmount: Number(b.totalAmount) }))}
+      allBills={allBills.map((b) => ({ id: b.id, billNumber: b.billNumber, flatNo: b.connection.flatNo, tower: b.connection.tower, residentName: b.connection.resident.user.name, billDate: new Date(b.billDate).toISOString(), dueDate: new Date(b.dueDate).toISOString(), totalAmount: Number(b.totalAmount), status: b.status }))}
       stats={stats}
     />
   );

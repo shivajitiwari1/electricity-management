@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Download, Banknote, AlertTriangle, Trash2 } from "lucide-react";
+import { Download, Banknote, AlertTriangle, Trash2, CreditCard, Wifi, UserCheck } from "lucide-react";
 
 type SerializedPayment = {
   id: string;
@@ -58,19 +58,35 @@ interface Props {
   pendingBills: PendingBill[];
 }
 
-function MethodBadge({ method }: { method: string }) {
+const MANUAL_METHODS = new Set(["CASH", "UPI", "NEFT", "RTGS", "CHEQUE"]);
+
+const METHOD_STYLES: Record<string, string> = {
+  ONLINE: "bg-blue-100 text-blue-800",
+  CASH:   "bg-gray-100 text-gray-700",
+  UPI:    "bg-purple-100 text-purple-800",
+  NEFT:   "bg-teal-100 text-teal-800",
+  RTGS:   "bg-cyan-100 text-cyan-800",
+  CHEQUE: "bg-orange-100 text-orange-800",
+};
+
+function TypeBadge({ method }: { method: string }) {
   if (method === "ONLINE") {
     return (
-      <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">
-        ONLINE
-      </Badge>
+      <span className="inline-flex items-center gap-1 text-xs font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded px-1.5 py-0.5">
+        <Wifi className="h-3 w-3" /> Online
+      </span>
     );
   }
   return (
-    <Badge className="bg-gray-100 text-gray-700 hover:bg-gray-100">
-      CASH
-    </Badge>
+    <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-700 bg-amber-50 border border-amber-200 rounded px-1.5 py-0.5">
+      <UserCheck className="h-3 w-3" /> Manual
+    </span>
   );
+}
+
+function MethodBadge({ method }: { method: string }) {
+  const cls = METHOD_STYLES[method] ?? "bg-gray-100 text-gray-700";
+  return <Badge className={`${cls} hover:${cls}`}>{method}</Badge>;
 }
 
 function StatusBadge({ status }: { status: string }) {
@@ -161,14 +177,21 @@ export default function PaymentsTable({ initialData, pendingBills }: Props) {
     }
   }
 
-  // Cash payment dialog
+  // Manual payment dialog
   const [cashBill, setCashBill] = useState<PendingBill | null>(null);
   const [cashAmount, setCashAmount] = useState("");
+  const [payMethod, setPayMethod] = useState("CASH");
+  const [referenceId, setReferenceId] = useState("");
+  const [payDate, setPayDate] = useState("");
   const [isCashSubmitting, setIsCashSubmitting] = useState(false);
 
   const filtered = useMemo(() => {
     return initialData.filter((p) => {
-      if (filterMethod !== "all" && p.method !== filterMethod) return false;
+      if (filterMethod === "MANUAL") {
+        if (!MANUAL_METHODS.has(p.method)) return false;
+      } else if (filterMethod !== "all" && p.method !== filterMethod) {
+        return false;
+      }
       if (filterStatus !== "all" && p.status !== filterStatus) return false;
       return true;
     });
@@ -177,6 +200,9 @@ export default function PaymentsTable({ initialData, pendingBills }: Props) {
   function openCashDialog(bill: PendingBill) {
     const remaining = parseFloat(bill.totalAmount) - parseFloat(bill.paidAmount ?? "0");
     setCashAmount(remaining.toFixed(2));
+    setPayMethod("CASH");
+    setReferenceId("");
+    setPayDate(new Date().toISOString().split("T")[0]);
     setCashBill(bill);
   }
 
@@ -187,12 +213,22 @@ export default function PaymentsTable({ initialData, pendingBills }: Props) {
       toast.error("Enter a valid amount");
       return;
     }
+    if (payMethod !== "CASH" && !referenceId.trim()) {
+      toast.error("Enter a transaction / UTR reference number");
+      return;
+    }
     setIsCashSubmitting(true);
     try {
       const res = await fetch("/api/payments/cash", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ billId: cashBill.id, amount }),
+        body: JSON.stringify({
+          billId: cashBill.id,
+          amount,
+          method: payMethod,
+          referenceId: referenceId.trim() || null,
+          paymentDate: payDate || null,
+        }),
       });
       if (res.ok) {
         const data = await res.json();
@@ -278,8 +314,8 @@ export default function PaymentsTable({ initialData, pendingBills }: Props) {
                           size="sm"
                           onClick={() => openCashDialog(bill)}
                         >
-                          <Banknote className="h-3 w-3 mr-1" />
-                          Cash Payment
+                          <CreditCard className="h-3 w-3 mr-1" />
+                          Record Payment
                         </Button>
                       </td>
                     </tr>
@@ -301,8 +337,13 @@ export default function PaymentsTable({ initialData, pendingBills }: Props) {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All</SelectItem>
-              <SelectItem value="ONLINE">ONLINE</SelectItem>
-              <SelectItem value="CASH">CASH</SelectItem>
+              <SelectItem value="ONLINE">🌐 Online (Razorpay)</SelectItem>
+              <SelectItem value="MANUAL">✋ Manual (All)</SelectItem>
+              <SelectItem value="CASH">— Cash</SelectItem>
+              <SelectItem value="UPI">— UPI</SelectItem>
+              <SelectItem value="NEFT">— NEFT</SelectItem>
+              <SelectItem value="RTGS">— RTGS</SelectItem>
+              <SelectItem value="CHEQUE">— Cheque</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -338,8 +379,14 @@ export default function PaymentsTable({ initialData, pendingBills }: Props) {
 
       <Card>
         <CardHeader className="pb-0">
-          <CardTitle className="text-base font-semibold">
+          <CardTitle className="text-base font-semibold flex items-center gap-3">
             Payment History — {filtered.length} record{filtered.length !== 1 ? "s" : ""}
+            {filtered.length > 0 && (
+              <span className="flex gap-2 text-xs font-normal">
+                <span className="inline-flex items-center gap-1 text-blue-700"><Wifi className="h-3 w-3" />{filtered.filter(p => p.method === "ONLINE").length} online</span>
+                <span className="inline-flex items-center gap-1 text-amber-700"><UserCheck className="h-3 w-3" />{filtered.filter(p => MANUAL_METHODS.has(p.method)).length} manual</span>
+              </span>
+            )}
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0 mt-3">
@@ -353,8 +400,9 @@ export default function PaymentsTable({ initialData, pendingBills }: Props) {
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Bill #</th>
                   <th className="text-right px-4 py-3 font-medium text-muted-foreground">Amount (₹)</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Date</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Type</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Method</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Transaction ID</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Reference / Txn ID</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Actions</th>
                 </tr>
@@ -362,7 +410,7 @@ export default function PaymentsTable({ initialData, pendingBills }: Props) {
               <tbody>
                 {filtered.length === 0 ? (
                   <tr>
-                    <td colSpan={10} className="text-center py-10 text-muted-foreground">
+                    <td colSpan={11} className="text-center py-10 text-muted-foreground">
                       No payments found
                     </td>
                   </tr>
@@ -370,7 +418,7 @@ export default function PaymentsTable({ initialData, pendingBills }: Props) {
                   filtered.map((payment) => (
                     <tr
                       key={payment.id}
-                      className="border-b last:border-0 hover:bg-muted/50"
+                      className={`border-b last:border-0 hover:bg-muted/50 ${MANUAL_METHODS.has(payment.method) ? "bg-amber-50/20" : ""}`}
                     >
                       <td className="px-4 py-3 font-mono text-xs">
                         {payment.receiptNumber}
@@ -388,10 +436,15 @@ export default function PaymentsTable({ initialData, pendingBills }: Props) {
                         {formatDate(payment.paymentDate)}
                       </td>
                       <td className="px-4 py-3">
+                        <TypeBadge method={payment.method} />
+                      </td>
+                      <td className="px-4 py-3">
                         <MethodBadge method={payment.method} />
                       </td>
                       <td className="px-4 py-3 font-mono text-xs text-muted-foreground">
-                        {payment.razorpayPaymentId ?? "—"}
+                        {payment.razorpayPaymentId && payment.razorpayPaymentId !== "CASH"
+                          ? payment.razorpayPaymentId
+                          : "—"}
                       </td>
                       <td className="px-4 py-3">
                         <StatusBadge status={payment.status} />
@@ -427,11 +480,11 @@ export default function PaymentsTable({ initialData, pendingBills }: Props) {
         </CardContent>
       </Card>
 
-      {/* Cash Payment Dialog */}
+      {/* Manual Payment Dialog */}
       <Dialog open={!!cashBill} onOpenChange={(open) => { if (!open) setCashBill(null); }}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Record Cash Payment</DialogTitle>
+            <DialogTitle>Record Payment</DialogTitle>
           </DialogHeader>
           {cashBill && (() => {
             const total = parseFloat(cashBill.totalAmount);
@@ -441,7 +494,7 @@ export default function PaymentsTable({ initialData, pendingBills }: Props) {
             const isPartial = entered > 0 && entered < remaining - 0.005;
             return (
               <div className="space-y-4">
-                {/* Bill info */}
+                {/* Bill summary */}
                 <div className="rounded-lg border p-4 space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Flat No</span>
@@ -475,7 +528,56 @@ export default function PaymentsTable({ initialData, pendingBills }: Props) {
                   </div>
                 </div>
 
-                {/* Amount input */}
+                {/* Payment Method */}
+                <div className="space-y-1.5">
+                  <Label>Payment Method</Label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {(["CASH", "UPI", "NEFT", "RTGS", "CHEQUE"] as const).map((m) => (
+                      <button
+                        key={m}
+                        type="button"
+                        onClick={() => setPayMethod(m)}
+                        className={`rounded-md border px-3 py-2 text-sm font-medium transition-colors ${
+                          payMethod === m
+                            ? "border-primary bg-primary text-primary-foreground"
+                            : "border-input hover:bg-muted"
+                        }`}
+                      >
+                        {m}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Transaction Reference (required for non-cash) */}
+                {payMethod !== "CASH" && (
+                  <div className="space-y-1.5">
+                    <Label htmlFor="ref-id">
+                      {payMethod === "CHEQUE" ? "Cheque Number" : "UTR / Transaction Reference"}
+                      <span className="text-red-500 ml-0.5">*</span>
+                    </Label>
+                    <Input
+                      id="ref-id"
+                      value={referenceId}
+                      onChange={e => setReferenceId(e.target.value)}
+                      placeholder={payMethod === "CHEQUE" ? "e.g. 123456" : "e.g. UTR123456789"}
+                    />
+                  </div>
+                )}
+
+                {/* Payment Date */}
+                <div className="space-y-1.5">
+                  <Label htmlFor="pay-date">Payment Date</Label>
+                  <Input
+                    id="pay-date"
+                    type="date"
+                    value={payDate}
+                    max={new Date().toISOString().split("T")[0]}
+                    onChange={e => setPayDate(e.target.value)}
+                  />
+                </div>
+
+                {/* Amount */}
                 <div className="space-y-1.5">
                   <Label htmlFor="cash-amount">Amount Received (₹)</Label>
                   <Input
@@ -486,33 +588,16 @@ export default function PaymentsTable({ initialData, pendingBills }: Props) {
                     step={0.01}
                     value={cashAmount}
                     onChange={e => setCashAmount(e.target.value)}
-                    placeholder={`Enter amount (max ₹${remaining.toFixed(2)})`}
+                    placeholder={`Max ₹${remaining.toFixed(2)}`}
                   />
                   <div className="flex gap-2 mt-1">
-                    <button
-                      type="button"
-                      onClick={() => setCashAmount(remaining.toFixed(2))}
-                      className="text-xs text-blue-600 hover:underline"
-                    >
-                      Full amount
-                    </button>
-                    {[25, 50, 75].map(pct => {
-                      const v = (remaining * pct / 100).toFixed(2);
-                      return (
-                        <button
-                          key={pct}
-                          type="button"
-                          onClick={() => setCashAmount(v)}
-                          className="text-xs text-muted-foreground hover:text-foreground hover:underline"
-                        >
-                          {pct}%
-                        </button>
-                      );
-                    })}
+                    <button type="button" onClick={() => setCashAmount(remaining.toFixed(2))} className="text-xs text-blue-600 hover:underline">Full amount</button>
+                    {[25, 50, 75].map(pct => (
+                      <button key={pct} type="button" onClick={() => setCashAmount((remaining * pct / 100).toFixed(2))} className="text-xs text-muted-foreground hover:text-foreground hover:underline">{pct}%</button>
+                    ))}
                   </div>
                 </div>
 
-                {/* Indicator */}
                 {entered > 0 && (
                   <div className={`rounded-md px-3 py-2 text-sm ${isPartial ? "bg-amber-50 text-amber-800 border border-amber-200" : "bg-green-50 text-green-800 border border-green-200"}`}>
                     {isPartial
@@ -533,7 +618,7 @@ export default function PaymentsTable({ initialData, pendingBills }: Props) {
               className="bg-green-600 hover:bg-green-700 text-white"
             >
               <Banknote className="h-4 w-4 mr-2" />
-              {isCashSubmitting ? "Recording..." : "Confirm Cash Received"}
+              {isCashSubmitting ? "Recording..." : "Confirm Payment"}
             </Button>
           </DialogFooter>
         </DialogContent>

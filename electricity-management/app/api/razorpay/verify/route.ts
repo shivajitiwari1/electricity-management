@@ -5,6 +5,7 @@ import { sendEmail } from "@/lib/email";
 import { paymentSuccessEmail } from "@/lib/email-templates";
 import { nextReceiptNumber } from "@/lib/billing";
 import crypto from "crypto";
+import { revalidateTag } from "next/cache";
 
 export async function POST(req: NextRequest) {
   const session = await auth();
@@ -92,7 +93,7 @@ export async function POST(req: NextRequest) {
     return newPayment;
   });
 
-  // Send payment success email — don't fail if email errors
+  // Send payment success email â€” don't fail if email errors
   try {
     const resident = bill.connection.resident;
     const residentEmail = resident.user.email;
@@ -118,6 +119,10 @@ export async function POST(req: NextRequest) {
     console.error("Failed to send payment success email:", emailErr);
   }
 
+  revalidateTag("bills", {});
+  revalidateTag("dashboard", {});
+  revalidateTag("payments", {});
+  revalidateTag("reports", {});
   return NextResponse.json({
     success: true,
     receiptNumber,

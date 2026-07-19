@@ -5,6 +5,7 @@ import { nextReceiptNumber } from "@/lib/billing";
 import { sendEmail } from "@/lib/email";
 import { paymentSuccessEmail } from "@/lib/email-templates";
 import crypto from "crypto";
+import { revalidateTag } from "next/cache";
 
 export async function POST(req: NextRequest) {
   let body: unknown;
@@ -79,10 +80,14 @@ export async function POST(req: NextRequest) {
       razorpayPaymentId,
       receiptUrl: `${process.env.NEXTAUTH_URL}/api/pdf/receipt/${payment.id}`,
     });
-    await sendEmail(resident.user.email, `Payment Received — ${bill.billNumber}`, html);
+    await sendEmail(resident.user.email, `Payment Received â€” ${bill.billNumber}`, html);
   } catch (err) {
     console.error("Email failed:", err);
   }
 
+  revalidateTag("bills", {});
+  revalidateTag("dashboard", {});
+  revalidateTag("payments", {});
+  revalidateTag("reports", {});
   return NextResponse.json({ success: true, receiptNumber, paymentId: payment.id });
 }

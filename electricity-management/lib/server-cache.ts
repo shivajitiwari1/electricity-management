@@ -81,22 +81,44 @@ export const getCachedRates = unstable_cache(
 // Meter readings page data — refresh every 30 s
 export const getCachedMeterReadingsData = unstable_cache(
   async () => {
-    const [connections, currentRate] = await Promise.all([
+    const [connections, currentRate, allReadings, billedReadingIds] = await Promise.all([
+      // Simple connection list — no nested meterReadings (avoids take/orderBy issues)
       prisma.connection.findMany({
         where: { status: "ACTIVE" },
         include: {
           resident: { include: { user: { select: { name: true } } } },
-          meterReadings: {
-            orderBy: { readingDate: "desc" },
-            take: 1,
-            include: { bill: { select: { id: true } } },
-          },
         },
         orderBy: { flatNo: "asc" },
       }),
       prisma.rate.findFirst({ orderBy: { effectiveFrom: "desc" } }),
+      // Flat list of all readings — latest per connection resolved in JS
+      prisma.meterReading.findMany({
+        select: {
+          id: true,
+          connectionId: true,
+          readingDate: true,
+          ncplPrevious: true,
+          ncplCurrent: true,
+          ncplUnits: true,
+          dgUnits: true,
+        },
+        orderBy: { readingDate: "desc" },
+      }),
+      // All billed reading IDs
+      prisma.bill.findMany({ select: { meterReadingId: true } }).then(
+        (bills) => bills.map((b) => b.meterReadingId)
+      ),
     ]);
-    return { connections, currentRate };
+
+    // Pick the latest reading per connection (allReadings is already sorted desc)
+    const latestByConnection = new Map<string, typeof allReadings[0]>();
+    for (const r of allReadings) {
+      if (!latestByConnection.has(r.connectionId)) {
+        latestByConnection.set(r.connectionId, r);
+      }
+    }
+
+    return { connections, currentRate, latestByConnection: Object.fromEntries(latestByConnection), billedReadingIds };
   },
   ["admin-meter-readings"],
   { revalidate: 30, tags: ["meter-readings"] }

@@ -12,7 +12,7 @@ async function RatesData() {
     ncplPerUnit: r.ncplPerUnit.toString(),
     dgFixed: r.dgFixed.toString(),
     fixedPerKw: r.fixedPerKw.toString(),
-    effectiveFrom: r.effectiveFrom.toISOString(),
+    effectiveFrom: new Date(r.effectiveFrom).toISOString(),
   }));
   return <RatesTable rates={serializedRates} />;
 }

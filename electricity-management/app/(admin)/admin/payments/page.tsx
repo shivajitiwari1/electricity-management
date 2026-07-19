@@ -15,7 +15,7 @@ async function PaymentsData() {
     residentName: p.bill.connection.resident.user.name,
     billNumber: p.bill.billNumber,
     amount: p.amount.toString(),
-    paymentDate: p.paymentDate.toISOString(),
+    paymentDate: new Date(p.paymentDate).toISOString(),
     method: p.method,
     status: p.status,
     razorpayPaymentId: p.razorpayPaymentId ?? null,
@@ -28,7 +28,7 @@ async function PaymentsData() {
     residentName: b.connection.resident.user.name,
     totalAmount: b.totalAmount.toString(),
     paidAmount: b.paidAmount.toString(),
-    dueDate: b.dueDate.toISOString(),
+    dueDate: new Date(b.dueDate).toISOString(),
     status: b.status,
   }));
 
