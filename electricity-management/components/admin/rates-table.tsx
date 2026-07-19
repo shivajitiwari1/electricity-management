@@ -32,9 +32,10 @@ type SerializedRate = {
 interface Props {
   rates: SerializedRate[];
   canWrite: boolean;
+  canDelete: boolean;
 }
 
-export default function RatesTable({ rates, canWrite }: Props) {
+export default function RatesTable({ rates, canWrite, canDelete }: Props) {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -200,7 +201,7 @@ export default function RatesTable({ rates, canWrite }: Props) {
                       <td className="px-4 py-3">₹{rate.dgFixed}</td>
                       <td className="px-4 py-3">₹{rate.fixedPerKw}</td>
                       <td className="px-4 py-3 text-right">
-                        {idx !== 0 && (
+                        {idx !== 0 && canDelete && (
                           <Button
                             size="sm"
                             variant="ghost"

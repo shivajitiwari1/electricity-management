@@ -12,6 +12,7 @@ async function RatesData() {
   const role = (session?.user as any)?.role as string;
   const permissions = (session?.user as any)?.permissions as PermissionsMap ?? {};
   const canWrite = role === "ADMIN" || permissions["rates"]?.canWrite === true;
+  const canDelete = role === "ADMIN" || permissions["rates"]?.canDelete === true;
 
   const rates = await getCachedRates();
   const serializedRates = rates.map((r) => ({
@@ -21,7 +22,7 @@ async function RatesData() {
     fixedPerKw: r.fixedPerKw.toString(),
     effectiveFrom: new Date(r.effectiveFrom).toISOString(),
   }));
-  return <RatesTable rates={serializedRates} canWrite={canWrite} />;
+  return <RatesTable rates={serializedRates} canWrite={canWrite} canDelete={canDelete} />;
 }
 
 export default function RatesPage() {
