@@ -13,6 +13,7 @@ export async function GET(req: NextRequest) {
   const status = searchParams.get("status");
   const from = searchParams.get("from");
   const to = searchParams.get("to");
+  const flatNo = searchParams.get("flatNo");
 
   const validMethods = ["ONLINE", "CASH"];
   const validStatuses = ["SUCCESS", "FAILED", "INITIATED"];
@@ -36,6 +37,7 @@ export async function GET(req: NextRequest) {
             },
           }
         : {}),
+      ...(flatNo ? { bill: { connection: { flatNo } } } : {}),
     },
     include: {
       bill: {

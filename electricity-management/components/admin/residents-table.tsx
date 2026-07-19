@@ -42,7 +42,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Search, Plus, Pencil, UserX, Trash2, ChevronsUpDown, Check } from "lucide-react";
+import { Search, Plus, Pencil, UserX, Trash2, ChevronsUpDown, Check, History } from "lucide-react";
 
 
 type Connection = {
@@ -100,6 +100,9 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
   const [showAddModal, setShowAddModal] = useState(false);
   const [editResident, setEditResident] = useState<Resident | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [historyResident, setHistoryResident] = useState<{ flatNo: string; name: string } | null>(null);
+  const [historyData, setHistoryData] = useState<{ bills: any[]; payments: any[] } | null>(null);
+  const [historyLoading, setHistoryLoading] = useState(false);
 
   // Combobox open state + search
   const [addFlatOpen, setAddFlatOpen] = useState(false);
@@ -309,6 +312,27 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
     }
   }
 
+  async function openHistory(resident: Resident) {
+    const flatNo = resident.connections[0]?.flatNo;
+    if (!flatNo) return;
+    setHistoryResident({ flatNo, name: resident.user.name });
+    setHistoryData(null);
+    setHistoryLoading(true);
+    try {
+      const [billsRes, paymentsRes] = await Promise.all([
+        fetch(`/api/bills?flatNo=${encodeURIComponent(flatNo)}`),
+        fetch(`/api/payments?flatNo=${encodeURIComponent(flatNo)}`),
+      ]);
+      const bills = billsRes.ok ? await billsRes.json() : [];
+      const payments = paymentsRes.ok ? await paymentsRes.json() : [];
+      setHistoryData({ bills, payments });
+    } catch {
+      toast.error("Failed to load history");
+    } finally {
+      setHistoryLoading(false);
+    }
+  }
+
   async function handleDeactivate(resident: Resident) {
     const confirmed = window.confirm(
       `Deactivate ${resident.user.name}? This will deactivate all their connections.`
@@ -400,6 +424,14 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
                         </td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => openHistory(resident)}
+                            >
+                              <History className="h-3 w-3 mr-1" />
+                              History
+                            </Button>
                             {canWrite && (
                               <Button
                                 variant="outline"
@@ -805,6 +837,97 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
               </DialogFooter>
             </div>
           </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* History Modal */}
+      <Dialog open={!!historyResident} onOpenChange={(open) => { if (!open) setHistoryResident(null); }}>
+        <DialogContent className="sm:max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>
+              History — {historyResident?.name} ({historyResident?.flatNo})
+            </DialogTitle>
+          </DialogHeader>
+          {historyLoading && <p className="text-sm text-muted-foreground py-4 text-center">Loading…</p>}
+          {historyData && (
+            <div className="space-y-6">
+              {/* Bills */}
+              <div>
+                <h3 className="text-sm font-semibold mb-2">Bills ({historyData.bills.length})</h3>
+                {historyData.bills.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">No bills found.</p>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-xs">
+                      <thead>
+                        <tr className="border-b bg-muted/50">
+                          <th className="text-left px-3 py-2 font-medium">Bill #</th>
+                          <th className="text-left px-3 py-2 font-medium">Period</th>
+                          <th className="text-right px-3 py-2 font-medium">Amount (₹)</th>
+                          <th className="text-left px-3 py-2 font-medium">Due</th>
+                          <th className="text-left px-3 py-2 font-medium">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {historyData.bills.map((b: any) => (
+                          <tr key={b.id} className="border-b last:border-0">
+                            <td className="px-3 py-2 font-mono">{b.billNumber}</td>
+                            <td className="px-3 py-2">
+                              {new Date(b.billingPeriodStart).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
+                              {" – "}
+                              {new Date(b.billingPeriodEnd).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
+                            </td>
+                            <td className="px-3 py-2 text-right">{Number(b.totalAmount).toLocaleString("en-IN", { minimumFractionDigits: 2 })}</td>
+                            <td className="px-3 py-2">{new Date(b.dueDate).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}</td>
+                            <td className="px-3 py-2">
+                              <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${
+                                b.status === "PAID" ? "bg-green-100 text-green-700" :
+                                b.status === "OVERDUE" ? "bg-red-100 text-red-700" :
+                                "bg-yellow-100 text-yellow-700"
+                              }`}>{b.status}</span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+
+              {/* Payments */}
+              <div>
+                <h3 className="text-sm font-semibold mb-2">Payments ({historyData.payments.length})</h3>
+                {historyData.payments.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">No payments found.</p>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-xs">
+                      <thead>
+                        <tr className="border-b bg-muted/50">
+                          <th className="text-left px-3 py-2 font-medium">Receipt #</th>
+                          <th className="text-left px-3 py-2 font-medium">Bill #</th>
+                          <th className="text-right px-3 py-2 font-medium">Amount (₹)</th>
+                          <th className="text-left px-3 py-2 font-medium">Date</th>
+                          <th className="text-left px-3 py-2 font-medium">Method</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {historyData.payments.map((p: any) => (
+                          <tr key={p.id} className="border-b last:border-0">
+                            <td className="px-3 py-2 font-mono">{p.receiptNumber ?? "—"}</td>
+                            <td className="px-3 py-2 font-mono">{p.bill?.billNumber ?? "—"}</td>
+                            <td className="px-3 py-2 text-right">{Number(p.amount).toLocaleString("en-IN", { minimumFractionDigits: 2 })}</td>
+                            <td className="px-3 py-2">{new Date(p.paymentDate).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}</td>
+                            <td className="px-3 py-2">{p.paymentMethod ?? p.method ?? "—"}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </>

@@ -27,6 +27,7 @@ export async function GET(req: NextRequest) {
 
   const { searchParams } = new URL(req.url);
   const tower = searchParams.get("tower");
+  const flatNo = searchParams.get("flatNo");
   const month = searchParams.get("month"); // YYYY-MM
   const status = searchParams.get("status");
 
@@ -51,9 +52,12 @@ export async function GET(req: NextRequest) {
     where: {
       ...(status ? { status: status as "PENDING" | "PAID" | "OVERDUE" | "PARTIAL" } : {}),
       ...(dateFilter ? { billDate: dateFilter } : {}),
-      ...(tower
+      ...(flatNo || tower
         ? {
-            connection: { tower },
+            connection: {
+              ...(flatNo ? { flatNo } : {}),
+              ...(tower ? { tower } : {}),
+            },
           }
         : {}),
     },
