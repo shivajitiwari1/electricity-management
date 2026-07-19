@@ -20,15 +20,30 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         });
 
         if (!user) return null;
+        if (!user.isActive) return null;
 
         const valid = await bcryptjs.compare(
           credentials.password as string,
           user.password
         );
-
         if (!valid) return null;
 
-        return { id: user.id, name: user.name, email: user.email, role: user.role };
+        let permissions: Record<string, { canRead: boolean; canWrite: boolean; canDelete: boolean }> = {};
+        if (user.role === "MANAGER") {
+          const rows = await prisma.permission.findMany({ where: { role: "MANAGER" } });
+          permissions = Object.fromEntries(
+            rows.map((r) => [r.page, { canRead: r.canRead, canWrite: r.canWrite, canDelete: r.canDelete }])
+          );
+        }
+
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          isActive: user.isActive,
+          permissions,
+        };
       },
     }),
   ],
