@@ -26,10 +26,8 @@ export default auth((req) => {
   ) {
     if (!isLoggedIn) return NextResponse.redirect(new URL("/login", req.url));
     if (role !== "ADMIN") return NextResponse.redirect(new URL("/admin/dashboard", req.url));
-  }
-
   // Admin area — ADMIN and MANAGER allowed
-  if (
+  } else if (
     pathname.startsWith("/admin") ||
     pathname.startsWith("/api/residents") ||
     pathname.startsWith("/api/connections") ||
