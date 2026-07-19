@@ -176,7 +176,7 @@ export async function POST(req: NextRequest) {
       password,
       loginUrl: `${process.env.NEXTAUTH_URL}/login`,
     });
-    await sendEmail(email, `Welcome to Oasis Venetia Heights â€” Your Login Details`, html);
+    await sendEmail(email, `Welcome to Oasis Venetia Heights — Your Login Details`, html);
   } catch (err) {
     console.error("Welcome email failed:", err);
   }

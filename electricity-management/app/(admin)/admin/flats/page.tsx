@@ -1,4 +1,6 @@
 import { Suspense } from "react";
+import { auth } from "@/auth";
+import type { PermissionsMap } from "@/lib/permissions";
 import FlatInfoTable from "@/components/admin/flat-info-table";
 import { TableSkeleton } from "@/components/ui/page-skeleton";
 import { getCachedFlats } from "@/lib/server-cache";
@@ -6,8 +8,14 @@ import { getCachedFlats } from "@/lib/server-cache";
 export const dynamic = "force-dynamic";
 
 async function FlatsData() {
+  const session = await auth();
+  const role = (session?.user as any)?.role as string;
+  const permissions = (session?.user as any)?.permissions as PermissionsMap ?? {};
+  const canWrite = role === "ADMIN" || permissions["flat-info"]?.canWrite === true;
+  const canDelete = role === "ADMIN" || permissions["flat-info"]?.canDelete === true;
+
   const flats = await getCachedFlats();
-  return <FlatInfoTable initialData={flats} />;
+  return <FlatInfoTable initialData={flats} canWrite={canWrite} canDelete={canDelete} />;
 }
 
 export default function FlatsPage() {

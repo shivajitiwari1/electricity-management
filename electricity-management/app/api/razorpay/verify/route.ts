@@ -93,7 +93,7 @@ export async function POST(req: NextRequest) {
     return newPayment;
   });
 
-  // Send payment success email â€” don't fail if email errors
+  // Send payment success email — don't fail if email errors
   try {
     const resident = bill.connection.resident;
     const residentEmail = resident.user.email;

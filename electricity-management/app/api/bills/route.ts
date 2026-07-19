@@ -152,7 +152,7 @@ export async function POST(req: NextRequest) {
     billDate: billDateObj,
   });
 
-  // Generate a unique bill number â€” append suffix if base number already exists
+  // Generate a unique bill number — append suffix if base number already exists
   const baseBillNumber = generateBillNumber(meterReading.connection.flatNo, billDateObj);
   const existingCount = await prisma.bill.count({
     where: { billNumber: { startsWith: baseBillNumber } },
@@ -222,7 +222,7 @@ export async function POST(req: NextRequest) {
 
   const bill = billResult;
 
-  // Send email â€” don't fail bill creation if email fails
+  // Send email — don't fail bill creation if email fails
   try {
     const residentEmail = bill.connection.resident.user.email;
     const residentName = bill.connection.resident.user.name ?? "Resident";

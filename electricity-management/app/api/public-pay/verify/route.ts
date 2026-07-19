@@ -80,7 +80,7 @@ export async function POST(req: NextRequest) {
       razorpayPaymentId,
       receiptUrl: `${process.env.NEXTAUTH_URL}/api/pdf/receipt/${payment.id}`,
     });
-    await sendEmail(resident.user.email, `Payment Received â€” ${bill.billNumber}`, html);
+    await sendEmail(resident.user.email, `Payment Received — ${bill.billNumber}`, html);
   } catch (err) {
     console.error("Email failed:", err);
   }

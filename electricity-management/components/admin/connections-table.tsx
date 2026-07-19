@@ -53,6 +53,8 @@ type Connection = {
 
 interface Props {
   initialData: Connection[];
+  canWrite: boolean;
+  canDelete: boolean;
 }
 
 const TOWERS = ["A", "B", "C", "V", "Plaza"] as const;
@@ -73,7 +75,7 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
-export default function ConnectionsTable({ initialData }: Props) {
+export default function ConnectionsTable({ initialData, canWrite, canDelete }: Props) {
   const router = useRouter();
   const [towerFilter, setTowerFilter] = useState<string>("ALL");
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
@@ -243,14 +245,16 @@ export default function ConnectionsTable({ initialData }: Props) {
                         </div>
                       </td>
                       <td className="px-4 py-3">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => openEditSheet(conn)}
-                        >
-                          <Pencil className="h-3 w-3 mr-1" />
-                          Edit
-                        </Button>
+                        {canWrite && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => openEditSheet(conn)}
+                          >
+                            <Pencil className="h-3 w-3 mr-1" />
+                            Edit
+                          </Button>
+                        )}
                       </td>
                     </tr>
                   ))

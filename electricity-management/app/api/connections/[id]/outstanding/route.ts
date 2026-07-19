@@ -8,7 +8,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth();
-  if (!session || session.user.role !== "ADMIN") {
+  if (!session || (session.user.role !== "ADMIN" && session.user.role !== "MANAGER")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

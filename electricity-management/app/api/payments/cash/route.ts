@@ -1,4 +1,4 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { nextReceiptNumber } from "@/lib/billing";
@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Amount must be greater than 0" }, { status: 400 });
   }
   if (payAmount > remaining) {
-    return NextResponse.json({ error: `Amount cannot exceed remaining balance of â‚¹${remaining.toFixed(2)}` }, { status: 400 });
+    return NextResponse.json({ error: `Amount cannot exceed remaining balance of ₹${remaining.toFixed(2)}` }, { status: 400 });
   }
 
   const newPaidAmount = alreadyPaid + payAmount;
@@ -121,7 +121,7 @@ export async function POST(req: NextRequest) {
       razorpayPaymentId: referenceId ?? method,
       receiptUrl,
     });
-    await sendEmail(resident.user.email, `Payment Received â€” ${bill.billNumber}`, html);
+    await sendEmail(resident.user.email, `Payment Received — ${bill.billNumber}`, html);
   } catch (err) {
     console.error("Payment email failed:", err);
   }

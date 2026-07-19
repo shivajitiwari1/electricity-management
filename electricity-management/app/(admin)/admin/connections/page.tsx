@@ -1,4 +1,6 @@
 import { Suspense } from "react";
+import { auth } from "@/auth";
+import type { PermissionsMap } from "@/lib/permissions";
 import ConnectionsTable from "@/components/admin/connections-table";
 import { TableSkeleton } from "@/components/ui/page-skeleton";
 import { getCachedConnections } from "@/lib/server-cache";
@@ -6,9 +8,15 @@ import { getCachedConnections } from "@/lib/server-cache";
 export const dynamic = "force-dynamic";
 
 async function ConnectionsData() {
+  const session = await auth();
+  const role = (session?.user as any)?.role as string;
+  const permissions = (session?.user as any)?.permissions as PermissionsMap ?? {};
+  const canWrite = role === "ADMIN" || permissions["connections"]?.canWrite === true;
+  const canDelete = role === "ADMIN" || permissions["connections"]?.canDelete === true;
+
   const raw = await getCachedConnections();
   const connections = JSON.parse(JSON.stringify(raw));
-  return <ConnectionsTable initialData={connections} />;
+  return <ConnectionsTable initialData={connections} canWrite={canWrite} canDelete={canDelete} />;
 }
 
 export default function ConnectionsPage() {

@@ -33,7 +33,7 @@ type FlatInfo = {
 
 const EMPTY_FORM = { flatNo: "", tower: "", floor: "", unitType: "", area: "" };
 
-export default function FlatInfoTable({ initialData }: { initialData: FlatInfo[] }) {
+export default function FlatInfoTable({ initialData, canWrite, canDelete }: { initialData: FlatInfo[]; canWrite: boolean; canDelete: boolean }) {
   const router = useRouter();
   const [flats, setFlats] = useState<FlatInfo[]>(initialData);
   const [search, setSearch] = useState("");
@@ -186,10 +186,12 @@ export default function FlatInfoTable({ initialData }: { initialData: FlatInfo[]
               </select>
             </div>
           </div>
-          <Button size="sm" onClick={openAdd} className="gap-2 shrink-0">
-            <Plus className="h-4 w-4" />
-            Add Flat
-          </Button>
+          {canWrite && (
+            <Button size="sm" onClick={openAdd} className="gap-2 shrink-0">
+              <Plus className="h-4 w-4" />
+              Add Flat
+            </Button>
+          )}
         </CardHeader>
         <CardContent className="p-0">
           <div className="overflow-x-auto">
@@ -223,23 +225,27 @@ export default function FlatInfoTable({ initialData }: { initialData: FlatInfo[]
                       <td className="px-4 py-3">{flat.area.toLocaleString("en-IN")}</td>
                       <td className="px-4 py-3">
                         <div className="flex items-center justify-end gap-1">
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            className="h-8 w-8 p-0"
-                            onClick={() => openEdit(flat)}
-                          >
-                            <Pencil className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
-                            disabled={deletingId === flat.id}
-                            onClick={() => handleDelete(flat)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
+                          {canWrite && (
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="h-8 w-8 p-0"
+                              onClick={() => openEdit(flat)}
+                            >
+                              <Pencil className="h-4 w-4" />
+                            </Button>
+                          )}
+                          {canDelete && (
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
+                              disabled={deletingId === flat.id}
+                              onClick={() => handleDelete(flat)}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          )}
                         </div>
                       </td>
                     </tr>
