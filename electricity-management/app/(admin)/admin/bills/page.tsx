@@ -1,4 +1,6 @@
 import { Suspense } from "react";
+import { auth } from "@/auth";
+import type { PermissionsMap } from "@/lib/permissions";
 import { prisma } from "@/lib/prisma";
 import BillsTable from "@/components/admin/bills-table";
 import { TableSkeleton } from "@/components/ui/page-skeleton";
@@ -8,6 +10,12 @@ export const dynamic = "force-dynamic";
 interface SearchParams { tower?: string; month?: string; status?: string }
 
 async function BillsData({ searchParams }: { searchParams: Promise<SearchParams> }) {
+  const session = await auth();
+  const role = (session?.user as any)?.role as string;
+  const permissions = (session?.user as any)?.permissions as PermissionsMap ?? {};
+  const canWrite = role === "ADMIN" || permissions["bills"]?.canWrite === true;
+  const canDelete = role === "ADMIN" || permissions["bills"]?.canDelete === true;
+
   const params = await searchParams;
   const { tower, month, status } = params;
 
@@ -63,7 +71,7 @@ async function BillsData({ searchParams }: { searchParams: Promise<SearchParams>
     paymentId: b.payments[0]?.id ?? null,
   }));
 
-  return <BillsTable initialData={serializedBills} />;
+  return <BillsTable initialData={serializedBills} canWrite={canWrite} canDelete={canDelete} />;
 }
 
 export default function BillsPage({ searchParams }: { searchParams: Promise<SearchParams> }) {

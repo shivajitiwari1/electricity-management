@@ -1,4 +1,6 @@
 import { Suspense } from "react";
+import { auth } from "@/auth";
+import type { PermissionsMap } from "@/lib/permissions";
 import PaymentsTable from "@/components/admin/payments-table";
 import { TableSkeleton } from "@/components/ui/page-skeleton";
 import { getCachedPaymentsData } from "@/lib/server-cache";
@@ -6,6 +8,12 @@ import { getCachedPaymentsData } from "@/lib/server-cache";
 export const dynamic = "force-dynamic";
 
 async function PaymentsData() {
+  const session = await auth();
+  const role = (session?.user as any)?.role as string;
+  const permissions = (session?.user as any)?.permissions as PermissionsMap ?? {};
+  const canWrite = role === "ADMIN" || permissions["payments"]?.canWrite === true;
+  const canDelete = role === "ADMIN" || permissions["payments"]?.canDelete === true;
+
   const { payments, pendingBills } = await getCachedPaymentsData();
 
   const serializedPayments = payments.map((p) => ({
@@ -32,7 +40,7 @@ async function PaymentsData() {
     status: b.status,
   }));
 
-  return <PaymentsTable initialData={serializedPayments} pendingBills={serializedPendingBills} />;
+  return <PaymentsTable initialData={serializedPayments} pendingBills={serializedPendingBills} canWrite={canWrite} canDelete={canDelete} />;
 }
 
 export default function PaymentsPage() {

@@ -59,6 +59,8 @@ type SerializedBill = {
 
 interface Props {
   initialData: SerializedBill[];
+  canWrite: boolean;
+  canDelete: boolean;
 }
 
 function StatusBadge({ status }: { status: string }) {
@@ -102,7 +104,7 @@ function formatPeriod(start: string, end: string) {
   return `${formatDate(start)} – ${formatDate(end)}`;
 }
 
-export default function BillsTable({ initialData }: Props) {
+export default function BillsTable({ initialData, canWrite, canDelete }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -325,7 +327,7 @@ export default function BillsTable({ initialData }: Props) {
                             <Eye className="h-3 w-3 mr-1" />
                             Details
                           </Button>
-                          {bill.status === "PENDING" && (
+                          {canWrite && bill.status === "PENDING" && (
                             <Button
                               variant="outline"
                               size="sm"
@@ -337,16 +339,18 @@ export default function BillsTable({ initialData }: Props) {
                               {markingPaid === bill.id ? "..." : "Mark Paid"}
                             </Button>
                           )}
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
-                            disabled={deletingBill === bill.id}
-                            onClick={() => handleDeleteBill(bill)}
-                          >
-                            <Trash2 className="h-3 w-3 mr-1" />
-                            {deletingBill === bill.id ? "..." : "Delete"}
-                          </Button>
+                          {canDelete && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+                              disabled={deletingBill === bill.id}
+                              onClick={() => handleDeleteBill(bill)}
+                            >
+                              <Trash2 className="h-3 w-3 mr-1" />
+                              {deletingBill === bill.id ? "..." : "Delete"}
+                            </Button>
+                          )}
                         </div>
                       </td>
                     </tr>

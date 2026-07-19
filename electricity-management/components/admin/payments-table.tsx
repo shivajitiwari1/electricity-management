@@ -56,6 +56,8 @@ type PendingBill = {
 interface Props {
   initialData: SerializedPayment[];
   pendingBills: PendingBill[];
+  canWrite: boolean;
+  canDelete: boolean;
 }
 
 const MANUAL_METHODS = new Set(["CASH", "UPI", "NEFT", "RTGS", "CHEQUE"]);
@@ -148,7 +150,7 @@ function formatINR(amount: string) {
   })}`;
 }
 
-export default function PaymentsTable({ initialData, pendingBills }: Props) {
+export default function PaymentsTable({ initialData, pendingBills, canWrite, canDelete }: Props) {
   const router = useRouter();
   const [filterMethod, setFilterMethod] = useState("all");
   const [filterStatus, setFilterStatus] = useState("all");
@@ -309,14 +311,16 @@ export default function PaymentsTable({ initialData, pendingBills }: Props) {
                         <BillStatusBadge status={bill.status} />
                       </td>
                       <td className="px-4 py-3">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => openCashDialog(bill)}
-                        >
-                          <CreditCard className="h-3 w-3 mr-1" />
-                          Record Payment
-                        </Button>
+                        {canWrite && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => openCashDialog(bill)}
+                          >
+                            <CreditCard className="h-3 w-3 mr-1" />
+                            Record Payment
+                          </Button>
+                        )}
                       </td>
                     </tr>
                   ))
@@ -459,16 +463,18 @@ export default function PaymentsTable({ initialData, pendingBills }: Props) {
                             <Download className="h-3 w-3 mr-1" />
                             Receipt
                           </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
-                            disabled={deletingPayment === payment.id}
-                            onClick={() => handleDeletePayment(payment.id, payment.receiptNumber)}
-                          >
-                            <Trash2 className="h-3 w-3 mr-1" />
-                            {deletingPayment === payment.id ? "..." : "Delete"}
-                          </Button>
+                          {canDelete && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+                              disabled={deletingPayment === payment.id}
+                              onClick={() => handleDeletePayment(payment.id, payment.receiptNumber)}
+                            >
+                              <Trash2 className="h-3 w-3 mr-1" />
+                              {deletingPayment === payment.id ? "..." : "Delete"}
+                            </Button>
+                          )}
                         </div>
                       </td>
                     </tr>

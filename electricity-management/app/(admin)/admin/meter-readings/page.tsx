@@ -1,4 +1,6 @@
 import { Suspense } from "react";
+import { auth } from "@/auth";
+import type { PermissionsMap } from "@/lib/permissions";
 import MeterReadingsTable from "@/components/admin/meter-readings-table";
 import { TableSkeleton } from "@/components/ui/page-skeleton";
 import { getCachedMeterReadingsData } from "@/lib/server-cache";
@@ -6,6 +8,12 @@ import { getCachedMeterReadingsData } from "@/lib/server-cache";
 export const dynamic = "force-dynamic";
 
 async function MeterReadingsData() {
+  const session = await auth();
+  const role = (session?.user as any)?.role as string;
+  const permissions = (session?.user as any)?.permissions as PermissionsMap ?? {};
+  const canWrite = role === "ADMIN" || permissions["meter-readings"]?.canWrite === true;
+  const canDelete = role === "ADMIN" || permissions["meter-readings"]?.canDelete === true;
+
   const { connections, currentRate, latestByConnection, billedReadingIds } = await getCachedMeterReadingsData();
   const billedSet = new Set(billedReadingIds);
 
@@ -41,6 +49,8 @@ async function MeterReadingsData() {
       connections={serializedConnections}
       readings={serializedReadings}
       dgFixed={currentRate ? Number(currentRate.dgFixed) : 0}
+      canWrite={canWrite}
+      canDelete={canDelete}
     />
   );
 }

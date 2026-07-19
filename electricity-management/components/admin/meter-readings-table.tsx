@@ -68,11 +68,13 @@ interface Props {
   connections: SerializedConnection[];
   readings: SerializedReading[];
   dgFixed: number;
+  canWrite: boolean;
+  canDelete: boolean;
 }
 
 const today = new Date().toISOString().split("T")[0];
 
-export default function MeterReadingsTable({ connections, readings, dgFixed }: Props) {
+export default function MeterReadingsTable({ connections, readings, dgFixed, canWrite, canDelete }: Props) {
   const router = useRouter();
 
   // Table search state
@@ -277,10 +279,12 @@ export default function MeterReadingsTable({ connections, readings, dgFixed }: P
             }).length} of {readings.length} flats
           </p>
         </div>
-        <Button onClick={() => setShowAddModal(true)}>
-          <Plus className="h-4 w-4 mr-2" />
-          Add Meter Reading
-        </Button>
+        {canWrite && (
+          <Button onClick={() => setShowAddModal(true)}>
+            <Plus className="h-4 w-4 mr-2" />
+            Add Meter Reading
+          </Button>
+        )}
       </div>
 
       {/* Readings Table — one row per flat */}
@@ -348,7 +352,7 @@ export default function MeterReadingsTable({ connections, readings, dgFixed }: P
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2">
-                          {reading.hasReading && !reading.hasBill && (
+                          {canWrite && reading.hasReading && !reading.hasBill && (
                             <Button
                               variant="outline"
                               size="sm"
@@ -358,7 +362,7 @@ export default function MeterReadingsTable({ connections, readings, dgFixed }: P
                               Generate Bill
                             </Button>
                           )}
-                          {reading.hasReading && (
+                          {canDelete && reading.hasReading && (
                             <Button
                               variant="outline"
                               size="sm"

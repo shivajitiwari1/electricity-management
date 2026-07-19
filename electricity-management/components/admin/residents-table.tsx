@@ -73,6 +73,8 @@ type Resident = {
 interface Props {
   initialData: Resident[];
   flatData: FlatEntry[];
+  canWrite: boolean;
+  canDelete: boolean;
 }
 
 function StatusBadge({ status }: { status: string }) {
@@ -90,7 +92,7 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
-export default function ResidentsTable({ initialData, flatData }: Props) {
+export default function ResidentsTable({ initialData, flatData, canWrite, canDelete }: Props) {
   const towers = useMemo(() => [...new Set(flatData.map((f) => f.tower))].sort(), [flatData]);
   const router = useRouter();
   const [search, setSearch] = useState("");
@@ -341,10 +343,12 @@ export default function ResidentsTable({ initialData, flatData }: Props) {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <Button onClick={() => setShowAddModal(true)}>
-          <Plus className="h-4 w-4 mr-2" />
-          Add Resident
-        </Button>
+        {canWrite && (
+          <Button onClick={() => setShowAddModal(true)}>
+            <Plus className="h-4 w-4 mr-2" />
+            Add Resident
+          </Button>
+        )}
       </div>
 
       {/* Table */}
@@ -396,15 +400,17 @@ export default function ResidentsTable({ initialData, flatData }: Props) {
                         </td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-2">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => openEditModal(resident)}
-                            >
-                              <Pencil className="h-3 w-3 mr-1" />
-                              Edit
-                            </Button>
-                            {isActive ? (
+                            {canWrite && (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => openEditModal(resident)}
+                              >
+                                <Pencil className="h-3 w-3 mr-1" />
+                                Edit
+                              </Button>
+                            )}
+                            {canWrite && isActive && (
                               <Button
                                 variant="outline"
                                 size="sm"
@@ -414,7 +420,8 @@ export default function ResidentsTable({ initialData, flatData }: Props) {
                                 <UserX className="h-3 w-3 mr-1" />
                                 Deactivate
                               </Button>
-                            ) : (
+                            )}
+                            {canDelete && !isActive && (
                               <Button
                                 variant="outline"
                                 size="sm"

@@ -31,9 +31,10 @@ type SerializedRate = {
 
 interface Props {
   rates: SerializedRate[];
+  canWrite: boolean;
 }
 
-export default function RatesTable({ rates }: Props) {
+export default function RatesTable({ rates, canWrite }: Props) {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -108,10 +109,12 @@ export default function RatesTable({ rates }: Props) {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-base font-semibold">Current Rate</CardTitle>
-            <Button size="sm" onClick={() => setShowModal(true)}>
-              <Plus className="h-4 w-4 mr-2" />
-              Update Rates
-            </Button>
+            {canWrite && (
+              <Button size="sm" onClick={() => setShowModal(true)}>
+                <Plus className="h-4 w-4 mr-2" />
+                Update Rates
+              </Button>
+            )}
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -144,10 +147,12 @@ export default function RatesTable({ rates }: Props) {
         <Card>
           <CardContent className="py-8 text-center">
             <p className="text-muted-foreground mb-4">No rates configured yet.</p>
-            <Button onClick={() => setShowModal(true)}>
-              <Plus className="h-4 w-4 mr-2" />
-              Set Initial Rates
-            </Button>
+            {canWrite && (
+              <Button onClick={() => setShowModal(true)}>
+                <Plus className="h-4 w-4 mr-2" />
+                Set Initial Rates
+              </Button>
+            )}
           </CardContent>
         </Card>
       )}
