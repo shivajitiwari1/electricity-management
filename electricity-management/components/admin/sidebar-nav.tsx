@@ -6,49 +6,57 @@ import { useState } from "react";
 import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import {
-  LayoutDashboard,
-  Users,
-  Plug,
-  Gauge,
-  FileText,
-  CreditCard,
-  BarChart3,
-  Settings,
-  LogOut,
-  Menu,
-  Zap,
-  Building2,
+  LayoutDashboard, Users, Plug, Gauge, FileText,
+  CreditCard, BarChart3, Settings, LogOut, Menu,
+  Zap, Building2, ShieldCheck, UserCog,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Separator } from "@/components/ui/separator";
+import type { PermissionsMap } from "@/lib/permissions";
 
-const navItems = [
-  { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/admin/residents", label: "Residents", icon: Users },
-  { href: "/admin/connections", label: "Connections", icon: Plug },
-  { href: "/admin/meter-readings", label: "Meter Readings", icon: Gauge },
-  { href: "/admin/bills", label: "Bills", icon: FileText },
-  { href: "/admin/payments", label: "Payments", icon: CreditCard },
-  { href: "/admin/reports", label: "Reports", icon: BarChart3 },
-  { href: "/admin/rates", label: "Rates", icon: Settings },
-  { href: "/admin/flats", label: "Flat Info", icon: Building2 },
+const NAV_ITEMS = [
+  { href: "/admin/dashboard",      label: "Dashboard",     icon: LayoutDashboard, pageId: "dashboard" },
+  { href: "/admin/residents",      label: "Residents",     icon: Users,           pageId: "residents" },
+  { href: "/admin/connections",    label: "Connections",   icon: Plug,            pageId: "connections" },
+  { href: "/admin/meter-readings", label: "Meter Readings",icon: Gauge,           pageId: "meter-readings" },
+  { href: "/admin/bills",          label: "Bills",         icon: FileText,        pageId: "bills" },
+  { href: "/admin/payments",       label: "Payments",      icon: CreditCard,      pageId: "payments" },
+  { href: "/admin/reports",        label: "Reports",       icon: BarChart3,       pageId: "reports" },
+  { href: "/admin/rates",          label: "Rates",         icon: Settings,        pageId: "rates" },
+  { href: "/admin/flats",          label: "Flat Info",     icon: Building2,       pageId: "flat-info" },
+];
+
+const ADMIN_ONLY_ITEMS = [
+  { href: "/admin/users",          label: "Users",         icon: UserCog,         pageId: "users" },
+  { href: "/admin/permissions",    label: "Permissions",   icon: ShieldCheck,     pageId: "permissions" },
 ];
 
 interface Props {
   user: { name?: string | null; email?: string | null };
+  role: string;
+  permissions: PermissionsMap;
 }
 
-function NavLinks({ pathname, onNavigate }: { pathname: string; onNavigate?: () => void }) {
+function NavLinks({ pathname, role, permissions, onNavigate }: {
+  pathname: string;
+  role: string;
+  permissions: PermissionsMap;
+  onNavigate?: () => void;
+}) {
+  const isAdmin = role === "ADMIN";
+
+  const visibleItems = NAV_ITEMS.filter(({ pageId }) => {
+    if (isAdmin) return true;
+    return permissions[pageId]?.canRead === true;
+  });
+
+  const allItems = isAdmin ? [...visibleItems, ...ADMIN_ONLY_ITEMS] : visibleItems;
+
   return (
     <nav className="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto">
-      {navItems.map(({ href, label, icon: Icon }) => {
+      {allItems.map(({ href, label, icon: Icon }) => {
         const active = pathname === href || pathname.startsWith(href + "/");
         return (
           <Link
@@ -71,12 +79,11 @@ function NavLinks({ pathname, onNavigate }: { pathname: string; onNavigate?: () 
   );
 }
 
-function SidebarContent({ user, onNavigate }: Props & { onNavigate?: () => void }) {
+function SidebarContent({ user, role, permissions, onNavigate }: Props & { onNavigate?: () => void }) {
   const pathname = usePathname();
 
   return (
     <div className="flex flex-col h-full bg-card border-r border-border">
-      {/* Header */}
       <div className="px-4 py-4 border-b border-border">
         <div className="flex items-center gap-3">
           <div className="h-9 w-9 rounded-xl bg-primary flex items-center justify-center shrink-0 shadow-sm">
@@ -84,17 +91,15 @@ function SidebarContent({ user, onNavigate }: Props & { onNavigate?: () => void 
           </div>
           <div className="min-w-0">
             <p className="text-sm font-bold text-foreground leading-tight">Oasis Venetia Heights</p>
-            <p className="text-xs text-muted-foreground">Admin Panel</p>
+            <p className="text-xs text-muted-foreground">{role === "ADMIN" ? "Admin Panel" : "Manager Panel"}</p>
           </div>
         </div>
       </div>
 
-      {/* Navigation */}
-      <NavLinks pathname={pathname} onNavigate={onNavigate} />
+      <NavLinks pathname={pathname} role={role} permissions={permissions} onNavigate={onNavigate} />
 
       <Separator />
 
-      {/* Footer */}
       <div className="px-3 py-3 space-y-1">
         <div className="flex items-center justify-between px-1 py-1">
           <div className="min-w-0 flex-1">
@@ -117,12 +122,11 @@ function SidebarContent({ user, onNavigate }: Props & { onNavigate?: () => void 
   );
 }
 
-export default function SidebarNav({ user }: Props) {
+export default function SidebarNav({ user, role, permissions }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
     <>
-      {/* Mobile top bar */}
       <div className="md:hidden fixed top-0 inset-x-0 z-30 h-14 flex items-center justify-between px-4 bg-card border-b border-border shadow-sm">
         <div className="flex items-center gap-2.5">
           <div className="h-7 w-7 rounded-lg bg-primary flex items-center justify-center shrink-0">
@@ -139,15 +143,14 @@ export default function SidebarNav({ user }: Props) {
             </SheetTrigger>
             <SheetContent side="left" className="w-64 p-0 border-0">
               <SheetTitle className="sr-only">Navigation</SheetTitle>
-              <SidebarContent user={user} onNavigate={() => setOpen(false)} />
+              <SidebarContent user={user} role={role} permissions={permissions} onNavigate={() => setOpen(false)} />
             </SheetContent>
           </Sheet>
         </div>
       </div>
 
-      {/* Desktop sidebar */}
       <div className="hidden md:flex w-64 h-full shrink-0 flex-col">
-        <SidebarContent user={user} />
+        <SidebarContent user={user} role={role} permissions={permissions} />
       </div>
     </>
   );
