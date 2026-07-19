@@ -8,6 +8,7 @@ generator client {
 
 enum Role {
   ADMIN
+  MANAGER
   RESIDENT
 }
 
@@ -26,6 +27,10 @@ enum BillStatus {
 enum PaymentMethod {
   ONLINE
   CASH
+  UPI
+  NEFT
+  RTGS
+  CHEQUE
 }
 
 enum PaymentStatus {
@@ -40,6 +45,7 @@ model User {
   email     String     @unique
   password  String
   role      Role
+  isActive  Boolean    @default(true)
   createdAt DateTime   @default(now())
   resident  Resident?
   auditLogs AuditLog[]
@@ -153,4 +159,16 @@ model FlatInfo {
   floor    String
   unitType String
   area     Int
+}
+
+model Permission {
+  id        String   @id @default(cuid())
+  role      Role
+  page      String
+  canRead   Boolean  @default(false)
+  canWrite  Boolean  @default(false)
+  canDelete Boolean  @default(false)
+  updatedAt DateTime @updatedAt
+
+  @@unique([role, page])
 }

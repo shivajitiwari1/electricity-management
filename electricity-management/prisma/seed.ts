@@ -24,8 +24,51 @@ const IMPORT_SHEETS = [
   "Shop-Commercial-8",
 ];
 
+async function seedPermissions() {
+  console.log("=== Seeding Permissions ===\n");
+
+  const PAGES = [
+    "dashboard", "residents", "connections", "meter-readings",
+    "bills", "payments", "reports", "rates", "flat-info", "users", "permissions",
+  ];
+
+  const ADMIN_PERMS = PAGES.map((page) => ({
+    role: "ADMIN" as const,
+    page,
+    canRead: true,
+    canWrite: true,
+    canDelete: true,
+  }));
+
+  const MANAGER_PERMS = [
+    { role: "MANAGER" as const, page: "dashboard",      canRead: true,  canWrite: false, canDelete: false },
+    { role: "MANAGER" as const, page: "residents",      canRead: true,  canWrite: false, canDelete: false },
+    { role: "MANAGER" as const, page: "connections",    canRead: true,  canWrite: false, canDelete: false },
+    { role: "MANAGER" as const, page: "meter-readings", canRead: true,  canWrite: true,  canDelete: false },
+    { role: "MANAGER" as const, page: "bills",          canRead: true,  canWrite: false, canDelete: false },
+    { role: "MANAGER" as const, page: "payments",       canRead: true,  canWrite: true,  canDelete: false },
+    { role: "MANAGER" as const, page: "reports",        canRead: true,  canWrite: false, canDelete: false },
+    { role: "MANAGER" as const, page: "rates",          canRead: false, canWrite: false, canDelete: false },
+    { role: "MANAGER" as const, page: "flat-info",      canRead: false, canWrite: false, canDelete: false },
+    { role: "MANAGER" as const, page: "users",          canRead: false, canWrite: false, canDelete: false },
+    { role: "MANAGER" as const, page: "permissions",    canRead: false, canWrite: false, canDelete: false },
+  ];
+
+  for (const perm of [...ADMIN_PERMS, ...MANAGER_PERMS]) {
+    await prisma.permission.upsert({
+      where: { role_page: { role: perm.role, page: perm.page } },
+      update: {},
+      create: perm,
+    });
+  }
+  console.log("✅ Permissions seeded\n");
+}
+
 async function main() {
   console.log("=== OVH Customer Import — SOCIETY ELECTRICITY WORKING 14-07-26 ===\n");
+
+  // ── 0. Seed permissions ──────────────────────────────────────────────────
+  await seedPermissions();
 
   // ── 1. Upsert admin user ─────────────────────────────────────────────────
   const adminPassword = await bcrypt.hash("Admin@123", 12);
