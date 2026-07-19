@@ -1,8 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import { Decimal } from "@prisma/client/runtime/client";
+import { revalidateTag } from "next/cache";
+import { guardPermission } from "@/lib/permissions";
 
 const createMeterReadingSchema = z.object({
   connectionId: z.string().min(1),
@@ -15,7 +17,7 @@ const createMeterReadingSchema = z.object({
 
 export async function GET(req: NextRequest) {
   const session = await auth();
-  if (!session || session.user.role !== "ADMIN") {
+  if (!session || ((session.user as any).role !== "ADMIN" && (session.user as any).role !== "MANAGER")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -43,9 +45,8 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   const session = await auth();
-  if (!session || session.user.role !== "ADMIN") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const guard = await guardPermission(session as any, "meter-readings", "canWrite");
+  if (guard) return guard;
 
   let body: unknown;
   try {
@@ -95,13 +96,13 @@ export async function POST(req: NextRequest) {
         dgPrevious: dgPrevious !== undefined ? new Decimal(dgPrevious) : new Decimal(0),
         dgCurrent: dgCurrent !== undefined ? new Decimal(dgCurrent) : new Decimal(0),
         dgUnits: dgUnitsVal,
-        recordedById: session.user.id,
+        recordedById: session!.user.id,
       },
     });
 
     await tx.auditLog.create({
       data: {
-        userId: session.user.id,
+        userId: session!.user.id,
         action: "CREATE",
         entity: "MeterReading",
         entityId: newReading.id,
@@ -118,5 +119,8 @@ export async function POST(req: NextRequest) {
     return newReading;
   });
 
+  revalidateTag("meter-readings", {});
+  revalidateTag("dashboard", {});
+  revalidateTag("reports", {});
   return NextResponse.json(reading, { status: 201 });
 }

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
+import { guardPermission } from "@/lib/permissions";
 
 const schema = z.object({
   flatNo:   z.string().min(1),
@@ -13,7 +14,7 @@ const schema = z.object({
 
 export async function GET() {
   const session = await auth();
-  if (!session || session.user.role !== "ADMIN") {
+  if (!session || ((session.user as any).role !== "ADMIN" && (session.user as any).role !== "MANAGER")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const flats = await prisma.flatInfo.findMany({ orderBy: [{ tower: "asc" }, { flatNo: "asc" }] });
@@ -22,9 +23,8 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   const session = await auth();
-  if (!session || session.user.role !== "ADMIN") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const guard = await guardPermission(session as any, "flat-info", "canWrite");
+  if (guard) return guard;
 
   let body: unknown;
   try { body = await req.json(); } catch {

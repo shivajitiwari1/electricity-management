@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { revalidateTag } from "next/cache";
+import { guardPermission } from "@/lib/permissions";
 
 export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth();
-  if (!session || session.user.role !== "ADMIN") {
+  if (!session || ((session.user as any).role !== "ADMIN" && (session.user as any).role !== "MANAGER")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -45,9 +47,8 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth();
-  if (!session || session.user.role !== "ADMIN") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const guard = await guardPermission(session as any, "payments", "canDelete");
+  if (guard) return guard;
 
   const { id } = await params;
 
@@ -81,7 +82,7 @@ export async function DELETE(
 
     await tx.auditLog.create({
       data: {
-        userId: session.user.id,
+        userId: session!.user.id,
         action: "DELETE",
         entity: "Payment",
         entityId: id,
@@ -95,5 +96,9 @@ export async function DELETE(
     });
   });
 
+  revalidateTag("bills", {});
+  revalidateTag("dashboard", {});
+  revalidateTag("payments", {});
+  revalidateTag("reports", {});
   return NextResponse.json({ success: true });
 }

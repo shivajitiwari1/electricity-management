@@ -1,7 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
+import { revalidateTag } from "next/cache";
+import { guardPermission } from "@/lib/permissions";
 
 const createRateSchema = z.object({
   ncplPerUnit: z.number().positive(),
@@ -11,7 +13,7 @@ const createRateSchema = z.object({
 
 export async function GET() {
   const session = await auth();
-  if (!session || session.user.role !== "ADMIN") {
+  if (!session || ((session.user as any).role !== "ADMIN" && (session.user as any).role !== "MANAGER")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -24,9 +26,8 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   const session = await auth();
-  if (!session || session.user.role !== "ADMIN") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const guard = await guardPermission(session as any, "rates", "canWrite");
+  if (guard) return guard;
 
   let body: unknown;
   try {
@@ -57,7 +58,7 @@ export async function POST(req: NextRequest) {
 
     await tx.auditLog.create({
       data: {
-        userId: session.user.id,
+        userId: session!.user.id,
         action: "CREATE",
         entity: "Rate",
         entityId: newRate.id,
@@ -68,5 +69,7 @@ export async function POST(req: NextRequest) {
     return newRate;
   });
 
+  revalidateTag("rates", {});
+  revalidateTag("dashboard", {});
   return NextResponse.json(rate, { status: 201 });
 }

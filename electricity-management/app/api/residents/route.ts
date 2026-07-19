@@ -1,8 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { guardPermission } from "@/lib/permissions";
 import { z } from "zod";
 import bcryptjs from "bcryptjs";
+import { revalidateTag } from "next/cache";
 import { sendEmail } from "@/lib/email";
 import { welcomeEmail } from "@/lib/email-templates";
 
@@ -22,7 +24,7 @@ const createResidentSchema = z.object({
 
 export async function GET(req: NextRequest) {
   const session = await auth();
-  if (!session || session.user.role !== "ADMIN") {
+  if (!session || ((session.user as any).role !== "ADMIN" && (session.user as any).role !== "MANAGER")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -56,9 +58,8 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   const session = await auth();
-  if (!session || session.user.role !== "ADMIN") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const guard = await guardPermission(session as any, "residents", "canWrite");
+  if (guard) return guard;
 
   let body: unknown;
   try {
@@ -147,7 +148,7 @@ export async function POST(req: NextRequest) {
 
     await tx.auditLog.create({
       data: {
-        userId: session.user.id,
+        userId: session!.user.id,
         action: "CREATE",
         entity: "Resident",
         entityId: newResident.id,
@@ -175,10 +176,11 @@ export async function POST(req: NextRequest) {
       password,
       loginUrl: `${process.env.NEXTAUTH_URL}/login`,
     });
-    await sendEmail(email, `Welcome to Oasis Venetia Heights — Your Login Details`, html);
+    await sendEmail(email, `Welcome to Oasis Venetia Heights â€” Your Login Details`, html);
   } catch (err) {
     console.error("Welcome email failed:", err);
   }
 
+  revalidateTag("residents", {});
   return NextResponse.json(resident, { status: 201 });
 }

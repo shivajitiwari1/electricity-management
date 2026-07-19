@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
+import { revalidateTag } from "next/cache";
+import { guardPermission } from "@/lib/permissions";
 
 const updateResidentSchema = z.object({
   name: z.string().min(1).optional(),
@@ -23,7 +25,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth();
-  if (!session || session.user.role !== "ADMIN") {
+  if (!session || ((session.user as any).role !== "ADMIN" && (session.user as any).role !== "MANAGER")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -56,9 +58,8 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth();
-  if (!session || session.user.role !== "ADMIN") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const guard = await guardPermission(session as any, "residents", "canWrite");
+  if (guard) return guard;
 
   const { id } = await params;
 
@@ -143,7 +144,7 @@ export async function PUT(
 
     await tx.auditLog.create({
       data: {
-        userId: session.user.id,
+        userId: session!.user.id,
         action: "UPDATE",
         entity: "Resident",
         entityId: id,
@@ -160,6 +161,7 @@ export async function PUT(
     });
   });
 
+  revalidateTag("residents", {});
   return NextResponse.json(updated);
 }
 
@@ -168,9 +170,8 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth();
-  if (!session || session.user.role !== "ADMIN") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const guard = await guardPermission(session as any, "residents", "canDelete");
+  if (guard) return guard;
 
   const { id } = await params;
   const hard = req.nextUrl.searchParams.get("hard") === "true";
@@ -218,6 +219,7 @@ export async function DELETE(
       await tx.user.delete({ where: { id: resident.userId } });
     });
 
+    revalidateTag("residents", {});
     return NextResponse.json({ success: true });
   }
 
@@ -230,7 +232,7 @@ export async function DELETE(
 
     await tx.auditLog.create({
       data: {
-        userId: session.user.id,
+        userId: session!.user.id,
         action: "DEACTIVATE",
         entity: "Resident",
         entityId: id,
@@ -242,5 +244,6 @@ export async function DELETE(
     });
   });
 
+  revalidateTag("residents", {});
   return NextResponse.json({ success: true });
 }

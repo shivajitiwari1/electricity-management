@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
+import { guardPermission } from "@/lib/permissions";
 
 const schema = z.object({
   flatNo:   z.string().min(1).optional(),
@@ -16,9 +17,8 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth();
-  if (!session || session.user.role !== "ADMIN") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const guard = await guardPermission(session as any, "flat-info", "canWrite");
+  if (guard) return guard;
 
   const { id } = await params;
 
@@ -49,9 +49,8 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth();
-  if (!session || session.user.role !== "ADMIN") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const guard = await guardPermission(session as any, "flat-info", "canDelete");
+  if (guard) return guard;
 
   const { id } = await params;
   const flat = await prisma.flatInfo.findUnique({ where: { id } });

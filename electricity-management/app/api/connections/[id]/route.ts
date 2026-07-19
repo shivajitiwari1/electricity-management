@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
+import { revalidateTag } from "next/cache";
+import { guardPermission } from "@/lib/permissions";
 
 const updateConnectionSchema = z.object({
   meterNo: z.string().optional(),
@@ -14,7 +16,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth();
-  if (!session || session.user.role !== "ADMIN") {
+  if (!session || ((session.user as any).role !== "ADMIN" && (session.user as any).role !== "MANAGER")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -50,9 +52,8 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth();
-  if (!session || session.user.role !== "ADMIN") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const guard = await guardPermission(session as any, "connections", "canWrite");
+  if (guard) return guard;
 
   const { id } = await params;
 
@@ -99,7 +100,7 @@ export async function PUT(
 
     await tx.auditLog.create({
       data: {
-        userId: session.user.id,
+        userId: session!.user.id,
         action: "UPDATE",
         entity: "Connection",
         entityId: id,
@@ -110,5 +111,7 @@ export async function PUT(
     return connection;
   });
 
+  revalidateTag("connections", {});
+  revalidateTag("residents", {});
   return NextResponse.json(updated);
 }

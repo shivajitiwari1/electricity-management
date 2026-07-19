@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
+import { revalidateTag } from "next/cache";
+import { guardPermission } from "@/lib/permissions";
 
 const updateBillStatusSchema = z.object({
   status: z.enum(["PENDING", "PAID", "OVERDUE", "PARTIAL"]),
@@ -39,7 +41,7 @@ export async function GET(
     return NextResponse.json({ error: "Bill not found" }, { status: 404 });
   }
 
-  if (session.user.role === "ADMIN") {
+  if ((session.user as any).role === "ADMIN" || (session.user as any).role === "MANAGER") {
     return NextResponse.json(bill);
   }
 
@@ -69,9 +71,8 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth();
-  if (!session || session.user.role !== "ADMIN") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const guard = await guardPermission(session as any, "bills", "canWrite");
+  if (guard) return guard;
 
   const { id } = await params;
 
@@ -118,7 +119,7 @@ export async function PUT(
 
     await tx.auditLog.create({
       data: {
-        userId: session.user.id,
+        userId: session!.user.id,
         action: "UPDATE",
         entity: "Bill",
         entityId: id,
@@ -133,6 +134,10 @@ export async function PUT(
     return updatedBill;
   });
 
+  revalidateTag("bills", {});
+  revalidateTag("dashboard", {});
+  revalidateTag("payments", {});
+  revalidateTag("reports", {});
   return NextResponse.json(updated);
 }
 
@@ -141,9 +146,8 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth();
-  if (!session || session.user.role !== "ADMIN") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const guard = await guardPermission(session as any, "bills", "canDelete");
+  if (guard) return guard;
 
   const { id } = await params;
 
@@ -160,7 +164,7 @@ export async function DELETE(
     await tx.bill.delete({ where: { id } });
     await tx.auditLog.create({
       data: {
-        userId: session.user.id,
+        userId: session!.user.id,
         action: "DELETE",
         entity: "Bill",
         entityId: id,
@@ -169,5 +173,9 @@ export async function DELETE(
     });
   });
 
+  revalidateTag("bills", {});
+  revalidateTag("dashboard", {});
+  revalidateTag("payments", {});
+  revalidateTag("reports", {});
   return NextResponse.json({ success: true });
 }

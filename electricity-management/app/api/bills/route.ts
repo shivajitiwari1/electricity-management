@@ -1,9 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { guardPermission } from "@/lib/permissions";
 import { z } from "zod";
 import { Decimal } from "@prisma/client/runtime/client";
 import { Prisma } from "@prisma/client";
+import { revalidateTag } from "next/cache";
 import { calculateBill, generateBillNumber } from "@/lib/billing";
 import { sendEmail } from "@/lib/email";
 import { billGeneratedEmail } from "@/lib/email-templates";
@@ -19,7 +21,7 @@ const generateBillSchema = z.object({
 
 export async function GET(req: NextRequest) {
   const session = await auth();
-  if (!session || session.user.role !== "ADMIN") {
+  if (!session || ((session.user as any).role !== "ADMIN" && (session.user as any).role !== "MANAGER")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -76,9 +78,8 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   const session = await auth();
-  if (!session || session.user.role !== "ADMIN") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const guard = await guardPermission(session as any, "bills", "canWrite");
+  if (guard) return guard;
 
   let body: unknown;
   try {
@@ -151,7 +152,7 @@ export async function POST(req: NextRequest) {
     billDate: billDateObj,
   });
 
-  // Generate a unique bill number — append suffix if base number already exists
+  // Generate a unique bill number â€” append suffix if base number already exists
   const baseBillNumber = generateBillNumber(meterReading.connection.flatNo, billDateObj);
   const existingCount = await prisma.bill.count({
     where: { billNumber: { startsWith: baseBillNumber } },
@@ -193,7 +194,7 @@ export async function POST(req: NextRequest) {
 
     await tx.auditLog.create({
       data: {
-        userId: session.user.id,
+        userId: session!.user.id,
         action: "CREATE",
         entity: "Bill",
         entityId: newBill.id,
@@ -221,7 +222,7 @@ export async function POST(req: NextRequest) {
 
   const bill = billResult;
 
-  // Send email — don't fail bill creation if email fails
+  // Send email â€” don't fail bill creation if email fails
   try {
     const residentEmail = bill.connection.resident.user.email;
     const residentName = bill.connection.resident.user.name ?? "Resident";
@@ -235,7 +236,7 @@ export async function POST(req: NextRequest) {
       residentName,
       flatNo: bill.connection.flatNo,
       billNumber: bill.billNumber,
-      billingPeriod: `${fmtDate(billingPeriodStart)} – ${fmtDate(billingPeriodEnd)}`,
+      billingPeriod: `${fmtDate(billingPeriodStart)} â€“ ${fmtDate(billingPeriodEnd)}`,
       totalAmount: calculation.totalAmount.toFixed(2),
       dueDate: calculation.dueDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
       payUrl,
@@ -246,5 +247,9 @@ export async function POST(req: NextRequest) {
     console.error("Failed to send bill email:", emailErr);
   }
 
+  revalidateTag("bills", {});
+  revalidateTag("dashboard", {});
+  revalidateTag("payments", {});
+  revalidateTag("reports", {});
   return NextResponse.json(bill, { status: 201 });
 }

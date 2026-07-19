@@ -1,15 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { revalidateTag } from "next/cache";
+import { guardPermission } from "@/lib/permissions";
 
 export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth();
-  if (!session || session.user.role !== "ADMIN") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const guard = await guardPermission(session as any, "rates", "canDelete");
+  if (guard) return guard;
 
   const { id } = await params;
 
@@ -35,7 +36,7 @@ export async function DELETE(
 
     await tx.auditLog.create({
       data: {
-        userId: session.user.id,
+        userId: session!.user.id,
         action: "DELETE",
         entity: "Rate",
         entityId: id,
@@ -49,5 +50,7 @@ export async function DELETE(
     });
   });
 
+  revalidateTag("rates", {});
+  revalidateTag("dashboard", {});
   return NextResponse.json({ success: true });
 }
