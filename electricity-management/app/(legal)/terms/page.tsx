@@ -34,7 +34,7 @@ export default function TermsPage() {
           </a>
           . By using this portal, you agree to these terms.
         </p>
-        <p>Operated by: Oasis Group of Companies, A-77, Sector 2, Noida.</p>
+        <p>Operated by: <strong>Oasis Buildmart India Pvt. Ltd.</strong> (trading as Oasis Group of Companies), Plot No. HRA-12-A, Site-C, Greater Noida – 201306.</p>
       </Section>
 
       <Section title="2. Services">
@@ -125,8 +125,10 @@ export default function TermsPage() {
       <Section title="9. Contact Us">
         <div className="space-y-1">
           <p>
-            <strong>Oasis Group of Companies</strong>
+            <strong>Oasis Buildmart India Pvt. Ltd.</strong>
           </p>
+          <p>(Trading as Oasis Group of Companies)</p>
+          <p>Plot No. HRA-12-A, Site-C, Greater Noida – 201306</p>
           <p>A-77, Sector 2, Noida</p>
           <p>+91-8010-111-777</p>
           <p>

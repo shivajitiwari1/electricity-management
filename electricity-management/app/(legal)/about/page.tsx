@@ -20,6 +20,14 @@ export default function AboutPage() {
         </p>
       </div>
 
+      {/* Legal entity callout */}
+      <section className="bg-blue-50 border border-blue-200 rounded-lg p-5">
+        <h2 className="text-base font-semibold text-blue-900 mb-2">Legal Entity</h2>
+        <p className="text-blue-800 font-medium">Oasis Buildmart India Pvt. Ltd.</p>
+        <p className="text-blue-700 text-sm mt-1">Plot No. HRA-12-A, Site-C, Greater Noida – 201306, Uttar Pradesh, India</p>
+        <p className="text-blue-700 text-sm">CIN: Available on request · Email: info@oasis.in</p>
+      </section>
+
       {/* About the Project */}
       <section>
         <h2 className="text-xl font-semibold text-gray-900 mb-3">About the Project</h2>
@@ -63,6 +71,9 @@ export default function AboutPage() {
       <section>
         <h2 className="text-xl font-semibold text-gray-900 mb-3">Contact Information</h2>
         <div className="space-y-1 text-gray-700">
+          <p className="font-medium">Oasis Buildmart India Pvt. Ltd.</p>
+          <p>(Trading as Oasis Group of Companies)</p>
+          <p>Plot No. HRA-12-A, Site-C, Greater Noida – 201306</p>
           <p>A-77, Sector 2, Noida</p>
           <p>+91-8010-111-777</p>
           <p>
