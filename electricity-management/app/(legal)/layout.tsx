@@ -30,7 +30,7 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
         <div className="max-w-4xl mx-auto px-4 py-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-gray-600">
             <div>
-              <p className="font-medium text-gray-900 mb-1">© 2025 Oasis Group of Companies</p>
+              <p className="font-medium text-gray-900 mb-1">© {new Date().getFullYear()} Oasis Group of Companies</p>
               <p>All rights reserved.</p>
             </div>
             <div className="text-center">
