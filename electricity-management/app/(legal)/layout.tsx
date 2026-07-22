@@ -6,7 +6,9 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
       <header className="border-b bg-white">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <div>
-            <p className="font-semibold text-gray-900 text-lg">Oasis Venetia Heights</p>
+            <Link href="/login" className="font-semibold text-gray-900 text-lg hover:text-gray-600 transition-colors">
+              Oasis Venetia Heights
+            </Link>
             <p className="text-xs text-gray-500">Electricity Management Portal</p>
           </div>
           <nav className="flex gap-6 text-sm">
