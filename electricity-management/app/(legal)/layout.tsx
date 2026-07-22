@@ -10,10 +10,10 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
             <p className="text-xs text-gray-500">Electricity Management Portal</p>
           </div>
           <nav className="flex gap-6 text-sm">
-            <Link href="/legal/about" className="text-gray-600 hover:text-gray-900 transition-colors">
+            <Link href="/about" className="text-gray-600 hover:text-gray-900 transition-colors">
               About Us
             </Link>
-            <Link href="/legal/terms" className="text-gray-600 hover:text-gray-900 transition-colors">
+            <Link href="/terms" className="text-gray-600 hover:text-gray-900 transition-colors">
               Terms &amp; Conditions
             </Link>
           </nav>

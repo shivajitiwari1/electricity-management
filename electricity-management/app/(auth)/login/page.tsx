@@ -144,6 +144,11 @@ export default function LoginPage() {
         <p className="text-center text-xs text-muted-foreground">
           Oasis Venetia Heights · Greater Noida
         </p>
+        <p className="text-center text-xs text-muted-foreground">
+          <Link href="/about" className="hover:underline">About Us</Link>
+          {" · "}
+          <Link href="/terms" className="hover:underline">Terms &amp; Conditions</Link>
+        </p>
       </div>
     </div>
   );
