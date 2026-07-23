@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { StatCardsSkeleton, TableSkeleton } from "@/components/ui/page-skeleton";
-import { Home, FileText, CreditCard, AlertCircle, CheckCircle2, Clock } from "lucide-react";
+import { Home, FileText, CreditCard, AlertCircle, CheckCircle2, Clock, Wrench } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -49,6 +49,14 @@ async function ResidentDashboardContent() {
   const primaryConnection = resident.connections[0] ?? null;
   const latestBill = primaryConnection?.bills[0] ?? null;
   const pendingBill = latestBill && (latestBill.status === "PENDING" || latestBill.status === "OVERDUE") ? latestBill : null;
+
+  const latestMaintenanceBill = await prisma.maintenanceBill.findFirst({
+    where: {
+      connectionId: { in: resident.connections.map((c) => c.id) },
+      status: { in: ["PENDING", "OVERDUE", "PARTIAL"] },
+    },
+    orderBy: { billDate: "desc" },
+  });
 
   return (
     <>
@@ -122,6 +130,56 @@ async function ResidentDashboardContent() {
                   {latestBill.payments[0]?.paymentDate ? new Date(latestBill.payments[0].paymentDate).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "—"}
                 </p>
               )}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Maintenance Bill Card */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base font-semibold flex items-center gap-2">
+            <Wrench className="h-4 w-4 text-orange-500" />Maintenance Bill
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {latestMaintenanceBill ? (
+            <div className="space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <p className="text-3xl font-bold text-gray-900">{formatINR(latestMaintenanceBill.amount)}</p>
+                  <p className="text-sm text-gray-500">Bill #{latestMaintenanceBill.billNumber}</p>
+                  {Number(latestMaintenanceBill.interestCharge) > 0 && (
+                    <p className="text-xs text-red-600">Interest: {formatINR(latestMaintenanceBill.interestCharge)}</p>
+                  )}
+                </div>
+                <StatusBadge status={latestMaintenanceBill.status} />
+              </div>
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div className={`rounded-md p-3 ${latestMaintenanceBill.status === "OVERDUE" ? "bg-red-50" : "bg-gray-50"}`}>
+                  <p className={`text-xs mb-0.5 ${latestMaintenanceBill.status === "OVERDUE" ? "text-red-500" : "text-gray-500"}`}>Due Date</p>
+                  <p className={`font-medium ${latestMaintenanceBill.status === "OVERDUE" ? "text-red-700" : ""}`}>
+                    {new Date(latestMaintenanceBill.dueDate).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
+                  </p>
+                </div>
+                <div className="bg-gray-50 rounded-md p-3">
+                  <p className="text-gray-500 text-xs mb-0.5">Area</p>
+                  <p className="font-medium">{latestMaintenanceBill.unitArea} sq ft</p>
+                </div>
+              </div>
+              <Link href={`/resident/maintenance/${latestMaintenanceBill.id}/pay`}>
+                <Button size="lg" className="w-full sm:w-auto bg-orange-600 hover:bg-orange-700 text-white text-base py-3 px-8">
+                  <CreditCard className="h-5 w-5 mr-2" />Pay Maintenance — {formatINR(Number(latestMaintenanceBill.amount) + Number(latestMaintenanceBill.interestCharge) - Number(latestMaintenanceBill.paidAmount))}
+                </Button>
+              </Link>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-8 text-center gap-3">
+              <div className="p-4 rounded-full bg-green-50"><CheckCircle2 className="h-8 w-8 text-green-600" /></div>
+              <div>
+                <p className="font-semibold text-gray-700">No outstanding maintenance bills</p>
+                <p className="text-sm text-gray-500 mt-1">All maintenance charges are up to date.</p>
+              </div>
             </div>
           )}
         </CardContent>

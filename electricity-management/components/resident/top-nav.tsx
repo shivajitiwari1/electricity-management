@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
-import { Home, FileText, CreditCard, User, LogOut, Zap } from "lucide-react";
+import { Home, FileText, CreditCard, User, LogOut, Zap, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 
@@ -12,6 +12,7 @@ const navItems = [
   { href: "/resident/dashboard", label: "Dashboard", icon: Home },
   { href: "/resident/bills", label: "Bills", icon: FileText },
   { href: "/resident/payments", label: "Payments", icon: CreditCard },
+  { href: "/resident/maintenance", label: "Maintenance", icon: Wrench },
   { href: "/resident/profile", label: "Profile", icon: User },
 ];
 
