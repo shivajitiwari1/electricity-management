@@ -75,7 +75,8 @@ model Connection {
   status         ConnectionStatus @default(ACTIVE)
   connectedAt    DateTime         @default(now())
   meterReadings  MeterReading[]
-  bills          Bill[]
+  bills            Bill[]
+  maintenanceBills MaintenanceBill[]
 }
 
 model Rate {
@@ -139,6 +140,60 @@ model Payment {
   status            PaymentStatus
   receiptNumber     String        @unique
   createdAt         DateTime      @default(now())
+}
+
+enum MaintenanceBillStatus {
+  PENDING
+  PAID
+  OVERDUE
+  PARTIAL
+}
+
+model MaintenanceRate {
+  id            String            @id @default(cuid())
+  ratePerSqFt   Decimal           @db.Decimal(10, 2)
+  effectiveFrom DateTime
+  createdAt     DateTime          @default(now())
+
+  bills         MaintenanceBill[]
+}
+
+model MaintenanceBill {
+  id                 String                @id @default(cuid())
+  connectionId       String
+  maintenanceRateId  String
+  billNumber         String                @unique
+  billDate           DateTime
+  dueDate            DateTime
+  billingPeriodStart DateTime
+  billingPeriodEnd   DateTime
+  unitArea           Int
+  ratePerSqFt        Decimal               @db.Decimal(10, 2)
+  amount             Decimal               @db.Decimal(10, 2)
+  paidAmount         Decimal               @default(0) @db.Decimal(10, 2)
+  interestCharge     Decimal               @default(0) @db.Decimal(10, 2)
+  status             MaintenanceBillStatus @default(PENDING)
+  createdAt          DateTime              @default(now())
+
+  connection Connection          @relation(fields: [connectionId], references: [id])
+  rate       MaintenanceRate     @relation(fields: [maintenanceRateId], references: [id])
+  payments   MaintenancePayment[]
+}
+
+model MaintenancePayment {
+  id                String        @id @default(cuid())
+  maintenanceBillId String
+  amount            Decimal       @db.Decimal(10, 2)
+  paymentDate       DateTime
+  method            PaymentMethod
+  razorpayOrderId   String?
+  razorpayPaymentId String?
+  razorpaySignature String?
+  status            PaymentStatus
+  receiptNumber     String        @unique
+  createdAt         DateTime      @default(now())
+
+  bill MaintenanceBill @relation(fields: [maintenanceBillId], references: [id], onDelete: Cascade)
 }
 
 model AuditLog {
