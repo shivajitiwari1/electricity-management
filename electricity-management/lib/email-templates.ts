@@ -316,3 +316,50 @@ export function passwordResetEmail(params: {
 
   return shell(body);
 }
+
+export function maintenanceBillGeneratedEmail(params: {
+  residentName: string;
+  flatNo: string;
+  billNumber: string;
+  billingPeriod: string;
+  unitArea: number;
+  ratePerSqFt: string;
+  amount: string;
+  dueDate: string;
+}): string {
+  const { residentName, flatNo, billNumber, billingPeriod, unitArea, ratePerSqFt, amount, dueDate } = params;
+
+  const body = `
+    <tr><td style="padding:32px 32px 0;">
+      <p style="margin:0;font-size:15px;color:#374151;">Dear <strong>${residentName}</strong>,</p>
+      <p style="margin:12px 0 0;font-size:14px;color:#4b5563;line-height:1.6;">
+        Your maintenance bill for <strong>Flat ${flatNo}</strong> has been generated.
+      </p>
+    </td></tr>
+
+    <tr><td style="padding:24px 32px 0;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;padding:20px;">
+        <tr><td align="center">
+          <p style="margin:0;font-size:12px;font-weight:600;color:#1e40af;text-transform:uppercase;letter-spacing:1px;">Maintenance Amount Due</p>
+          <p style="margin:6px 0 0;font-size:36px;font-weight:bold;color:#1e3a5f;">Rs. ${amount}</p>
+          <p style="margin:4px 0 0;font-size:12px;color:#6b7280;">Due by: <strong style="color:#dc2626;">${dueDate}</strong></p>
+        </td></tr>
+      </table>
+    </td></tr>
+
+    <tr><td style="padding:24px 32px 32px;">
+      <p style="margin:0 0 12px;font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:1px;">Bill Details</p>
+      <table width="100%" cellpadding="0" cellspacing="0">
+        ${row("Bill Number", billNumber)}
+        ${row("Flat No", flatNo)}
+        ${row("Billing Period", billingPeriod)}
+        ${row("Unit Area", `${unitArea} sq ft`)}
+        ${row("Rate", `Rs. ${ratePerSqFt} per sq ft`)}
+        ${row("Total Amount Due", "Rs. " + amount, true)}
+      </table>
+      <p style="margin:16px 0 0;font-size:12px;color:#6b7280;">Log in to the resident portal to pay online. Interest @ 24% p.a. applies after the due date.</p>
+    </td></tr>
+  `;
+
+  return shell(body);
+}
