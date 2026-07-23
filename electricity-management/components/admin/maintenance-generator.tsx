@@ -32,7 +32,9 @@ export default function MaintenanceGenerator({ currentRatePerSqFt, connections }
     setGenerating(true);
     setResult(null);
     try {
-      const res = await fetch(`/api/cron/generate-maintenance-bills?month=${month}`);
+      const res = await fetch(`/api/cron/generate-maintenance-bills?month=${month}`, {
+        method: "POST",
+      });
       const data = await res.json();
       if (!res.ok) { toast.error(data.error ?? "Generation failed"); return; }
       setResult(data);

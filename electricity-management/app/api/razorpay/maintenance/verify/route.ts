@@ -17,8 +17,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const { razorpayOrderId, razorpayPaymentId, razorpaySignature, maintenanceBillId } =
-    body as { razorpayOrderId?: string; razorpayPaymentId?: string; razorpaySignature?: string; maintenanceBillId?: string };
+  const { razorpayOrderId, razorpayPaymentId, razorpaySignature, maintenanceBillId, amount: amountPaise } =
+    body as { razorpayOrderId?: string; razorpayPaymentId?: string; razorpaySignature?: string; maintenanceBillId?: string; amount?: number };
 
   if (!razorpayOrderId || !razorpayPaymentId || !razorpaySignature || !maintenanceBillId) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -46,14 +46,28 @@ export async function POST(req: NextRequest) {
 
   if (!bill) return NextResponse.json({ error: "Bill not found" }, { status: 404 });
 
+  // Use the amount actually charged to the customer (passed from Razorpay order response).
+  // Fall back to re-computing from bill fields for backward compatibility if not provided.
+  const thisPaymentAmount =
+    amountPaise != null
+      ? amountPaise / 100
+      : Number(bill.amount) + Number(bill.interestCharge) - Number(bill.paidAmount);
+
+  const newPaidAmount =
+    amountPaise != null
+      ? Number(bill.paidAmount) + amountPaise / 100
+      : Number(bill.amount) + Number(bill.interestCharge);
+
   const totalDue = Number(bill.amount) + Number(bill.interestCharge);
+  const isPaid = newPaidAmount >= totalDue - 0.01;
+
   const receiptNumber = await nextMaintenanceReceiptNumber();
 
   const payment = await prisma.$transaction(async (tx) => {
     const newPayment = await tx.maintenancePayment.create({
       data: {
         maintenanceBillId,
-        amount: totalDue - Number(bill.paidAmount),
+        amount: thisPaymentAmount,
         paymentDate: new Date(),
         method: "ONLINE",
         razorpayOrderId,
@@ -65,7 +79,10 @@ export async function POST(req: NextRequest) {
     });
     await tx.maintenanceBill.update({
       where: { id: maintenanceBillId },
-      data: { status: "PAID", paidAmount: totalDue },
+      data: {
+        status: isPaid ? "PAID" : "PARTIAL",
+        paidAmount: newPaidAmount,
+      },
     });
     return newPayment;
   });
@@ -76,7 +93,7 @@ export async function POST(req: NextRequest) {
       residentName: resident.user.name ?? "Resident",
       flatNo: bill.connection.flatNo,
       receiptNumber,
-      amount: (totalDue - Number(bill.paidAmount)).toFixed(2),
+      amount: thisPaymentAmount.toFixed(2),
       paymentDate: payment.paymentDate.toDateString(),
       razorpayPaymentId,
       receiptUrl: "",

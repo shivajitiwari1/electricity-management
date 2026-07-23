@@ -97,11 +97,13 @@ export default function MaintenancePayPage({ params }: { params: Promise<{ id: s
               razorpayPaymentId: response.razorpay_payment_id,
               razorpaySignature: response.razorpay_signature,
               maintenanceBillId: bill.id,
+              amount: orderData.amount,
             }),
           });
           const verifyData = await verifyRes.json();
           if (verifyData.success) {
             setPaid(true);
+            router.refresh();
           } else {
             setError("Payment verification failed. Contact support.");
           }

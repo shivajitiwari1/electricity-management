@@ -10,13 +10,27 @@ export async function nextMaintenanceReceiptNumber(): Promise<string> {
   const today = new Date();
   const datePart = `${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, "0")}${String(today.getDate()).padStart(2, "0")}`;
   const prefix = `MRCPT-${datePart}-`;
-  const last = await prisma.maintenancePayment.findFirst({
-    where: { receiptNumber: { startsWith: prefix } },
-    orderBy: { receiptNumber: "desc" },
-    select: { receiptNumber: true },
-  });
-  const seq = last ? parseInt(last.receiptNumber.slice(prefix.length), 10) + 1 : 1;
-  return `${prefix}${String(seq).padStart(4, "0")}`;
+
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const last = await prisma.maintenancePayment.findFirst({
+      where: { receiptNumber: { startsWith: prefix } },
+      orderBy: { receiptNumber: "desc" },
+      select: { receiptNumber: true },
+    });
+    const seq = last ? parseInt(last.receiptNumber.slice(prefix.length), 10) + 1 : 1;
+    const receiptNumber = `${prefix}${String(seq).padStart(4, "0")}`;
+
+    const exists = await prisma.maintenancePayment.findUnique({
+      where: { receiptNumber },
+      select: { receiptNumber: true },
+    });
+    if (!exists) return receiptNumber;
+    // Another concurrent request took this number — retry
+  }
+
+  // Last resort: use timestamp-based suffix
+  const ts = Date.now().toString().slice(-6);
+  return `${prefix}T${ts}`;
 }
 
 export function isLastDayOfMonth(date: Date): boolean {
