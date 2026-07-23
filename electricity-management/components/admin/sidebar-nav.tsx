@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import {
   LayoutDashboard, Users, Plug, Gauge, FileText,
   CreditCard, BarChart3, Settings, LogOut, Menu,
-  Zap, Building2, ShieldCheck, UserCog,
+  Zap, Building2, ShieldCheck, UserCog, Wrench,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -22,6 +22,7 @@ const NAV_ITEMS = [
   { href: "/admin/connections",    label: "Connections",   icon: Plug,            pageId: "connections" },
   { href: "/admin/meter-readings", label: "Meter Readings",icon: Gauge,           pageId: "meter-readings" },
   { href: "/admin/bills",          label: "Bills",         icon: FileText,        pageId: "bills" },
+  { href: "/admin/maintenance",    label: "Maintenance",   icon: Wrench,          pageId: "maintenance" },
   { href: "/admin/payments",       label: "Payments",      icon: CreditCard,      pageId: "payments" },
   { href: "/admin/reports",        label: "Reports",       icon: BarChart3,       pageId: "reports" },
   { href: "/admin/rates",          label: "Rates",         icon: Settings,        pageId: "rates" },

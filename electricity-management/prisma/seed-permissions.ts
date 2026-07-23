@@ -6,7 +6,7 @@ const prisma = new PrismaClient({
 
 const PAGES = [
   "dashboard", "residents", "connections", "meter-readings",
-  "bills", "payments", "reports", "rates", "flat-info", "users", "permissions",
+  "bills", "maintenance", "payments", "reports", "rates", "flat-info", "users", "permissions",
 ];
 
 const ADMIN_PERMS = PAGES.map((page) => ({
@@ -23,6 +23,7 @@ const MANAGER_PERMS = [
   { role: Role.MANAGER, page: "connections",    canRead: true,  canWrite: false, canDelete: false },
   { role: Role.MANAGER, page: "meter-readings", canRead: true,  canWrite: true,  canDelete: false },
   { role: Role.MANAGER, page: "bills",          canRead: true,  canWrite: false, canDelete: false },
+  { role: Role.MANAGER, page: "maintenance",    canRead: true,  canWrite: true,  canDelete: false },
   { role: Role.MANAGER, page: "payments",       canRead: true,  canWrite: true,  canDelete: false },
   { role: Role.MANAGER, page: "reports",        canRead: true,  canWrite: false, canDelete: false },
   { role: Role.MANAGER, page: "rates",          canRead: false, canWrite: false, canDelete: false },
