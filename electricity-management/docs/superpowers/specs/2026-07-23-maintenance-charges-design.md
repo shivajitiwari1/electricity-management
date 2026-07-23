@@ -4,7 +4,7 @@
 
 **Architecture:** Three new Prisma models (MaintenanceRate, MaintenanceBill, MaintenancePayment) mirror the existing electricity billing pattern. New admin pages, resident pages, API routes, and a cron job are added without touching any existing electricity billing code.
 
-**Tech Stack:** Next.js 15 App Router, Prisma ORM, PostgreSQL, Razorpay, Nodemailer, Vercel Cron
+**Tech Stack:** Next.js 15 App Router, Prisma ORM, MySQL, Razorpay, Nodemailer, Vercel Cron
 
 ---
 
@@ -13,11 +13,14 @@
 - GST is always 0 on maintenance bills — never calculate or display it
 - Do NOT modify any existing model's fields, API route, or UI component — the one exception is adding a Prisma back-relation field `maintenanceBills MaintenanceBill[]` to the existing `Connection` model (required by Prisma ORM; zero database table change)
 - Bill number format: `OM-{flatNo}-{YYYYMM}` (e.g. `OM-V405-202608`)
-- Receipt number format: `MRCPT-{YYYYMMDD}-{seq}` (e.g. `MRCPT-20260801-001`)
+- Receipt number format: `MRCPT-{YYYYMMDD}-{seq}` (e.g. `MRCPT-20260801-0001`)
 - Due date: billDate + 15 days
 - Amount formula: `unitArea (sq ft) × ratePerSqFt (₹)` — no other charges
-- Reuse existing `PaymentMethod` and `PaymentStatus` enums from the Prisma schema
-- Cron protected by same `x-cron-secret` header as existing cron routes
+- **Billing period**: 1st of month to last day of month (28/29/30/31)
+- **Bills generated at month-end**: the automatic cron runs on the last day of each month
+- **Interest**: 24% per annum charged on overdue amount after due date — formula: `amount × 0.24 × (daysOverdue / 365)`, stored in `interestCharge` field on the bill, updated daily by a separate cron
+- **Scheduler**: admin can manually select a month and raise bills for all active connections (manual trigger of the same generation logic)
+- Cron protected by same `x-cron-secret` header as existing cron routes; admin session (ADMIN role) may also trigger the generation route directly
 - All new admin pages respect the existing `guardPermission` pattern
 - All new resident pages restrict data to the authenticated resident's own connections
 
@@ -58,6 +61,7 @@ model MaintenanceBill {
   ratePerSqFt        Decimal             @db.Decimal(10, 2)
   amount             Decimal             @db.Decimal(10, 2)
   paidAmount         Decimal             @default(0) @db.Decimal(10, 2)
+  interestCharge     Decimal             @default(0) @db.Decimal(10, 2)
   status             MaintenanceBillStatus @default(PENDING)
   createdAt          DateTime            @default(now())
 
@@ -124,14 +128,24 @@ All new routes — no existing routes modified.
   - Body: `{ razorpayOrderId, razorpayPaymentId, razorpaySignature, maintenanceBillId }`
 
 ### Cron
-- `GET /api/cron/generate-maintenance-bills` — monthly bill generation
-  - Protected by `x-cron-secret` header
+- `GET /api/cron/generate-maintenance-bills` — monthly bill generation (also used by admin scheduler)
+  - Accepts `x-cron-secret` header (automated) OR valid ADMIN session (manual scheduler)
+  - Accepts optional `?month=YYYY-MM` query param (admin override; defaults to current month)
+  - Runs automatically on the last day of each month — the route checks `isLastDayOfMonth()` when triggered by cron; admin trigger bypasses this check
   - Fetches all ACTIVE connections with their `unitArea`
-  - Fetches latest MaintenanceRate (effectiveFrom ≤ today)
-  - For each connection: skips if `OM-{flatNo}-{YYYYMM}` already exists
-  - Creates MaintenanceBill: `amount = unitArea × ratePerSqFt`, `dueDate = billDate + 15 days`
+  - Fetches latest MaintenanceRate where `effectiveFrom ≤ billDate`
+  - For each connection: skips if `OM-{flatNo}-{YYYYMM}` already exists, skips if `unitArea = 0`
+  - Creates MaintenanceBill: `amount = unitArea × ratePerSqFt`, `dueDate = billDate + 15 days`, `billingPeriodStart = 1st of month`, `billingPeriodEnd = last day of month`
   - Sends email notification to resident
-  - Returns: `{ created: N, skipped: N }`
+  - Returns: `{ created: N, skipped: N, errors: N }`
+
+- `GET /api/cron/update-maintenance-interest` — daily interest update
+  - Protected by `x-cron-secret` header only
+  - Finds all PENDING/PARTIAL bills where `dueDate < today`
+  - Marks them OVERDUE
+  - Calculates `interestCharge = amount × 0.24 × (daysOverdue / 365)` (rounded to 2 decimal places)
+  - Updates `interestCharge` and `status = OVERDUE` in a batch update
+  - Returns: `{ updated: N }`
 
 ---
 
@@ -155,11 +169,12 @@ Three new pages under `/admin/maintenance/`. All protected by the existing `guar
   - New rate takes effect from chosen date; all bills created after that date use the new rate
   - Historical bills keep their snapshot rate
 
-### `/admin/maintenance/generate/` — Manual Generation
+### `/admin/maintenance/generate/` — Scheduler (Manual Generation)
 - Month picker (default: current month)
-- "Generate Bills" button → POST to cron route with admin auth bypass
+- "Raise Bills for All Customers" button → calls cron route with admin session (no cron secret needed)
+- Table preview of all active connections (flatNo, residentName, unitArea, projected amount) before generating
 - Result display: "X bills created, Y skipped (already existed)"
-- Used to manually trigger generation outside the cron schedule or to backfill a missed month
+- Used to manually trigger generation outside the cron schedule, to backfill a missed month, or to trigger mid-month when needed
 
 ---
 
@@ -175,10 +190,12 @@ Three new pages under `/admin/maintenance/`. All protected by the existing `guar
   - Flat: V-405, Period: August 2026
   - Unit Area: 950 sq ft
   - Rate: ₹ 2.50 per sq ft
-  - **Amount: ₹ 2,375.00**
-  - GST: ₹ 0 (not displayed — always 0, no line shown)
+  - Maintenance Charge: ₹ 2,375.00
+  - Interest (24% p.a.): ₹ X.XX (only shown if bill is OVERDUE; 0 if within due date)
+  - **Total Payable: ₹ 2,375.00 + interest**
+  - GST: not displayed (always 0)
   - Due Date: 15 Aug 2026
-- "Pay ₹ 2,375.00" button → calls `/api/razorpay/maintenance/create-order`
+- "Pay ₹ X.XX" button (amount = amount + interestCharge - paidAmount) → calls `/api/razorpay/maintenance/create-order`
 - On Razorpay success → calls `/api/razorpay/maintenance/verify` → redirects to success page
 
 ### Resident Dashboard Addition
@@ -202,17 +219,17 @@ When a maintenance bill is generated (by cron or manually), send an email to the
 ## Bill Generation Logic (detailed)
 
 ```
-currentMonth = today's year-month (e.g. 2026-08)
-billingPeriodStart = first day of currentMonth
-billingPeriodEnd = last day of currentMonth
-billDate = today
-dueDate = billDate + 15 days
+billingMonth = monthParam ?? currentMonth  (YYYY-MM, e.g. "2026-08")
+billingPeriodStart = first day of billingMonth  (e.g. 2026-08-01 00:00:00)
+billingPeriodEnd   = last day of billingMonth   (e.g. 2026-08-31 23:59:59)
+billDate = today (actual date of generation)
+dueDate  = billDate + 15 days
 
 for each ACTIVE Connection:
-  billNumber = "OM-" + flatNo + "-" + YYYYMM
-  if MaintenanceBill with billNumber exists → skip
-  
   if connection.unitArea = 0 → skip (log warning)
+  
+  billNumber = "OM-" + flatNo + "-" + YYYYMM  (YYYYMM from billingMonth)
+  if MaintenanceBill with billNumber exists → skip (idempotent)
   
   rate = latest MaintenanceRate where effectiveFrom ≤ billDate
   if no rate exists → skip (log warning)
@@ -225,23 +242,47 @@ for each ACTIVE Connection:
     billingPeriodStart, billingPeriodEnd,
     unitArea: connection.unitArea,
     ratePerSqFt: rate.ratePerSqFt,
-    amount, paidAmount: 0, status: PENDING
+    amount, paidAmount: 0, interestCharge: 0, status: PENDING
   }
   
   send email to resident
+
+When triggered by cron (not admin): first check isLastDayOfMonth(today) — if false, return { skipped: "not last day of month" }
+When triggered by admin: skip the last-day check, always generate for specified month
+```
+
+## Interest Update Logic (daily cron)
+
+```
+today = now
+
+find all MaintenanceBills where:
+  status IN (PENDING, PARTIAL)
+  dueDate < today
+
+for each overdue bill:
+  daysOverdue = floor((today - dueDate) / 86400000)
+  interestCharge = bill.amount × 0.24 × (daysOverdue / 365)
+  
+  update MaintenanceBill {
+    status: OVERDUE,
+    interestCharge: round(interestCharge, 2)
+  }
 ```
 
 ---
 
 ## Vercel Cron Configuration
 
-Add one entry to `vercel.json` (existing entries untouched):
+Add two entries to `vercel.json` (existing entries untouched):
 
 ```json
-{ "path": "/api/cron/generate-maintenance-bills", "schedule": "0 2 1 * *" }
+{ "path": "/api/cron/generate-maintenance-bills", "schedule": "0 23 28,29,30,31 * *" }
+{ "path": "/api/cron/update-maintenance-interest", "schedule": "0 3 * * *" }
 ```
 
-Runs at 02:00 UTC on the 1st of every month.
+- Bill generation cron runs at 23:00 UTC on the 28th–31st of each month; the route internally checks `isLastDayOfMonth()` and exits early if not the last day (handles Feb 28/29, months ending on 30, 31).
+- Interest update cron runs daily at 03:00 UTC.
 
 ---
 
