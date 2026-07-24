@@ -2,6 +2,8 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import MaintenanceGenerator from "@/components/admin/maintenance-generator";
+import Link from "next/link";
+import { ChevronLeft, Settings2 } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -35,11 +37,24 @@ export default async function MaintenanceGeneratePage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Maintenance Bill Scheduler</h1>
-        <p className="text-sm text-gray-500 mt-1">
-          Raise monthly maintenance bills for all active connections. Bills are also auto-generated on the last day of each month.
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <Link href="/admin/maintenance" className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1">
+              <ChevronLeft className="h-3.5 w-3.5" />Maintenance Bills
+            </Link>
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900">Maintenance Bill Scheduler</h1>
+          <p className="text-sm text-gray-500 mt-1">
+            Raise monthly maintenance bills for all active connections. Bills are also auto-generated on the last day of each month.
+          </p>
+        </div>
+        <Link
+          href="/admin/maintenance/rates"
+          className="flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:text-blue-800 border border-blue-200 rounded-lg px-3 py-1.5 hover:bg-blue-50 transition-colors"
+        >
+          <Settings2 className="h-4 w-4" />Manage Rates
+        </Link>
       </div>
       <MaintenanceGenerator
         currentRatePerSqFt={currentRate ? currentRate.ratePerSqFt.toString() : null}

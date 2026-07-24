@@ -317,6 +317,73 @@ export function passwordResetEmail(params: {
   return shell(body);
 }
 
+export function maintenanceOverdueEmail(params: {
+  residentName: string;
+  flatNo: string;
+  billNumber: string;
+  billingPeriod: string;
+  originalAmount: string;
+  interestCharge: string;
+  totalDue: string;
+  dueDate: string;
+  daysOverdue: number;
+}): string {
+  const { residentName, flatNo, billNumber, billingPeriod, originalAmount, interestCharge, totalDue, dueDate, daysOverdue } = params;
+
+  const body = `
+    <tr><td style="padding:32px 32px 0;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background:#fef2f2;border:1px solid #fca5a5;border-radius:6px;padding:16px 20px;margin-bottom:20px;">
+        <tr>
+          <td width="36">
+            <div style="width:32px;height:32px;background:#dc2626;border-radius:50%;text-align:center;line-height:32px;font-size:18px;color:#fff;">!</div>
+          </td>
+          <td style="padding-left:12px;">
+            <p style="margin:0;font-size:14px;font-weight:bold;color:#b91c1c;">Maintenance Payment Overdue</p>
+            <p style="margin:2px 0 0;font-size:12px;color:#dc2626;">Your maintenance bill is ${daysOverdue} day${daysOverdue !== 1 ? "s" : ""} overdue. Late interest is accruing.</p>
+          </td>
+        </tr>
+      </table>
+      <p style="margin:0;font-size:15px;color:#374151;">Dear <strong>${residentName}</strong>,</p>
+      <p style="margin:12px 0 0;font-size:14px;color:#4b5563;line-height:1.6;">
+        Your maintenance bill for <strong>Flat ${flatNo}</strong> (${billingPeriod}) is now overdue. Please pay at the earliest to stop further interest accrual.
+      </p>
+    </td></tr>
+
+    <tr><td style="padding:20px 32px 0;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background:#fef2f2;border:1px solid #fca5a5;border-radius:6px;padding:20px;">
+        <tr><td align="center">
+          <p style="margin:0;font-size:12px;font-weight:600;color:#b91c1c;text-transform:uppercase;letter-spacing:1px;">Total Amount Due Now</p>
+          <p style="margin:6px 0 0;font-size:36px;font-weight:bold;color:#7f1d1d;">Rs. ${totalDue}</p>
+          <p style="margin:4px 0 0;font-size:12px;color:#dc2626;">Was due: ${dueDate}</p>
+        </td></tr>
+      </table>
+    </td></tr>
+
+    <tr><td style="padding:24px 32px 0;">
+      <p style="margin:0 0 12px;font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:1px;">Bill Details</p>
+      <table width="100%" cellpadding="0" cellspacing="0">
+        ${row("Bill Number", billNumber)}
+        ${row("Flat No", flatNo)}
+        ${row("Billing Period", billingPeriod)}
+        ${row("Original Amount", "Rs. " + originalAmount)}
+        ${row("Late Interest (24% p.a.)", "Rs. " + interestCharge)}
+        ${row("Total Due Now", "Rs. " + totalDue, true)}
+      </table>
+      <p style="margin:16px 0 0;font-size:12px;color:#6b7280;background:#fef9c3;padding:10px 14px;border-radius:4px;border-left:3px solid #eab308;">
+        <strong>Note:</strong> Interest @ 24% per annum continues to accrue daily on the outstanding amount until the bill is paid in full.
+      </p>
+    </td></tr>
+
+    <tr><td style="padding:28px 32px 32px;" align="center">
+      <a href="https://oasisvenetia.in/resident/maintenance" style="display:inline-block;background:#dc2626;color:#ffffff;font-size:15px;font-weight:bold;padding:14px 36px;border-radius:6px;text-decoration:none;letter-spacing:0.3px;">
+        Pay Maintenance Now
+      </a>
+    </td></tr>
+  `;
+
+  return shell(body);
+}
+
 export function maintenanceBillGeneratedEmail(params: {
   residentName: string;
   flatNo: string;
