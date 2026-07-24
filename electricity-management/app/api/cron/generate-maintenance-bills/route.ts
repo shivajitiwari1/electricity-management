@@ -36,11 +36,11 @@ export async function GET(req: NextRequest) {
     if (!year || !mon || mon < 1 || mon > 12) {
       return NextResponse.json({ error: "Invalid month format. Use YYYY-MM" }, { status: 400 });
     }
-    periodStart = new Date(year, mon - 1, 1);
-    periodEnd = new Date(year, mon, 0, 23, 59, 59, 999);
+    periodStart = new Date(Date.UTC(year, mon - 1, 1));
+    periodEnd = new Date(Date.UTC(year, mon, 0, 23, 59, 59, 999));
   } else {
-    periodStart = new Date(now.getFullYear(), now.getMonth(), 1);
-    periodEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+    periodStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
+    periodEnd = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 0, 23, 59, 59, 999));
   }
 
   const rate = await prisma.maintenanceRate.findFirst({
@@ -151,11 +151,11 @@ export async function POST(req: NextRequest) {
     if (!year || !mon || mon < 1 || mon > 12) {
       return NextResponse.json({ error: "Invalid month format. Use YYYY-MM" }, { status: 400 });
     }
-    periodStart = new Date(year, mon - 1, 1);
-    periodEnd = new Date(year, mon, 0, 23, 59, 59, 999);
+    periodStart = new Date(Date.UTC(year, mon - 1, 1));
+    periodEnd = new Date(Date.UTC(year, mon, 0, 23, 59, 59, 999));
   } else {
-    periodStart = new Date(now.getFullYear(), now.getMonth(), 1);
-    periodEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+    periodStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
+    periodEnd = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 0, 23, 59, 59, 999));
   }
 
   const rate = await prisma.maintenanceRate.findFirst({
