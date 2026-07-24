@@ -907,20 +907,29 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
                           <th className="text-left px-3 py-2 font-medium">Receipt #</th>
                           <th className="text-left px-3 py-2 font-medium">Bill #</th>
                           <th className="text-right px-3 py-2 font-medium">Amount (₹)</th>
-                          <th className="text-left px-3 py-2 font-medium">Date</th>
-                          <th className="text-left px-3 py-2 font-medium">Method</th>
+                          <th className="text-left px-3 py-2 font-medium">Date & Time</th>
+                          <th className="text-left px-3 py-2 font-medium">Mode</th>
+                          <th className="text-left px-3 py-2 font-medium">Transaction ID</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {historyData.payments.map((p: any) => (
+                        {historyData.payments.map((p: any) => {
+                          const txnId = p.razorpayPaymentId && p.razorpayPaymentId !== "CASH" ? p.razorpayPaymentId : null;
+                          const pDate = new Date(p.paymentDate);
+                          return (
                           <tr key={p.id} className="border-b last:border-0">
                             <td className="px-3 py-2 font-mono">{p.receiptNumber ?? "—"}</td>
                             <td className="px-3 py-2 font-mono">{p.bill?.billNumber ?? "—"}</td>
                             <td className="px-3 py-2 text-right">{Number(p.amount).toLocaleString("en-IN", { minimumFractionDigits: 2 })}</td>
-                            <td className="px-3 py-2">{new Date(p.paymentDate).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}</td>
+                            <td className="px-3 py-2 whitespace-nowrap">
+                              {pDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
+                              <span className="text-gray-400 ml-1">{pDate.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })}</span>
+                            </td>
                             <td className="px-3 py-2">{p.paymentMethod ?? p.method ?? "—"}</td>
+                            <td className="px-3 py-2 font-mono text-xs">{txnId ?? <span className="text-gray-400">—</span>}</td>
                           </tr>
-                        ))}
+                          );
+                        })}
                       </tbody>
                     </table>
                   </div>
