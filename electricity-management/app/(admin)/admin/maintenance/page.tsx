@@ -4,8 +4,6 @@ import type { PermissionsMap } from "@/lib/permissions";
 import { prisma } from "@/lib/prisma";
 import MaintenanceBillsTable from "@/components/admin/maintenance-bills-table";
 import { TableSkeleton } from "@/components/ui/page-skeleton";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
 export const dynamic = "force-dynamic";
 
@@ -51,15 +49,9 @@ async function BillsData() {
 export default function MaintenanceBillsPage() {
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between flex-wrap gap-3">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Maintenance Bills</h1>
-          <p className="text-sm text-gray-500 mt-1">Monthly maintenance charges · 24% p.a. interest on overdue</p>
-        </div>
-        <div className="flex gap-2">
-          <Link href="/admin/maintenance/rates"><Button variant="outline">Manage Rates</Button></Link>
-          <Link href="/admin/maintenance/generate"><Button>Scheduler</Button></Link>
-        </div>
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900">Maintenance Bills</h1>
+        <p className="text-sm text-gray-500 mt-1">Monthly maintenance charges · 24% p.a. interest on overdue</p>
       </div>
       <Suspense fallback={<TableSkeleton rows={8} cols={7} />}>
         <BillsData />

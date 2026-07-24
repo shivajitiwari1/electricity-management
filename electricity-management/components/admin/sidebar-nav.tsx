@@ -9,6 +9,7 @@ import {
   LayoutDashboard, Users, Plug, Gauge, FileText,
   CreditCard, BarChart3, Settings, LogOut, Menu,
   Zap, Building2, ShieldCheck, UserCog, Wrench,
+  ChevronDown, ChevronRight, Receipt, Calendar, DollarSign,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -22,11 +23,17 @@ const NAV_ITEMS = [
   { href: "/admin/connections",    label: "Connections",   icon: Plug,            pageId: "connections" },
   { href: "/admin/meter-readings", label: "Meter Readings",icon: Gauge,           pageId: "meter-readings" },
   { href: "/admin/bills",          label: "Bills",         icon: FileText,        pageId: "bills" },
-  { href: "/admin/maintenance",    label: "Maintenance",   icon: Wrench,          pageId: "maintenance" },
   { href: "/admin/payments",       label: "Payments",      icon: CreditCard,      pageId: "payments" },
   { href: "/admin/reports",        label: "Reports",       icon: BarChart3,       pageId: "reports" },
   { href: "/admin/rates",          label: "Rates",         icon: Settings,        pageId: "rates" },
   { href: "/admin/flats",          label: "Flat Info",     icon: Building2,       pageId: "flat-info" },
+];
+
+const MAINTENANCE_SUB_ITEMS = [
+  { href: "/admin/maintenance",          label: "Bills",     icon: FileText  },
+  { href: "/admin/maintenance/rates",    label: "Rates",     icon: Settings  },
+  { href: "/admin/maintenance/generate", label: "Scheduler", icon: Calendar  },
+  { href: "/admin/maintenance/payments", label: "Payments",  icon: DollarSign },
 ];
 
 const ADMIN_ONLY_ITEMS = [
@@ -47,17 +54,84 @@ function NavLinks({ pathname, role, permissions, onNavigate }: {
   onNavigate?: () => void;
 }) {
   const isAdmin = role === "ADMIN";
+  const isMaintActive = pathname.startsWith("/admin/maintenance");
+  const [maintOpen, setMaintOpen] = useState(isMaintActive);
+
+  const showMaintenance = isAdmin || permissions["maintenance"]?.canRead === true;
 
   const visibleItems = NAV_ITEMS.filter(({ pageId }) => {
     if (isAdmin) return true;
     return permissions[pageId]?.canRead === true;
   });
 
-  const allItems = isAdmin ? [...visibleItems, ...ADMIN_ONLY_ITEMS] : visibleItems;
-
   return (
     <nav className="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto">
-      {allItems.map(({ href, label, icon: Icon }) => {
+      {visibleItems.map(({ href, label, icon: Icon }) => {
+        const active = pathname === href || pathname.startsWith(href + "/");
+        return (
+          <Link
+            key={href}
+            href={href}
+            onClick={onNavigate}
+            className={cn(
+              "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150",
+              active
+                ? "bg-primary text-primary-foreground shadow-sm"
+                : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+            )}
+          >
+            <Icon className="h-4 w-4 shrink-0" />
+            {label}
+          </Link>
+        );
+      })}
+
+      {/* Maintenance expandable group */}
+      {showMaintenance && (
+        <div>
+          <button
+            onClick={() => setMaintOpen((o) => !o)}
+            className={cn(
+              "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150",
+              isMaintActive
+                ? "bg-primary text-primary-foreground shadow-sm"
+                : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+            )}
+          >
+            <Wrench className="h-4 w-4 shrink-0" />
+            <span className="flex-1 text-left">Maintenance</span>
+            {maintOpen
+              ? <ChevronDown className="h-3.5 w-3.5 shrink-0" />
+              : <ChevronRight className="h-3.5 w-3.5 shrink-0" />}
+          </button>
+          {maintOpen && (
+            <div className="ml-6 mt-0.5 space-y-0.5 border-l border-border pl-3">
+              {MAINTENANCE_SUB_ITEMS.map(({ href, label, icon: Icon }) => {
+                const active = pathname === href;
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    onClick={onNavigate}
+                    className={cn(
+                      "flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm font-medium transition-all duration-150",
+                      active
+                        ? "bg-primary/15 text-primary"
+                        : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                    )}
+                  >
+                    <Icon className="h-3.5 w-3.5 shrink-0" />
+                    {label}
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Admin-only items */}
+      {isAdmin && ADMIN_ONLY_ITEMS.map(({ href, label, icon: Icon }) => {
         const active = pathname === href || pathname.startsWith(href + "/");
         return (
           <Link
