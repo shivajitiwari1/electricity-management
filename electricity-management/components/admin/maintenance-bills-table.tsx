@@ -51,6 +51,7 @@ const fmtDate = (d: string) =>
 export default function MaintenanceBillsTable({ initialData, canWrite }: { initialData: MaintenanceBillRow[]; canWrite: boolean }) {
   const currentMonth = new Date().toISOString().slice(0, 7);
   const [bills, setBills] = useState(initialData);
+  const [search, setSearch] = useState("");
   const [tower, setTower] = useState("all");
   const [status, setStatus] = useState("all");
   const [month, setMonth] = useState(currentMonth);
@@ -128,8 +129,15 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
     } finally { setPaying(false); }
   };
 
-  const totalAmt = bills.reduce((s, b) => s + Number(b.amount) + Number(b.interestCharge), 0);
-  const totalCollected = bills.reduce((s, b) => s + Number(b.paidAmount), 0);
+  const q = search.trim().toLowerCase();
+  const filteredBills = q
+    ? bills.filter((b) =>
+        b.flatNo.toLowerCase().includes(q) || b.residentName.toLowerCase().includes(q)
+      )
+    : bills;
+
+  const totalAmt = filteredBills.reduce((s, b) => s + Number(b.amount) + Number(b.interestCharge), 0);
+  const totalCollected = filteredBills.reduce((s, b) => s + Number(b.paidAmount), 0);
 
   // Advance Payment helpers
   const openAdvanceDialog = async () => {
@@ -331,6 +339,15 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
             </SelectContent>
           </Select>
         </div>
+        <div className="space-y-1">
+          <Label className="text-xs">Search</Label>
+          <Input
+            placeholder="Flat or resident…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-48"
+          />
+        </div>
         <Button onClick={fetchBills} disabled={loading} variant="outline">
           {loading ? "Loading…" : "Apply Filter"}
         </Button>
@@ -348,7 +365,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
 
       {/* Summary */}
       <div className="flex flex-wrap gap-6 text-sm bg-gray-50 rounded-lg p-3">
-        <span><strong>{bills.length}</strong> bills</span>
+        <span><strong>{filteredBills.length}</strong>{q ? ` of ${bills.length}` : ""} bills</span>
         <span>Total Due: <strong>{fmtINR(totalAmt)}</strong></span>
         <span>Collected: <strong className="text-green-700">{fmtINR(totalCollected)}</strong></span>
         <span>Outstanding: <strong className="text-red-600">{fmtINR(totalAmt - totalCollected)}</strong></span>
@@ -371,7 +388,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
             </tr>
           </thead>
           <tbody>
-            {bills.map((bill) => (
+            {filteredBills.map((bill) => (
               <tr key={bill.id} className="border-b last:border-0 hover:bg-gray-50">
                 <td className="px-4 py-3">
                   <button className="font-mono text-xs text-blue-600 hover:underline"
@@ -434,10 +451,10 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
                 )}
               </tr>
             ))}
-            {bills.length === 0 && (
+            {filteredBills.length === 0 && (
               <tr>
                 <td colSpan={canWrite ? 9 : 8} className="px-4 py-12 text-center text-gray-400">
-                  No maintenance bills found
+                  {q ? `No bills match "${search}"` : "No maintenance bills found"}
                 </td>
               </tr>
             )}
