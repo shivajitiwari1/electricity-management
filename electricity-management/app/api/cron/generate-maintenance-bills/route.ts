@@ -16,7 +16,7 @@ async function fetchConnections() {
 
 async function createBillsBatch(
   connections: ConnectionRow[],
-  rate: { id: string; ratePerSqFt: { toString(): string } },
+  rate: { id: string; ratePerSqFt: number | string | { toString(): string } },
   periodStart: Date,
   periodEnd: Date,
   now: Date,
@@ -49,8 +49,8 @@ async function createBillsBatch(
       dueDate,
       billingPeriodStart: periodStart,
       billingPeriodEnd: periodEnd,
-      unitArea: c.unitArea,
-      ratePerSqFt: rate.ratePerSqFt,
+      unitArea: Number(c.unitArea),
+      ratePerSqFt: Number(rate.ratePerSqFt),
       amount: Number(c.unitArea) * Number(rate.ratePerSqFt),
       paidAmount: 0,
       interestCharge: 0,
@@ -63,7 +63,7 @@ async function createBillsBatch(
 
 function sendBillEmails(
   toCreate: ConnectionRow[],
-  rate: { ratePerSqFt: { toString(): string } },
+  rate: { ratePerSqFt: number | string | { toString(): string } },
   periodStart: Date,
   periodEnd: Date,
   dueDate: Date,
