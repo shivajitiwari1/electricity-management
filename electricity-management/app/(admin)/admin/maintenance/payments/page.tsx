@@ -5,8 +5,6 @@ import { guardPermission } from "@/lib/permissions";
 import { redirect } from "next/navigation";
 import MaintenancePaymentsTable from "@/components/admin/maintenance-payments-table";
 import { TableSkeleton } from "@/components/ui/page-skeleton";
-import type { PermissionsMap } from "@/lib/permissions";
-
 export const dynamic = "force-dynamic";
 
 async function PaymentsData() {

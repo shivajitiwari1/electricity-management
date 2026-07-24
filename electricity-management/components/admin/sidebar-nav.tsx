@@ -9,7 +9,7 @@ import {
   LayoutDashboard, Users, Plug, Gauge, FileText,
   CreditCard, BarChart3, Settings, LogOut, Menu,
   Zap, Building2, ShieldCheck, UserCog, Wrench,
-  ChevronDown, ChevronRight, Receipt, Calendar, DollarSign,
+  ChevronDown, ChevronRight, Calendar, DollarSign,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -107,7 +107,7 @@ function NavLinks({ pathname, role, permissions, onNavigate }: {
           {maintOpen && (
             <div className="ml-6 mt-0.5 space-y-0.5 border-l border-border pl-3">
               {MAINTENANCE_SUB_ITEMS.map(({ href, label, icon: Icon }) => {
-                const active = pathname === href;
+                const active = pathname === href || (href !== "/admin/maintenance" && pathname.startsWith(href + "/"));
                 return (
                   <Link
                     key={href}

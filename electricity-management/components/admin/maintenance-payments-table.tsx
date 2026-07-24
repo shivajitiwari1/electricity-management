@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -35,8 +35,6 @@ export default function MaintenancePaymentsTable({ initialData }: { initialData:
   const [month, setMonth] = useState(currentMonth);
   const [method, setMethod] = useState("all");
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => { fetchPayments(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchPayments = async () => {
     setLoading(true);
