@@ -967,8 +967,8 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
                     // ---- MAINTENANCE BILLS ----
                     if (historyData.maintenanceBills.length > 0) {
                       r++; // blank row
-                      mkSection("MAINTENANCE BILLS", "FF7C3AED");
-                      mkColHeaders(["Bill No", "Billing Period", "Amount (₹)", "Interest (₹)", "Paid (₹)", "Status"], "FF5B21B6");
+                      mkSection("MAINTENANCE BILLS", "FF1E3A5F");
+                      mkColHeaders(["Bill No", "Billing Period", "Amount (₹)", "Interest (₹)", "Paid (₹)", "Status"], "FF1E3A5F");
                       historyData.maintenanceBills.forEach((b: any, idx: number) => {
                         const period = `${new Date(b.billingPeriodStart).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })} – ${new Date(b.billingPeriodEnd).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}`;
                         const bg = idx % 2 === 0 ? "FFF5F3FF" : "FFFFFFFF";
