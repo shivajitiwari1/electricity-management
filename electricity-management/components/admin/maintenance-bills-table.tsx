@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { FileDown, FileSpreadsheet } from "lucide-react";
 
 type BillStatus = "PENDING" | "PAID" | "OVERDUE" | "PARTIAL";
 
@@ -111,6 +112,101 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
   const totalAmt = bills.reduce((s, b) => s + Number(b.amount) + Number(b.interestCharge), 0);
   const totalCollected = bills.reduce((s, b) => s + Number(b.paidAmount), 0);
 
+  const downloadExcel = async () => {
+    const { Workbook } = await import("exceljs");
+    const wb = new Workbook();
+    wb.creator = "Oasis Venetia Heights";
+    wb.created = new Date();
+
+    const ws = wb.addWorksheet("Maintenance Bills");
+    ws.columns = [
+      { key: "billNumber",  width: 18 },
+      { key: "flatNo",      width: 8  },
+      { key: "tower",       width: 8  },
+      { key: "resident",    width: 22 },
+      { key: "area",        width: 10 },
+      { key: "rate",        width: 12 },
+      { key: "amount",      width: 14 },
+      { key: "interest",    width: 12 },
+      { key: "paid",        width: 12 },
+      { key: "outstanding", width: 14 },
+      { key: "dueDate",     width: 14 },
+      { key: "status",      width: 10 },
+    ];
+
+    // Title row
+    const COLS = 12;
+    ws.mergeCells(1, 1, 1, COLS);
+    const t1 = ws.getCell("A1");
+    t1.value = "Oasis Venetia Heights — Maintenance Bills";
+    t1.font = { bold: true, size: 13, color: { argb: "FFFFFFFF" } };
+    t1.alignment = { horizontal: "center", vertical: "middle" };
+    t1.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF1E3A5F" } };
+    ws.getRow(1).height = 24;
+
+    ws.mergeCells(2, 1, 2, COLS);
+    const t2 = ws.getCell("A2");
+    t2.value = `Month: ${month || "All"}   |   Generated: ${new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric" })}`;
+    t2.font = { size: 9, italic: true, color: { argb: "FF374151" } };
+    t2.alignment = { horizontal: "center", vertical: "middle" };
+    t2.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFE8EDF5" } };
+    ws.getRow(2).height = 14;
+
+    // Column headers
+    const headers = ["Bill No", "Flat", "Tower", "Resident", "Area (sq ft)", "Rate/sq ft", "Maintenance ₹", "Interest ₹", "Paid ₹", "Outstanding ₹", "Due Date", "Status"];
+    const hRow = ws.getRow(3);
+    headers.forEach((h, i) => {
+      const cell = hRow.getCell(i + 1);
+      cell.value = h;
+      cell.font = { bold: true, size: 9, color: { argb: "FFFFFFFF" } };
+      cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF1E3A5F" } };
+      cell.alignment = { horizontal: "center", vertical: "middle" };
+    });
+    ws.getRow(3).height = 16;
+
+    // Data rows
+    bills.forEach((b, idx) => {
+      const outstanding = Number(b.amount) + Number(b.interestCharge) - Number(b.paidAmount);
+      const bg = idx % 2 === 0 ? "FFF0F4FA" : "FFFFFFFF";
+      const row = ws.getRow(idx + 4);
+      const vals = [
+        b.billNumber,
+        b.flatNo,
+        b.tower,
+        b.residentName,
+        b.unitArea,
+        Number(b.ratePerSqFt),
+        Number(b.amount),
+        Number(b.interestCharge),
+        Number(b.paidAmount),
+        outstanding > 0 ? outstanding : 0,
+        new Date(b.dueDate).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
+        b.status,
+      ];
+      vals.forEach((v, i) => {
+        const cell = row.getCell(i + 1);
+        cell.value = v as any;
+        cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: bg } };
+        cell.font = { size: 9 };
+        if ([6, 7, 8, 9].includes(i)) {
+          cell.numFmt = "#,##0.00";
+          cell.alignment = { horizontal: "right", vertical: "middle" };
+        }
+      });
+      row.getCell(1).font = { size: 9, name: "Courier New" };
+      row.height = 15;
+    });
+
+    const buffer = await wb.xlsx.writeBuffer();
+    const blob = new Blob([buffer as ArrayBuffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `maintenance-bills-${month || "all"}.xlsx`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="space-y-4">
       {/* Filters */}
@@ -143,6 +239,10 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
         </div>
         <Button onClick={fetchBills} disabled={loading} variant="outline">
           {loading ? "Loading…" : "Apply Filter"}
+        </Button>
+        <Button onClick={downloadExcel} variant="outline" size="sm" className="gap-1">
+          <FileSpreadsheet className="h-4 w-4" />
+          Download Excel
         </Button>
       </div>
 
@@ -210,15 +310,26 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
                 <td className="px-4 py-3"><StatusBadge status={bill.status} /></td>
                 {canWrite && (
                   <td className="px-4 py-3">
-                    {bill.status !== "PAID" && (
-                      <Button size="sm" variant="outline" onClick={() => {
-                        setPayBill(bill);
-                        const remaining = Number(bill.amount) + Number(bill.interestCharge) - Number(bill.paidAmount);
-                        setPayAmount(remaining.toFixed(2));
-                      }}>
-                        Record Payment
+                    <div className="flex items-center gap-2">
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="h-7 w-7 p-0"
+                        title="Download PDF"
+                        onClick={() => window.open(`/api/maintenance/bills/${bill.id}/pdf`, "_blank")}
+                      >
+                        <FileDown className="h-3.5 w-3.5" />
                       </Button>
-                    )}
+                      {bill.status !== "PAID" && (
+                        <Button size="sm" variant="outline" onClick={() => {
+                          setPayBill(bill);
+                          const remaining = Number(bill.amount) + Number(bill.interestCharge) - Number(bill.paidAmount);
+                          setPayAmount(remaining.toFixed(2));
+                        }}>
+                          Record Payment
+                        </Button>
+                      )}
+                    </div>
                   </td>
                 )}
               </tr>
