@@ -8,7 +8,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { FileDown, FileSpreadsheet, Receipt } from "lucide-react";
+import { FileDown, FileSpreadsheet, Receipt, ChevronsUpDown } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 
 type BillStatus = "PENDING" | "PAID" | "OVERDUE" | "PARTIAL";
 
@@ -63,7 +65,8 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
 
   // Advance Payment state
   const [advanceOpen, setAdvanceOpen] = useState(false);
-  const [advConnections, setAdvConnections] = useState<{ id: string; flatNo: string; tower: string; unitArea: number; ratePerSqFt: number }[]>([]);
+  const [advConnections, setAdvConnections] = useState<{ id: string; flatNo: string; tower: string; unitArea: number; ratePerSqFt: number; residentName: string }[]>([]);
+  const [advConnOpen, setAdvConnOpen] = useState(false);
   const [advConnId, setAdvConnId] = useState("");
   const [advMonths, setAdvMonths] = useState<6 | 12>(6);
   const [advStart, setAdvStart] = useState(() => {
@@ -141,12 +144,13 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
       const rates = rateRes.ok ? await rateRes.json() : [];
       const currentRate = rates[0]?.ratePerSqFt ?? 0;
       setAdvConnections(
-        conns.map((c: { id: string; flatNo: string; tower: string; unitArea: number }) => ({
+        conns.map((c: { id: string; flatNo: string; tower: string; unitArea: number; resident?: { user?: { name?: string } } }) => ({
           id: c.id,
           flatNo: c.flatNo,
           tower: c.tower,
           unitArea: Number(c.unitArea),
           ratePerSqFt: Number(currentRate),
+          residentName: c.resident?.user?.name ?? "—",
         }))
       );
     } catch {
@@ -520,16 +524,47 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
           <div className="space-y-4">
             <div className="space-y-1">
               <Label>Flat</Label>
-              <Select value={advConnId} onValueChange={(val) => setAdvConnId(val ?? "")}>
-                <SelectTrigger><SelectValue placeholder="Select flat…" /></SelectTrigger>
-                <SelectContent>
-                  {advConnections.map((c) => (
-                    <SelectItem key={c.id} value={c.id}>
-                      {c.flatNo} (Tower {c.tower}) — {c.unitArea} sq ft
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Popover open={advConnOpen} onOpenChange={setAdvConnOpen}>
+                <PopoverTrigger
+                  className="flex h-9 w-full items-center justify-between rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <span className={advConnId ? "" : "text-muted-foreground"}>
+                    {advConnId
+                      ? (() => {
+                          const c = advConnections.find((x) => x.id === advConnId);
+                          return c ? `${c.flatNo} — ${c.residentName}` : "Select flat…";
+                        })()
+                      : "Select flat…"}
+                  </span>
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0" align="start">
+                  <Command>
+                    <CommandInput placeholder="Search flat or resident…" />
+                    <CommandList>
+                      <CommandEmpty>No flat found.</CommandEmpty>
+                      <CommandGroup>
+                        {advConnections.map((c) => (
+                          <CommandItem
+                            key={c.id}
+                            value={`${c.flatNo} ${c.residentName} ${c.tower}`}
+                            data-checked={advConnId === c.id || undefined}
+                            onSelect={() => {
+                              setAdvConnId(c.id);
+                              setAdvConnOpen(false);
+                            }}
+                          >
+                            <div>
+                              <p className="font-medium">{c.flatNo} — {c.residentName}</p>
+                              <p className="text-xs text-muted-foreground">Tower {c.tower} · {c.unitArea} sq ft</p>
+                            </div>
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
             </div>
             <div className="space-y-1">
               <Label>Months</Label>
