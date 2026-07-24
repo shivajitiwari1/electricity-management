@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { FileDown, FileSpreadsheet, Receipt, ChevronsUpDown } from "lucide-react";
+import { FileDown, FileSpreadsheet, Receipt, ChevronsUpDown, FilePlus2, Users } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 
@@ -63,6 +63,14 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
   const [payRef, setPayRef] = useState("");
   const [paying, setPaying] = useState(false);
   const [detailBill, setDetailBill] = useState<MaintenanceBillRow | null>(null);
+
+  // Generate Bills state
+  const [genOpen, setGenOpen] = useState(false);
+  const [genMode, setGenMode] = useState<"all" | "individual">("all");
+  const [genMonth, setGenMonth] = useState(currentMonth);
+  const [genConnId, setGenConnId] = useState("");
+  const [genConnOpen, setGenConnOpen] = useState(false);
+  const [genLoading, setGenLoading] = useState(false);
 
   // Advance Payment state
   const [advanceOpen, setAdvanceOpen] = useState(false);
@@ -139,9 +147,8 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
   const totalAmt = filteredBills.reduce((s, b) => s + Number(b.amount) + Number(b.interestCharge), 0);
   const totalCollected = filteredBills.reduce((s, b) => s + Number(b.paidAmount), 0);
 
-  // Advance Payment helpers
-  const openAdvanceDialog = async () => {
-    setAdvanceOpen(true);
+  // Shared connection loader (used by both Advance Pay and Generate Bills)
+  const loadConnections = async () => {
     if (advConnections.length > 0) return;
     try {
       const [connRes, rateRes] = await Promise.all([
@@ -163,6 +170,53 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
       );
     } catch {
       toast.error("Failed to load connections");
+    }
+  };
+
+  // Advance Payment helpers
+  const openAdvanceDialog = async () => {
+    setAdvanceOpen(true);
+    await loadConnections();
+  };
+
+  // Generate Bills helpers
+  const openGenDialog = async () => {
+    setGenMode("all");
+    setGenMonth(currentMonth);
+    setGenConnId("");
+    setGenOpen(true);
+    await loadConnections();
+  };
+
+  const handleGenerateBills = async () => {
+    setGenLoading(true);
+    try {
+      if (genMode === "all") {
+        const res = await fetch(`/api/cron/generate-maintenance-bills?month=${genMonth}`, { method: "POST" });
+        const data = await res.json();
+        if (!res.ok) { toast.error(data.error ?? "Failed to generate bills"); return; }
+        toast.success(`Generated ${data.created} bill(s). ${data.skipped} skipped (already existed).`);
+        setGenOpen(false);
+        await fetchBills();
+      } else {
+        if (!genConnId) { toast.error("Select a flat first"); return; }
+        const res = await fetch("/api/maintenance/bills/generate-one", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ connectionId: genConnId, month: genMonth }),
+        });
+        const data = await res.json();
+        if (!res.ok) { toast.error(data.error ?? "Failed to generate bill"); return; }
+        if (data.skipped) {
+          toast.info(`Bill ${data.billNumber} already exists for this month.`);
+        } else {
+          toast.success(`Bill ${data.billNumber} generated successfully.`);
+          setGenOpen(false);
+          await fetchBills();
+        }
+      }
+    } finally {
+      setGenLoading(false);
     }
   };
 
@@ -356,10 +410,16 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
           Download Excel
         </Button>
         {canWrite && (
-          <Button onClick={openAdvanceDialog} variant="outline" size="sm" className="gap-1 ml-auto">
-            <Receipt className="h-4 w-4" />
-            Advance Pay
-          </Button>
+          <div className="ml-auto flex gap-2">
+            <Button onClick={openGenDialog} variant="outline" size="sm" className="gap-1">
+              <FilePlus2 className="h-4 w-4" />
+              Generate Bills
+            </Button>
+            <Button onClick={openAdvanceDialog} variant="outline" size="sm" className="gap-1">
+              <Receipt className="h-4 w-4" />
+              Advance Pay
+            </Button>
+          </div>
         )}
       </div>
 
@@ -531,6 +591,97 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
               <span className="text-gray-500">Status</span><span><StatusBadge status={detailBill.status} /></span>
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Generate Bills Dialog */}
+      <Dialog open={genOpen} onOpenChange={setGenOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader><DialogTitle>Generate Maintenance Bills</DialogTitle></DialogHeader>
+          <div className="space-y-4">
+            {/* Mode toggle */}
+            <div className="flex gap-3">
+              {(["all", "individual"] as const).map((m) => (
+                <button
+                  key={m}
+                  type="button"
+                  onClick={() => setGenMode(m)}
+                  className={`flex-1 py-2.5 rounded-lg border text-sm font-medium transition-colors flex items-center justify-center gap-2 ${
+                    genMode === m
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "border-border text-muted-foreground hover:bg-accent"
+                  }`}
+                >
+                  {m === "all" ? <><Users className="h-4 w-4" /> All Customers</> : <><FilePlus2 className="h-4 w-4" /> Individual Flat</>}
+                </button>
+              ))}
+            </div>
+
+            {genMode === "individual" && (
+              <div className="space-y-1">
+                <Label>Flat</Label>
+                <Popover open={genConnOpen} onOpenChange={setGenConnOpen}>
+                  <PopoverTrigger
+                    className="flex h-9 w-full items-center justify-between rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs ring-offset-background focus:outline-none focus:ring-1 focus:ring-ring"
+                  >
+                    <span className={genConnId ? "" : "text-muted-foreground"}>
+                      {genConnId
+                        ? (() => {
+                            const c = advConnections.find((x) => x.id === genConnId);
+                            return c ? `${c.flatNo} — ${c.residentName}` : "Select flat…";
+                          })()
+                        : "Select flat…"}
+                    </span>
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </PopoverTrigger>
+                  <PopoverContent className="w-full p-0" align="start">
+                    <Command>
+                      <CommandInput placeholder="Search flat or resident…" />
+                      <CommandList>
+                        <CommandEmpty>No flat found.</CommandEmpty>
+                        <CommandGroup>
+                          {advConnections.map((c) => (
+                            <CommandItem
+                              key={c.id}
+                              value={`${c.flatNo} ${c.residentName} ${c.tower}`}
+                              data-checked={genConnId === c.id || undefined}
+                              onSelect={() => { setGenConnId(c.id); setGenConnOpen(false); }}
+                            >
+                              <div>
+                                <p className="font-medium">{c.flatNo} — {c.residentName}</p>
+                                <p className="text-xs text-muted-foreground">Tower {c.tower} · {c.unitArea} sq ft</p>
+                              </div>
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </div>
+            )}
+
+            <div className="space-y-1">
+              <Label>Month</Label>
+              <Input type="month" value={genMonth} onChange={(e) => setGenMonth(e.target.value)} />
+            </div>
+
+            {genMode === "all" && (
+              <p className="text-xs text-muted-foreground bg-muted rounded-md px-3 py-2">
+                Generates bills for all active connections that don&apos;t yet have a bill for the selected month. Already-existing bills are skipped.
+              </p>
+            )}
+
+            <div className="flex gap-2 justify-end">
+              <Button variant="outline" onClick={() => setGenOpen(false)}>Cancel</Button>
+              <Button
+                onClick={handleGenerateBills}
+                disabled={genLoading || (genMode === "individual" && !genConnId)}
+              >
+                {genLoading ? "Generating…" : genMode === "all" ? "Generate All Bills" : "Generate Bill"}
+              </Button>
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
 

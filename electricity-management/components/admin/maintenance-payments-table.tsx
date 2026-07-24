@@ -34,6 +34,7 @@ export default function MaintenancePaymentsTable({ initialData }: { initialData:
   const [tower, setTower] = useState("all");
   const [month, setMonth] = useState(currentMonth);
   const [method, setMethod] = useState("all");
+  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
 
   const fetchPayments = async () => {
@@ -62,7 +63,14 @@ export default function MaintenancePaymentsTable({ initialData }: { initialData:
     } finally { setLoading(false); }
   };
 
-  const total = payments.reduce((s, p) => s + Number(p.amount), 0);
+  const q = search.trim().toLowerCase();
+  const filteredPayments = q
+    ? payments.filter((p) =>
+        p.flatNo.toLowerCase().includes(q) || p.residentName.toLowerCase().includes(q)
+      )
+    : payments;
+
+  const total = filteredPayments.reduce((s, p) => s + Number(p.amount), 0);
 
   return (
     <div className="space-y-4">
@@ -93,13 +101,22 @@ export default function MaintenancePaymentsTable({ initialData }: { initialData:
             </SelectContent>
           </Select>
         </div>
+        <div className="space-y-1">
+          <Label className="text-xs">Search</Label>
+          <Input
+            placeholder="Flat or resident…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-48"
+          />
+        </div>
         <Button onClick={fetchPayments} disabled={loading} variant="outline">
           {loading ? "Loading…" : "Apply Filter"}
         </Button>
       </div>
 
       <div className="flex flex-wrap gap-6 text-sm bg-gray-50 rounded-lg p-3">
-        <span><strong>{payments.length}</strong> payments</span>
+        <span><strong>{filteredPayments.length}</strong>{q ? ` of ${payments.length}` : ""} payments</span>
         <span>Total Collected: <strong className="text-green-700">{fmtINR(total)}</strong></span>
       </div>
 
@@ -118,7 +135,7 @@ export default function MaintenancePaymentsTable({ initialData }: { initialData:
             </tr>
           </thead>
           <tbody>
-            {payments.map((p) => (
+            {filteredPayments.map((p) => (
               <tr key={p.id} className="border-b last:border-0 hover:bg-gray-50">
                 <td className="px-4 py-3 font-mono text-xs text-blue-600">{p.receiptNumber}</td>
                 <td className="px-4 py-3">
@@ -137,9 +154,11 @@ export default function MaintenancePaymentsTable({ initialData }: { initialData:
                 </td>
               </tr>
             ))}
-            {payments.length === 0 && (
+            {filteredPayments.length === 0 && (
               <tr>
-                <td colSpan={8} className="px-4 py-12 text-center text-gray-400">No payments found</td>
+                <td colSpan={8} className="px-4 py-12 text-center text-gray-400">
+                  {q ? `No payments match "${search}"` : "No payments found"}
+                </td>
               </tr>
             )}
           </tbody>

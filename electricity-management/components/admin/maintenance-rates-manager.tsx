@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { Trash2 } from "lucide-react";
 
 interface MaintenanceRate {
   id: string;
@@ -21,9 +22,22 @@ export default function MaintenanceRatesManager({ rates: initialRates }: { rates
   const [ratePerSqFt, setRatePerSqFt] = useState("");
   const [effectiveFrom, setEffectiveFrom] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const rates = initialRates;
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [rates, setRates] = useState(initialRates);
 
   const currentRate = rates[0] ?? null;
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Delete this historical rate?")) return;
+    setDeletingId(id);
+    try {
+      const res = await fetch(`/api/maintenance/rates/${id}`, { method: "DELETE" });
+      if (!res.ok) { const d = await res.json(); toast.error(d.error ?? "Failed to delete"); return; }
+      toast.success("Rate deleted");
+      setRates((prev) => prev.filter((r) => r.id !== id));
+    } catch { toast.error("Network error"); }
+    finally { setDeletingId(null); }
+  };
 
   const fmt = (d: string) =>
     new Date(d).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
@@ -92,6 +106,7 @@ export default function MaintenanceRatesManager({ rates: initialRates }: { rates
                 <th className="px-4 py-3 text-left font-medium text-gray-600">Effective From</th>
                 <th className="px-4 py-3 text-left font-medium text-gray-600">Added On</th>
                 <th className="px-4 py-3 text-left font-medium text-gray-600">Status</th>
+                <th className="px-4 py-3"></th>
               </tr>
             </thead>
             <tbody>
@@ -105,10 +120,24 @@ export default function MaintenanceRatesManager({ rates: initialRates }: { rates
                       ? <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Current</Badge>
                       : <Badge variant="secondary">Historical</Badge>}
                   </td>
+                  <td className="px-4 py-3">
+                    {i !== 0 && (
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="h-7 w-7 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
+                        onClick={() => handleDelete(r.id)}
+                        disabled={deletingId === r.id}
+                        title="Delete historical rate"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
+                    )}
+                  </td>
                 </tr>
               ))}
               {rates.length === 0 && (
-                <tr><td colSpan={4} className="px-4 py-8 text-center text-gray-400">No rates yet</td></tr>
+                <tr><td colSpan={5} className="px-4 py-8 text-center text-gray-400">No rates yet</td></tr>
               )}
             </tbody>
           </table>
