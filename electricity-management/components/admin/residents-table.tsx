@@ -922,7 +922,7 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
                               {new Date(b.billingPeriodEnd).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
                             </td>
                             <td className="px-3 py-2 text-right font-medium">{Number(b.totalAmount).toLocaleString("en-IN", { minimumFractionDigits: 2 })}</td>
-                            <td className="px-3 py-2 text-right text-gray-500">{b.unitsConsumed ?? "—"}</td>
+                            <td className="px-3 py-2 text-right text-gray-500">{b.ncplUnits ?? "—"}</td>
                             <td className="px-3 py-2 whitespace-nowrap">{new Date(b.dueDate).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}</td>
                             <td className="px-3 py-2">
                               <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${
