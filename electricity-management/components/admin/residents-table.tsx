@@ -101,7 +101,7 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
   const [editResident, setEditResident] = useState<Resident | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [historyResident, setHistoryResident] = useState<{ flatNo: string; name: string } | null>(null);
-  const [historyData, setHistoryData] = useState<{ bills: any[]; payments: any[] } | null>(null);
+  const [historyData, setHistoryData] = useState<{ bills: any[]; payments: any[]; maintenanceBills: any[] } | null>(null);
   const [historyLoading, setHistoryLoading] = useState(false);
 
   // Combobox open state + search
@@ -319,13 +319,15 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
     setHistoryData(null);
     setHistoryLoading(true);
     try {
-      const [billsRes, paymentsRes] = await Promise.all([
+      const [billsRes, paymentsRes, maintRes] = await Promise.all([
         fetch(`/api/bills?flatNo=${encodeURIComponent(flatNo)}`),
         fetch(`/api/payments?flatNo=${encodeURIComponent(flatNo)}`),
+        fetch(`/api/maintenance/bills?flatNo=${encodeURIComponent(flatNo)}`),
       ]);
       const bills = billsRes.ok ? await billsRes.json() : [];
       const payments = paymentsRes.ok ? await paymentsRes.json() : [];
-      setHistoryData({ bills, payments });
+      const maintenanceBills = maintRes.ok ? await maintRes.json() : [];
+      setHistoryData({ bills, payments, maintenanceBills });
     } catch {
       toast.error("Failed to load history");
     } finally {
@@ -848,7 +850,7 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
               <DialogTitle>
                 History — {historyResident?.name} ({historyResident?.flatNo})
               </DialogTitle>
-              {historyData && (historyData.bills.length > 0 || historyData.payments.length > 0) && (
+              {historyData && (historyData.bills.length > 0 || historyData.payments.length > 0 || historyData.maintenanceBills.length > 0) && (
                 <Button
                   size="sm"
                   variant="outline"
@@ -962,6 +964,33 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
                       });
                     }
 
+                    // ---- MAINTENANCE BILLS ----
+                    if (historyData.maintenanceBills.length > 0) {
+                      r++; // blank row
+                      mkSection("MAINTENANCE BILLS", "FF7C3AED");
+                      mkColHeaders(["Bill No", "Billing Period", "Amount (₹)", "Interest (₹)", "Paid (₹)", "Status"], "FF5B21B6");
+                      historyData.maintenanceBills.forEach((b: any, idx: number) => {
+                        const period = `${new Date(b.billingPeriodStart).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })} – ${new Date(b.billingPeriodEnd).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}`;
+                        const bg = idx % 2 === 0 ? "FFF5F3FF" : "FFFFFFFF";
+                        const row = ws.getRow(r);
+                        const paidAmt = b.payments ? b.payments.reduce((sum: number, p: any) => sum + Number(p.amount), 0) : Number(b.paidAmount ?? 0);
+                        [b.billNumber, period, Number(b.amount), Number(b.interestCharge ?? 0), paidAmt, b.status].forEach((v, i) => {
+                          const cell = row.getCell(i + 1);
+                          cell.value = v as any;
+                          cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: bg } };
+                          cell.font = { size: 9 };
+                          cell.alignment = { vertical: "middle" };
+                          if ([2, 3, 4].includes(i)) {
+                            cell.alignment = { horizontal: "right", vertical: "middle" };
+                            cell.numFmt = "#,##0.00";
+                          }
+                        });
+                        row.getCell(1).font = { size: 9, name: "Courier New" };
+                        row.height = 15;
+                        r++;
+                      });
+                    }
+
                     const buffer = await wb.xlsx.writeBuffer();
                     const blob = new Blob([buffer as ArrayBuffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
                     const url = URL.createObjectURL(blob);
@@ -1070,6 +1099,56 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
                             </tr>
                           );
                         })}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+
+              {/* Maintenance Bills */}
+              <div>
+                <h3 className="text-sm font-semibold mb-2">Maintenance Bills ({historyData.maintenanceBills.length})</h3>
+                {historyData.maintenanceBills.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">No maintenance bills found.</p>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-xs">
+                      <thead>
+                        <tr className="border-b bg-muted/50">
+                          <th className="text-left px-3 py-2 font-medium">Bill No</th>
+                          <th className="text-left px-3 py-2 font-medium">Billing Period</th>
+                          <th className="text-right px-3 py-2 font-medium">Amount (₹)</th>
+                          <th className="text-right px-3 py-2 font-medium">Interest (₹)</th>
+                          <th className="text-left px-3 py-2 font-medium">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {historyData.maintenanceBills.map((b: any) => (
+                          <tr key={b.id} className="border-b last:border-0">
+                            <td className="px-3 py-2 font-mono">{b.billNumber}</td>
+                            <td className="px-3 py-2 whitespace-nowrap">
+                              {new Date(b.billingPeriodStart).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
+                              {" – "}
+                              {new Date(b.billingPeriodEnd).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
+                            </td>
+                            <td className="px-3 py-2 text-right font-medium">
+                              {Number(b.amount).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+                            </td>
+                            <td className="px-3 py-2 text-right text-red-600">
+                              {Number(b.interestCharge) > 0
+                                ? Number(b.interestCharge).toLocaleString("en-IN", { minimumFractionDigits: 2 })
+                                : "—"}
+                            </td>
+                            <td className="px-3 py-2">
+                              <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${
+                                b.status === "PAID" ? "bg-green-100 text-green-700" :
+                                b.status === "OVERDUE" ? "bg-red-100 text-red-700" :
+                                b.status === "PARTIAL" ? "bg-blue-100 text-blue-700" :
+                                "bg-yellow-100 text-yellow-700"
+                              }`}>{b.status}</span>
+                            </td>
+                          </tr>
+                        ))}
                       </tbody>
                     </table>
                   </div>
