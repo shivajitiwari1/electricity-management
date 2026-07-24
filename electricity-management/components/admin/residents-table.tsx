@@ -842,7 +842,7 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
 
       {/* History Modal */}
       <Dialog open={!!historyResident} onOpenChange={(open) => { if (!open) setHistoryResident(null); }}>
-        <DialogContent className="sm:max-w-4xl max-h-[85vh] overflow-y-auto">
+        <DialogContent className="w-full max-w-[98vw] sm:max-w-5xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <div className="flex items-center justify-between pr-6">
               <DialogTitle>
@@ -853,40 +853,126 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
                   size="sm"
                   variant="outline"
                   className="h-7 text-xs gap-1"
-                  onClick={() => {
-                    const rows: string[] = [];
-                    rows.push("Type,#,Bill #,Billing Period,Amount (INR),Due Date / Payment Date & Time,Mode,Transaction ID,Status");
-                    historyData.bills.forEach((b: any) => {
-                      const period = `${new Date(b.billingPeriodStart).toLocaleDateString("en-IN")} - ${new Date(b.billingPeriodEnd).toLocaleDateString("en-IN")}`;
-                      rows.push([
-                        "Bill", b.billNumber, b.billNumber, period,
-                        Number(b.totalAmount).toFixed(2),
-                        new Date(b.dueDate).toLocaleDateString("en-IN"),
-                        "", "", b.status
-                      ].map(v => `"${v}"`).join(","));
-                    });
-                    historyData.payments.forEach((p: any) => {
-                      const pDate = new Date(p.paymentDate);
-                      const dt = `${pDate.toLocaleDateString("en-IN")} ${pDate.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })}`;
-                      const period = p.bill ? `${new Date(p.bill.billingPeriodStart).toLocaleDateString("en-IN")} - ${new Date(p.bill.billingPeriodEnd).toLocaleDateString("en-IN")}` : "";
-                      const txnId = p.razorpayPaymentId && p.razorpayPaymentId !== "CASH" ? p.razorpayPaymentId : "";
-                      rows.push([
-                        "Payment", p.receiptNumber ?? "", p.bill?.billNumber ?? "", period,
-                        Number(p.amount).toFixed(2), dt,
-                        p.paymentMethod ?? p.method ?? "", txnId, p.status ?? "SUCCESS"
-                      ].map(v => `"${v}"`).join(","));
-                    });
-                    const csv = rows.join("\n");
-                    const blob = new Blob([csv], { type: "text/csv" });
+                  onClick={async () => {
+                    if (!historyData || !historyResident) return;
+                    const { Workbook } = await import("exceljs");
+                    const wb = new Workbook();
+                    wb.creator = "Oasis Venetia Heights";
+                    wb.created = new Date();
+
+                    const ws = wb.addWorksheet(historyResident.flatNo ?? "History");
+                    const COLS = 7;
+                    ws.columns = [
+                      { key: "a", width: 22 }, { key: "b", width: 28 }, { key: "c", width: 14 },
+                      { key: "d", width: 20 }, { key: "e", width: 16 }, { key: "f", width: 22 }, { key: "g", width: 10 },
+                    ];
+
+                    // Title
+                    ws.mergeCells(1, 1, 1, COLS);
+                    const t1 = ws.getCell("A1");
+                    t1.value = "Oasis Venetia Heights";
+                    t1.font = { bold: true, size: 14, color: { argb: "FF1D4ED8" } };
+                    t1.alignment = { horizontal: "center", vertical: "middle" };
+                    t1.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFDBEAFE" } };
+                    ws.getRow(1).height = 26;
+
+                    ws.mergeCells(2, 1, 2, COLS);
+                    const t2 = ws.getCell("A2");
+                    t2.value = `Flat: ${historyResident.flatNo}   |   ${historyResident.name}   |   ${new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric" })}`;
+                    t2.font = { size: 9, italic: true, color: { argb: "FF374151" } };
+                    t2.alignment = { horizontal: "center", vertical: "middle" };
+                    t2.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFDBEAFE" } };
+                    ws.getRow(2).height = 14;
+                    ws.getRow(3).height = 8;
+
+                    let r = 4;
+
+                    const mkSection = (text: string, color: string) => {
+                      ws.mergeCells(r, 1, r, COLS);
+                      const cell = ws.getCell(r, 1);
+                      cell.value = text;
+                      cell.font = { bold: true, size: 10, color: { argb: "FFFFFFFF" } };
+                      cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: color } };
+                      cell.alignment = { horizontal: "left", vertical: "middle", indent: 1 };
+                      ws.getRow(r).height = 18;
+                      r++;
+                    };
+
+                    const mkColHeaders = (labels: string[], color: string) => {
+                      const row = ws.getRow(r);
+                      labels.forEach((label, i) => {
+                        const cell = row.getCell(i + 1);
+                        cell.value = label;
+                        cell.font = { bold: true, size: 9, color: { argb: "FFFFFFFF" } };
+                        cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: color } };
+                        cell.alignment = { vertical: "middle" };
+                        cell.border = { bottom: { style: "thin", color: { argb: "FFCBD5E1" } } };
+                      });
+                      row.height = 15;
+                      r++;
+                    };
+
+                    // ---- BILLS ----
+                    if (historyData.bills.length > 0) {
+                      mkSection("ELECTRICITY BILLS", "FF1D4ED8");
+                      mkColHeaders(["Bill #", "Billing Period", "Amount (₹)", "Units", "Due Date", "Status"], "FF1E3A8A");
+                      historyData.bills.forEach((b: any, idx: number) => {
+                        const period = `${new Date(b.billingPeriodStart).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })} – ${new Date(b.billingPeriodEnd).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}`;
+                        const bg = idx % 2 === 0 ? "FFEFF6FF" : "FFFFFFFF";
+                        const row = ws.getRow(r);
+                        [b.billNumber, period, Number(b.totalAmount), b.ncplUnits != null ? Number(b.ncplUnits) : "", new Date(b.dueDate).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }), b.status].forEach((v, i) => {
+                          const cell = row.getCell(i + 1);
+                          cell.value = v as any;
+                          cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: bg } };
+                          cell.font = { size: 9 };
+                          cell.alignment = { vertical: "middle" };
+                          if (i === 2 || i === 3) cell.alignment = { horizontal: "right", vertical: "middle" };
+                        });
+                        row.getCell(1).font = { size: 9, name: "Courier New" };
+                        row.getCell(3).numFmt = "#,##0.00";
+                        row.height = 15;
+                        r++;
+                      });
+                      r++; // blank
+                    }
+
+                    // ---- PAYMENTS ----
+                    if (historyData.payments.length > 0) {
+                      mkSection("MAINTENANCE PAYMENTS", "FF059669");
+                      mkColHeaders(["Receipt #", "Bill #", "Amount (₹)", "Date & Time", "Mode", "Transaction ID", "Status"], "FF064E3B");
+                      historyData.payments.forEach((p: any, idx: number) => {
+                        const pDate = new Date(p.paymentDate);
+                        const dt = `${pDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })} ${pDate.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })}`;
+                        const txnId = p.razorpayPaymentId && p.razorpayPaymentId !== "CASH" ? p.razorpayPaymentId : "";
+                        const bg = idx % 2 === 0 ? "FFF0FDF4" : "FFFFFFFF";
+                        const row = ws.getRow(r);
+                        [p.receiptNumber ?? "", p.bill?.billNumber ?? "", Number(p.amount), dt, p.paymentMethod ?? p.method ?? "", txnId, p.status ?? "SUCCESS"].forEach((v, i) => {
+                          const cell = row.getCell(i + 1);
+                          cell.value = v as any;
+                          cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: bg } };
+                          cell.font = { size: 9 };
+                          cell.alignment = { vertical: "middle" };
+                          if (i === 2) cell.alignment = { horizontal: "right", vertical: "middle" };
+                        });
+                        row.getCell(1).font = { size: 9, name: "Courier New" };
+                        row.getCell(2).font = { size: 9, name: "Courier New" };
+                        row.getCell(3).numFmt = "#,##0.00";
+                        row.height = 15;
+                        r++;
+                      });
+                    }
+
+                    const buffer = await wb.xlsx.writeBuffer();
+                    const blob = new Blob([buffer as ArrayBuffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement("a");
                     a.href = url;
-                    a.download = `history-${historyResident?.flatNo}-${historyResident?.name?.replace(/\s+/g, "-")}.csv`;
+                    a.download = `history-${historyResident.flatNo}-${historyResident.name.replace(/\s+/g, "-")}.xlsx`;
                     a.click();
                     URL.revokeObjectURL(url);
                   }}
                 >
-                  <Download className="h-3 w-3" />Download CSV
+                  <Download className="h-3 w-3" />Download Excel
                 </Button>
               )}
             </div>
@@ -951,11 +1037,9 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
                         <tr className="border-b bg-muted/50">
                           <th className="text-left px-3 py-2 font-medium">Receipt #</th>
                           <th className="text-left px-3 py-2 font-medium">Bill #</th>
-                          <th className="text-left px-3 py-2 font-medium">Billing Period</th>
                           <th className="text-right px-3 py-2 font-medium">Amount (₹)</th>
                           <th className="text-left px-3 py-2 font-medium">Date & Time</th>
-                          <th className="text-left px-3 py-2 font-medium">Mode</th>
-                          <th className="text-left px-3 py-2 font-medium">Transaction ID</th>
+                          <th className="text-left px-3 py-2 font-medium">Mode / Ref</th>
                           <th className="text-left px-3 py-2 font-medium">Status</th>
                         </tr>
                       </thead>
@@ -963,21 +1047,19 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
                         {historyData.payments.map((p: any) => {
                           const txnId = p.razorpayPaymentId && p.razorpayPaymentId !== "CASH" ? p.razorpayPaymentId : null;
                           const pDate = new Date(p.paymentDate);
-                          const period = p.bill
-                            ? `${new Date(p.bill.billingPeriodStart).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })} – ${new Date(p.bill.billingPeriodEnd).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}`
-                            : "—";
                           return (
                             <tr key={p.id} className="border-b last:border-0">
                               <td className="px-3 py-2 font-mono">{p.receiptNumber ?? "—"}</td>
                               <td className="px-3 py-2 font-mono">{p.bill?.billNumber ?? "—"}</td>
-                              <td className="px-3 py-2 whitespace-nowrap text-gray-500">{period}</td>
                               <td className="px-3 py-2 text-right font-medium">{Number(p.amount).toLocaleString("en-IN", { minimumFractionDigits: 2 })}</td>
                               <td className="px-3 py-2 whitespace-nowrap">
                                 {pDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
                                 <span className="text-gray-400 ml-1">{pDate.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })}</span>
                               </td>
-                              <td className="px-3 py-2 font-medium">{p.paymentMethod ?? p.method ?? "—"}</td>
-                              <td className="px-3 py-2 font-mono">{txnId ?? <span className="text-gray-400">—</span>}</td>
+                              <td className="px-3 py-2">
+                                <div className="font-medium">{p.paymentMethod ?? p.method ?? "—"}</div>
+                                {txnId && <div className="text-gray-500 font-mono text-xs mt-0.5">{txnId}</div>}
+                              </td>
                               <td className="px-3 py-2">
                                 <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${
                                   p.status === "SUCCESS" ? "bg-green-100 text-green-700" :
