@@ -13,6 +13,7 @@ const transporter = nodemailer.createTransport({
 });
 
 export async function sendEmail(to: string, subject: string, html: string) {
+  if (process.env.DISABLE_EMAILS === "true") return;
   await transporter.sendMail({
     from: process.env.SMTP_FROM || "Oasis Venetia Heights <noreply@oasis.local>",
     to,
