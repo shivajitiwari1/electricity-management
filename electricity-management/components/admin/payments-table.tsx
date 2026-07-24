@@ -154,6 +154,7 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
   const router = useRouter();
   const [filterMethod, setFilterMethod] = useState("all");
   const [filterStatus, setFilterStatus] = useState("all");
+  const [filterName, setFilterName] = useState("");
 
   const [deletingPayment, setDeletingPayment] = useState<string | null>(null);
 
@@ -188,6 +189,7 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
   const [isCashSubmitting, setIsCashSubmitting] = useState(false);
 
   const filtered = useMemo(() => {
+    const q = filterName.trim().toLowerCase();
     return initialData.filter((p) => {
       if (filterMethod === "MANUAL") {
         if (!MANUAL_METHODS.has(p.method)) return false;
@@ -195,9 +197,10 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
         return false;
       }
       if (filterStatus !== "all" && p.status !== filterStatus) return false;
+      if (q && !p.residentName.toLowerCase().includes(q) && !p.flatNo.toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [initialData, filterMethod, filterStatus]);
+  }, [initialData, filterMethod, filterStatus, filterName]);
 
   function openCashDialog(bill: PendingBill) {
     const remaining = parseFloat(bill.totalAmount) - parseFloat(bill.paidAmount ?? "0");
@@ -367,13 +370,24 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
           </Select>
         </div>
 
-        {(filterMethod !== "all" || filterStatus !== "all") && (
+        <div className="flex flex-col gap-1">
+          <span className="text-xs font-medium text-muted-foreground">Search</span>
+          <Input
+            placeholder="Name or flat…"
+            value={filterName}
+            onChange={(e) => setFilterName(e.target.value)}
+            className="w-48"
+          />
+        </div>
+
+        {(filterMethod !== "all" || filterStatus !== "all" || filterName) && (
           <Button
             variant="outline"
             size="sm"
             onClick={() => {
               setFilterMethod("all");
               setFilterStatus("all");
+              setFilterName("");
             }}
           >
             Clear Filters

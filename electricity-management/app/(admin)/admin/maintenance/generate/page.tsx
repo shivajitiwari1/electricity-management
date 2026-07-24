@@ -27,7 +27,9 @@ export default async function MaintenanceGeneratePage() {
   ]);
 
   const connectionPreviews = connections.map((c) => ({
+    id: c.id,
     flatNo: c.flatNo,
+    tower: c.tower,
     residentName: c.resident.user.name ?? "—",
     unitArea: c.unitArea,
     projectedAmount: currentRate

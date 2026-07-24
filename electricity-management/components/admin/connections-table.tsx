@@ -79,6 +79,7 @@ export default function ConnectionsTable({ initialData, canWrite, canDelete }: P
   const router = useRouter();
   const [towerFilter, setTowerFilter] = useState<string>("ALL");
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
+  const [nameSearch, setNameSearch] = useState("");
   const [editConnection, setEditConnection] = useState<Connection | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -89,12 +90,14 @@ export default function ConnectionsTable({ initialData, canWrite, canDelete }: P
   });
 
   const filtered = useMemo(() => {
+    const q = nameSearch.trim().toLowerCase();
     return initialData.filter((c) => {
       const towerOk = towerFilter === "ALL" || c.tower === towerFilter;
       const statusOk = statusFilter === "ALL" || c.status === statusFilter;
-      return towerOk && statusOk;
+      const nameOk = !q || c.resident.user.name.toLowerCase().includes(q) || c.flatNo.toLowerCase().includes(q);
+      return towerOk && statusOk && nameOk;
     });
-  }, [initialData, towerFilter, statusFilter]);
+  }, [initialData, towerFilter, statusFilter, nameSearch]);
 
   function openEditSheet(conn: Connection) {
     setEditConnection(conn);
@@ -180,13 +183,22 @@ export default function ConnectionsTable({ initialData, canWrite, canDelete }: P
             </SelectContent>
           </Select>
         </div>
-        {(towerFilter !== "ALL" || statusFilter !== "ALL") && (
+        <div className="flex items-center gap-2">
+          <Input
+            placeholder="Search name or flat…"
+            value={nameSearch}
+            onChange={(e) => setNameSearch(e.target.value)}
+            className="w-52"
+          />
+        </div>
+        {(towerFilter !== "ALL" || statusFilter !== "ALL" || nameSearch) && (
           <Button
             variant="ghost"
             size="sm"
             onClick={() => {
               setTowerFilter("ALL");
               setStatusFilter("ALL");
+              setNameSearch("");
             }}
           >
             Clear Filters

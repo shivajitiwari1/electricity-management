@@ -112,6 +112,7 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
   const [viewBill, setViewBill] = useState<SerializedBill | null>(null);
   const [markingPaid, setMarkingPaid] = useState<string | null>(null);
   const [deletingBill, setDeletingBill] = useState<string | null>(null);
+  const [nameSearch, setNameSearch] = useState("");
 
   // Current filter values from URL
   const currentTower = searchParams.get("tower") ?? "";
@@ -241,11 +242,21 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
           </Select>
         </div>
 
+        <div className="flex flex-col gap-1">
+          <span className="text-xs font-medium text-muted-foreground">Search</span>
+          <Input
+            placeholder="Name or flat…"
+            value={nameSearch}
+            onChange={(e) => setNameSearch(e.target.value)}
+            className="w-48"
+          />
+        </div>
+
         {(currentTower || currentMonth || currentStatus) && (
           <Button
             variant="outline"
             size="sm"
-            onClick={() => router.push(pathname)}
+            onClick={() => { router.push(pathname); setNameSearch(""); }}
           >
             Clear Filters
           </Button>
@@ -256,7 +267,11 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
       <Card>
         <CardHeader className="pb-0">
           <CardTitle className="text-base font-semibold">
-            {initialData.length} Bill{initialData.length !== 1 ? "s" : ""}
+            {(() => {
+              const q = nameSearch.trim().toLowerCase();
+              const count = q ? initialData.filter(b => b.residentName.toLowerCase().includes(q) || b.flatNo.toLowerCase().includes(q)).length : initialData.length;
+              return `${count}${q ? ` of ${initialData.length}` : ""} Bill${count !== 1 ? "s" : ""}`;
+            })()}
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0 mt-3">
@@ -276,14 +291,19 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
                 </tr>
               </thead>
               <tbody>
-                {initialData.length === 0 ? (
-                  <tr>
-                    <td colSpan={9} className="text-center py-10 text-muted-foreground">
-                      No bills found
-                    </td>
-                  </tr>
-                ) : (
-                  initialData.map((bill) => (
+                {(() => {
+                  const q = nameSearch.trim().toLowerCase();
+                  const rows = q
+                    ? initialData.filter(b => b.residentName.toLowerCase().includes(q) || b.flatNo.toLowerCase().includes(q))
+                    : initialData;
+                  if (rows.length === 0) return (
+                    <tr>
+                      <td colSpan={9} className="text-center py-10 text-muted-foreground">
+                        {q ? `No bills match "${nameSearch}"` : "No bills found"}
+                      </td>
+                    </tr>
+                  );
+                  return rows.map((bill) => (
                     <tr
                       key={bill.id}
                       className="border-b last:border-0 hover:bg-muted/50"
@@ -354,8 +374,8 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
                         </div>
                       </td>
                     </tr>
-                  ))
-                )}
+                  ));
+                })()}
               </tbody>
             </table>
           </div>
