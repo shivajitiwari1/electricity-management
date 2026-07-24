@@ -198,7 +198,7 @@ export async function DELETE(
     const connectionIds = resident.connections.map((c) => c.id);
 
     await prisma.$transaction(async (tx) => {
-      // Delete in dependency order: Payment → Bill → MeterReading → Connection → Resident → User
+      // Delete in dependency order: Payment → Bill → MeterReading → MaintenancePayment → MaintenanceBill → Connection → Resident → User
       if (connectionIds.length > 0) {
         const bills = await tx.bill.findMany({
           where: { connectionId: { in: connectionIds } },
@@ -209,6 +209,17 @@ export async function DELETE(
         if (billIds.length > 0) {
           await tx.payment.deleteMany({ where: { billId: { in: billIds } } });
           await tx.bill.deleteMany({ where: { id: { in: billIds } } });
+        }
+
+        const maintenanceBills = await tx.maintenanceBill.findMany({
+          where: { connectionId: { in: connectionIds } },
+          select: { id: true },
+        });
+        const maintenanceBillIds = maintenanceBills.map((b) => b.id);
+
+        if (maintenanceBillIds.length > 0) {
+          await tx.maintenancePayment.deleteMany({ where: { billId: { in: maintenanceBillIds } } });
+          await tx.maintenanceBill.deleteMany({ where: { id: { in: maintenanceBillIds } } });
         }
 
         await tx.meterReading.deleteMany({ where: { connectionId: { in: connectionIds } } });
