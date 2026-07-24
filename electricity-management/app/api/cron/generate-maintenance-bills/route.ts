@@ -5,8 +5,97 @@ import { generateMaintenanceBillNumber, isLastDayOfMonth } from "@/lib/maintenan
 import { sendEmail } from "@/lib/email";
 import { maintenanceBillGeneratedEmail } from "@/lib/email-templates";
 
+type ConnectionRow = Awaited<ReturnType<typeof fetchConnections>>[number];
+
+async function fetchConnections() {
+  return prisma.connection.findMany({
+    where: { status: "ACTIVE" },
+    include: { resident: { include: { user: { select: { name: true, email: true } } } } },
+  });
+}
+
+async function createBillsBatch(
+  connections: ConnectionRow[],
+  rate: { id: string; ratePerSqFt: { toString(): string } },
+  periodStart: Date,
+  periodEnd: Date,
+  now: Date,
+) {
+  const valid = connections.filter(c => c.unitArea && Number(c.unitArea) !== 0);
+
+  // Check all existing bills for this period in ONE query
+  const allBillNumbers = valid.map(c => generateMaintenanceBillNumber(c.flatNo, periodStart));
+  const existing = await prisma.maintenanceBill.findMany({
+    where: { billNumber: { in: allBillNumbers } },
+    select: { billNumber: true },
+  });
+  const existingSet = new Set(existing.map(b => b.billNumber));
+
+  const toCreate = valid.filter(c => !existingSet.has(generateMaintenanceBillNumber(c.flatNo, periodStart)));
+  const skipped = connections.length - toCreate.length;
+
+  if (toCreate.length === 0) return { created: 0, skipped, toCreate: [] };
+
+  const dueDate = new Date(now);
+  dueDate.setDate(dueDate.getDate() + 15);
+
+  // Create all bills in ONE batch query
+  await prisma.maintenanceBill.createMany({
+    data: toCreate.map(c => ({
+      connectionId: c.id,
+      maintenanceRateId: rate.id,
+      billNumber: generateMaintenanceBillNumber(c.flatNo, periodStart),
+      billDate: now,
+      dueDate,
+      billingPeriodStart: periodStart,
+      billingPeriodEnd: periodEnd,
+      unitArea: c.unitArea,
+      ratePerSqFt: rate.ratePerSqFt,
+      amount: Number(c.unitArea) * Number(rate.ratePerSqFt),
+      paidAmount: 0,
+      interestCharge: 0,
+      status: "PENDING" as const,
+    })),
+  });
+
+  return { created: toCreate.length, skipped, toCreate, dueDate };
+}
+
+function sendBillEmails(
+  toCreate: ConnectionRow[],
+  rate: { ratePerSqFt: { toString(): string } },
+  periodStart: Date,
+  periodEnd: Date,
+  dueDate: Date,
+  logPrefix: string,
+) {
+  const billingPeriodStr = `${periodStart.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })} – ${periodEnd.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}`;
+  const subject = `Maintenance Bill — ${periodStart.toLocaleString("en-IN", { month: "long", year: "numeric" })}`;
+
+  return Promise.allSettled(
+    toCreate.map(async (c) => {
+      const amount = Number(c.unitArea) * Number(rate.ratePerSqFt);
+      const billNumber = generateMaintenanceBillNumber(c.flatNo, periodStart);
+      try {
+        const html = maintenanceBillGeneratedEmail({
+          residentName: c.resident.user.name ?? "Resident",
+          flatNo: c.flatNo,
+          billNumber,
+          billingPeriod: billingPeriodStr,
+          unitArea: Number(c.unitArea),
+          ratePerSqFt: Number(rate.ratePerSqFt).toFixed(2),
+          amount: amount.toFixed(2),
+          dueDate: dueDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
+        });
+        await sendEmail(c.resident.user.email, `${subject} — ${c.flatNo}`, html);
+      } catch (err) {
+        console.error(`[${logPrefix}] Email failed for ${c.flatNo}:`, err);
+      }
+    })
+  );
+}
+
 export async function GET(req: NextRequest) {
-  // Accept cron secret OR admin session
   const cronSecret = req.headers.get("x-cron-secret");
   const isValidCron = cronSecret && cronSecret === process.env.CRON_SECRET;
 
@@ -19,12 +108,10 @@ export async function GET(req: NextRequest) {
 
   const now = new Date();
 
-  // When triggered by cron (not admin), only run on last day of month
   if (isValidCron && !isAdmin && !isLastDayOfMonth(now)) {
     return NextResponse.json({ skipped: "not last day of month" });
   }
 
-  // Parse optional ?month=YYYY-MM override (admin only)
   const { searchParams } = new URL(req.url);
   const monthParam = searchParams.get("month");
 
@@ -48,88 +135,16 @@ export async function GET(req: NextRequest) {
     orderBy: { effectiveFrom: "desc" },
   });
 
-  if (!rate) {
-    return NextResponse.json({ success: false, error: "No maintenance rate configured" }, { status: 422 });
+  if (!rate) return NextResponse.json({ success: false, error: "No maintenance rate configured" }, { status: 422 });
+
+  const connections = await fetchConnections();
+  const result = await createBillsBatch(connections, rate, periodStart, periodEnd, now);
+
+  if (result.toCreate.length > 0) {
+    await sendBillEmails(result.toCreate, rate, periodStart, periodEnd, result.dueDate!, "cron:maintenance");
   }
 
-  const connections = await prisma.connection.findMany({
-    where: { status: "ACTIVE" },
-    include: {
-      resident: {
-        include: { user: { select: { name: true, email: true } } },
-      },
-    },
-  });
-
-  let created = 0;
-  let skipped = 0;
-  let errors = 0;
-
-  for (const connection of connections) {
-    try {
-      if (!connection.unitArea || connection.unitArea === 0) {
-        console.warn(`[cron:maintenance] Skipping ${connection.flatNo}: unitArea is 0`);
-        skipped++;
-        continue;
-      }
-
-      const billNumber = generateMaintenanceBillNumber(connection.flatNo, periodStart);
-
-      const existing = await prisma.maintenanceBill.findUnique({ where: { billNumber } });
-      if (existing) { skipped++; continue; }
-
-      const dueDate = new Date(now);
-      dueDate.setDate(dueDate.getDate() + 15);
-
-      const amount = Number(connection.unitArea) * Number(rate.ratePerSqFt);
-
-      const bill = await prisma.maintenanceBill.create({
-        data: {
-          connectionId: connection.id,
-          maintenanceRateId: rate.id,
-          billNumber,
-          billDate: now,
-          dueDate,
-          billingPeriodStart: periodStart,
-          billingPeriodEnd: periodEnd,
-          unitArea: connection.unitArea,
-          ratePerSqFt: rate.ratePerSqFt,
-          amount,
-          paidAmount: 0,
-          interestCharge: 0,
-          status: "PENDING",
-        },
-      });
-
-      try {
-        const billingPeriodStr = `${periodStart.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })} – ${periodEnd.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}`;
-        const html = maintenanceBillGeneratedEmail({
-          residentName: connection.resident.user.name ?? "Resident",
-          flatNo: connection.flatNo,
-          billNumber: bill.billNumber,
-          billingPeriod: billingPeriodStr,
-          unitArea: connection.unitArea,
-          ratePerSqFt: Number(rate.ratePerSqFt).toFixed(2),
-          amount: amount.toFixed(2),
-          dueDate: dueDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
-        });
-        await sendEmail(
-          connection.resident.user.email,
-          `Maintenance Bill — ${periodStart.toLocaleString("en-IN", { month: "long", year: "numeric" })} — ${connection.flatNo}`,
-          html
-        );
-      } catch (emailErr) {
-        console.error(`[cron:maintenance] Email failed for ${connection.flatNo}:`, emailErr);
-      }
-
-      created++;
-    } catch (err) {
-      console.error(`[cron:maintenance] Error for connection ${connection.id}:`, err);
-      errors++;
-    }
-  }
-
-  return NextResponse.json({ success: true, created, skipped, errors });
+  return NextResponse.json({ success: true, created: result.created, skipped: result.skipped });
 }
 
 export async function POST(req: NextRequest) {
@@ -139,7 +154,6 @@ export async function POST(req: NextRequest) {
 
   const now = new Date();
 
-  // Parse optional ?month=YYYY-MM override
   const { searchParams } = new URL(req.url);
   const monthParam = searchParams.get("month");
 
@@ -163,86 +177,15 @@ export async function POST(req: NextRequest) {
     orderBy: { effectiveFrom: "desc" },
   });
 
-  if (!rate) {
-    return NextResponse.json({ success: false, error: "No maintenance rate configured" }, { status: 422 });
+  if (!rate) return NextResponse.json({ success: false, error: "No maintenance rate configured" }, { status: 422 });
+
+  const connections = await fetchConnections();
+  const result = await createBillsBatch(connections, rate, periodStart, periodEnd, now);
+
+  // Fire emails concurrently and don't await — bills are created, respond fast
+  if (result.toCreate.length > 0) {
+    sendBillEmails(result.toCreate, rate, periodStart, periodEnd, result.dueDate!, "admin:maintenance").catch(() => {});
   }
 
-  const connections = await prisma.connection.findMany({
-    where: { status: "ACTIVE" },
-    include: {
-      resident: {
-        include: { user: { select: { name: true, email: true } } },
-      },
-    },
-  });
-
-  let created = 0;
-  let skipped = 0;
-  let errors = 0;
-
-  for (const connection of connections) {
-    try {
-      if (!connection.unitArea || connection.unitArea === 0) {
-        console.warn(`[admin:maintenance] Skipping ${connection.flatNo}: unitArea is 0`);
-        skipped++;
-        continue;
-      }
-
-      const billNumber = generateMaintenanceBillNumber(connection.flatNo, periodStart);
-
-      const existing = await prisma.maintenanceBill.findUnique({ where: { billNumber } });
-      if (existing) { skipped++; continue; }
-
-      const dueDate = new Date(now);
-      dueDate.setDate(dueDate.getDate() + 15);
-
-      const amount = Number(connection.unitArea) * Number(rate.ratePerSqFt);
-
-      const bill = await prisma.maintenanceBill.create({
-        data: {
-          connectionId: connection.id,
-          maintenanceRateId: rate.id,
-          billNumber,
-          billDate: now,
-          dueDate,
-          billingPeriodStart: periodStart,
-          billingPeriodEnd: periodEnd,
-          unitArea: connection.unitArea,
-          ratePerSqFt: rate.ratePerSqFt,
-          amount,
-          paidAmount: 0,
-          interestCharge: 0,
-          status: "PENDING",
-        },
-      });
-
-      try {
-        const billingPeriodStr = `${periodStart.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })} – ${periodEnd.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}`;
-        const html = maintenanceBillGeneratedEmail({
-          residentName: connection.resident.user.name ?? "Resident",
-          flatNo: connection.flatNo,
-          billNumber: bill.billNumber,
-          billingPeriod: billingPeriodStr,
-          unitArea: connection.unitArea,
-          ratePerSqFt: Number(rate.ratePerSqFt).toFixed(2),
-          amount: amount.toFixed(2),
-          dueDate: dueDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
-        });
-        await sendEmail(
-          connection.resident.user.email,
-          `Maintenance Bill — ${periodStart.toLocaleString("en-IN", { month: "long", year: "numeric" })} — ${connection.flatNo}`,
-          html
-        );
-      } catch (emailErr) {
-        console.error(`[admin:maintenance] Email failed for ${connection.flatNo}:`, emailErr);
-      }
-
-      created++;
-    } catch (err) {
-      console.error(`[admin:maintenance] Error for connection ${connection.id}:`, err);
-      errors++;
-    }
-  }
-
-  return NextResponse.json({ success: true, created, skipped, errors });
+  return NextResponse.json({ success: true, created: result.created, skipped: result.skipped });
 }
