@@ -218,7 +218,7 @@ export async function DELETE(
         const maintenanceBillIds = maintenanceBills.map((b) => b.id);
 
         if (maintenanceBillIds.length > 0) {
-          await tx.maintenancePayment.deleteMany({ where: { billId: { in: maintenanceBillIds } } });
+          await tx.maintenancePayment.deleteMany({ where: { maintenanceBillId: { in: maintenanceBillIds } } });
           await tx.maintenanceBill.deleteMany({ where: { id: { in: maintenanceBillIds } } });
         }
 
