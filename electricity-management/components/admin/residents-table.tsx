@@ -42,7 +42,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Search, Plus, Pencil, UserX, Trash2, ChevronsUpDown, Check, History } from "lucide-react";
+import { Search, Plus, Pencil, UserX, Trash2, ChevronsUpDown, Check, History, Download } from "lucide-react";
 
 
 type Connection = {
@@ -842,18 +842,61 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
 
       {/* History Modal */}
       <Dialog open={!!historyResident} onOpenChange={(open) => { if (!open) setHistoryResident(null); }}>
-        <DialogContent className="sm:max-w-2xl max-h-[80vh] overflow-y-auto">
+        <DialogContent className="sm:max-w-4xl max-h-[85vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>
-              History — {historyResident?.name} ({historyResident?.flatNo})
-            </DialogTitle>
+            <div className="flex items-center justify-between pr-6">
+              <DialogTitle>
+                History — {historyResident?.name} ({historyResident?.flatNo})
+              </DialogTitle>
+              {historyData && (historyData.bills.length > 0 || historyData.payments.length > 0) && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="h-7 text-xs gap-1"
+                  onClick={() => {
+                    const rows: string[] = [];
+                    rows.push("Type,#,Bill #,Billing Period,Amount (INR),Due Date / Payment Date & Time,Mode,Transaction ID,Status");
+                    historyData.bills.forEach((b: any) => {
+                      const period = `${new Date(b.billingPeriodStart).toLocaleDateString("en-IN")} - ${new Date(b.billingPeriodEnd).toLocaleDateString("en-IN")}`;
+                      rows.push([
+                        "Bill", b.billNumber, b.billNumber, period,
+                        Number(b.totalAmount).toFixed(2),
+                        new Date(b.dueDate).toLocaleDateString("en-IN"),
+                        "", "", b.status
+                      ].map(v => `"${v}"`).join(","));
+                    });
+                    historyData.payments.forEach((p: any) => {
+                      const pDate = new Date(p.paymentDate);
+                      const dt = `${pDate.toLocaleDateString("en-IN")} ${pDate.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })}`;
+                      const period = p.bill ? `${new Date(p.bill.billingPeriodStart).toLocaleDateString("en-IN")} - ${new Date(p.bill.billingPeriodEnd).toLocaleDateString("en-IN")}` : "";
+                      const txnId = p.razorpayPaymentId && p.razorpayPaymentId !== "CASH" ? p.razorpayPaymentId : "";
+                      rows.push([
+                        "Payment", p.receiptNumber ?? "", p.bill?.billNumber ?? "", period,
+                        Number(p.amount).toFixed(2), dt,
+                        p.paymentMethod ?? p.method ?? "", txnId, p.status ?? "SUCCESS"
+                      ].map(v => `"${v}"`).join(","));
+                    });
+                    const csv = rows.join("\n");
+                    const blob = new Blob([csv], { type: "text/csv" });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = `history-${historyResident?.flatNo}-${historyResident?.name?.replace(/\s+/g, "-")}.csv`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                  }}
+                >
+                  <Download className="h-3 w-3" />Download CSV
+                </Button>
+              )}
+            </div>
           </DialogHeader>
           {historyLoading && <p className="text-sm text-muted-foreground py-4 text-center">Loading…</p>}
           {historyData && (
             <div className="space-y-6">
               {/* Bills */}
               <div>
-                <h3 className="text-sm font-semibold mb-2">Bills ({historyData.bills.length})</h3>
+                <h3 className="text-sm font-semibold mb-2">Electricity Bills ({historyData.bills.length})</h3>
                 {historyData.bills.length === 0 ? (
                   <p className="text-sm text-muted-foreground">No bills found.</p>
                 ) : (
@@ -862,9 +905,10 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
                       <thead>
                         <tr className="border-b bg-muted/50">
                           <th className="text-left px-3 py-2 font-medium">Bill #</th>
-                          <th className="text-left px-3 py-2 font-medium">Period</th>
+                          <th className="text-left px-3 py-2 font-medium">Billing Period</th>
                           <th className="text-right px-3 py-2 font-medium">Amount (₹)</th>
-                          <th className="text-left px-3 py-2 font-medium">Due</th>
+                          <th className="text-right px-3 py-2 font-medium">Units</th>
+                          <th className="text-left px-3 py-2 font-medium">Due Date</th>
                           <th className="text-left px-3 py-2 font-medium">Status</th>
                         </tr>
                       </thead>
@@ -872,13 +916,14 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
                         {historyData.bills.map((b: any) => (
                           <tr key={b.id} className="border-b last:border-0">
                             <td className="px-3 py-2 font-mono">{b.billNumber}</td>
-                            <td className="px-3 py-2">
+                            <td className="px-3 py-2 whitespace-nowrap">
                               {new Date(b.billingPeriodStart).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
                               {" – "}
                               {new Date(b.billingPeriodEnd).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
                             </td>
-                            <td className="px-3 py-2 text-right">{Number(b.totalAmount).toLocaleString("en-IN", { minimumFractionDigits: 2 })}</td>
-                            <td className="px-3 py-2">{new Date(b.dueDate).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}</td>
+                            <td className="px-3 py-2 text-right font-medium">{Number(b.totalAmount).toLocaleString("en-IN", { minimumFractionDigits: 2 })}</td>
+                            <td className="px-3 py-2 text-right text-gray-500">{b.unitsConsumed ?? "—"}</td>
+                            <td className="px-3 py-2 whitespace-nowrap">{new Date(b.dueDate).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}</td>
                             <td className="px-3 py-2">
                               <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${
                                 b.status === "PAID" ? "bg-green-100 text-green-700" :
@@ -906,28 +951,41 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
                         <tr className="border-b bg-muted/50">
                           <th className="text-left px-3 py-2 font-medium">Receipt #</th>
                           <th className="text-left px-3 py-2 font-medium">Bill #</th>
+                          <th className="text-left px-3 py-2 font-medium">Billing Period</th>
                           <th className="text-right px-3 py-2 font-medium">Amount (₹)</th>
                           <th className="text-left px-3 py-2 font-medium">Date & Time</th>
                           <th className="text-left px-3 py-2 font-medium">Mode</th>
                           <th className="text-left px-3 py-2 font-medium">Transaction ID</th>
+                          <th className="text-left px-3 py-2 font-medium">Status</th>
                         </tr>
                       </thead>
                       <tbody>
                         {historyData.payments.map((p: any) => {
                           const txnId = p.razorpayPaymentId && p.razorpayPaymentId !== "CASH" ? p.razorpayPaymentId : null;
                           const pDate = new Date(p.paymentDate);
+                          const period = p.bill
+                            ? `${new Date(p.bill.billingPeriodStart).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })} – ${new Date(p.bill.billingPeriodEnd).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}`
+                            : "—";
                           return (
-                          <tr key={p.id} className="border-b last:border-0">
-                            <td className="px-3 py-2 font-mono">{p.receiptNumber ?? "—"}</td>
-                            <td className="px-3 py-2 font-mono">{p.bill?.billNumber ?? "—"}</td>
-                            <td className="px-3 py-2 text-right">{Number(p.amount).toLocaleString("en-IN", { minimumFractionDigits: 2 })}</td>
-                            <td className="px-3 py-2 whitespace-nowrap">
-                              {pDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
-                              <span className="text-gray-400 ml-1">{pDate.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })}</span>
-                            </td>
-                            <td className="px-3 py-2">{p.paymentMethod ?? p.method ?? "—"}</td>
-                            <td className="px-3 py-2 font-mono text-xs">{txnId ?? <span className="text-gray-400">—</span>}</td>
-                          </tr>
+                            <tr key={p.id} className="border-b last:border-0">
+                              <td className="px-3 py-2 font-mono">{p.receiptNumber ?? "—"}</td>
+                              <td className="px-3 py-2 font-mono">{p.bill?.billNumber ?? "—"}</td>
+                              <td className="px-3 py-2 whitespace-nowrap text-gray-500">{period}</td>
+                              <td className="px-3 py-2 text-right font-medium">{Number(p.amount).toLocaleString("en-IN", { minimumFractionDigits: 2 })}</td>
+                              <td className="px-3 py-2 whitespace-nowrap">
+                                {pDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
+                                <span className="text-gray-400 ml-1">{pDate.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })}</span>
+                              </td>
+                              <td className="px-3 py-2 font-medium">{p.paymentMethod ?? p.method ?? "—"}</td>
+                              <td className="px-3 py-2 font-mono">{txnId ?? <span className="text-gray-400">—</span>}</td>
+                              <td className="px-3 py-2">
+                                <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${
+                                  p.status === "SUCCESS" ? "bg-green-100 text-green-700" :
+                                  p.status === "FAILED" ? "bg-red-100 text-red-700" :
+                                  "bg-yellow-100 text-yellow-700"
+                                }`}>{p.status ?? "SUCCESS"}</span>
+                              </td>
+                            </tr>
                           );
                         })}
                       </tbody>
