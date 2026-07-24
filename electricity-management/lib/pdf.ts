@@ -330,3 +330,165 @@ export function generateReceiptPdf(data: ReceiptData): Promise<Buffer> {
     doc.end();
   });
 }
+
+export interface MaintenanceBillPdfData {
+  billNumber: string;
+  flatNo: string;
+  residentName: string;
+  billDate: Date;
+  dueDate: Date;
+  billingPeriodStart: Date;
+  billingPeriodEnd: Date;
+  unitArea: number;
+  ratePerSqFt: number;
+  amount: number;
+  interestCharge: number;
+  paidAmount: number;
+  status: string;
+}
+
+export function generateMaintenanceBillPdf(data: MaintenanceBillPdfData): Promise<Buffer> {
+  return new Promise((resolve, reject) => {
+    const chunks: Buffer[] = [];
+    const doc = new PDFDocument({ margin: 0, size: "A4" });
+
+    doc.on("data", (chunk) => chunks.push(Buffer.from(chunk)));
+    doc.on("end", () => resolve(Buffer.concat(chunks)));
+    doc.on("error", reject);
+
+    const PW = 595;
+    const L = 40;
+    const CW = 515;
+
+    // ── Navy header ──────────────────────────────────────────
+    doc.rect(0, 0, PW, 108).fill("#1e3a5f");
+
+    doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(15)
+      .text("OASIS BUILDMART INDIA PVT. LTD.", L, 22, { width: CW, align: "center" });
+    doc.fillColor("#93b8d4").font("Helvetica").fontSize(8.5)
+      .text("Oasis Venetia Heights, Plot No-HRA, 12, A, Site-C, Greater Noida - 201306 (UP)", L, 42, { width: CW, align: "center" });
+    doc.fillColor("#93b8d4").fontSize(8.5)
+      .text("Phone: 8130334857", L, 56, { width: CW, align: "center" });
+
+    doc.rect(PW / 2 - 75, 74, 150, 22).fill("#2563eb");
+    doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(10)
+      .text("MAINTENANCE BILL", L, 79, { width: CW, align: "center" });
+
+    // ── Bill No and Date ─────────────────────────────────────
+    let y = 126;
+    doc.fillColor("#6b7280").font("Helvetica").fontSize(7.5)
+      .text("BILL NUMBER", L, y, { width: 240 });
+    doc.text("BILL DATE", 310, y, { width: 245 });
+
+    y += 13;
+    doc.fillColor("#1e3a5f").font("Helvetica-Bold").fontSize(12)
+      .text(data.billNumber, L, y, { width: 240 });
+    doc.fillColor("#374151").font("Helvetica").fontSize(10)
+      .text(formatDate(data.billDate), 310, y, { width: 245 });
+
+    // divider
+    y += 28;
+    doc.moveTo(L, y).lineTo(L + CW, y).strokeColor("#e5e7eb").lineWidth(0.8).stroke();
+
+    // ── Flat / Resident ──────────────────────────────────────
+    y += 14;
+    doc.fillColor("#6b7280").font("Helvetica").fontSize(7.5)
+      .text("FLAT NO.", L, y, { width: 200 });
+    doc.text("RESIDENT NAME", 280, y, { width: 275 });
+
+    y += 13;
+    doc.fillColor("#1e3a5f").font("Helvetica-Bold").fontSize(16)
+      .text(data.flatNo, L, y - 2, { width: 200 });
+    doc.fillColor("#111827").font("Helvetica-Bold").fontSize(12)
+      .text(data.residentName, 280, y, { width: 275 });
+
+    // divider
+    y += 34;
+    doc.moveTo(L, y).lineTo(L + CW, y).strokeColor("#e5e7eb").lineWidth(0.8).stroke();
+
+    // ── Billing period + due date ────────────────────────────
+    y += 14;
+    doc.fillColor("#6b7280").font("Helvetica").fontSize(7.5)
+      .text("BILLING PERIOD", L, y, { width: 240 });
+    doc.text("DUE DATE", 310, y, { width: 245 });
+
+    y += 13;
+    doc.fillColor("#374151").font("Helvetica").fontSize(10)
+      .text(`${formatDate(data.billingPeriodStart)} – ${formatDate(data.billingPeriodEnd)}`, L, y, { width: 240 });
+    doc.fillColor("#374151").font("Helvetica").fontSize(10)
+      .text(formatDate(data.dueDate), 310, y, { width: 245 });
+
+    y += 28;
+    doc.moveTo(L, y).lineTo(L + CW, y).strokeColor("#e5e7eb").lineWidth(0.8).stroke();
+
+    // ── Charge breakdown ─────────────────────────────────────
+    y += 14;
+    doc.fillColor("#374151").font("Helvetica-Bold").fontSize(8.5)
+      .text("CHARGE BREAKDOWN", L, y, { width: CW });
+
+    y += 16;
+    const chargeRows: [string, number, boolean][] = [
+      [`Maintenance Charge (${data.unitArea} sq ft x Rs.${Number(data.ratePerSqFt).toFixed(2)}/sq ft)`, data.amount, false],
+    ];
+    if (data.interestCharge > 0) {
+      chargeRows.push([`Interest Charge (24% p.a. overdue)`, data.interestCharge, true]);
+    }
+    if (data.paidAmount > 0) {
+      chargeRows.push([`Amount Already Paid`, -data.paidAmount, false]);
+    }
+
+    for (let i = 0; i < chargeRows.length; i++) {
+      const [label, amount, isRed] = chargeRows[i];
+      if (i % 2 === 0) doc.rect(L, y - 4, CW, 22).fill("#f9fafb");
+      doc.fillColor(isRed ? "#dc2626" : "#6b7280").font("Helvetica").fontSize(8.5)
+        .text(label, L + 8, y, { width: 380, lineBreak: false });
+      doc.fillColor(isRed ? "#dc2626" : "#111827").font("Helvetica-Bold").fontSize(8.5)
+        .text(`Rs. ${formatCurrency(Math.abs(amount))}`, L + 390, y, { width: 125, align: "right", lineBreak: false });
+      y += 22;
+    }
+
+    // ── Net payable box ──────────────────────────────────────
+    const netPayable = data.amount + data.interestCharge - data.paidAmount;
+    y += 8;
+    doc.rect(L, y, CW, 80).fill("#eef2ff");
+    doc.fillColor("#4b5563").font("Helvetica").fontSize(8)
+      .text("NET PAYABLE AMOUNT", L, y + 14, { width: CW, align: "center" });
+    doc.fillColor("#1e3a5f").font("Helvetica-Bold").fontSize(28)
+      .text(`Rs. ${formatCurrency(netPayable > 0 ? netPayable : 0)}`, L, y + 28, { width: CW, align: "center" });
+
+    if (data.status === "PAID") {
+      y += 96;
+      doc.rect(L, y, CW, 44).fill("#f0fdf4");
+      doc.rect(L, y, CW, 44).strokeColor("#86efac").lineWidth(1).stroke();
+      doc.fillColor("#166534").font("Helvetica-Bold").fontSize(13)
+        .text("FULLY PAID", L, y + 14, { width: CW, align: "center" });
+      y += 60;
+    } else {
+      y += 96;
+    }
+
+    // ── Terms ────────────────────────────────────────────────
+    doc.moveTo(L, y).lineTo(L + CW, y).strokeColor("#e5e7eb").lineWidth(0.5).stroke();
+    y += 10;
+    doc.fillColor("#374151").font("Helvetica-Bold").fontSize(8).text("TERMS & NOTES", L, y, { width: CW });
+    y += 14;
+    doc.fillColor("#6b7280").font("Helvetica").fontSize(7.5)
+      .text(`1. Rate: Rs.${Number(data.ratePerSqFt).toFixed(2)}/sq ft  .  Area: ${data.unitArea} sq ft`, L, y, { width: CW });
+    y += 12;
+    doc.text(`2. Payment due by ${formatDate(data.dueDate)}. Late payment attracts 24% p.a. interest.`, L, y, { width: CW });
+    y += 12;
+    doc.text("3. This is a computer-generated bill and does not require a signature.", L, y, { width: CW });
+
+    // ── Footer ────────────────────────────────────────────────
+    y += 24;
+    doc.moveTo(L, y).lineTo(L + CW, y).strokeColor("#e5e7eb").lineWidth(0.5).stroke();
+    y += 8;
+    doc.fillColor("#9ca3af").font("Helvetica").fontSize(7)
+      .text(
+        "Oasis Buildmart India Pvt. Ltd.  |  Oasis Venetia Heights, Greater Noida - 201306 (UP)  |  Phone: 8130334857",
+        L, y, { width: CW, align: "center" }
+      );
+
+    doc.end();
+  });
+}
