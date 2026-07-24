@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -46,10 +46,11 @@ const fmtDate = (d: string) =>
   new Date(d).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
 
 export default function MaintenanceBillsTable({ initialData, canWrite }: { initialData: MaintenanceBillRow[]; canWrite: boolean }) {
+  const currentMonth = new Date().toISOString().slice(0, 7);
   const [bills, setBills] = useState(initialData);
   const [tower, setTower] = useState("all");
   const [status, setStatus] = useState("all");
-  const [month, setMonth] = useState("");
+  const [month, setMonth] = useState(currentMonth);
   const [loading, setLoading] = useState(false);
   const [payBill, setPayBill] = useState<MaintenanceBillRow | null>(null);
   const [payAmount, setPayAmount] = useState("");
@@ -58,6 +59,8 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
   const [payRef, setPayRef] = useState("");
   const [paying, setPaying] = useState(false);
   const [detailBill, setDetailBill] = useState<MaintenanceBillRow | null>(null);
+
+  useEffect(() => { fetchBills(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchBills = async () => {
     setLoading(true);
@@ -161,6 +164,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
               <th className="px-4 py-3 text-left font-medium text-gray-600">Area</th>
               <th className="px-4 py-3 text-left font-medium text-gray-600">Amount</th>
               <th className="px-4 py-3 text-left font-medium text-gray-600">Interest</th>
+              <th className="px-4 py-3 text-left font-medium text-gray-600">Due Amount</th>
               <th className="px-4 py-3 text-left font-medium text-gray-600">Due Date</th>
               <th className="px-4 py-3 text-left font-medium text-gray-600">Status</th>
               {canWrite && <th className="px-4 py-3 text-left font-medium text-gray-600">Actions</th>}
@@ -191,6 +195,17 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
                     ? <span className="text-red-600 text-xs">{fmtINR(bill.interestCharge)}</span>
                     : <span className="text-gray-400 text-xs">—</span>}
                 </td>
+                <td className="px-4 py-3">
+                  {bill.status === "PAID"
+                    ? <span className="text-green-600 text-xs font-medium">Nil</span>
+                    : (() => {
+                        const due = Number(bill.amount) + Number(bill.interestCharge) - Number(bill.paidAmount);
+                        return due > 0
+                          ? <span className="font-semibold text-red-600">{fmtINR(due)}</span>
+                          : <span className="text-green-600 text-xs font-medium">Nil</span>;
+                      })()
+                  }
+                </td>
                 <td className="px-4 py-3 text-gray-600">{fmtDate(bill.dueDate)}</td>
                 <td className="px-4 py-3"><StatusBadge status={bill.status} /></td>
                 {canWrite && (
@@ -210,7 +225,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
             ))}
             {bills.length === 0 && (
               <tr>
-                <td colSpan={canWrite ? 8 : 7} className="px-4 py-12 text-center text-gray-400">
+                <td colSpan={canWrite ? 9 : 8} className="px-4 py-12 text-center text-gray-400">
                   No maintenance bills found
                 </td>
               </tr>
