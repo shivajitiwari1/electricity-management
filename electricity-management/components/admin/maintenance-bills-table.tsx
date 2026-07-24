@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { FileDown, FileSpreadsheet } from "lucide-react";
+import { FileDown, FileSpreadsheet, Receipt } from "lucide-react";
 
 type BillStatus = "PENDING" | "PAID" | "OVERDUE" | "PARTIAL";
 
@@ -61,6 +61,22 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
   const [paying, setPaying] = useState(false);
   const [detailBill, setDetailBill] = useState<MaintenanceBillRow | null>(null);
 
+  // Advance Payment state
+  const [advanceOpen, setAdvanceOpen] = useState(false);
+  const [advConnections, setAdvConnections] = useState<{ id: string; flatNo: string; tower: string; unitArea: number; ratePerSqFt: number }[]>([]);
+  const [advConnId, setAdvConnId] = useState("");
+  const [advMonths, setAdvMonths] = useState<6 | 12>(6);
+  const [advStart, setAdvStart] = useState(() => {
+    const next = new Date();
+    next.setMonth(next.getMonth() + 1);
+    return next.toISOString().slice(0, 7);
+  });
+  const [advAmount, setAdvAmount] = useState("");
+  const [advMethod, setAdvMethod] = useState("CASH");
+  const [advDate, setAdvDate] = useState(new Date().toISOString().slice(0, 10));
+  const [advRef, setAdvRef] = useState("");
+  const [advSubmitting, setAdvSubmitting] = useState(false);
+
   useEffect(() => { fetchBills(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchBills = async () => {
@@ -111,6 +127,80 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
 
   const totalAmt = bills.reduce((s, b) => s + Number(b.amount) + Number(b.interestCharge), 0);
   const totalCollected = bills.reduce((s, b) => s + Number(b.paidAmount), 0);
+
+  // Advance Payment helpers
+  const openAdvanceDialog = async () => {
+    setAdvanceOpen(true);
+    if (advConnections.length > 0) return;
+    try {
+      const [connRes, rateRes] = await Promise.all([
+        fetch("/api/connections?status=ACTIVE"),
+        fetch("/api/maintenance/rates"),
+      ]);
+      const conns = connRes.ok ? await connRes.json() : [];
+      const rates = rateRes.ok ? await rateRes.json() : [];
+      const currentRate = rates[0]?.ratePerSqFt ?? 0;
+      setAdvConnections(
+        conns.map((c: { id: string; flatNo: string; tower: string; unitArea: number }) => ({
+          id: c.id,
+          flatNo: c.flatNo,
+          tower: c.tower,
+          unitArea: Number(c.unitArea),
+          ratePerSqFt: Number(currentRate),
+        }))
+      );
+    } catch {
+      toast.error("Failed to load connections");
+    }
+  };
+
+  const advTotal = advAmount && advMonths
+    ? (parseFloat(advAmount) * advMonths).toFixed(2)
+    : "0.00";
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (!advConnId) return;
+    const conn = advConnections.find((c) => c.id === advConnId);
+    if (conn) setAdvAmount((conn.unitArea * conn.ratePerSqFt).toFixed(2));
+  }, [advConnId, advConnections]);
+
+  const handleAdvancePayment = async () => {
+    if (!advConnId || !advAmount) {
+      toast.error("Select a flat and enter amount");
+      return;
+    }
+    setAdvSubmitting(true);
+    try {
+      const res = await fetch("/api/maintenance/bills/advance", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          connectionId: advConnId,
+          months: advMonths,
+          startMonth: advStart,
+          amountPerMonth: parseFloat(advAmount),
+          method: advMethod,
+          paymentDate: advDate,
+          referenceId: advRef || null,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.error ?? "Failed");
+        return;
+      }
+      toast.success(
+        `${data.generated} bill(s) generated and marked paid.${
+          data.skipped > 0 ? ` ${data.skipped} month(s) skipped (already existed).` : ""
+        }`
+      );
+      setAdvanceOpen(false);
+      await fetchBills();
+    } finally {
+      setAdvSubmitting(false);
+    }
+  };
 
   const downloadExcel = async () => {
     const { Workbook } = await import("exceljs");
@@ -244,6 +334,12 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
           <FileSpreadsheet className="h-4 w-4" />
           Download Excel
         </Button>
+        {canWrite && (
+          <Button onClick={openAdvanceDialog} variant="outline" size="sm" className="gap-1 ml-auto">
+            <Receipt className="h-4 w-4" />
+            Advance Pay
+          </Button>
+        )}
       </div>
 
       {/* Summary */}
@@ -414,6 +510,100 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
               <span className="text-gray-500">Status</span><span><StatusBadge status={detailBill.status} /></span>
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Advance Payment Dialog */}
+      <Dialog open={advanceOpen} onOpenChange={setAdvanceOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader><DialogTitle>Record Advance Payment</DialogTitle></DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-1">
+              <Label>Flat</Label>
+              <Select value={advConnId} onValueChange={(val) => setAdvConnId(val ?? "")}>
+                <SelectTrigger><SelectValue placeholder="Select flat…" /></SelectTrigger>
+                <SelectContent>
+                  {advConnections.map((c) => (
+                    <SelectItem key={c.id} value={c.id}>
+                      {c.flatNo} (Tower {c.tower}) — {c.unitArea} sq ft
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1">
+              <Label>Months</Label>
+              <div className="flex gap-3">
+                {([6, 12] as const).map((m) => (
+                  <button
+                    key={m}
+                    type="button"
+                    onClick={() => setAdvMonths(m)}
+                    className={`flex-1 py-2 rounded-lg border text-sm font-medium transition-colors ${
+                      advMonths === m
+                        ? "bg-primary text-primary-foreground border-primary"
+                        : "border-border text-muted-foreground hover:bg-accent"
+                    }`}
+                  >
+                    {m} Months
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="space-y-1">
+              <Label>Start From</Label>
+              <Input type="month" value={advStart} onChange={(e) => setAdvStart(e.target.value)} />
+            </div>
+            <div className="space-y-1">
+              <Label>Amount / Month (₹)</Label>
+              <Input
+                type="number"
+                step="0.01"
+                value={advAmount}
+                onChange={(e) => setAdvAmount(e.target.value)}
+              />
+            </div>
+            <div className="bg-gray-50 rounded-md px-3 py-2 text-sm flex justify-between">
+              <span className="text-gray-500">Total ({advMonths} months)</span>
+              <strong>₹{Number(advTotal).toLocaleString("en-IN", { minimumFractionDigits: 2 })}</strong>
+            </div>
+            <div className="space-y-1">
+              <Label>Method</Label>
+              <Select value={advMethod} onValueChange={(val) => setAdvMethod(val ?? "CASH")}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {["CASH", "UPI", "NEFT", "RTGS", "CHEQUE"].map((m) => (
+                    <SelectItem key={m} value={m}>{m}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1">
+              <Label>Payment Date</Label>
+              <Input
+                type="date"
+                value={advDate}
+                onChange={(e) => setAdvDate(e.target.value)}
+              />
+            </div>
+            <div className="space-y-1">
+              <Label>Reference / UTR (optional)</Label>
+              <Input
+                value={advRef}
+                onChange={(e) => setAdvRef(e.target.value)}
+                placeholder="UTR / cheque no."
+              />
+            </div>
+            <div className="flex gap-2 justify-end">
+              <Button variant="outline" onClick={() => setAdvanceOpen(false)}>Cancel</Button>
+              <Button
+                onClick={handleAdvancePayment}
+                disabled={advSubmitting || !advConnId || !advAmount}
+              >
+                {advSubmitting ? "Processing…" : `Pay ${advMonths} Months`}
+              </Button>
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
     </div>
