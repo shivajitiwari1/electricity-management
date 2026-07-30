@@ -205,6 +205,11 @@ export default function PaymentForm({ bill, qrCodeDataUrl }: Props) {
           WhatsApp: <strong>+91 88267 00991</strong>
         </p>
       </div>
+
+      {/* Credit card note */}
+      <p className="text-center text-sm text-muted-foreground pb-2">
+        To pay by <strong>credit card</strong>, visit the maintenance office in person.
+      </p>
     </div>
   );
 }
