@@ -79,6 +79,7 @@ export default function MeterReadingsTable({ connections, readings, dgFixed, can
 
   // Table search state
   const [tableSearch, setTableSearch] = useState("");
+  const [billFilter, setBillFilter] = useState<"all" | "generated" | "pending" | "no-reading">("all");
 
   // Flat combobox state
   const [flatOpen, setFlatOpen] = useState(false);
@@ -261,22 +262,41 @@ export default function MeterReadingsTable({ connections, readings, dgFixed, can
     }
   }
 
+  const filteredReadings = readings.filter((r) => {
+    const q = tableSearch.toLowerCase();
+    const matchesSearch = !q || r.flatNo.toLowerCase().includes(q) || r.residentName.toLowerCase().includes(q);
+    const matchesBill =
+      billFilter === "all" ||
+      (billFilter === "generated" && r.hasReading && r.hasBill) ||
+      (billFilter === "pending" && r.hasReading && !r.hasBill) ||
+      (billFilter === "no-reading" && !r.hasReading);
+    return matchesSearch && matchesBill;
+  });
+
   return (
     <>
       {/* Toolbar */}
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
+      <div className="flex items-center justify-between gap-4 flex-wrap">
+        <div className="flex items-center gap-3 flex-wrap">
           <Input
             placeholder="Search flat or resident..."
             value={tableSearch}
             onChange={(e) => setTableSearch(e.target.value)}
-            className="w-64"
+            className="w-56"
           />
+          <Select value={billFilter} onValueChange={(v) => setBillFilter(v as typeof billFilter)}>
+            <SelectTrigger className="w-44">
+              <SelectValue placeholder="Bill Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Flats</SelectItem>
+              <SelectItem value="generated">Bill Generated</SelectItem>
+              <SelectItem value="pending">Pending (No Bill)</SelectItem>
+              <SelectItem value="no-reading">No Reading</SelectItem>
+            </SelectContent>
+          </Select>
           <p className="text-sm text-muted-foreground whitespace-nowrap">
-            {readings.filter((r) => {
-              const q = tableSearch.toLowerCase();
-              return !q || r.flatNo.toLowerCase().includes(q) || r.residentName.toLowerCase().includes(q);
-            }).length} of {readings.length} flats
+            {filteredReadings.length} of {readings.length} flats
           </p>
         </div>
         {canWrite && (
@@ -311,12 +331,7 @@ export default function MeterReadingsTable({ connections, readings, dgFixed, can
                 </tr>
               </thead>
               <tbody>
-                {readings
-                  .filter((r) => {
-                    const q = tableSearch.toLowerCase();
-                    return !q || r.flatNo.toLowerCase().includes(q) || r.residentName.toLowerCase().includes(q);
-                  })
-                  .map((reading) => (
+                {filteredReadings.map((reading) => (
                     <tr key={reading.connectionId} className="border-b last:border-0 hover:bg-muted/50">
                       <td className="px-4 py-3 font-mono text-xs font-medium">
                         {reading.flatNo}
