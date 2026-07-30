@@ -2270,651 +2270,651 @@ export const ALL_FLATS: FlatEntry[] = [
     "area": 995
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "FIRST",
     "flatNo": "V-101",
     "unitType": "Executive Studio(455 Sq. Ft.)",
     "area": 455
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "FIRST",
     "flatNo": "V-103",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "FIRST",
     "flatNo": "V-104",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "FIRST",
     "flatNo": "V-108",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "SECOND",
     "flatNo": "V-201",
     "unitType": "Executive Studio(455 Sq. Ft.)",
     "area": 455
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "SECOND",
     "flatNo": "V-202",
     "unitType": "Premium Studio(595 Sq. Ft.)",
     "area": 595
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "SECOND",
     "flatNo": "V-203",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "SECOND",
     "flatNo": "V-204",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "SECOND",
     "flatNo": "V-206",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "SECOND",
     "flatNo": "V-207",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "SECOND",
     "flatNo": "V-208",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "THIRD",
     "flatNo": "V-302",
     "unitType": "Premium Studio(595 Sq. Ft.)",
     "area": 595
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "THIRD",
     "flatNo": "V-303",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "THIRD",
     "flatNo": "V-304",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "THIRD",
     "flatNo": "V-306",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "THIRD",
     "flatNo": "V-307",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "THIRD",
     "flatNo": "V-308",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "FOURTH",
     "flatNo": "V-402",
     "unitType": "Premium Studio(595 Sq. Ft.)",
     "area": 595
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "FOURTH",
     "flatNo": "V-404",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "FOURTH",
     "flatNo": "V-405",
     "unitType": "2BHK+2T(1015 Sq.Ft.)",
     "area": 1015
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "FOURTH",
     "flatNo": "V-406",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "FOURTH",
     "flatNo": "V-407",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "FOURTH",
     "flatNo": "V-408",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "FIFTH",
     "flatNo": "V-501",
     "unitType": "Executive Studio(455 Sq. Ft.)",
     "area": 455
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "FIFTH",
     "flatNo": "V-502",
     "unitType": "Premium Studio(595 Sq. Ft.)",
     "area": 595
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "FIFTH",
     "flatNo": "V-503",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "FIFTH",
     "flatNo": "V-504",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "FIFTH",
     "flatNo": "V-505",
     "unitType": "2BHK+2T(1015 Sq.Ft.)",
     "area": 1015
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "FIFTH",
     "flatNo": "V-506",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "FIFTH",
     "flatNo": "V-507",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "FIFTH",
     "flatNo": "V-508",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "SIXTH",
     "flatNo": "V-601",
     "unitType": "Executive Studio(455 Sq. Ft.)",
     "area": 455
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "SIXTH",
     "flatNo": "V-602",
     "unitType": "Premium Studio(595 Sq. Ft.)",
     "area": 595
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "SIXTH",
     "flatNo": "V-603",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "SIXTH",
     "flatNo": "V-604",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "SIXTH",
     "flatNo": "V-605",
     "unitType": "2BHK+2T(1100 Sq.Ft.)",
     "area": 1100
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "SIXTH",
     "flatNo": "V-606",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "SIXTH",
     "flatNo": "V-607",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "SIXTH",
     "flatNo": "V-608",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "SEVENTH",
     "flatNo": "V-701",
     "unitType": "Executive Studio(455 Sq. Ft.)",
     "area": 455
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "SEVENTH",
     "flatNo": "V-703",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "SEVENTH",
     "flatNo": "V-704",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "SEVENTH",
     "flatNo": "V-705",
     "unitType": "2BHK+2T(1100 Sq.Ft.)",
     "area": 1100
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "SEVENTH",
     "flatNo": "V-706",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "SEVENTH",
     "flatNo": "V-707",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "SEVENTH",
     "flatNo": "V-708",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "EIGHTH",
     "flatNo": "V-801",
     "unitType": "Executive Studio(455 Sq. Ft.)",
     "area": 455
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "EIGHTH",
     "flatNo": "V-802",
     "unitType": "Premium Studio(595 Sq. Ft.)",
     "area": 595
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "EIGHTH",
     "flatNo": "V-803",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "EIGHTH",
     "flatNo": "V-804",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "EIGHTH",
     "flatNo": "V-805",
     "unitType": "2BHK+2T(1100 Sq.Ft.)",
     "area": 1100
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "EIGHTH",
     "flatNo": "V-806",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "EIGHTH",
     "flatNo": "V-807",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "EIGHTH",
     "flatNo": "V-808",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "NINTH",
     "flatNo": "V-901",
     "unitType": "Executive Studio(455 Sq. Ft.)",
     "area": 455
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "NINTH",
     "flatNo": "V-903",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "NINTH",
     "flatNo": "V-904",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "NINTH",
     "flatNo": "V-905",
     "unitType": "2BHK+2T(1100 Sq.Ft.)",
     "area": 1100
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "NINTH",
     "flatNo": "V-906",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "NINTH",
     "flatNo": "V-907",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "NINTH",
     "flatNo": "V-908",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "TENTH",
     "flatNo": "V-1001",
     "unitType": "Executive Studio(455 Sq. Ft.)",
     "area": 455
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "TENTH",
     "flatNo": "V-1002",
     "unitType": "Premium Studio(595 Sq. Ft.)",
     "area": 595
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "TENTH",
     "flatNo": "V-1003",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "TENTH",
     "flatNo": "V-1004",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "TENTH",
     "flatNo": "V-1006",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "TENTH",
     "flatNo": "V-1007",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "TENTH",
     "flatNo": "V-1008",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "ELEVENTH",
     "flatNo": "V-1101",
     "unitType": "Executive Studio(455 Sq. Ft.)",
     "area": 455
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "ELEVENTH",
     "flatNo": "V-1102",
     "unitType": "Premium Studio(595 Sq. Ft.)",
     "area": 595
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "ELEVENTH",
     "flatNo": "V-1103",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "ELEVENTH",
     "flatNo": "V-1106",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "ELEVENTH",
     "flatNo": "V-1107",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "ELEVENTH",
     "flatNo": "V-1108",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "TWELFTH",
     "flatNo": "V-1201",
     "unitType": "Executive Studio(455 Sq. Ft.)",
     "area": 455
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "TWELFTH",
     "flatNo": "V-1203",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "TWELFTH",
     "flatNo": "V-1204",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "TWELFTH",
     "flatNo": "V-1206",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "TWELFTH",
     "flatNo": "V-1207",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "TWELFTH",
     "flatNo": "V-1208",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "TWELVE-A",
     "flatNo": "V-12A-01",
     "unitType": "Executive Studio(455 Sq. Ft.)",
     "area": 455
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "TWELVE-A",
     "flatNo": "V-12A-02",
     "unitType": "Premium Studio(595 Sq. Ft.)",
     "area": 595
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "TWELVE-A",
     "flatNo": "V-12A-03",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "TWELVE-A",
     "flatNo": "V-12A-04",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "TWELVE-A",
     "flatNo": "V-12A-06",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "TWELVE-A",
     "flatNo": "V-12A-07",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "TWELVE-A",
     "flatNo": "V-12A-08",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "FOURTEENTH",
     "flatNo": "V-1401",
     "unitType": "Executive Studio(455 Sq. Ft.)",
     "area": 455
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "FOURTEENTH",
     "flatNo": "V-1402",
     "unitType": "Premium Studio(595 Sq. Ft.)",
     "area": 595
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "FOURTEENTH",
     "flatNo": "V-1404",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "FOURTEENTH",
     "flatNo": "V-1406",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "FOURTEENTH",
     "flatNo": "V-1407",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
     "area": 850
   },
   {
-    "tower": "VAULT",
+    "tower": "V",
     "floor": "FOURTEENTH",
     "flatNo": "V-1408",
     "unitType": "2BHK+2T(850 Sq.Ft.)",
