@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import PaymentForm from "@/components/resident/payment-form";
+import { generateUpiQrDataUrl } from "@/lib/qr";
 
 export default async function PayPage({
   params,
@@ -57,10 +58,12 @@ export default async function PayPage({
     status: bill.status,
   };
 
+  const qrCodeDataUrl = await generateUpiQrDataUrl(serializedBill.totalAmount);
+
   return (
     <PaymentForm
       bill={serializedBill}
-      razorpayKeyId={process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!}
+      qrCodeDataUrl={qrCodeDataUrl}
     />
   );
 }

@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { verifyPaymentToken } from "@/lib/payment-token";
 import PublicPaymentForm from "./public-payment-form";
 import { CheckCircle2 } from "lucide-react";
+import { generateUpiQrDataUrl } from "@/lib/qr";
 
 export const dynamic = "force-dynamic";
 
@@ -31,8 +32,6 @@ export default async function PublicPayPage({
 
   if (!bill) notFound();
 
-  const razorpayKeyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ?? "";
-
   const serialized = {
     id: bill.id,
     billNumber: bill.billNumber,
@@ -52,6 +51,7 @@ export default async function PublicPayPage({
   };
 
   const isPaid = bill.status === "PAID";
+  const qrCodeDataUrl = isPaid ? "" : await generateUpiQrDataUrl(serialized.totalAmount);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -81,8 +81,7 @@ export default async function PublicPayPage({
         ) : (
           <PublicPaymentForm
             bill={serialized}
-            token={token}
-            razorpayKeyId={razorpayKeyId}
+            qrCodeDataUrl={qrCodeDataUrl}
           />
         )}
       </main>

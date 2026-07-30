@@ -1,13 +1,11 @@
 "use client";
 
-import Script from "next/script";
-import { useState } from "react";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { CreditCard, FileText, AlertCircle, CheckCircle2 } from "lucide-react";
+import { FileText, AlertCircle, Building2, Smartphone, MessageCircle, Copy } from "lucide-react";
+import { toast } from "sonner";
+import Image from "next/image";
 
 type SerializedBill = {
   id: string;
@@ -29,16 +27,32 @@ type SerializedBill = {
 
 interface Props {
   bill: SerializedBill;
-  token: string;
-  razorpayKeyId: string;
+  qrCodeDataUrl: string;
 }
 
+const BANK = {
+  name: "OASIS BUILDMART INDIA PVT LTD",
+  bank: "Bank of Baroda",
+  account: "88340200001343",
+  ifsc: "BARB0DBGREA",
+  branch: "Greater Noida",
+};
+
+const WHATSAPP = "918826700991";
+
 function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+  return new Date(iso).toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 }
 
 function formatINR(amount: number) {
-  return `₹${amount.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  return `₹${amount.toLocaleString("en-IN", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
 }
 
 function BillRow({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
@@ -50,213 +64,147 @@ function BillRow({ label, value, highlight }: { label: string; value: string; hi
   );
 }
 
-const isTestMode = (key: string) => !key || key.includes("REPLACE") || key.trim() === "";
+function CopyButton({ value }: { value: string }) {
+  return (
+    <button
+      onClick={() => { navigator.clipboard.writeText(value); toast.success("Copied!"); }}
+      className="ml-2 text-blue-500 hover:text-blue-700"
+      title="Copy"
+    >
+      <Copy className="h-3.5 w-3.5 inline" />
+    </button>
+  );
+}
 
-export default function PublicPaymentForm({ bill, token, razorpayKeyId }: Props) {
-  const [loading, setLoading] = useState(false);
-  const [paid, setPaid] = useState(false);
-  const [receiptNumber, setReceiptNumber] = useState<string | null>(null);
-  const [paymentId, setPaymentId] = useState<string | null>(null);
-  const testMode = isTestMode(razorpayKeyId);
+export default function PublicPaymentForm({ bill, qrCodeDataUrl }: Props) {
   const isOverdue = bill.status === "OVERDUE";
 
-  async function handleTestPay() {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/public-pay/test", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setReceiptNumber(data.receiptNumber);
-        setPaymentId(data.paymentId);
-        setPaid(true);
-      } else {
-        toast.error(data.error ?? "Payment failed");
-        setLoading(false);
-      }
-    } catch {
-      toast.error("Something went wrong");
-      setLoading(false);
-    }
-  }
-
-  async function handlePayNow() {
-    setLoading(true);
-    try {
-      const orderRes = await fetch("/api/public-pay/create-order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token }),
-      });
-      if (!orderRes.ok) {
-        const err = await orderRes.json();
-        toast.error(err.error ?? "Failed to create order");
-        setLoading(false);
-        return;
-      }
-      const orderData = await orderRes.json();
-
-      const options = {
-        key: razorpayKeyId,
-        amount: orderData.amount,
-        currency: "INR",
-        name: "Oasis Venetia Heights",
-        description: `Electricity Bill ${bill.billNumber}`,
-        order_id: orderData.orderId,
-        handler: async (response: {
-          razorpay_order_id: string;
-          razorpay_payment_id: string;
-          razorpay_signature: string;
-        }) => {
-          try {
-            const verifyRes = await fetch("/api/public-pay/verify", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                token,
-                razorpayOrderId: response.razorpay_order_id,
-                razorpayPaymentId: response.razorpay_payment_id,
-                razorpaySignature: response.razorpay_signature,
-              }),
-            });
-            const data = await verifyRes.json();
-            if (verifyRes.ok) {
-              setReceiptNumber(data.receiptNumber);
-              setPaymentId(data.paymentId);
-              setPaid(true);
-            } else {
-              toast.error(data.error ?? "Verification failed");
-              setLoading(false);
-            }
-          } catch {
-            toast.error("Verification failed. Please contact support.");
-            setLoading(false);
-          }
-        },
-        prefill: { name: bill.residentName },
-        theme: { color: "#1e40af" },
-        modal: { ondismiss: () => setLoading(false) },
-      };
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const rzp = new (window as any).Razorpay(options);
-      rzp.open();
-    } catch {
-      toast.error("Something went wrong. Please try again.");
-      setLoading(false);
-    }
-  }
-
-  if (paid) {
-    return (
-      <div className="max-w-lg w-full text-center space-y-4 mt-4">
-        <div className="flex justify-center">
-          <CheckCircle2 className="h-16 w-16 text-green-500" />
-        </div>
-        <h1 className="text-2xl font-bold text-gray-900">Payment Successful!</h1>
-        <p className="text-gray-600">
-          Thank you, <strong>{bill.residentName}</strong>. Your payment for Flat{" "}
-          <strong>{bill.flatNo}</strong> has been received.
-        </p>
-        {receiptNumber && (
-          <p className="text-sm text-gray-500">Receipt No: <strong>{receiptNumber}</strong></p>
-        )}
-        <div className="flex gap-3 justify-center pt-2">
-          {paymentId && (
-            <a
-              href={`/api/pdf/receipt/${paymentId}`}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 bg-green-600 text-white px-5 py-2.5 rounded-md text-sm font-medium hover:bg-green-700"
-            >
-              Download Receipt PDF
-            </a>
-          )}
-        </div>
-        <p className="text-xs text-gray-400 pt-2">A confirmation email has been sent to your registered email address.</p>
-      </div>
-    );
-  }
+  const whatsappMsg = encodeURIComponent(
+    `Hi, I have paid Electricity Bill ${bill.billNumber} for Flat ${bill.flatNo}. Amount: ${formatINR(bill.totalAmount)}. Please confirm and update my payment status.`
+  );
+  const whatsappUrl = `https://wa.me/${WHATSAPP}?text=${whatsappMsg}`;
 
   return (
-    <>
-      <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
-
-      <div className="max-w-lg w-full space-y-6">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Pay Electricity Bill</h1>
-          <p className="text-gray-500 text-sm mt-1">
-            Bill #{bill.billNumber} · Flat {bill.flatNo} · {bill.residentName}
-          </p>
-        </div>
-
-        {isOverdue && (
-          <div className="flex items-center gap-3 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
-            <AlertCircle className="h-4 w-4 flex-shrink-0" />
-            <span>This bill is overdue. Please pay immediately to avoid service disruption.</span>
-          </div>
-        )}
-
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base font-semibold flex items-center gap-2">
-              <FileText className="h-4 w-4 text-blue-600" />
-              Bill Breakdown — Oasis Venetia Heights
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-1">
-            <div className="flex items-center justify-between py-2 text-sm text-muted-foreground">
-              <span>Billing Period</span>
-              <span>{formatDate(bill.billingPeriodStart)} – {formatDate(bill.billingPeriodEnd)}</span>
-            </div>
-            <div className="flex items-center justify-between py-2 text-sm text-muted-foreground">
-              <span>NPCL Units Consumed</span>
-              <span>{bill.ncplUnits} kWh @ ₹{bill.ratePerUnit.toFixed(2)}/unit</span>
-            </div>
-            <Separator className="my-1" />
-            <BillRow label="NPCL Energy Charge" value={formatINR(bill.ncplCharge)} />
-            <BillRow label="DG Charge" value={formatINR(bill.dgCharge)} />
-            <BillRow label="Fixed Charge" value={formatINR(bill.fixedCharge)} />
-            {bill.previousDues > 0 && (
-              <BillRow label="Previous Dues" value={formatINR(bill.previousDues)} />
-            )}
-            <Separator className="my-1" />
-            <BillRow label="Total Amount Due" value={formatINR(bill.totalAmount)} highlight />
-            <div className="flex items-center justify-between pt-2">
-              <span className="text-xs text-muted-foreground">Due by: {formatDate(bill.dueDate)}</span>
-              <Badge className={isOverdue ? "bg-red-100 text-red-800 hover:bg-red-100" : "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"}>
-                {bill.status}
-              </Badge>
-            </div>
-          </CardContent>
-        </Card>
-
-        {testMode ? (
-          <>
-            <div className="flex items-center gap-2 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
-              <span className="font-semibold">🧪 Test Mode</span>
-              <span>— Clicking below simulates a successful payment.</span>
-            </div>
-            <Button size="lg" className="w-full bg-amber-500 hover:bg-amber-600 text-white text-base py-6" disabled={loading} onClick={handleTestPay}>
-              <CreditCard className="h-5 w-5 mr-2" />
-              {loading ? "Processing..." : `Simulate Payment — ${formatINR(bill.totalAmount)}`}
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button size="lg" className="w-full bg-blue-600 hover:bg-blue-700 text-white text-base py-6" disabled={loading} onClick={handlePayNow}>
-              <CreditCard className="h-5 w-5 mr-2" />
-              {loading ? "Processing..." : `Pay ${formatINR(bill.totalAmount)} via Razorpay`}
-            </Button>
-            <p className="text-center text-xs text-muted-foreground">
-              Secured by Razorpay · Supports UPI, Net Banking, Cards &amp; Wallets
-            </p>
-          </>
-        )}
+    <div className="max-w-lg w-full space-y-6">
+      {/* Header */}
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900">Pay Electricity Bill</h1>
+        <p className="text-gray-500 text-sm mt-1">
+          Bill #{bill.billNumber} · Flat {bill.flatNo} · {bill.residentName}
+        </p>
       </div>
-    </>
+
+      {/* Overdue Warning */}
+      {isOverdue && (
+        <div className="flex items-center gap-3 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+          <AlertCircle className="h-4 w-4 flex-shrink-0" />
+          <span>This bill is overdue. Please pay immediately to avoid service disruption.</span>
+        </div>
+      )}
+
+      {/* Bill Summary */}
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base font-semibold flex items-center gap-2">
+            <FileText className="h-4 w-4 text-blue-600" />
+            Bill Breakdown — Oasis Venetia Heights
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-1">
+          <div className="flex items-center justify-between py-2 text-sm text-muted-foreground">
+            <span>Billing Period</span>
+            <span>{formatDate(bill.billingPeriodStart)} – {formatDate(bill.billingPeriodEnd)}</span>
+          </div>
+          <div className="flex items-center justify-between py-2 text-sm text-muted-foreground">
+            <span>NPCL Units Consumed</span>
+            <span>{bill.ncplUnits} kWh @ ₹{bill.ratePerUnit.toFixed(2)}/unit</span>
+          </div>
+          <Separator className="my-1" />
+          <BillRow label="NPCL Energy Charge" value={formatINR(bill.ncplCharge)} />
+          <BillRow label="DG Charge" value={formatINR(bill.dgCharge)} />
+          <BillRow label="Fixed Charge" value={formatINR(bill.fixedCharge)} />
+          {bill.previousDues > 0 && (
+            <BillRow label="Previous Dues" value={formatINR(bill.previousDues)} />
+          )}
+          <Separator className="my-1" />
+          <BillRow label="Total Amount Due" value={formatINR(bill.totalAmount)} highlight />
+          <div className="flex items-center justify-between pt-2">
+            <span className="text-xs text-muted-foreground">Due by: {formatDate(bill.dueDate)}</span>
+            <Badge className={isOverdue ? "bg-red-100 text-red-800 hover:bg-red-100" : "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"}>
+              {bill.status}
+            </Badge>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* UPI QR Code */}
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base font-semibold flex items-center gap-2">
+            <Smartphone className="h-4 w-4 text-green-600" />
+            Pay via UPI
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col items-center gap-3">
+          <Image src={qrCodeDataUrl} alt="UPI QR Code" width={200} height={200} className="rounded-lg border" unoptimized />
+          <p className="text-sm text-center text-muted-foreground">
+            Scan with <span className="font-medium">PhonePe, Google Pay, BHIM, Paytm</span> or any UPI app
+          </p>
+          <div className="bg-gray-50 border rounded-md px-4 py-2 text-sm font-mono text-center">
+            oasis88268343@barodampay
+            <CopyButton value="oasis88268343@barodampay" />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Bank Transfer */}
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base font-semibold flex items-center gap-2">
+            <Building2 className="h-4 w-4 text-blue-600" />
+            Pay via Net Banking / NEFT / IMPS
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2 text-sm">
+          {[
+            { label: "Account Name", value: BANK.name },
+            { label: "Bank", value: BANK.bank },
+            { label: "Account No", value: BANK.account },
+            { label: "IFSC Code", value: BANK.ifsc },
+            { label: "Branch", value: BANK.branch },
+          ].map(({ label, value }) => (
+            <div key={label} className="flex items-start justify-between">
+              <span className="text-muted-foreground w-32 shrink-0">{label}</span>
+              <span className="font-medium text-right">
+                {value}
+                <CopyButton value={value} />
+              </span>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+
+      {/* After Payment Instructions */}
+      <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 space-y-3">
+        <p className="text-sm font-semibold text-blue-900">After making the payment:</p>
+        <ol className="text-sm text-blue-800 space-y-1 list-decimal list-inside">
+          <li>Note your transaction ID / UTR number</li>
+          <li>Send payment details to the number below on WhatsApp</li>
+          <li>Our team will update your payment status within 24 hours</li>
+        </ol>
+        <a
+          href={whatsappUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="flex items-center justify-center gap-2 w-full bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-4 rounded-lg transition-colors text-sm"
+        >
+          <MessageCircle className="h-4 w-4" />
+          Share Payment Details on WhatsApp
+        </a>
+        <p className="text-xs text-center text-blue-700">
+          WhatsApp: <strong>+91 88267 00991</strong>
+        </p>
+      </div>
+    </div>
   );
 }
