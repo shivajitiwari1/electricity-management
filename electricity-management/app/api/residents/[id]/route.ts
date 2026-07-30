@@ -162,6 +162,8 @@ export async function PUT(
   });
 
   revalidateTag("residents", {});
+  revalidateTag("connections", {});
+  revalidateTag("meter-readings", {});
   return NextResponse.json(updated);
 }
 
