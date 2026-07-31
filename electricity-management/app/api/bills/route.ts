@@ -134,6 +134,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Meter reading not found" }, { status: 404 });
   }
 
+  // Duplicate guard: same connection + same billing period
+  const existingPeriodBill = await prisma.bill.findFirst({
+    where: {
+      connectionId: meterReading.connectionId,
+      billingPeriodStart: new Date(billingPeriodStart),
+      billingPeriodEnd: new Date(billingPeriodEnd),
+    },
+  });
+  if (existingPeriodBill) {
+    return NextResponse.json(
+      { error: `A bill already exists for this flat and billing period (${existingPeriodBill.billNumber})` },
+      { status: 409 }
+    );
+  }
+
   // Fetch latest rate
   const rate = await prisma.rate.findFirst({
     orderBy: { effectiveFrom: "desc" },
@@ -255,5 +270,6 @@ export async function POST(req: NextRequest) {
   revalidateTag("dashboard", {});
   revalidateTag("payments", {});
   revalidateTag("reports", {});
+  revalidateTag("meter-readings", {});
   return NextResponse.json(bill, { status: 201 });
 }
