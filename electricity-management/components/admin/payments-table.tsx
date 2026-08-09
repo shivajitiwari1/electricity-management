@@ -157,6 +157,7 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
   const [filterMethod, setFilterMethod] = useState("all");
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterName, setFilterName] = useState("");
+  const [pendingSearch, setPendingSearch] = useState("");
   const [deletingPayment, setDeletingPayment] = useState<string | null>(null);
 
   async function handleDeletePayment(id: string, receiptNumber: string) {
@@ -189,6 +190,18 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
   const [payDate, setPayDate] = useState("");
   const [isCashSubmitting, setIsCashSubmitting] = useState(false);
 
+
+  const filteredPending = useMemo(() => {
+    const q = pendingSearch.trim().toLowerCase();
+    if (!q) return pendingBills;
+    return pendingBills.filter(
+      (b) =>
+        b.residentName.toLowerCase().includes(q) ||
+        b.flatNo.toLowerCase().includes(q) ||
+        b.email.toLowerCase().includes(q) ||
+        b.billNumber.toLowerCase().includes(q)
+    );
+  }, [pendingBills, pendingSearch]);
 
   const filtered = useMemo(() => {
     const q = filterName.trim().toLowerCase();
@@ -264,18 +277,28 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
       {/* Pending Bills Requiring Payment */}
       <Card>
         <CardHeader className="pb-0">
-          <CardTitle className="text-base font-semibold flex items-center gap-2">
+          <CardTitle className="text-base font-semibold flex items-center gap-2 flex-wrap">
             {overdueCount > 0 && (
               <AlertTriangle className="h-4 w-4 text-red-500" />
             )}
             Bills Requiring Payment
-            <span className="ml-auto text-sm font-normal text-muted-foreground">
-              {pendingBills.length} pending
-              {overdueCount > 0 && (
-                <span className="text-red-600 font-medium ml-1">
-                  ({overdueCount} overdue)
-                </span>
-              )}
+            <span className="ml-auto flex items-center gap-3">
+              <Input
+                placeholder="Search name, flat, email…"
+                value={pendingSearch}
+                onChange={(e) => setPendingSearch(e.target.value)}
+                className="w-52 h-8 text-sm font-normal"
+              />
+              <span className="text-sm font-normal text-muted-foreground whitespace-nowrap">
+                {filteredPending.length !== pendingBills.length
+                  ? `${filteredPending.length} of ${pendingBills.length} pending`
+                  : `${pendingBills.length} pending`}
+                {overdueCount > 0 && (
+                  <span className="text-red-600 font-medium ml-1">
+                    ({overdueCount} overdue)
+                  </span>
+                )}
+              </span>
             </span>
           </CardTitle>
         </CardHeader>
@@ -295,14 +318,14 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
                 </tr>
               </thead>
               <tbody>
-                {pendingBills.length === 0 ? (
+                {filteredPending.length === 0 ? (
                   <tr>
                     <td colSpan={8} className="text-center py-10 text-muted-foreground">
-                      No pending bills — all caught up!
+                      {pendingBills.length === 0 ? "No pending bills — all caught up!" : "No bills match your search."}
                     </td>
                   </tr>
                 ) : (
-                  pendingBills.map((bill) => (
+                  filteredPending.map((bill) => (
                     <tr
                       key={bill.id}
                       className={`border-b last:border-0 hover:bg-muted/50 ${bill.status === "OVERDUE" ? "bg-red-50/40" : bill.status === "PARTIAL" ? "bg-amber-50/40" : ""}`}

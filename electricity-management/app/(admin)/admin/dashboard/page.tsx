@@ -4,8 +4,9 @@ import { Badge } from "@/components/ui/badge";
 import { StatCardsSkeleton, TableSkeleton } from "@/components/ui/page-skeleton";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Users, Plug, FileText, IndianRupee, AlertCircle } from "lucide-react";
+import { Users, Plug, FileText, IndianRupee, AlertCircle, Download } from "lucide-react";
 import { getCachedDashboardStats, getCachedRecentBills } from "@/lib/server-cache";
+import { auth } from "@/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -101,7 +102,10 @@ async function RecentBillsSection() {
   );
 }
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const session = await auth();
+  const isAdmin = (session?.user as any)?.role === "ADMIN";
+
   return (
     <div className="space-y-6">
       <div>
@@ -119,6 +123,14 @@ export default function DashboardPage() {
         <Link href="/admin/residents"><Button>Add Resident</Button></Link>
         <Link href="/admin/meter-readings"><Button variant="outline">Enter Reading</Button></Link>
         <Link href="/admin/reports"><Button variant="outline">View Reports</Button></Link>
+        {isAdmin && (
+          <a href="/api/backup/csv" download>
+            <Button variant="outline">
+              <Download className="h-4 w-4 mr-2" />
+              Download Backup
+            </Button>
+          </a>
+        )}
       </div>
 
       <Suspense fallback={<TableSkeleton rows={6} cols={6} showSearch={false} />}>
