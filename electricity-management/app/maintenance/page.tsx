@@ -1,7 +1,14 @@
+import { redirect } from "next/navigation";
 import { Zap } from "lucide-react";
 import { MaintenanceAnimation } from "@/components/maintenance-animation";
+import { getCachedSiteConfig } from "@/lib/server-cache";
 
-export default function MaintenancePage() {
+export default async function MaintenancePage() {
+  const config = await getCachedSiteConfig();
+  if (!config.maintenanceMode) {
+    redirect("/");
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-lg max-w-md w-full p-8 text-center space-y-6">
