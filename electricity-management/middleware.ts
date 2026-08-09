@@ -2,12 +2,43 @@ import NextAuth from "next-auth";
 import { authConfig } from "@/auth.config";
 import { NextResponse } from "next/server";
 
+let cachedMaintenance: { value: boolean; expiresAt: number } | null = null;
+
+async function isMaintenanceMode(origin: string): Promise<boolean> {
+  const now = Date.now();
+  if (cachedMaintenance && now < cachedMaintenance.expiresAt) {
+    return cachedMaintenance.value;
+  }
+  try {
+    const res = await fetch(`${origin}/api/site/status`);
+    const data = await res.json();
+    cachedMaintenance = { value: data.maintenanceMode, expiresAt: now + 10_000 };
+    return data.maintenanceMode;
+  } catch {
+    // On fetch failure, don't block the site
+    return false;
+  }
+}
+
 const { auth } = NextAuth(authConfig);
 
-export default auth((req) => {
+export default auth(async (req) => {
   const { pathname } = req.nextUrl;
   const role = (req.auth?.user as any)?.role as string | undefined;
   const isLoggedIn = !!req.auth;
+
+  // Always allow maintenance page and status API through (avoid redirect loops)
+  if (pathname === "/maintenance" || pathname.startsWith("/api/site/status")) {
+    return NextResponse.next();
+  }
+
+  // ADMIN and MANAGER bypass maintenance gate
+  if (role !== "ADMIN" && role !== "MANAGER") {
+    const inMaintenance = await isMaintenanceMode(req.nextUrl.origin);
+    if (inMaintenance) {
+      return NextResponse.redirect(new URL("/maintenance", req.url));
+    }
+  }
 
   // Redirect logged-in users away from login
   if (pathname === "/login" && isLoggedIn) {
@@ -64,6 +95,7 @@ export const config = {
   matcher: [
     "/admin/:path*",
     "/resident/:path*",
+    "/pay/:path*",
     "/api/residents/:path*",
     "/api/connections/:path*",
     "/api/meter-readings/:path*",
