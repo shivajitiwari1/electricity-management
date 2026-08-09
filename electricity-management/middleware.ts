@@ -27,8 +27,12 @@ export default auth(async (req) => {
   const role = (req.auth?.user as any)?.role as string | undefined;
   const isLoggedIn = !!req.auth;
 
-  // Always allow maintenance page and status API through (avoid redirect loops)
-  if (pathname === "/maintenance" || pathname.startsWith("/api/site/status")) {
+  // Always allow maintenance page, login page, and status API through (avoid redirect loops)
+  if (
+    pathname === "/maintenance" ||
+    pathname === "/login" ||
+    pathname.startsWith("/api/site/status")
+  ) {
     return NextResponse.next();
   }
 
