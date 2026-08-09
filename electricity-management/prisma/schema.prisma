@@ -227,3 +227,8 @@ model Permission {
 
   @@unique([role, page])
 }
+
+model SiteConfig {
+  id              String  @id @default("singleton")
+  maintenanceMode Boolean @default(false)
+}
