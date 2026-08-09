@@ -1,0 +1,7 @@
+{
+  "name": "electricity-management-root",
+  "version": "1.0.0",
+  "scripts": {
+    "vercel-build": "cd electricity-management && npm install && npm run build"
+  }
+}
