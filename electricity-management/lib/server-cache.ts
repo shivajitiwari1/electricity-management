@@ -184,3 +184,16 @@ export const getCachedReportsData = unstable_cache(
   ["admin-reports"],
   { revalidate: 300, tags: ["reports"] }
 );
+
+// Site config (maintenance mode) — refresh every 10 s
+export const getCachedSiteConfig = unstable_cache(
+  async () => {
+    return prisma.siteConfig.upsert({
+      where:  { id: "singleton" },
+      create: { id: "singleton", maintenanceMode: false },
+      update: {},
+    });
+  },
+  ["site-config"],
+  { revalidate: 10, tags: ["site-config"] }
+);
