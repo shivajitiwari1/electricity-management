@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Users, Plug, FileText, IndianRupee, AlertCircle, Download } from "lucide-react";
 import { getCachedDashboardStats, getCachedRecentBills } from "@/lib/server-cache";
 import { auth } from "@/auth";
+import { MaintenanceToggle } from "@/components/admin/maintenance-toggle";
 
 export const dynamic = "force-dynamic";
 
@@ -132,6 +133,8 @@ export default async function DashboardPage() {
           </a>
         )}
       </div>
+
+      {isAdmin && <MaintenanceToggle />}
 
       <Suspense fallback={<TableSkeleton rows={6} cols={6} showSearch={false} />}>
         <RecentBillsSection />
