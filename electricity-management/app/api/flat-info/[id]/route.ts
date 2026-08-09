@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import { guardPermission } from "@/lib/permissions";
+import { revalidateTag } from "next/cache";
 
 const schema = z.object({
   flatNo:   z.string().min(1).optional(),
@@ -41,6 +42,7 @@ export async function PUT(
   }
 
   const updated = await prisma.flatInfo.update({ where: { id }, data: parsed.data });
+  revalidateTag("flats");
   return NextResponse.json(updated);
 }
 
@@ -57,5 +59,6 @@ export async function DELETE(
   if (!flat) return NextResponse.json({ error: "Flat not found" }, { status: 404 });
 
   await prisma.flatInfo.delete({ where: { id } });
+  revalidateTag("flats");
   return NextResponse.json({ success: true });
 }

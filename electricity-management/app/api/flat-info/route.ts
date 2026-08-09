@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import { guardPermission } from "@/lib/permissions";
+import { revalidateTag } from "next/cache";
 
 const schema = z.object({
   flatNo:   z.string().min(1),
@@ -42,5 +43,6 @@ export async function POST(req: NextRequest) {
   }
 
   const flat = await prisma.flatInfo.create({ data: parsed.data });
+  revalidateTag("flats");
   return NextResponse.json(flat, { status: 201 });
 }

@@ -2,9 +2,8 @@ import { Suspense } from "react";
 import { auth } from "@/auth";
 import type { PermissionsMap } from "@/lib/permissions";
 import ResidentsTable from "@/components/admin/residents-table";
-import { ALL_FLATS } from "@/lib/flat-data";
 import { TableSkeleton } from "@/components/ui/page-skeleton";
-import { getCachedResidents } from "@/lib/server-cache";
+import { getCachedResidents, getCachedFlats } from "@/lib/server-cache";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +14,9 @@ async function ResidentsData() {
   const canWrite = role === "ADMIN" || permissions["residents"]?.canWrite === true;
   const canDelete = role === "ADMIN" || permissions["residents"]?.canDelete === true;
 
-  const residents = await getCachedResidents();
+  const [residents, dbFlats] = await Promise.all([getCachedResidents(), getCachedFlats()]);
+
+  const flatData = dbFlats.map(({ id: _id, ...f }) => f);
 
   const serialized = residents.map((r) => ({
     ...r,
@@ -26,7 +27,7 @@ async function ResidentsData() {
     })),
   }));
 
-  return <ResidentsTable initialData={serialized} flatData={ALL_FLATS} canWrite={canWrite} canDelete={canDelete} />;
+  return <ResidentsTable initialData={serialized} flatData={flatData} canWrite={canWrite} canDelete={canDelete} />;
 }
 
 export default function ResidentsPage() {
