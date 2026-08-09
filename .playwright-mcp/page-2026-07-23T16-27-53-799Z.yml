@@ -1,0 +1,130 @@
+- generic [active] [ref=f4e1]:
+  - generic [ref=f4e2]:
+    - generic [ref=f4e4]:
+      - generic [ref=f4e10]:
+        - paragraph [ref=f4e11]: Oasis Venetia Heights
+        - paragraph [ref=f4e12]: Admin Panel
+      - navigation [ref=f4e13]:
+        - link "Dashboard" [ref=f4e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f4e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f4e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f4e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f4e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Maintenance" [ref=f4e37] [cursor=pointer]:
+          - /url: /admin/maintenance
+        - link "Payments" [ref=f4e40] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f4e43] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f4e46] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f4e50] [cursor=pointer]:
+          - /url: /admin/flats
+        - link "Users" [ref=f4e55] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f4e68] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f4e72]
+      - generic [ref=f4e73]:
+        - generic [ref=f4e74]:
+          - generic [ref=f4e75]:
+            - paragraph [ref=f4e76]: Admin
+            - paragraph [ref=f4e77]: admin@oasis.local
+          - button "Toggle theme" [ref=f4e78]
+        - button "Sign Out" [ref=f4e80]
+    - main [ref=f4e81]:
+      - generic [ref=f4e82]:
+        - generic [ref=f4e83]:
+          - generic [ref=f4e84]:
+            - heading "Maintenance Bills" [level=1] [ref=f4e85]
+            - paragraph [ref=f4e86]: Monthly maintenance charges · 24% p.a. interest on overdue
+          - generic [ref=f4e87]:
+            - link [ref=f4e88] [cursor=pointer]:
+              - /url: /admin/maintenance/rates
+              - button "Manage Rates" [ref=f4e89]
+            - link [ref=f4e90] [cursor=pointer]:
+              - /url: /admin/maintenance/generate
+              - button "Scheduler" [ref=f4e91]
+        - table [ref=f4e99]:
+          - rowgroup [ref=f4e100]:
+            - row [ref=f4e101]:
+              - columnheader [ref=f4e102]
+              - columnheader [ref=f4e104]
+              - columnheader [ref=f4e106]
+              - columnheader [ref=f4e108]
+              - columnheader [ref=f4e110]
+              - columnheader [ref=f4e112]
+              - columnheader [ref=f4e114]
+          - rowgroup [ref=f4e116]:
+            - row [ref=f4e117]:
+              - cell [ref=f4e118]
+              - cell [ref=f4e120]
+              - cell [ref=f4e122]
+              - cell [ref=f4e124]
+              - cell [ref=f4e126]
+              - cell [ref=f4e128]
+              - cell [ref=f4e130]
+            - row [ref=f4e132]:
+              - cell [ref=f4e133]
+              - cell [ref=f4e135]
+              - cell [ref=f4e137]
+              - cell [ref=f4e139]
+              - cell [ref=f4e141]
+              - cell [ref=f4e143]
+              - cell [ref=f4e145]
+            - row [ref=f4e147]:
+              - cell [ref=f4e148]
+              - cell [ref=f4e150]
+              - cell [ref=f4e152]
+              - cell [ref=f4e154]
+              - cell [ref=f4e156]
+              - cell [ref=f4e158]
+              - cell [ref=f4e160]
+            - row [ref=f4e162]:
+              - cell [ref=f4e163]
+              - cell [ref=f4e165]
+              - cell [ref=f4e167]
+              - cell [ref=f4e169]
+              - cell [ref=f4e171]
+              - cell [ref=f4e173]
+              - cell [ref=f4e175]
+            - row [ref=f4e177]:
+              - cell [ref=f4e178]
+              - cell [ref=f4e180]
+              - cell [ref=f4e182]
+              - cell [ref=f4e184]
+              - cell [ref=f4e186]
+              - cell [ref=f4e188]
+              - cell [ref=f4e190]
+            - row [ref=f4e192]:
+              - cell [ref=f4e193]
+              - cell [ref=f4e195]
+              - cell [ref=f4e197]
+              - cell [ref=f4e199]
+              - cell [ref=f4e201]
+              - cell [ref=f4e203]
+              - cell [ref=f4e205]
+            - row [ref=f4e207]:
+              - cell [ref=f4e208]
+              - cell [ref=f4e210]
+              - cell [ref=f4e212]
+              - cell [ref=f4e214]
+              - cell [ref=f4e216]
+              - cell [ref=f4e218]
+              - cell [ref=f4e220]
+            - row [ref=f4e222]:
+              - cell [ref=f4e223]
+              - cell [ref=f4e225]
+              - cell [ref=f4e227]
+              - cell [ref=f4e229]
+              - cell [ref=f4e231]
+              - cell [ref=f4e233]
+              - cell [ref=f4e235]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f4e242] [cursor=pointer]
+  - alert [ref=f4e246]

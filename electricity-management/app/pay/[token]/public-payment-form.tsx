@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { FileText, AlertCircle, Building2, Smartphone, MessageCircle, Copy } from "lucide-react";
+import { FileText, AlertCircle, Building2, Smartphone, MessageCircle, Copy, Download } from "lucide-react";
 import { toast } from "sonner";
 import Image from "next/image";
 
@@ -28,6 +28,7 @@ type SerializedBill = {
 interface Props {
   bill: SerializedBill;
   qrCodeDataUrl: string;
+  token: string;
 }
 
 const BANK = {
@@ -38,7 +39,7 @@ const BANK = {
   branch: "Greater Noida",
 };
 
-const WHATSAPP = "918826700991";
+const WHATSAPP = "919355011978";
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-IN", {
@@ -76,7 +77,7 @@ function CopyButton({ value }: { value: string }) {
   );
 }
 
-export default function PublicPaymentForm({ bill, qrCodeDataUrl }: Props) {
+export default function PublicPaymentForm({ bill, qrCodeDataUrl, token }: Props) {
   const isOverdue = bill.status === "OVERDUE";
 
   const whatsappMsg = encodeURIComponent(
@@ -136,6 +137,16 @@ export default function PublicPaymentForm({ bill, qrCodeDataUrl }: Props) {
           </div>
         </CardContent>
       </Card>
+
+      {/* Download Bill PDF */}
+      <a
+        href={`/api/public-pay/pdf/${token}`}
+        download
+        className="flex items-center justify-center gap-2 w-full border border-blue-600 text-blue-600 hover:bg-blue-50 font-medium py-3 px-4 rounded-lg transition-colors text-sm"
+      >
+        <Download className="h-4 w-4" />
+        Download Bill PDF
+      </a>
 
       {/* UPI QR Code */}
       <Card>
@@ -202,7 +213,7 @@ export default function PublicPaymentForm({ bill, qrCodeDataUrl }: Props) {
           Share Payment Details on WhatsApp
         </a>
         <p className="text-xs text-center text-blue-700">
-          WhatsApp: <strong>+91 88267 00991</strong>
+          WhatsApp: <strong>+91 93550 11978</strong>
         </p>
       </div>
 

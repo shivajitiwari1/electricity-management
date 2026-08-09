@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import SidebarNav from "@/components/admin/sidebar-nav";
+import IdleTimeout from "@/components/idle-timeout";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -20,6 +21,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <main className="flex-1 overflow-auto p-4 md:p-6 pt-[72px] md:pt-6">
         {children}
       </main>
+      <IdleTimeout />
     </div>
   );
 }

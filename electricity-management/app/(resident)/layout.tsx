@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import ResidentNav from "@/components/resident/top-nav";
+import IdleTimeout from "@/components/idle-timeout";
 
 export default async function ResidentLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -12,6 +13,7 @@ export default async function ResidentLayout({ children }: { children: React.Rea
       <main className="max-w-5xl mx-auto px-4 py-6">
         {children}
       </main>
+      <IdleTimeout />
     </div>
   );
 }

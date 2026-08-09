@@ -1,0 +1,123 @@
+- generic [active] [ref=f19e1]:
+  - generic [ref=f19e2]:
+    - generic [ref=f19e4]:
+      - generic [ref=f19e10]:
+        - paragraph [ref=f19e11]: Oasis Venetia Heights
+        - paragraph [ref=f19e12]: Admin Panel
+      - navigation [ref=f19e13]:
+        - link "Dashboard" [ref=f19e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f19e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f19e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f19e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f19e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f19e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f19e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f19e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f19e47] [cursor=pointer]:
+          - /url: /admin/flats
+        - button "Maintenance" [ref=f19e53]
+        - link "Users" [ref=f19e59] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f19e72] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f19e76]
+      - generic [ref=f19e77]:
+        - generic [ref=f19e78]:
+          - generic [ref=f19e79]:
+            - paragraph [ref=f19e80]: Admin
+            - paragraph [ref=f19e81]: admin@oasis.local
+          - button "Toggle theme" [ref=f19e82]
+        - button "Sign Out" [ref=f19e84]
+    - main [ref=f19e85]:
+      - generic [ref=f19e86]:
+        - generic [ref=f19e87]:
+          - heading "Permissions" [level=1] [ref=f19e88]
+          - paragraph [ref=f19e89]: Control what the Manager role can read, write, and delete. Changes take effect on Manager's next login.
+        - generic [ref=f19e90]:
+          - table [ref=f19e92]:
+            - rowgroup [ref=f19e93]:
+              - row [ref=f19e94]:
+                - columnheader "Page" [ref=f19e95]
+                - columnheader "Read" [ref=f19e96]
+                - columnheader "Write" [ref=f19e97]
+                - columnheader "Delete" [ref=f19e98]
+            - rowgroup [ref=f19e99]:
+              - row [ref=f19e100]:
+                - cell "Dashboard" [ref=f19e101]
+                - cell [ref=f19e102]:
+                  - checkbox [checked] [ref=f19e103] [cursor=pointer]
+                - cell "—" [ref=f19e104]
+                - cell "—" [ref=f19e105]
+              - row [ref=f19e106]:
+                - cell "Residents" [ref=f19e107]
+                - cell [ref=f19e108]:
+                  - checkbox [checked] [ref=f19e109] [cursor=pointer]
+                - cell [ref=f19e110]:
+                  - checkbox [ref=f19e111] [cursor=pointer]
+                - cell [ref=f19e112]:
+                  - checkbox [ref=f19e113] [cursor=pointer]
+              - row [ref=f19e114]:
+                - cell "Connections" [ref=f19e115]
+                - cell [ref=f19e116]:
+                  - checkbox [checked] [ref=f19e117] [cursor=pointer]
+                - cell [ref=f19e118]:
+                  - checkbox [ref=f19e119] [cursor=pointer]
+                - cell [ref=f19e120]:
+                  - checkbox [ref=f19e121] [cursor=pointer]
+              - row [ref=f19e122]:
+                - cell "Meter Readings" [ref=f19e123]
+                - cell [ref=f19e124]:
+                  - checkbox [checked] [ref=f19e125] [cursor=pointer]
+                - cell [ref=f19e126]:
+                  - checkbox [checked] [ref=f19e127] [cursor=pointer]
+                - cell [ref=f19e128]:
+                  - checkbox [ref=f19e129] [cursor=pointer]
+              - row [ref=f19e130]:
+                - cell "Bills" [ref=f19e131]
+                - cell [ref=f19e132]:
+                  - checkbox [checked] [ref=f19e133] [cursor=pointer]
+                - cell [ref=f19e134]:
+                  - checkbox [ref=f19e135] [cursor=pointer]
+                - cell [ref=f19e136]:
+                  - checkbox [ref=f19e137] [cursor=pointer]
+              - row [ref=f19e138]:
+                - cell "Payments" [ref=f19e139]
+                - cell [ref=f19e140]:
+                  - checkbox [checked] [ref=f19e141] [cursor=pointer]
+                - cell [ref=f19e142]:
+                  - checkbox [checked] [ref=f19e143] [cursor=pointer]
+                - cell [ref=f19e144]:
+                  - checkbox [ref=f19e145] [cursor=pointer]
+              - row [ref=f19e146]:
+                - cell "Reports" [ref=f19e147]
+                - cell [ref=f19e148]:
+                  - checkbox [checked] [ref=f19e149] [cursor=pointer]
+                - cell "—" [ref=f19e150]
+                - cell "—" [ref=f19e151]
+              - row [ref=f19e152]:
+                - cell "Rates" [ref=f19e153]
+                - cell [ref=f19e154]:
+                  - checkbox [ref=f19e155] [cursor=pointer]
+                - cell [ref=f19e156]:
+                  - checkbox [ref=f19e157] [cursor=pointer]
+                - cell [ref=f19e158]:
+                  - checkbox [ref=f19e159] [cursor=pointer]
+              - row [ref=f19e160]:
+                - cell "Flat Info" [ref=f19e161]
+                - cell [ref=f19e162]:
+                  - checkbox [ref=f19e163] [cursor=pointer]
+                - cell [ref=f19e164]:
+                  - checkbox [ref=f19e165] [cursor=pointer]
+                - cell [ref=f19e166]:
+                  - checkbox [ref=f19e167] [cursor=pointer]
+          - button "Save Permissions" [ref=f19e169]
+  - region "Notifications alt+T"
+  - alert [ref=f19e170]

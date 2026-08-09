@@ -10,6 +10,8 @@ import { calculateBill, generateBillNumber } from "@/lib/billing";
 import { sendEmail } from "@/lib/email";
 import { billGeneratedEmail } from "@/lib/email-templates";
 import { generatePaymentToken } from "@/lib/payment-token";
+import { generateBillPdf, BillData } from "@/lib/pdf";
+import { generateUpiQrDataUrl } from "@/lib/qr";
 
 const generateBillSchema = z.object({
   meterReadingId: z.string().min(1),
@@ -171,7 +173,7 @@ export async function POST(req: NextRequest) {
     billDate: billDateObj,
   });
 
-  // Generate a unique bill number — append suffix if base number already exists
+  // Generate a unique bill number - append suffix if base number already exists
   const baseBillNumber = generateBillNumber(meterReading.connection.flatNo, billDateObj);
   const existingCount = await prisma.bill.count({
     where: { billNumber: { startsWith: baseBillNumber } },
@@ -241,7 +243,7 @@ export async function POST(req: NextRequest) {
 
   const bill = billResult;
 
-  // Send email — don't fail bill creation if email fails
+  // Send email with PDF attachment - don't fail bill creation if email fails
   try {
     const residentEmail = bill.connection.resident.user.email;
     const residentName = bill.connection.resident.user.name ?? "Resident";
@@ -255,13 +257,57 @@ export async function POST(req: NextRequest) {
       residentName,
       flatNo: bill.connection.flatNo,
       billNumber: bill.billNumber,
-      billingPeriod: `${fmtDate(billingPeriodStart)} â€“ ${fmtDate(billingPeriodEnd)}`,
+      billingPeriod: `${fmtDate(billingPeriodStart)} - ${fmtDate(billingPeriodEnd)}`,
       totalAmount: calculation.totalAmount.toFixed(2),
       dueDate: calculation.dueDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
       payUrl,
     });
 
-    await sendEmail(residentEmail, `Electricity Bill - ${bill.billNumber}`, html);
+    // Build PDF bill data for attachment
+    const billData: BillData = {
+      flatNo: bill.connection.flatNo,
+      residentName,
+      billDate: bill.billDate,
+      dueDate: bill.dueDate,
+      billingPeriodStart: bill.billingPeriodStart,
+      billingPeriodEnd: bill.billingPeriodEnd,
+      sanctionedLoad: bill.connection.sanctionedLoad.toNumber(),
+      unitArea: bill.connection.unitArea,
+      ncplPrevious: meterReading.ncplPrevious.toNumber(),
+      ncplCurrent: meterReading.ncplCurrent.toNumber(),
+      ncplUnits: bill.ncplUnits.toNumber(),
+      dgPrevious: meterReading.dgPrevious.toNumber(),
+      dgCurrent: meterReading.dgCurrent.toNumber(),
+      dgUnits: meterReading.dgUnits.toNumber(),
+      ratePerUnit: bill.ratePerUnit.toNumber(),
+      ncplCharge: bill.ncplCharge.toNumber(),
+      dgCharge: bill.dgCharge.toNumber(),
+      fixedCharge: bill.fixedCharge.toNumber(),
+      previousDues: bill.previousDues.toNumber(),
+      totalAmount: bill.totalAmount.toNumber(),
+      billNumber: bill.billNumber,
+    };
+
+    const [pdfBuffer, qrDataUrl] = await Promise.all([
+      generateBillPdf(billData),
+      generateUpiQrDataUrl(calculation.totalAmount.toNumber()),
+    ]);
+
+    const qrBuffer = Buffer.from(qrDataUrl.replace(/^data:image\/png;base64,/, ""), "base64");
+
+    await sendEmail(residentEmail, `Electricity Bill - ${bill.billNumber}`, html, [
+      {
+        filename: `bill-${bill.billNumber}.pdf`,
+        content: pdfBuffer,
+        contentType: "application/pdf",
+      },
+      {
+        filename: "qr.png",
+        content: qrBuffer,
+        contentType: "image/png",
+        cid: "upi-qr",
+      },
+    ]);
   } catch (emailErr) {
     console.error("Failed to send bill email:", emailErr);
   }

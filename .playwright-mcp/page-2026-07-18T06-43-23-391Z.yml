@@ -1,0 +1,96 @@
+- generic [active] [ref=f51e1]:
+  - generic [ref=f51e2]:
+    - generic [ref=f51e4]:
+      - generic [ref=f51e10]:
+        - paragraph [ref=f51e11]: Oasis Venetia Heights
+        - paragraph [ref=f51e12]: Admin Panel
+      - navigation [ref=f51e13]:
+        - link "Dashboard" [ref=f51e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f51e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f51e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f51e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f51e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f51e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f51e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f51e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f51e47] [cursor=pointer]:
+          - /url: /admin/flats
+      - separator [ref=f51e52]
+      - generic [ref=f51e53]:
+        - generic [ref=f51e54]:
+          - generic [ref=f51e55]:
+            - paragraph [ref=f51e56]: Admin
+            - paragraph [ref=f51e57]: admin@oasis.local
+          - button "Toggle theme" [ref=f51e58]
+        - button "Sign Out" [ref=f51e60]
+    - main [ref=f51e61]:
+      - generic [ref=f51e62]:
+        - generic [ref=f51e63]:
+          - heading "Payments" [level=1] [ref=f51e64]
+          - paragraph [ref=f51e65]: View all payment transactions for Oasis Venetia Heights
+        - generic [ref=f51e66]:
+          - generic [ref=f51e68]:
+            - text: Bills Requiring Payment
+            - generic [ref=f51e69]: 1 pending
+          - table [ref=f51e72]:
+            - rowgroup [ref=f51e73]:
+              - row [ref=f51e74]:
+                - 'columnheader "Bill #" [ref=f51e75]'
+                - columnheader "Flat No" [ref=f51e76]
+                - columnheader "Resident" [ref=f51e77]
+                - columnheader "Balance Due" [ref=f51e78]
+                - columnheader "Due Date" [ref=f51e79]
+                - columnheader "Status" [ref=f51e80]
+                - columnheader "Actions" [ref=f51e81]
+            - rowgroup [ref=f51e82]:
+              - row [ref=f51e83]:
+                - cell "OV-B-1206-202607" [ref=f51e84]
+                - cell "B-1206" [ref=f51e85]
+                - cell "Mr. Gaurav Kumar" [ref=f51e86]
+                - cell "₹1,542.00" [ref=f51e87]
+                - cell "27 Jul 2026" [ref=f51e88]
+                - cell "PENDING" [ref=f51e89]
+                - cell [ref=f51e91]:
+                  - button "Record Payment" [ref=f51e92]
+        - generic [ref=f51e93]:
+          - generic [ref=f51e94]:
+            - generic [ref=f51e95]: Method
+            - combobox [ref=f51e96]:
+              - generic [ref=f51e97]: all
+              - img: ▼
+            - textbox [ref=f51e98]: all
+          - generic [ref=f51e99]:
+            - generic [ref=f51e100]: Status
+            - combobox [ref=f51e101]:
+              - generic [ref=f51e102]: all
+              - img: ▼
+            - textbox [ref=f51e103]: all
+        - generic [ref=f51e104]:
+          - generic [ref=f51e105]: Payment History — 0 records
+          - table [ref=f51e109]:
+            - rowgroup [ref=f51e110]:
+              - row [ref=f51e111]:
+                - 'columnheader "Receipt #" [ref=f51e112]'
+                - columnheader "Flat No" [ref=f51e113]
+                - columnheader "Resident" [ref=f51e114]
+                - 'columnheader "Bill #" [ref=f51e115]'
+                - columnheader "Amount (₹)" [ref=f51e116]
+                - columnheader "Date" [ref=f51e117]
+                - columnheader "Type" [ref=f51e118]
+                - columnheader "Method" [ref=f51e119]
+                - columnheader "Reference / Txn ID" [ref=f51e120]
+                - columnheader "Status" [ref=f51e121]
+                - columnheader "Actions" [ref=f51e122]
+            - rowgroup [ref=f51e123]:
+              - row [ref=f51e124]:
+                - cell "No payments found" [ref=f51e125]
+  - region "Notifications alt+T"
+  - alert [ref=f51e126]

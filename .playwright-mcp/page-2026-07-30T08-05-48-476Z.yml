@@ -1,0 +1,34 @@
+- generic [active] [ref=f43e1]:
+  - generic [ref=f43e31]:
+    - banner [ref=f43e32]:
+      - generic [ref=f43e33]:
+        - generic [ref=f43e34]:
+          - generic [ref=f43e35]: Oasis Venetia Heights
+          - navigation [ref=f43e40]:
+            - link "Dashboard" [ref=f43e41] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f43e45] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f43e49] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Profile" [ref=f43e52] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f43e56]:
+          - generic [ref=f43e57]: Shivaji Tiwari
+          - button "Toggle theme" [ref=f43e58]
+          - button "Sign Out" [ref=f43e60]
+    - main [ref=f43e62]:
+      - table [ref=f43e83]:
+        - rowgroup [ref=f43e84]:
+          - row [ref=f43e85]:
+            - columnheader [ref=f43e86]
+            - columnheader [ref=f43e88]
+        - rowgroup [ref=f43e90]:
+          - row [ref=f43e91]:
+            - cell [ref=f43e92]
+            - cell [ref=f43e94]
+          - row [ref=f43e96]:
+            - cell [ref=f43e97]
+            - cell [ref=f43e99]
+  - region "Notifications alt+T"
+  - alert [ref=f43e30]

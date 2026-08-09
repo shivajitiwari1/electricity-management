@@ -1,0 +1,273 @@
+- generic [ref=f49e1]:
+  - generic [ref=f49e2]:
+    - banner [ref=f49e3]:
+      - generic [ref=f49e4]:
+        - generic [ref=f49e5]:
+          - generic [ref=f49e6]: Oasis Venetia Heights
+          - navigation [ref=f49e11]:
+            - link "Dashboard" [ref=f49e12] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f49e16] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f49e20] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Maintenance" [ref=f49e23] [cursor=pointer]:
+              - /url: /resident/maintenance
+            - link "Profile" [ref=f49e26] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f49e30]:
+          - generic [ref=f49e31]: Shivaji Tiwari
+          - button "Toggle theme" [ref=f49e32]
+          - button "Sign Out" [ref=f49e34]
+    - main [ref=f49e36]:
+      - generic [ref=f49e217]:
+        - generic [ref=f49e218]:
+          - heading "Pay Maintenance Bill" [level=1] [ref=f49e219]
+          - paragraph [ref=f49e220]: Secure payment via Razorpay
+        - generic [ref=f49e221]:
+          - generic [ref=f49e223]:
+            - generic [ref=f49e224]: OM-A-404-202607
+            - generic [ref=f49e225]: PENDING
+          - generic [ref=f49e226]:
+            - generic [ref=f49e227]:
+              - generic [ref=f49e228]: Flat
+              - generic [ref=f49e229]: A-404
+              - generic [ref=f49e230]: Billing Period
+              - generic [ref=f49e231]: 01 Jul 2026 – 01 Aug 2026
+              - generic [ref=f49e232]: Unit Area
+              - generic [ref=f49e233]: 1150 sq ft
+              - generic [ref=f49e234]: Rate
+              - generic [ref=f49e235]: ₹2.50 per sq ft
+              - generic [ref=f49e236]: Maintenance
+              - generic [ref=f49e237]: ₹2,875.00
+              - generic [ref=f49e238]: Due Date
+              - generic [ref=f49e239]: 08 Aug 2026
+            - generic [ref=f49e241]:
+              - generic [ref=f49e242]: Total Payable
+              - generic [ref=f49e243]: ₹2,875.00
+            - button "Processing…" [disabled]
+            - paragraph [ref=f49e245]: UPI · Cards · Net Banking · Wallets
+  - region "Notifications alt+T"
+  - alert [ref=f49e216]
+  - generic [ref=f49e246]:
+    - generic [ref=f49e247]: Test Mode
+    - iframe [active] [ref=f49e249]:
+      - generic [ref=f50e2]:
+        - generic [ref=f50e4]:
+          - generic [ref=f50e6]:
+            - button "Go back" [ref=f50e7] [cursor=pointer]
+            - generic [ref=f50e11]:
+              - generic [ref=f50e12]: O
+              - generic "Oasis Venetia Heights" [ref=f50e14]
+            - button [ref=f50e16] [cursor=pointer]:
+              - generic "options" [ref=f50e75]
+          - generic [ref=f50e80]:
+            - generic [ref=f50e84]:
+              - generic [ref=f50e85]: Price Summary
+              - heading "₹ 0 1 2 3 4 5 6 7 8 9 0 , 0 1 2 3 4 5 6 7 8 9 0 0 1 2 3 4 5 6 7 8 9 0 0 1 2 3 4 5 6 7 8 9 0" [level=3] [ref=f50e89]:
+                - generic [ref=f50e476]: ₹
+                - generic [ref=f50e477]:
+                  - generic [ref=f50e478]: "0"
+                  - generic [ref=f50e479]: "1"
+                  - generic [ref=f50e480]: "2"
+                  - generic [ref=f50e481]: "3"
+                  - generic [ref=f50e482]: "4"
+                  - generic [ref=f50e483]: "5"
+                  - generic [ref=f50e484]: "6"
+                  - generic [ref=f50e485]: "7"
+                  - generic [ref=f50e486]: "8"
+                  - generic [ref=f50e487]: "9"
+                  - generic [ref=f50e488]: "0"
+                - generic [ref=f50e489]: ","
+                - generic [ref=f50e490]:
+                  - generic [ref=f50e491]: "0"
+                  - generic [ref=f50e492]: "1"
+                  - generic [ref=f50e493]: "2"
+                  - generic [ref=f50e494]: "3"
+                  - generic [ref=f50e495]: "4"
+                  - generic [ref=f50e496]: "5"
+                  - generic [ref=f50e497]: "6"
+                  - generic [ref=f50e498]: "7"
+                  - generic [ref=f50e499]: "8"
+                  - generic [ref=f50e500]: "9"
+                  - generic [ref=f50e501]: "0"
+                - generic [ref=f50e502]:
+                  - generic [ref=f50e503]: "0"
+                  - generic [ref=f50e504]: "1"
+                  - generic [ref=f50e505]: "2"
+                  - generic [ref=f50e506]: "3"
+                  - generic [ref=f50e507]: "4"
+                  - generic [ref=f50e508]: "5"
+                  - generic [ref=f50e509]: "6"
+                  - generic [ref=f50e510]: "7"
+                  - generic [ref=f50e511]: "8"
+                  - generic [ref=f50e512]: "9"
+                  - generic [ref=f50e513]: "0"
+                - generic [ref=f50e514]:
+                  - generic [ref=f50e515]: "0"
+                  - generic [ref=f50e516]: "1"
+                  - generic [ref=f50e517]: "2"
+                  - generic [ref=f50e518]: "3"
+                  - generic [ref=f50e519]: "4"
+                  - generic [ref=f50e520]: "5"
+                  - generic [ref=f50e521]: "6"
+                  - generic [ref=f50e522]: "7"
+                  - generic [ref=f50e523]: "8"
+                  - generic [ref=f50e524]: "9"
+                  - generic [ref=f50e525]: "0"
+            - button "Using as +91 80000 00001" [ref=f50e140] [cursor=pointer]
+          - generic [ref=f50e22]:
+            - generic [ref=f50e23]:
+              - separator [ref=f50e24]
+              - generic [ref=f50e528]:
+                - heading "Payment Options" [level=3] [ref=f50e530]
+                - generic [ref=f50e531]:
+                  - generic [ref=f50e532]:
+                    - generic [ref=f50e533]: Recommended
+                    - generic [ref=f50e535]:
+                      - generic [ref=f50e536] [cursor=pointer]:
+                        - radio "Yes Bank Netbanking Yes Bank Netbanking"
+                        - generic [ref=f50e538]:
+                          - img "Yes Bank Netbanking" [ref=f50e539]
+                          - generic [ref=f50e540]: Yes Bank Netbanking
+                      - generic [ref=f50e547] [cursor=pointer]:
+                        - radio "Canara Bank Netbanking Canara Bank Netbanking"
+                        - generic [ref=f50e549]:
+                          - img "Canara Bank Netbanking" [ref=f50e550]
+                          - generic [ref=f50e551]: Canara Bank Netbanking
+                  - generic [ref=f50e558]: All Payment Options
+                  - generic [ref=f50e560]:
+                    - generic [ref=f50e561] [cursor=pointer]:
+                      - radio "Cards VISA MC RUPAY MAES"
+                      - generic [ref=f50e563]:
+                        - generic "Cards" [ref=f50e564]
+                        - generic [ref=f50e569]:
+                          - generic [ref=f50e570]: Cards
+                          - generic [ref=f50e571]:
+                            - img "VISA" [ref=f50e573]
+                            - img "MC" [ref=f50e575]
+                            - img "RUPAY" [ref=f50e577]
+                            - img "MAES" [ref=f50e579]
+                    - generic [ref=f50e584] [cursor=pointer]:
+                      - radio "Netbanking BARB_R CNRB PUNB_R UTBI"
+                      - generic [ref=f50e586]:
+                        - generic "Netbanking" [ref=f50e587]
+                        - generic [ref=f50e592]:
+                          - generic [ref=f50e593]: Netbanking
+                          - generic [ref=f50e594]:
+                            - img "BARB_R" [ref=f50e596]
+                            - img "CNRB" [ref=f50e598]
+                            - img "PUNB_R" [ref=f50e600]
+                            - img "UTBI" [ref=f50e602]
+                    - generic [ref=f50e607] [cursor=pointer]:
+                      - radio "Wallet mobikwik airtelmoney olamoney"
+                      - generic [ref=f50e609]:
+                        - generic "Wallet" [ref=f50e610]
+                        - generic [ref=f50e616]:
+                          - generic [ref=f50e617]: Wallet
+                          - generic [ref=f50e618]:
+                            - img "mobikwik" [ref=f50e620]
+                            - img "airtelmoney" [ref=f50e622]
+                            - img "olamoney" [ref=f50e624]
+                    - generic [ref=f50e629] [cursor=pointer]:
+                      - radio "Pay Later lazypay icic hdfc epaylater"
+                      - generic [ref=f50e631]:
+                        - generic "Pay Later" [ref=f50e632]
+                        - generic [ref=f50e638]:
+                          - generic [ref=f50e639]: Pay Later
+                          - generic [ref=f50e640]:
+                            - img "lazypay" [ref=f50e642]
+                            - img "icic" [ref=f50e644]
+                            - img "hdfc" [ref=f50e646]
+                            - img "epaylater" [ref=f50e648]
+              - generic [ref=f50e48]:
+                - generic [ref=f50e50]:
+                  - generic [ref=f50e51]: Secured by
+                  - generic "RazorPay" [ref=f50e52]
+                - generic [ref=f50e56]: •
+                - button "Account & Terms" [ref=f50e58] [cursor=pointer]
+            - generic [ref=f50e275]:
+              - generic [ref=f50e276]:
+                - generic [ref=f50e279]:
+                  - generic [ref=f50e653]: ₹
+                  - generic [ref=f50e654]:
+                    - generic [ref=f50e655]: "0"
+                    - generic [ref=f50e656]: "1"
+                    - generic [ref=f50e657]: "2"
+                    - generic [ref=f50e658]: "3"
+                    - generic [ref=f50e659]: "4"
+                    - generic [ref=f50e660]: "5"
+                    - generic [ref=f50e661]: "6"
+                    - generic [ref=f50e662]: "7"
+                    - generic [ref=f50e663]: "8"
+                    - generic [ref=f50e664]: "9"
+                    - generic [ref=f50e665]: "0"
+                  - generic [ref=f50e666]: ","
+                  - generic [ref=f50e667]:
+                    - generic [ref=f50e668]: "0"
+                    - generic [ref=f50e669]: "1"
+                    - generic [ref=f50e670]: "2"
+                    - generic [ref=f50e671]: "3"
+                    - generic [ref=f50e672]: "4"
+                    - generic [ref=f50e673]: "5"
+                    - generic [ref=f50e674]: "6"
+                    - generic [ref=f50e675]: "7"
+                    - generic [ref=f50e676]: "8"
+                    - generic [ref=f50e677]: "9"
+                    - generic [ref=f50e678]: "0"
+                  - generic [ref=f50e679]:
+                    - generic [ref=f50e680]: "0"
+                    - generic [ref=f50e681]: "1"
+                    - generic [ref=f50e682]: "2"
+                    - generic [ref=f50e683]: "3"
+                    - generic [ref=f50e684]: "4"
+                    - generic [ref=f50e685]: "5"
+                    - generic [ref=f50e686]: "6"
+                    - generic [ref=f50e687]: "7"
+                    - generic [ref=f50e688]: "8"
+                    - generic [ref=f50e689]: "9"
+                    - generic [ref=f50e690]: "0"
+                  - generic [ref=f50e691]:
+                    - generic [ref=f50e692]: "0"
+                    - generic [ref=f50e693]: "1"
+                    - generic [ref=f50e694]: "2"
+                    - generic [ref=f50e695]: "3"
+                    - generic [ref=f50e696]: "4"
+                    - generic [ref=f50e697]: "5"
+                    - generic [ref=f50e698]: "6"
+                    - generic [ref=f50e699]: "7"
+                    - generic [ref=f50e700]: "8"
+                    - generic [ref=f50e701]: "9"
+                    - generic [ref=f50e702]: "0"
+                - button "View Details" [ref=f50e330] [cursor=pointer]
+              - button "Continue" [ref=f50e335] [cursor=pointer]
+        - generic:
+          - generic [ref=f50e706]:
+            - button [ref=f50e707] [cursor=pointer]
+            - generic [ref=f50e714]:
+              - generic "exit" [ref=f50e717]
+              - generic [ref=f50e748]:
+                - heading "Are you sure you want to exit?" [level=3] [ref=f50e749]
+                - paragraph [ref=f50e750]: You will be taken back to Oasis Venetia Heights website
+              - generic [ref=f50e753]:
+                - button "Continue to payment" [ref=f50e754] [cursor=pointer]
+                - button "Yes, exit" [ref=f50e755] [cursor=pointer]
+          - generic [ref=f50e760]:
+            - generic "eligibility" [ref=f50e763]
+            - generic [ref=f50e776]:
+              - generic [ref=f50e777]: Enter OTP to check eligibility
+              - generic [ref=f50e778]: To check your eligibility, enter the OTP sent to +918000000001
+              - generic [ref=f50e779]:
+                - textbox [ref=f50e780]: "1"
+                - textbox [ref=f50e781]: "2"
+                - textbox [ref=f50e782]: "3"
+                - textbox [ref=f50e783]: "4"
+                - textbox [ref=f50e784]: "5"
+                - textbox [ref=f50e785]: "6"
+              - alert [ref=f50e800]: Please enter a 6 digit OTP
+              - button "Resend OTP" [ref=f50e797] [cursor=pointer]
+              - generic [ref=f50e788]:
+                - button "Continue" [ref=f50e789] [cursor=pointer]
+                - generic [ref=f50e791]:
+                  - generic [ref=f50e792]: Secured by
+                  - generic "RazorPay" [ref=f50e793]

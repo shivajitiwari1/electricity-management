@@ -1,0 +1,47 @@
+- generic [ref=f47e1]:
+  - generic [ref=f47e31]:
+    - banner [ref=f47e32]:
+      - generic [ref=f47e33]:
+        - generic [ref=f47e34]:
+          - generic [ref=f47e35]: Oasis Venetia Heights
+          - navigation [ref=f47e40]:
+            - link "Dashboard" [ref=f47e41] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f47e45] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [active] [ref=f47e49] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Profile" [ref=f47e52] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f47e56]:
+          - generic [ref=f47e57]: Shivaji Tiwari
+          - button "Toggle theme" [ref=f47e58]
+          - button "Sign Out" [ref=f47e60]
+    - main [ref=f47e62]:
+      - generic [ref=f47e273]:
+        - generic [ref=f47e274]:
+          - heading "Payment History" [level=1] [ref=f47e275]
+          - paragraph [ref=f47e276]: All your electricity bill payments
+        - generic [ref=f47e278]:
+          - generic [ref=f47e279]: Method
+          - combobox [ref=f47e280]:
+            - generic [ref=f47e281]: all
+            - img: ▼
+          - textbox [ref=f47e282]: all
+        - generic [ref=f47e283]:
+          - generic [ref=f47e284]: 0 Payments
+          - table [ref=f47e288]:
+            - rowgroup [ref=f47e289]:
+              - row [ref=f47e290]:
+                - 'columnheader "Receipt #" [ref=f47e291]'
+                - 'columnheader "Bill #" [ref=f47e292]'
+                - columnheader "Amount (₹)" [ref=f47e293]
+                - columnheader "Date" [ref=f47e294]
+                - columnheader "Method" [ref=f47e295]
+                - columnheader "Transaction ID" [ref=f47e296]
+                - columnheader "Actions" [ref=f47e297]
+            - rowgroup [ref=f47e298]:
+              - row [ref=f47e299]:
+                - cell "No payments found" [ref=f47e300]
+  - region "Notifications alt+T"
+  - alert [ref=f47e30]

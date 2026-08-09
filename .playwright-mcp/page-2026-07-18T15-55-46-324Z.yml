@@ -1,0 +1,47 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content":
+    - /url: "#geist-skip-nav"
+  - alert [ref=e2]
+  - generic [ref=e4]:
+    - banner [ref=e5]:
+      - link "Vercel logo":
+        - /url: /home
+        - button "Vercel Logo":
+          - img "Vercel Logo"
+      - navigation [ref=e6]:
+        - navigation [ref=e7]:
+          - link [ref=e8] [cursor=pointer]:
+            - /url: /signup?next=%2Fdashboard
+            - paragraph [ref=e10]: Sign Up
+    - main [ref=e11]:
+      - generic [ref=e13]:
+        - heading "Log in to Vercel" [level=1] [ref=e16]
+        - generic [ref=e17]:
+          - generic [ref=e18]:
+            - textbox "Email Address" [ref=e20]
+            - button "Continue with Email" [ref=e21] [cursor=pointer]
+          - generic [ref=e24]:
+            - button "Continue with Google" [ref=e25] [cursor=pointer]:
+              - generic [ref=e30]:
+                - generic [ref=e31]: Continue with
+                - text: Google
+            - button "Continue with GitHub" [ref=e32] [cursor=pointer]:
+              - generic [ref=e36]:
+                - generic [ref=e37]: Continue with
+                - text: GitHub
+            - button "Continue with Apple" [ref=e38] [cursor=pointer]:
+              - generic [ref=e42]:
+                - generic [ref=e43]: Continue with
+                - text: Apple
+            - button "Continue with SAML SSO" [ref=e45] [cursor=pointer]
+            - button "Continue with Passkey" [ref=e50] [cursor=pointer]
+            - button "Show other options" [ref=e55] [cursor=pointer]
+        - paragraph [ref=e58]:
+          - text: Don't have an account?
+          - link "Sign Up" [ref=e59] [cursor=pointer]:
+            - /url: /signup?next=%2Fdashboard
+      - generic [ref=e62]:
+        - link "Terms" [ref=e63] [cursor=pointer]:
+          - /url: /legal/terms
+        - link "Privacy Policy" [ref=e64] [cursor=pointer]:
+          - /url: /legal/privacy-policy

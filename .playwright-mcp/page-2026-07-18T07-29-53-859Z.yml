@@ -1,0 +1,99 @@
+- generic [ref=f64e1]:
+  - generic [ref=f64e2]:
+    - generic [ref=f64e4]:
+      - generic [ref=f64e10]:
+        - paragraph [ref=f64e11]: Oasis Venetia Heights
+        - paragraph [ref=f64e12]: Admin Panel
+      - navigation [ref=f64e13]:
+        - link "Dashboard" [ref=f64e381] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f64e382] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f64e383] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f64e384] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f64e385] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f64e386] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f64e387] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f64e388] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f64e389] [cursor=pointer]:
+          - /url: /admin/flats
+      - separator [ref=f64e52]
+      - generic [ref=f64e53]:
+        - generic [ref=f64e54]:
+          - generic [ref=f64e55]:
+            - paragraph [ref=f64e56]: Admin
+            - paragraph [ref=f64e57]: admin@oasis.local
+          - button "Toggle theme" [ref=f64e390]
+        - button "Sign Out" [ref=f64e391]
+    - main [ref=f64e61]:
+      - generic [ref=f64e62]:
+        - generic [ref=f64e63]:
+          - heading "Payments" [level=1] [ref=f64e392]
+          - paragraph [ref=f64e65]: View all payment transactions for Oasis Venetia Heights
+        - generic [ref=f64e221]:
+          - generic [ref=f64e223]:
+            - text: Bills Requiring Payment
+            - generic [ref=f64e224]: 1 pending
+          - table [ref=f64e227]:
+            - rowgroup [ref=f64e228]:
+              - row [ref=f64e393]:
+                - 'columnheader "Bill #" [ref=f64e394]'
+                - columnheader "Flat No" [ref=f64e395]
+                - columnheader "Resident" [ref=f64e396]
+                - columnheader "Balance Due" [ref=f64e397]
+                - columnheader "Due Date" [ref=f64e398]
+                - columnheader "Status" [ref=f64e399]
+                - columnheader "Actions" [ref=f64e400]
+            - rowgroup [ref=f64e237]:
+              - row [ref=f64e401]:
+                - cell "OV-B-1206-202607" [ref=f64e402]
+                - cell "B-1206" [ref=f64e403]
+                - cell "Mr. Gaurav Kumar" [ref=f64e404]
+                - cell "₹1,542.00" [ref=f64e405]
+                - cell "27 Jul 2026" [ref=f64e406]
+                - cell "PENDING" [ref=f64e407]
+                - cell [ref=f64e408]:
+                  - button "Record Payment" [active] [ref=f64e409]
+        - generic [ref=f64e248]:
+          - generic [ref=f64e249]:
+            - generic [ref=f64e250]: Method
+            - combobox [ref=f64e251]:
+              - generic [ref=f64e252]: all
+              - img: ▼
+            - textbox [ref=f64e253]: all
+          - generic [ref=f64e254]:
+            - generic [ref=f64e255]: Status
+            - combobox [ref=f64e256]:
+              - generic [ref=f64e257]: all
+              - img: ▼
+            - textbox [ref=f64e258]: all
+        - generic [ref=f64e259]:
+          - generic [ref=f64e260]: Payment History — 0 records
+          - table [ref=f64e264]:
+            - rowgroup [ref=f64e265]:
+              - row [ref=f64e410]:
+                - 'columnheader "Receipt #" [ref=f64e411]'
+                - columnheader "Flat No" [ref=f64e412]
+                - columnheader "Resident" [ref=f64e413]
+                - 'columnheader "Bill #" [ref=f64e414]'
+                - columnheader "Amount (₹)" [ref=f64e415]
+                - columnheader "Date" [ref=f64e416]
+                - columnheader "Type" [ref=f64e417]
+                - columnheader "Method" [ref=f64e418]
+                - columnheader "Reference / Txn ID" [ref=f64e419]
+                - columnheader "Status" [ref=f64e420]
+                - columnheader "Actions" [ref=f64e421]
+            - rowgroup [ref=f64e278]:
+              - row [ref=f64e422]:
+                - cell "No payments found" [ref=f64e423]
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=f64e424]:
+        - generic [ref=f64e429]: Full payment recorded — Receipt RCPT-20260718-0001
+  - alert [ref=f64e281]

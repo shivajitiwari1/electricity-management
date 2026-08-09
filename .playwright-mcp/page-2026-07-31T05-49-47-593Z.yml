@@ -1,0 +1,4 @@
+- generic [ref=f12e3]:
+  - heading "Signout" [level=1] [ref=f12e4]
+  - paragraph [ref=f12e5]: Are you sure you want to sign out?
+  - button "Sign out" [ref=f12e7]

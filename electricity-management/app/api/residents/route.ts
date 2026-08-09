@@ -182,5 +182,6 @@ export async function POST(req: NextRequest) {
   }
 
   revalidateTag("residents", {});
+  revalidateTag("meter-readings", {});
   return NextResponse.json(resident, { status: 201 });
 }

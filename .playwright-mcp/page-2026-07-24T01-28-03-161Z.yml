@@ -1,0 +1,40 @@
+- generic [active] [ref=f22e1]:
+  - generic [ref=f22e2]:
+    - banner [ref=f22e3]:
+      - generic [ref=f22e4]:
+        - generic [ref=f22e5]:
+          - generic [ref=f22e6]: Oasis Venetia Heights
+          - navigation [ref=f22e11]:
+            - link "Dashboard" [ref=f22e12] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f22e16] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f22e20] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Maintenance" [ref=f22e23] [cursor=pointer]:
+              - /url: /resident/maintenance
+            - link "Profile" [ref=f22e26] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f22e30]:
+          - generic [ref=f22e31]: Mr. Bachoo Singh Bhagaur
+          - button "Toggle theme" [ref=f22e32]
+          - button "Sign Out" [ref=f22e34]
+    - main [ref=f22e36]:
+      - generic [ref=f22e37]:
+        - generic [ref=f22e42]:
+          - heading "Maintenance Bills" [level=1] [ref=f22e43]
+          - paragraph [ref=f22e44]: Monthly maintenance charges for your flat
+        - generic [ref=f22e48]:
+          - generic [ref=f22e49]:
+            - generic [ref=f22e50]:
+              - paragraph [ref=f22e51]: OM-A-101-202607
+              - generic [ref=f22e52]: PENDING
+            - paragraph [ref=f22e53]: 30 Jun 2026 – 31 Jul 2026
+            - paragraph [ref=f22e54]: 1150 sq ft × ₹2.50/sq ft
+          - generic [ref=f22e55]:
+            - paragraph [ref=f22e56]: ₹2,875.00
+            - paragraph [ref=f22e57]: "Due: 07 Aug 2026"
+            - link [ref=f22e58] [cursor=pointer]:
+              - /url: /resident/maintenance/cmrxpyfy80001us2n08qmjcpy/pay
+              - button "Pay Now" [ref=f22e59]
+  - region "Notifications alt+T"

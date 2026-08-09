@@ -25,21 +25,22 @@ async function BillsData({ searchParams }: { searchParams: Promise<SearchParams>
     dateFilter = { gte: new Date(year, mon - 1, 1), lt: new Date(year, mon, 1) };
   }
 
+  const where = {
+    ...(tower ? { connection: { tower } } : {}),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ...(status ? { status: status as any } : {}),
+    ...(dateFilter ? { billDate: dateFilter } : {}),
+  };
+
   const bills = await prisma.bill.findMany({
-    where: {
-      ...(tower ? { connection: { tower } } : {}),
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ...(status ? { status: status as any } : {}),
-      ...(dateFilter ? { billDate: dateFilter } : {}),
-    },
-    include: {
-      connection: { include: { resident: { include: { user: { select: { name: true } } } } } },
-      meterReading: true,
-      payments: { select: { id: true, status: true }, orderBy: { paymentDate: "desc" as const }, take: 1 },
-    },
-    orderBy: { billDate: "desc" },
-    take: 100,
-  });
+      where,
+      include: {
+        connection: { include: { resident: { include: { user: { select: { name: true } } } } } },
+        meterReading: true,
+        payments: { select: { id: true, status: true }, orderBy: { paymentDate: "desc" as const }, take: 1 },
+      },
+      orderBy: { createdAt: "desc" },
+    });
 
   const serializedBills = bills.map((b) => ({
     id: b.id,

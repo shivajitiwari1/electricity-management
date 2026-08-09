@@ -1,0 +1,87 @@
+- generic [ref=e1]:
+  - generic [ref=e30]:
+    - generic [ref=e32]:
+      - generic [ref=e38]:
+        - paragraph [ref=e39]: Oasis Venetia Heights
+        - paragraph [ref=e40]: Admin Panel
+      - navigation [ref=e41]:
+        - link [ref=e280] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=e281] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=e282] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=e283] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=e284] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=e285] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=e286] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=e287] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=e288] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+        - link [ref=e289] [cursor=pointer]:
+          - /url: /admin/users
+          - text: Users
+        - link [ref=e290] [cursor=pointer]:
+          - /url: /admin/permissions
+          - text: Permissions
+      - separator [ref=e97]
+      - generic [ref=e98]:
+        - generic [ref=e99]:
+          - generic [ref=e100]:
+            - paragraph [ref=e101]: Admin
+            - paragraph [ref=e102]: admin@oasis.local
+          - button [ref=e291]:
+            - generic [ref=e104]: Toggle theme
+        - button [ref=e292]: Sign Out
+    - main [ref=e106]:
+      - generic [ref=e192]:
+        - generic [ref=e193]:
+          - heading [level=1] [ref=e293]: User Management
+          - paragraph [ref=e195]: Manage manager accounts for Oasis Venetia Heights
+        - generic [ref=e196]:
+          - generic [ref=e197]:
+            - paragraph [ref=e198]: 0 managers
+            - button [ref=e294]: Add Manager
+          - table [ref=e201]:
+            - rowgroup [ref=e202]:
+              - row [ref=e295]:
+                - columnheader [ref=e296]: Name
+                - columnheader [ref=e297]: Email
+                - columnheader [ref=e298]: Status
+                - columnheader [ref=e299]: Created
+                - columnheader [ref=e300]: Actions
+            - rowgroup [ref=e209]:
+              - row [ref=e301]:
+                - cell [ref=e302]: No managers yet
+  - region "Notifications alt+T"
+  - alert [ref=e27]
+  - dialog [ref=e306]:
+    - heading "Add Manager" [level=2] [ref=e308]
+    - generic [ref=e309]:
+      - generic [ref=e310]:
+        - generic [ref=e311]: Name *
+        - textbox [active] [ref=e312]: Test Manager
+      - generic [ref=e313]:
+        - generic [ref=e314]: Email *
+        - textbox [ref=e315]: testmanager@oasis.local
+      - generic [ref=e316]:
+        - generic [ref=e317]: Password *
+        - textbox [ref=e318]: Manager@123
+    - generic [ref=e319]:
+      - button "Cancel" [ref=e320]
+      - button "Create Manager" [ref=e321]
+    - button "Close" [ref=e322]

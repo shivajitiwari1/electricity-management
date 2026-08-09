@@ -1,0 +1,49 @@
+- generic [active] [ref=f30e1]:
+  - generic [ref=f30e2]:
+    - banner [ref=f30e3]:
+      - generic [ref=f30e4]:
+        - generic [ref=f30e5]:
+          - generic [ref=f30e6]: Oasis Venetia Heights
+          - navigation [ref=f30e11]:
+            - link "Dashboard" [ref=f30e12] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f30e16] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f30e20] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Maintenance" [ref=f30e23] [cursor=pointer]:
+              - /url: /resident/maintenance
+            - link "Profile" [ref=f30e26] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f30e30]:
+          - generic [ref=f30e31]: Shivaji Tiwari
+          - button "Toggle theme" [ref=f30e32]
+          - button "Sign Out" [ref=f30e34]
+    - main [ref=f30e36]:
+      - generic [ref=f30e37]:
+        - generic [ref=f30e38]:
+          - heading "Payment History" [level=1] [ref=f30e39]
+          - paragraph [ref=f30e40]: All your electricity bill payments
+        - generic [ref=f30e42]:
+          - generic [ref=f30e43]: Method
+          - combobox [ref=f30e44]:
+            - generic [ref=f30e45]: all
+            - img: ▼
+          - textbox [ref=f30e46]: all
+        - generic [ref=f30e47]:
+          - generic [ref=f30e48]: 0 Payments
+          - table [ref=f30e52]:
+            - rowgroup [ref=f30e53]:
+              - row [ref=f30e54]:
+                - 'columnheader "Receipt #" [ref=f30e55]'
+                - 'columnheader "Bill #" [ref=f30e56]'
+                - columnheader "Amount (₹)" [ref=f30e57]
+                - columnheader "Date" [ref=f30e58]
+                - columnheader "Method" [ref=f30e59]
+                - columnheader "Transaction ID" [ref=f30e60]
+                - columnheader "Actions" [ref=f30e61]
+            - rowgroup [ref=f30e62]:
+              - row [ref=f30e63]:
+                - cell "No payments found" [ref=f30e64]
+  - region "Notifications alt+T"
+  - alert [ref=f30e65]

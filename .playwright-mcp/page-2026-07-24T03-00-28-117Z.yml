@@ -1,0 +1,44 @@
+- generic [active] [ref=f14e1]:
+  - link "Skip to content":
+    - /url: "#geist-skip-nav"
+  - main [ref=f14e3]:
+    - generic [ref=f14e6]:
+      - generic [ref=f14e7]:
+        - generic [ref=f14e8]:
+          - button "Open sidebar" [ref=f14e10] [cursor=pointer]
+          - generic [ref=f14e16]:
+            - link "electricity-management" [ref=f14e17] [cursor=pointer]:
+              - /url: /shivajireacts-projects/electricity-management
+            - button [ref=f14e21] [cursor=pointer]
+            - link "Back to team view" [ref=f14e27] [cursor=pointer]:
+              - /url: /shivajireacts-projects/~/deployments
+        - navigation "Breadcrumb" [ref=f14e31]:
+          - link "Deployments" [ref=f14e33] [cursor=pointer]:
+            - /url: /shivajireacts-projects/electricity-management/deployments
+          - link "CnqqirEKT" [ref=f14e39] [cursor=pointer]:
+            - /url: /shivajireacts-projects/electricity-management/CnqqirEKT3BTjKgAVVCHC7SL2L6h
+          - generic [ref=f14e44]: Source
+        - button "Vercel Agent is available on Pro" [ref=f14e48] [cursor=pointer]
+      - generic [ref=f14e62]:
+        - generic [ref=f14e64]:
+          - link "Deployment" [ref=f14e65] [cursor=pointer]:
+            - /url: /shivajireacts-projects/electricity-management/CnqqirEKT3BTjKgAVVCHC7SL2L6h
+          - link "Logs" [ref=f14e66] [cursor=pointer]:
+            - /url: /shivajireacts-projects/electricity-management/CnqqirEKT3BTjKgAVVCHC7SL2L6h/logs
+          - link "Resources" [ref=f14e67] [cursor=pointer]:
+            - /url: /shivajireacts-projects/electricity-management/CnqqirEKT3BTjKgAVVCHC7SL2L6h/resources
+          - link "Source" [ref=f14e68] [cursor=pointer]:
+            - /url: /shivajireacts-projects/electricity-management/CnqqirEKT3BTjKgAVVCHC7SL2L6h/source
+          - link "Open Graph" [ref=f14e69] [cursor=pointer]:
+            - /url: /shivajireacts-projects/electricity-management/CnqqirEKT3BTjKgAVVCHC7SL2L6h/og
+        - generic [ref=f14e73]:
+          - tablist [ref=f14e77]:
+            - tab "Source" [selected] [ref=f14e78] [cursor=pointer]
+            - tab "Output" [ref=f14e79] [cursor=pointer]
+          - generic [ref=f14e113]:
+            - generic:
+              - paragraph
+            - generic [ref=f14e114]:
+              - button "View file on undefined" [disabled] [ref=f14e115]
+              - button "Copy" [disabled] [ref=f14e120]
+  - alert [ref=f14e126]

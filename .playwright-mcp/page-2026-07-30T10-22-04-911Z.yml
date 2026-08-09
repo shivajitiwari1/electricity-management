@@ -1,0 +1,131 @@
+- generic [ref=f80e1]:
+  - generic [ref=f80e2]:
+    - generic [ref=f80e4]:
+      - generic [ref=f80e10]:
+        - paragraph [ref=f80e11]: Oasis Venetia Heights
+        - paragraph [ref=f80e12]: Admin Panel
+      - navigation [ref=f80e13]:
+        - link "Dashboard" [ref=f80e447] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f80e448] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f80e449] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f80e450] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f80e451] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f80e452] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f80e453] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f80e454] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f80e455] [cursor=pointer]:
+          - /url: /admin/flats
+        - link "Users" [ref=f80e456] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f80e457] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f80e69]
+      - generic [ref=f80e70]:
+        - generic [ref=f80e71]:
+          - generic [ref=f80e72]:
+            - paragraph [ref=f80e73]: Admin
+            - paragraph [ref=f80e74]: admin@oasis.local
+          - button "Toggle theme" [ref=f80e458]
+        - button "Sign Out" [ref=f80e459]
+    - main [ref=f80e78]:
+      - generic [ref=f80e79]:
+        - generic [ref=f80e80]:
+          - heading "Payments" [level=1] [ref=f80e460]
+          - paragraph [ref=f80e82]: View all payment transactions for Oasis Venetia Heights
+        - generic [ref=f80e239]:
+          - generic [ref=f80e241]:
+            - text: Bills Requiring Payment
+            - generic [ref=f80e242]: 0 pending
+          - table [ref=f80e245]:
+            - rowgroup [ref=f80e246]:
+              - row [ref=f80e461]:
+                - 'columnheader "Bill #" [ref=f80e462]'
+                - columnheader "Flat No" [ref=f80e463]
+                - columnheader "Resident" [ref=f80e464]
+                - columnheader "Balance Due" [ref=f80e465]
+                - columnheader "Due Date" [ref=f80e466]
+                - columnheader "Status" [ref=f80e467]
+                - columnheader "Actions" [ref=f80e468]
+            - rowgroup [ref=f80e255]:
+              - row [ref=f80e469]:
+                - cell "No pending bills — all caught up!" [ref=f80e470]
+        - generic [ref=f80e266]:
+          - generic [ref=f80e267]:
+            - generic [ref=f80e268]: Method
+            - combobox [ref=f80e269]:
+              - generic [ref=f80e270]: all
+              - img: ▼
+            - textbox [ref=f80e271]: all
+          - generic [ref=f80e272]:
+            - generic [ref=f80e273]: Status
+            - combobox [ref=f80e274]:
+              - generic [ref=f80e275]: all
+              - img: ▼
+            - textbox [ref=f80e276]: all
+          - generic [ref=f80e277]:
+            - generic [ref=f80e278]: Search
+            - textbox "Name or flat…" [ref=f80e471]
+        - generic [ref=f80e280]:
+          - generic [ref=f80e282]:
+            - text: Payment History — 2 records
+            - generic [ref=f80e283]:
+              - generic [ref=f80e284]: 0 online
+              - generic [ref=f80e289]: 2 manual
+          - table [ref=f80e296]:
+            - rowgroup [ref=f80e297]:
+              - row [ref=f80e472]:
+                - 'columnheader "Receipt #" [ref=f80e473]'
+                - columnheader "Flat No" [ref=f80e474]
+                - columnheader "Resident" [ref=f80e475]
+                - 'columnheader "Bill #" [ref=f80e476]'
+                - columnheader "Amount (₹)" [ref=f80e477]
+                - columnheader "Date" [ref=f80e478]
+                - columnheader "Type" [ref=f80e479]
+                - columnheader "Method" [ref=f80e480]
+                - columnheader "Reference / Txn ID" [ref=f80e481]
+                - columnheader "Status" [ref=f80e482]
+                - columnheader "Actions" [ref=f80e483]
+            - rowgroup [ref=f80e310]:
+              - row [ref=f80e484]:
+                - cell "RCPT-20260730-0002" [ref=f80e485]
+                - cell "V-1407" [ref=f80e486]
+                - cell "Shivaji Tiwari Test" [ref=f80e487]
+                - cell "OV-V-1407-202607" [ref=f80e488]
+                - cell "2,035.00" [ref=f80e489]
+                - cell "30 Jul 2026" [ref=f80e490]
+                - cell [ref=f80e491]
+                - cell "UPI" [ref=f80e497]
+                - cell "UTR-TEST-V1407-001" [ref=f80e499]
+                - cell "SUCCESS" [ref=f80e500]
+                - cell [ref=f80e502]:
+                  - generic [ref=f80e503]:
+                    - button "Receipt" [active] [ref=f80e504]
+                    - button "Delete" [ref=f80e505]
+              - row [ref=f80e506]:
+                - cell "RCPT-20260730-0001" [ref=f80e507]
+                - cell "V-405" [ref=f80e508]
+                - cell "Mr. Alok Kumar" [ref=f80e509]
+                - cell "OV-V-405-202607" [ref=f80e510]
+                - cell "1,535.00" [ref=f80e511]
+                - cell "30 Jul 2026" [ref=f80e512]
+                - cell [ref=f80e513]
+                - cell "UPI" [ref=f80e514]
+                - cell "UTR426789012345" [ref=f80e515]
+                - cell "SUCCESS" [ref=f80e516]
+                - cell [ref=f80e517]:
+                  - generic [ref=f80e330]:
+                    - button "Receipt" [ref=f80e518]
+                    - button "Delete" [ref=f80e519]
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=f80e520]:
+        - generic [ref=f80e525]: Full payment recorded — Receipt RCPT-20260730-0002
+  - alert [ref=f80e238]

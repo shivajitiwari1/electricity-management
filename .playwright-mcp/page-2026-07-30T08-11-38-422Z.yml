@@ -1,0 +1,51 @@
+- generic [ref=f47e1]:
+  - generic [ref=f47e31]:
+    - banner [ref=f47e32]:
+      - generic [ref=f47e33]:
+        - generic [ref=f47e34]:
+          - generic [ref=f47e35]: Oasis Venetia Heights
+          - navigation [ref=f47e40]:
+            - link "Dashboard" [ref=f47e41] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [active] [ref=f47e45] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f47e49] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Profile" [ref=f47e52] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f47e56]:
+          - generic [ref=f47e57]: Shivaji Tiwari
+          - button "Toggle theme" [ref=f47e58]
+          - button "Sign Out" [ref=f47e60]
+    - main [ref=f47e62]:
+      - generic [ref=f47e137]:
+        - generic [ref=f47e138]:
+          - heading "My Bills" [level=1] [ref=f47e139]
+          - paragraph [ref=f47e140]: View and pay your electricity bills
+        - generic [ref=f47e141]:
+          - generic [ref=f47e142]: 1 Bill
+          - table [ref=f47e146]:
+            - rowgroup [ref=f47e147]:
+              - row [ref=f47e148]:
+                - 'columnheader "Bill #" [ref=f47e149]'
+                - columnheader "Period" [ref=f47e150]
+                - columnheader "NPCL Units" [ref=f47e151]
+                - columnheader "Amount (₹)" [ref=f47e152]
+                - columnheader "Due Date" [ref=f47e153]
+                - columnheader "Status" [ref=f47e154]
+                - columnheader "Actions" [ref=f47e155]
+            - rowgroup [ref=f47e156]:
+              - row [ref=f47e157]:
+                - cell "OV-A-404-202607" [ref=f47e158]
+                - cell "30 Jun 2026 – 30 Jul 2026" [ref=f47e159]
+                - cell "1100 kWh" [ref=f47e160]
+                - cell "8,360.00" [ref=f47e161]
+                - cell "08 Aug 2026" [ref=f47e162]
+                - cell [ref=f47e163]
+                - cell [ref=f47e165]:
+                  - generic [ref=f47e166]:
+                    - button "PDF" [ref=f47e167]
+                    - button "Details" [ref=f47e168]
+                    - button "Pay Now" [ref=f47e169]
+  - region "Notifications alt+T"
+  - alert [ref=f47e30]

@@ -1,0 +1,25 @@
+- generic [active] [ref=f10e1]:
+  - generic [ref=f10e2]:
+    - banner [ref=f10e3]:
+      - generic [ref=f10e4]:
+        - generic [ref=f10e5]:
+          - generic [ref=f10e6]: Oasis Venetia Heights
+          - navigation [ref=f10e11]:
+            - link "Dashboard" [ref=f10e12] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f10e16] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f10e20] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Profile" [ref=f10e23] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f10e27]:
+          - generic [ref=f10e28]: Shivaji Tiwari
+          - button "Toggle theme" [ref=f10e29]
+          - button "Sign Out" [ref=f10e31]
+    - main [ref=f10e33]:
+      - generic [ref=f10e35]:
+        - heading "My Profile" [level=1] [ref=f10e36]
+        - paragraph [ref=f10e37]: Your account and connection details (managed by admin)
+  - region "Notifications alt+T"
+  - alert [ref=f10e56]

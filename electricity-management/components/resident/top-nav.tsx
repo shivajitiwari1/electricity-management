@@ -12,7 +12,7 @@ const navItems = [
   { href: "/resident/dashboard", label: "Dashboard", icon: Home },
   { href: "/resident/bills", label: "Bills", icon: FileText },
   { href: "/resident/payments", label: "Payments", icon: CreditCard },
-  { href: "/resident/maintenance", label: "Maintenance", icon: Wrench },
+  // { href: "/resident/maintenance", label: "Maintenance", icon: Wrench }, // hidden — re-enable when maintenance module is activated
   { href: "/resident/profile", label: "Profile", icon: User },
 ];
 

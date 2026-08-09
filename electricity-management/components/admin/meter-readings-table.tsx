@@ -74,13 +74,30 @@ interface Props {
 
 const today = new Date().toISOString().split("T")[0];
 
+function currentMonthValue() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+}
+
+function getMonthOptions() {
+  const options: { value: string; label: string }[] = [];
+  const now = new Date();
+  for (let i = 0; i < 12; i++) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+    const label = d.toLocaleDateString("en-IN", { month: "long", year: "numeric" });
+    options.push({ value, label });
+  }
+  return options;
+}
+
 export default function MeterReadingsTable({ connections, readings, dgFixed, canWrite, canDelete }: Props) {
   const router = useRouter();
 
   // Table search state
   const [tableSearch, setTableSearch] = useState("");
   const [billFilter, setBillFilter] = useState<"all" | "generated" | "pending" | "no-reading">("all");
-
+  const [monthFilter, setMonthFilter] = useState(currentMonthValue());
   // Flat combobox state
   const [flatOpen, setFlatOpen] = useState(false);
   const [flatSearch, setFlatSearch] = useState("");
@@ -191,13 +208,19 @@ export default function MeterReadingsTable({ connections, readings, dgFixed, can
     }
   }
 
+  function monthBounds(dateStr: string) {
+    // Parse YYYY-MM-DD directly to avoid timezone offset issues
+    const [year, month] = dateStr.split("-").map(Number);
+    const lastDay = new Date(year, month, 0).getDate();
+    const mm = String(month).padStart(2, "0");
+    const start = `${year}-${mm}-01`;
+    const end = `${year}-${mm}-${String(lastDay).padStart(2, "0")}`;
+    return { start, end };
+  }
+
   async function openBillModal(reading: SerializedReading) {
     setBillReading(reading);
-    const readingDate = new Date(reading.readingDate);
-    const periodStart = new Date(readingDate.getFullYear(), readingDate.getMonth(), 1)
-      .toISOString()
-      .split("T")[0];
-    const periodEnd = readingDate.toISOString().split("T")[0];
+    const { start: periodStart, end: periodEnd } = monthBounds(today);
     setBillForm({
       billDate: today,
       billingPeriodStart: periodStart,
@@ -262,6 +285,7 @@ export default function MeterReadingsTable({ connections, readings, dgFixed, can
     }
   }
 
+
   const filteredReadings = readings.filter((r) => {
     const q = tableSearch.toLowerCase();
     const matchesSearch = !q || r.flatNo.toLowerCase().includes(q) || r.residentName.toLowerCase().includes(q);
@@ -270,8 +294,13 @@ export default function MeterReadingsTable({ connections, readings, dgFixed, can
       (billFilter === "generated" && r.hasReading && r.hasBill) ||
       (billFilter === "pending" && r.hasReading && !r.hasBill) ||
       (billFilter === "no-reading" && !r.hasReading);
-    return matchesSearch && matchesBill;
+    const matchesMonth =
+      monthFilter === "all" ||
+      (billFilter === "no-reading" && !r.hasReading) ||
+      (r.readingDate && r.readingDate.startsWith(monthFilter));
+    return matchesSearch && matchesBill && matchesMonth;
   });
+
 
   return (
     <>
@@ -284,6 +313,17 @@ export default function MeterReadingsTable({ connections, readings, dgFixed, can
             onChange={(e) => setTableSearch(e.target.value)}
             className="w-56"
           />
+          <Select value={monthFilter} onValueChange={(v) => v && setMonthFilter(v)}>
+            <SelectTrigger className="w-40">
+              <SelectValue placeholder="Month" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Months</SelectItem>
+              {getMonthOptions().map((o) => (
+                <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           <Select value={billFilter} onValueChange={(v) => setBillFilter(v as typeof billFilter)}>
             <SelectTrigger className="w-44">
               <SelectValue placeholder="Bill Status" />
@@ -311,7 +351,8 @@ export default function MeterReadingsTable({ connections, readings, dgFixed, can
       <Card>
         <CardHeader className="pb-0">
           <CardTitle className="text-base font-semibold">
-            Meter Readings — All Flats (Latest Reading)
+            Meter Readings — {filteredReadings.length} {billFilter === "generated" ? "Bills Generated" : billFilter === "pending" ? "Pending Bills" : billFilter === "no-reading" ? "No Reading" : "Flats"}
+            {monthFilter !== "all" && ` · ${new Date(monthFilter + "-01").toLocaleDateString("en-IN", { month: "long", year: "numeric" })}`}
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0 mt-3">
@@ -331,6 +372,13 @@ export default function MeterReadingsTable({ connections, readings, dgFixed, can
                 </tr>
               </thead>
               <tbody>
+                {filteredReadings.length === 0 && (
+                  <tr>
+                    <td colSpan={9} className="px-4 py-12 text-center text-muted-foreground text-sm">
+                      No records found for the selected filters.
+                    </td>
+                  </tr>
+                )}
                 {filteredReadings.map((reading) => (
                     <tr key={reading.connectionId} className="border-b last:border-0 hover:bg-muted/50">
                       <td className="px-4 py-3 font-mono text-xs font-medium">
@@ -395,6 +443,7 @@ export default function MeterReadingsTable({ connections, readings, dgFixed, can
               </tbody>
             </table>
           </div>
+
         </CardContent>
       </Card>
 
@@ -525,7 +574,15 @@ export default function MeterReadingsTable({ connections, readings, dgFixed, can
                 type="date"
                 required
                 value={billForm.billDate}
-                onChange={(e) => setBillForm((p) => ({ ...p, billDate: e.target.value }))}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (val) {
+                    const { start, end } = monthBounds(val);
+                    setBillForm((p) => ({ ...p, billDate: val, billingPeriodStart: start, billingPeriodEnd: end }));
+                  } else {
+                    setBillForm((p) => ({ ...p, billDate: val }));
+                  }
+                }}
               />
             </div>
             <div className="space-y-1.5">

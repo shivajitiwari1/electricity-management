@@ -1,0 +1,135 @@
+- generic [active] [ref=f50e1]:
+  - generic [ref=f50e2]:
+    - generic [ref=f50e4]:
+      - generic [ref=f50e10]:
+        - paragraph [ref=f50e11]: Oasis Venetia Heights
+        - paragraph [ref=f50e12]: Admin Panel
+      - navigation [ref=f50e13]:
+        - link "Dashboard" [ref=f50e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f50e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f50e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f50e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f50e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f50e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f50e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f50e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f50e47] [cursor=pointer]:
+          - /url: /admin/flats
+        - link "Users" [ref=f50e52] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f50e65] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f50e69]
+      - generic [ref=f50e70]:
+        - generic [ref=f50e71]:
+          - generic [ref=f50e72]:
+            - paragraph [ref=f50e73]: Admin
+            - paragraph [ref=f50e74]: admin@oasis.local
+          - button "Toggle theme" [ref=f50e75]
+        - button "Sign Out" [ref=f50e77]
+    - main [ref=f50e78]:
+      - generic [ref=f50e79]:
+        - generic [ref=f50e80]:
+          - heading "Bills" [level=1] [ref=f50e81]
+          - paragraph [ref=f50e82]: Manage electricity bills for Oasis Venetia Heights
+        - table [ref=f50e93]:
+          - rowgroup [ref=f50e94]:
+            - row [ref=f50e95]:
+              - columnheader [ref=f50e96]
+              - columnheader [ref=f50e98]
+              - columnheader [ref=f50e100]
+              - columnheader [ref=f50e102]
+              - columnheader [ref=f50e104]
+              - columnheader [ref=f50e106]
+              - columnheader [ref=f50e108]
+          - rowgroup [ref=f50e110]:
+            - row [ref=f50e111]:
+              - cell [ref=f50e112]
+              - cell [ref=f50e114]
+              - cell [ref=f50e116]
+              - cell [ref=f50e118]
+              - cell [ref=f50e120]
+              - cell [ref=f50e122]
+              - cell [ref=f50e124]
+            - row [ref=f50e126]:
+              - cell [ref=f50e127]
+              - cell [ref=f50e129]
+              - cell [ref=f50e131]
+              - cell [ref=f50e133]
+              - cell [ref=f50e135]
+              - cell [ref=f50e137]
+              - cell [ref=f50e139]
+            - row [ref=f50e141]:
+              - cell [ref=f50e142]
+              - cell [ref=f50e144]
+              - cell [ref=f50e146]
+              - cell [ref=f50e148]
+              - cell [ref=f50e150]
+              - cell [ref=f50e152]
+              - cell [ref=f50e154]
+            - row [ref=f50e156]:
+              - cell [ref=f50e157]
+              - cell [ref=f50e159]
+              - cell [ref=f50e161]
+              - cell [ref=f50e163]
+              - cell [ref=f50e165]
+              - cell [ref=f50e167]
+              - cell [ref=f50e169]
+            - row [ref=f50e171]:
+              - cell [ref=f50e172]
+              - cell [ref=f50e174]
+              - cell [ref=f50e176]
+              - cell [ref=f50e178]
+              - cell [ref=f50e180]
+              - cell [ref=f50e182]
+              - cell [ref=f50e184]
+            - row [ref=f50e186]:
+              - cell [ref=f50e187]
+              - cell [ref=f50e189]
+              - cell [ref=f50e191]
+              - cell [ref=f50e193]
+              - cell [ref=f50e195]
+              - cell [ref=f50e197]
+              - cell [ref=f50e199]
+            - row [ref=f50e201]:
+              - cell [ref=f50e202]
+              - cell [ref=f50e204]
+              - cell [ref=f50e206]
+              - cell [ref=f50e208]
+              - cell [ref=f50e210]
+              - cell [ref=f50e212]
+              - cell [ref=f50e214]
+            - row [ref=f50e216]:
+              - cell [ref=f50e217]
+              - cell [ref=f50e219]
+              - cell [ref=f50e221]
+              - cell [ref=f50e223]
+              - cell [ref=f50e225]
+              - cell [ref=f50e227]
+              - cell [ref=f50e229]
+            - row [ref=f50e231]:
+              - cell [ref=f50e232]
+              - cell [ref=f50e234]
+              - cell [ref=f50e236]
+              - cell [ref=f50e238]
+              - cell [ref=f50e240]
+              - cell [ref=f50e242]
+              - cell [ref=f50e244]
+            - row [ref=f50e246]:
+              - cell [ref=f50e247]
+              - cell [ref=f50e249]
+              - cell [ref=f50e251]
+              - cell [ref=f50e253]
+              - cell [ref=f50e255]
+              - cell [ref=f50e257]
+              - cell [ref=f50e259]
+  - region "Notifications alt+T"
+  - alert [ref=f50e261]

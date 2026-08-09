@@ -1,0 +1,99 @@
+- generic [active] [ref=f45e1]:
+  - generic [ref=f45e2]:
+    - generic [ref=f45e4]:
+      - generic [ref=f45e10]:
+        - paragraph [ref=f45e11]: Oasis Venetia Heights
+        - paragraph [ref=f45e12]: Admin Panel
+      - navigation [ref=f45e13]:
+        - link "Dashboard" [ref=f45e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f45e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f45e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f45e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f45e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Maintenance" [ref=f45e37] [cursor=pointer]:
+          - /url: /admin/maintenance
+        - link "Payments" [ref=f45e40] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f45e43] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f45e46] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f45e50] [cursor=pointer]:
+          - /url: /admin/flats
+        - link "Users" [ref=f45e55] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f45e68] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f45e72]
+      - generic [ref=f45e73]:
+        - generic [ref=f45e74]:
+          - generic [ref=f45e75]:
+            - paragraph [ref=f45e76]: Admin
+            - paragraph [ref=f45e77]: admin@oasis.local
+          - button "Toggle theme" [ref=f45e78]
+        - button "Sign Out" [ref=f45e80]
+    - main [ref=f45e81]:
+      - generic [ref=f45e82]:
+        - generic [ref=f45e83]:
+          - generic [ref=f45e84]:
+            - heading "Maintenance Bills" [level=1] [ref=f45e85]
+            - paragraph [ref=f45e86]: Monthly maintenance charges · 24% p.a. interest on overdue
+          - generic [ref=f45e87]:
+            - link [ref=f45e88] [cursor=pointer]:
+              - /url: /admin/maintenance/rates
+              - button "Manage Rates" [ref=f45e89]
+            - link [ref=f45e90] [cursor=pointer]:
+              - /url: /admin/maintenance/generate
+              - button "Scheduler" [ref=f45e91]
+        - generic [ref=f45e92]:
+          - generic [ref=f45e93]:
+            - generic [ref=f45e94]:
+              - generic [ref=f45e95]: Tower
+              - combobox [ref=f45e96]:
+                - generic [ref=f45e97]: all
+                - img: ▼
+              - textbox [ref=f45e98]: all
+            - generic [ref=f45e99]:
+              - generic [ref=f45e100]: Month
+              - textbox [ref=f45e101]
+            - generic [ref=f45e102]:
+              - generic [ref=f45e103]: Status
+              - combobox [ref=f45e104]:
+                - generic [ref=f45e105]: all
+                - img: ▼
+              - textbox [ref=f45e106]: all
+            - button "Apply Filter" [ref=f45e107]
+          - generic [ref=f45e108]:
+            - generic [ref=f45e109]:
+              - strong [ref=f45e110]: "0"
+              - text: bills
+            - generic [ref=f45e111]:
+              - text: "Total Due:"
+              - strong [ref=f45e112]: ₹0.00
+            - generic [ref=f45e113]:
+              - text: "Collected:"
+              - strong [ref=f45e114]: ₹0.00
+            - generic [ref=f45e115]:
+              - text: "Outstanding:"
+              - strong [ref=f45e116]: ₹0.00
+          - table [ref=f45e118]:
+            - rowgroup [ref=f45e119]:
+              - row [ref=f45e120]:
+                - columnheader "Bill No" [ref=f45e121]
+                - columnheader "Flat / Resident" [ref=f45e122]
+                - columnheader "Area" [ref=f45e123]
+                - columnheader "Amount" [ref=f45e124]
+                - columnheader "Interest" [ref=f45e125]
+                - columnheader "Due Date" [ref=f45e126]
+                - columnheader "Status" [ref=f45e127]
+                - columnheader "Actions" [ref=f45e128]
+            - rowgroup [ref=f45e129]:
+              - row [ref=f45e130]:
+                - cell "No maintenance bills found" [ref=f45e131]
+  - region "Notifications alt+T"
+  - alert [ref=f45e132]

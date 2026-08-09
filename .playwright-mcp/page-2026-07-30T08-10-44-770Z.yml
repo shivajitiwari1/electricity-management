@@ -1,0 +1,77 @@
+- generic [active] [ref=f46e1]:
+  - generic [ref=f46e2]:
+    - generic [ref=f46e4]:
+      - generic [ref=f46e10]:
+        - paragraph [ref=f46e11]: Oasis Venetia Heights
+        - paragraph [ref=f46e12]: Admin Panel
+      - navigation [ref=f46e13]:
+        - link "Dashboard" [ref=f46e1558] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f46e1559] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f46e1560] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f46e1561] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f46e1562] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f46e1563] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f46e1564] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f46e1565] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f46e1566] [cursor=pointer]:
+          - /url: /admin/flats
+        - link "Users" [ref=f46e1567] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f46e1568] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f46e69]
+      - generic [ref=f46e70]:
+        - generic [ref=f46e71]:
+          - generic [ref=f46e72]:
+            - paragraph [ref=f46e73]: Admin
+            - paragraph [ref=f46e74]: admin@oasis.local
+          - button "Toggle theme" [ref=f46e1569]
+        - button "Sign Out" [ref=f46e1570]
+    - main [ref=f46e78]:
+      - generic [ref=f46e79]:
+        - generic [ref=f46e80]:
+          - heading "Meter Readings" [level=1] [ref=f46e1571]
+          - paragraph [ref=f46e82]: Record and manage electricity meter readings
+        - generic [ref=f46e83]:
+          - generic [ref=f46e84]:
+            - textbox "Search flat or resident..." [ref=f46e1572]: A-404
+            - combobox [ref=f46e86]:
+              - generic [ref=f46e87]: all
+              - img: ▼
+            - textbox [ref=f46e88]: all
+            - combobox [ref=f46e89]:
+              - generic [ref=f46e90]: pending
+              - img: ▼
+            - textbox [ref=f46e91]: pending
+            - paragraph [ref=f46e92]: 0 of 399 flats
+          - button "Add Meter Reading" [ref=f46e1573]
+        - generic [ref=f46e94]:
+          - generic [ref=f46e95]: Meter Readings — 0 Pending Bills
+          - table [ref=f46e99]:
+            - rowgroup [ref=f46e100]:
+              - row [ref=f46e1574]:
+                - columnheader "Flat No" [ref=f46e1575]
+                - columnheader "Resident" [ref=f46e1576]
+                - columnheader "Reading Date" [ref=f46e1577]
+                - columnheader "NPCL Previous" [ref=f46e1578]
+                - columnheader "NPCL Current" [ref=f46e1579]
+                - columnheader "Units" [ref=f46e1580]
+                - columnheader "DG Units" [ref=f46e1581]
+                - columnheader "Bill" [ref=f46e1582]
+                - columnheader "Actions" [ref=f46e1583]
+            - rowgroup [ref=f46e111]:
+              - row [ref=f46e1584]:
+                - cell "No records found for the selected filters." [ref=f46e1585]
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=f46e1586]:
+        - generic [ref=f46e1591]: Bill generated for Flat A-404
+  - alert [ref=f46e114]

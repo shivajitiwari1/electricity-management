@@ -1,0 +1,80 @@
+- generic [active] [ref=f2e1]:
+  - generic [ref=f2e2]:
+    - generic [ref=f2e4]:
+      - generic [ref=f2e10]:
+        - paragraph [ref=f2e11]: Oasis Venetia Heights
+        - paragraph [ref=f2e12]: Admin Panel
+      - navigation [ref=f2e13]:
+        - link "Dashboard" [ref=f2e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f2e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f2e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f2e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f2e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Maintenance" [ref=f2e37] [cursor=pointer]:
+          - /url: /admin/maintenance
+        - link "Payments" [ref=f2e40] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f2e43] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f2e46] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f2e50] [cursor=pointer]:
+          - /url: /admin/flats
+        - link "Users" [ref=f2e55] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f2e68] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f2e72]
+      - generic [ref=f2e73]:
+        - generic [ref=f2e74]:
+          - generic [ref=f2e75]:
+            - paragraph [ref=f2e76]: Admin
+            - paragraph [ref=f2e77]: admin@oasis.local
+          - button "Toggle theme" [ref=f2e78]
+        - button "Sign Out" [ref=f2e80]
+    - main [ref=f2e81]:
+      - generic [ref=f2e82]:
+        - generic [ref=f2e83]:
+          - heading "Maintenance Rates" [level=1] [ref=f2e84]
+          - paragraph [ref=f2e85]: Configure the monthly maintenance charge rate per sq ft
+        - generic [ref=f2e86]:
+          - generic [ref=f2e124]:
+            - paragraph [ref=f2e125]: Current Rate
+            - paragraph [ref=f2e126]: ₹2.50 per sq ft / month
+            - paragraph [ref=f2e127]: Effective from 01 Jul 2026
+          - generic [ref=f2e87]:
+            - generic [ref=f2e88]: Add New Rate
+            - generic [ref=f2e91]:
+              - generic [ref=f2e92]:
+                - generic [ref=f2e93]: Rate (₹ per sq ft)
+                - spinbutton "Rate (₹ per sq ft)" [ref=f2e94]
+              - generic [ref=f2e95]:
+                - generic [ref=f2e96]: Effective From
+                - textbox "Effective From" [ref=f2e97]
+              - button "Add Rate" [ref=f2e98]
+          - generic [ref=f2e99]:
+            - generic [ref=f2e100]: Rate History
+            - table [ref=f2e103]:
+              - rowgroup [ref=f2e104]:
+                - row [ref=f2e105]:
+                  - columnheader "Rate (₹/sq ft)" [ref=f2e106]
+                  - columnheader "Effective From" [ref=f2e107]
+                  - columnheader "Added On" [ref=f2e108]
+                  - columnheader "Status" [ref=f2e109]
+              - rowgroup [ref=f2e110]:
+                - row [ref=f2e128]:
+                  - cell "₹2.50" [ref=f2e129]
+                  - cell "01 Jul 2026" [ref=f2e130]
+                  - cell "23 Jul 2026" [ref=f2e131]
+                  - cell "Current" [ref=f2e132]
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=f2e134]:
+        - generic [ref=f2e139]: Rate added
+  - button "Open Next.js Dev Tools" [ref=f2e118] [cursor=pointer]
+  - alert [ref=f2e122]

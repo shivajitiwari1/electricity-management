@@ -1,0 +1,50 @@
+- generic [ref=f87e1]:
+  - generic [ref=f87e2]:
+    - banner [ref=f87e3]:
+      - generic [ref=f87e4]:
+        - generic [ref=f87e5]:
+          - generic [ref=f87e6]: Oasis Venetia Heights
+          - navigation [ref=f87e11]:
+            - link "Dashboard" [ref=f87e12] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f87e16] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f87e20] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Profile" [ref=f87e23] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f87e27]:
+          - generic [ref=f87e28]: Shivaji Tiwari
+          - button "Toggle theme" [ref=f87e29]
+          - button "Sign Out" [ref=f87e31]
+    - main [ref=f87e33]:
+      - generic [ref=f87e34]:
+        - generic [ref=f87e35]:
+          - heading "My Bills" [level=1] [ref=f87e36]
+          - paragraph [ref=f87e37]: View and pay your electricity bills
+        - generic [ref=f87e149]:
+          - generic [ref=f87e150]: 1 Bill
+          - table [ref=f87e154]:
+            - rowgroup [ref=f87e155]:
+              - row [ref=f87e156]:
+                - 'columnheader "Bill #" [ref=f87e157]'
+                - columnheader "Period" [ref=f87e158]
+                - columnheader "NPCL Units" [ref=f87e159]
+                - columnheader "Amount (₹)" [ref=f87e160]
+                - columnheader "Due Date" [ref=f87e161]
+                - columnheader "Status" [ref=f87e162]
+                - columnheader "Actions" [ref=f87e163]
+            - rowgroup [ref=f87e164]:
+              - row [ref=f87e165]:
+                - cell "OV-A-404-202607" [ref=f87e166]
+                - cell "30 Jun 2026 – 30 Jul 2026" [ref=f87e167]
+                - cell "250 kWh" [ref=f87e168]
+                - cell "2,410.00" [ref=f87e169]
+                - cell "08 Aug 2026" [ref=f87e170]
+                - cell [ref=f87e171]
+                - cell [ref=f87e173]:
+                  - generic [ref=f87e174]:
+                    - button "PDF" [active] [ref=f87e175]
+                    - button "Details" [ref=f87e176]
+  - region "Notifications alt+T"
+  - alert [ref=f87e148]

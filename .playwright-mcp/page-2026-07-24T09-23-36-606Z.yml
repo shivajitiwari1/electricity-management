@@ -1,0 +1,99 @@
+- generic [active] [ref=f15e1]:
+  - generic [ref=f15e2]:
+    - generic [ref=f15e4]:
+      - generic [ref=f15e10]:
+        - paragraph [ref=f15e11]: Oasis Venetia Heights
+        - paragraph [ref=f15e12]: Admin Panel
+      - navigation [ref=f15e13]:
+        - link "Dashboard" [ref=f15e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f15e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f15e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f15e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f15e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f15e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f15e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f15e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f15e47] [cursor=pointer]:
+          - /url: /admin/flats
+        - generic [ref=f15e52]:
+          - button "Maintenance" [ref=f15e53]
+          - generic [ref=f15e59]:
+            - link "Bills" [ref=f15e60] [cursor=pointer]:
+              - /url: /admin/maintenance
+            - link "Rates" [ref=f15e64] [cursor=pointer]:
+              - /url: /admin/maintenance/rates
+            - link "Scheduler" [ref=f15e68] [cursor=pointer]:
+              - /url: /admin/maintenance/generate
+            - link "Payments" [ref=f15e71] [cursor=pointer]:
+              - /url: /admin/maintenance/payments
+        - link "Users" [ref=f15e74] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f15e87] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f15e91]
+      - generic [ref=f15e92]:
+        - generic [ref=f15e93]:
+          - generic [ref=f15e94]:
+            - paragraph [ref=f15e95]: Admin
+            - paragraph [ref=f15e96]: admin@oasis.local
+          - button "Toggle theme" [ref=f15e97]
+        - button "Sign Out" [ref=f15e99]
+    - main [ref=f15e100]:
+      - generic [ref=f15e101]:
+        - generic [ref=f15e102]:
+          - generic [ref=f15e103]:
+            - link "Maintenance Bills" [ref=f15e105] [cursor=pointer]:
+              - /url: /admin/maintenance
+            - heading "Maintenance Rates" [level=1] [ref=f15e108]
+            - paragraph [ref=f15e109]: Configure the monthly maintenance charge rate per sq ft
+          - link "Bill Scheduler" [ref=f15e110] [cursor=pointer]:
+            - /url: /admin/maintenance/generate
+        - generic [ref=f15e113]:
+          - generic [ref=f15e115]:
+            - paragraph [ref=f15e116]: Current Rate
+            - paragraph [ref=f15e117]: ₹2.25 per sq ft / month
+            - paragraph [ref=f15e118]: Effective from 01 Aug 2026
+          - generic [ref=f15e119]:
+            - generic [ref=f15e120]: Add New Rate
+            - generic [ref=f15e123]:
+              - generic [ref=f15e124]:
+                - generic [ref=f15e125]: Rate (₹ per sq ft)
+                - spinbutton "Rate (₹ per sq ft)" [ref=f15e126]
+              - generic [ref=f15e127]:
+                - generic [ref=f15e128]: Effective From
+                - textbox "Effective From" [ref=f15e129]
+              - button "Add Rate" [ref=f15e130]
+          - generic [ref=f15e131]:
+            - generic [ref=f15e132]: Rate History
+            - table [ref=f15e135]:
+              - rowgroup [ref=f15e136]:
+                - row [ref=f15e137]:
+                  - columnheader "Rate (₹/sq ft)" [ref=f15e138]
+                  - columnheader "Effective From" [ref=f15e139]
+                  - columnheader "Added On" [ref=f15e140]
+                  - columnheader "Status" [ref=f15e141]
+                  - columnheader [ref=f15e142]
+              - rowgroup [ref=f15e143]:
+                - row [ref=f15e144]:
+                  - cell "₹2.25" [ref=f15e145]
+                  - cell "01 Aug 2026" [ref=f15e146]
+                  - cell "24 Jul 2026" [ref=f15e147]
+                  - cell "Current" [ref=f15e148]
+                  - cell [ref=f15e150]
+                - row [ref=f15e151]:
+                  - cell "₹2.50" [ref=f15e152]
+                  - cell "01 Jul 2026" [ref=f15e153]
+                  - cell "24 Jul 2026" [ref=f15e154]
+                  - cell "Historical" [ref=f15e155]
+                  - cell [ref=f15e157]:
+                    - button "Delete historical rate" [ref=f15e158]
+  - region "Notifications alt+T"
+  - alert [ref=f15e159]

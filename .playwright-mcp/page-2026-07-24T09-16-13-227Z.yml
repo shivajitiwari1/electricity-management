@@ -1,0 +1,205 @@
+- generic [ref=f9e1]:
+  - generic [ref=f9e2]:
+    - generic [ref=f9e4]:
+      - generic [ref=f9e10]:
+        - paragraph [ref=f9e11]: Oasis Venetia Heights
+        - paragraph [ref=f9e12]: Admin Panel
+      - navigation [ref=f9e13]:
+        - link [ref=f9e361] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=f9e362] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=f9e363] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=f9e364] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=f9e365] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=f9e366] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=f9e367] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=f9e368] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=f9e369] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+        - button [ref=f9e370]:
+          - generic [ref=f9e56]: Maintenance
+        - link [ref=f9e371] [cursor=pointer]:
+          - /url: /admin/users
+          - text: Users
+        - link [ref=f9e372] [cursor=pointer]:
+          - /url: /admin/permissions
+          - text: Permissions
+      - separator [ref=f9e76]
+      - generic [ref=f9e77]:
+        - generic [ref=f9e78]:
+          - generic [ref=f9e79]:
+            - paragraph [ref=f9e80]: Admin
+            - paragraph [ref=f9e81]: admin@oasis.local
+          - button [ref=f9e373]:
+            - generic [ref=f9e83]: Toggle theme
+        - button [ref=f9e374]: Sign Out
+    - main [ref=f9e85]:
+      - generic [ref=f9e86]:
+        - generic [ref=f9e87]:
+          - heading [level=1] [ref=f9e375]: Bills
+          - paragraph [ref=f9e89]: Manage electricity bills for Oasis Venetia Heights
+        - generic [ref=f9e269]:
+          - generic [ref=f9e270]:
+            - generic [ref=f9e271]: Tower
+            - combobox [ref=f9e272]:
+              - generic [ref=f9e273]: all
+              - img: ▼
+            - textbox [ref=f9e274]: all
+          - generic [ref=f9e275]:
+            - generic [ref=f9e276]: Month (YYYY-MM)
+            - textbox [ref=f9e376]:
+              - /placeholder: e.g. 2026-07
+          - generic [ref=f9e278]:
+            - generic [ref=f9e279]: Status
+            - combobox [ref=f9e280]:
+              - generic [ref=f9e281]: all
+              - img: ▼
+            - textbox [ref=f9e282]: all
+          - generic [ref=f9e283]:
+            - generic [ref=f9e284]: Search
+            - textbox [ref=f9e377]:
+              - /placeholder: Name or flat…
+        - generic [ref=f9e286]:
+          - generic [ref=f9e287]: 3 Bills
+          - table [ref=f9e291]:
+            - rowgroup [ref=f9e292]:
+              - row [ref=f9e378]:
+                - columnheader [ref=f9e379]: "Bill #"
+                - columnheader [ref=f9e380]: Flat No
+                - columnheader [ref=f9e381]: Tower
+                - columnheader [ref=f9e382]: Resident
+                - columnheader [ref=f9e383]: Period
+                - columnheader [ref=f9e384]: Amount (₹)
+                - columnheader [ref=f9e385]: Due Date
+                - columnheader [ref=f9e386]: Status
+                - columnheader [ref=f9e387]: Actions
+            - rowgroup [ref=f9e303]:
+              - row [ref=f9e388]:
+                - cell [ref=f9e389]: OV-A-404-202607
+                - cell [ref=f9e390]: A-404
+                - cell [ref=f9e391]: A
+                - cell [ref=f9e392]: Shivaji Tiwari
+                - cell [ref=f9e393]: 30 Jun 2026 – 24 Jul 2026
+                - cell [ref=f9e394]: 2,410.00
+                - cell [ref=f9e395]: 02 Aug 2026
+                - cell [ref=f9e396]:
+                  - generic [ref=f9e313]: PAID
+                - cell [ref=f9e397]:
+                  - generic [ref=f9e315]:
+                    - button [ref=f9e398]: PDF
+                    - button [ref=f9e399]: Details
+                    - button [ref=f9e400]: Delete
+              - row [ref=f9e401]:
+                - cell [ref=f9e402]: OV-A-1001-202607
+                - cell [ref=f9e403]: A-1001
+                - cell [ref=f9e404]: A
+                - cell [ref=f9e405]: Mrs. Pooja Devrani
+                - cell [ref=f9e406]: 31 May 2026 – 30 Jun 2026
+                - cell [ref=f9e407]: 4,027.00
+                - cell [ref=f9e408]: 01 Aug 2026
+                - cell [ref=f9e409]:
+                  - generic [ref=f9e329]: PENDING
+                - cell [ref=f9e410]:
+                  - generic [ref=f9e331]:
+                    - button [ref=f9e411]: PDF
+                    - button [ref=f9e412]: Details
+                    - button [ref=f9e413]: Mark Paid
+                    - button [ref=f9e414]: Delete
+              - row [ref=f9e415]:
+                - cell [ref=f9e416]: OV-V-405-202607
+                - cell [ref=f9e417]: V-405
+                - cell [ref=f9e418]: V
+                - cell [ref=f9e419]: Mr. Alok Kumar
+                - cell [ref=f9e420]: 30 Jun 2026 – 22 Jul 2026
+                - cell [ref=f9e421]: 1,290.00
+                - cell [ref=f9e422]: 31 Jul 2026
+                - cell [ref=f9e423]:
+                  - generic [ref=f9e345]: PAID
+                - cell [ref=f9e424]:
+                  - generic [ref=f9e347]:
+                    - button [ref=f9e425]: PDF
+                    - button [ref=f9e426]: Details
+                    - button [ref=f9e427]: Delete
+  - region "Notifications alt+T"
+  - alert [ref=f9e268]
+  - dialog [ref=f9e431]:
+    - heading "Bill Details — OV-A-404-202607" [level=2] [ref=f9e433]
+    - generic [ref=f9e434]:
+      - generic [ref=f9e435]:
+        - paragraph [ref=f9e436]: Basic Information
+        - generic [ref=f9e437]:
+          - generic [ref=f9e438]: Bill Number
+          - generic [ref=f9e439]: OV-A-404-202607
+          - generic [ref=f9e440]: Resident
+          - generic [ref=f9e441]: Shivaji Tiwari
+          - generic [ref=f9e442]: Flat / Tower
+          - generic [ref=f9e443]: A-404 — Tower A
+          - generic [ref=f9e444]: Meter No
+          - generic [ref=f9e445]: —
+          - generic [ref=f9e446]: Sanctioned Load
+          - generic [ref=f9e447]: 4.0 kW
+          - generic [ref=f9e448]: Unit Area
+          - generic [ref=f9e449]: 1150 Sq.Ft.
+          - generic [ref=f9e450]: Bill Date
+          - generic [ref=f9e451]: 24 Jul 2026
+          - generic [ref=f9e452]: Due Date
+          - generic [ref=f9e453]: 02 Aug 2026
+          - generic [ref=f9e454]: Billing Period
+          - generic [ref=f9e455]: 30 Jun 2026 – 24 Jul 2026
+          - generic [ref=f9e456]: Status
+          - generic [ref=f9e457]: PAID
+      - generic [ref=f9e459]:
+        - generic [ref=f9e460]:
+          - paragraph [ref=f9e461]: Meter Reading Details
+          - paragraph [ref=f9e462]: "Reading Date: 24 Jul 2026"
+        - table [ref=f9e464]:
+          - rowgroup [ref=f9e465]:
+            - row [ref=f9e466]:
+              - columnheader "Source" [ref=f9e467]
+              - columnheader "Previous" [ref=f9e468]
+              - columnheader "Current" [ref=f9e469]
+              - columnheader "Units" [ref=f9e470]
+          - rowgroup [ref=f9e471]:
+            - row [ref=f9e472]:
+              - cell "NPCL Power" [ref=f9e473]
+              - cell "1500.00" [ref=f9e474]
+              - cell "1750.00" [ref=f9e475]
+              - cell "250.00" [ref=f9e476]
+            - row [ref=f9e477]:
+              - cell "DG Power" [ref=f9e478]
+              - cell "0.00" [ref=f9e479]
+              - cell "0.00" [ref=f9e480]
+              - cell "0.00" [ref=f9e481]
+      - generic [ref=f9e482]:
+        - paragraph [ref=f9e483]: Charge Breakdown
+        - generic [ref=f9e484]:
+          - generic [ref=f9e485]:
+            - generic [ref=f9e486]: NPCL Energy Charges (250.00 units × ₹7.00/unit)
+            - generic [ref=f9e487]: ₹1,750.00
+          - generic [ref=f9e488]:
+            - generic [ref=f9e489]: DG Energy Charges (Fixed)
+            - generic [ref=f9e490]: ₹200.00
+          - generic [ref=f9e491]:
+            - generic [ref=f9e492]: Fixed Charge (@ ₹115 per kW/month)
+            - generic [ref=f9e493]: ₹460.00
+          - generic [ref=f9e494]:
+            - generic [ref=f9e495]: Net Payable Amount
+            - generic [ref=f9e496]: ₹2,410.00
+      - button "Download PDF" [active] [ref=f9e498]
+    - button "Close" [ref=f9e499]

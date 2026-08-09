@@ -1,0 +1,111 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e4]:
+      - generic [ref=e10]:
+        - paragraph [ref=e11]: Oasis Venetia Heights
+        - paragraph [ref=e12]: Admin Panel
+      - navigation [ref=e13]:
+        - link [ref=e4499] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=e4500] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=e4501] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=e4502] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=e4503] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=e4504] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=e4505] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=e4506] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=e4507] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+        - link [ref=e4508] [cursor=pointer]:
+          - /url: /admin/users
+          - text: Users
+        - link [ref=e4509] [cursor=pointer]:
+          - /url: /admin/permissions
+          - text: Permissions
+      - separator [ref=e69]
+      - generic [ref=e70]:
+        - generic [ref=e71]:
+          - generic [ref=e72]:
+            - paragraph [ref=e73]: Admin
+            - paragraph [ref=e74]: admin@oasis.local
+          - button [ref=e4510]:
+            - generic [ref=e76]: Toggle theme
+        - button [ref=e4511]: Sign Out
+    - main [ref=e78]:
+      - generic [ref=e79]:
+        - generic [ref=e80]:
+          - heading [level=1] [ref=e4512]: Meter Readings
+          - paragraph [ref=e82]: Record and manage electricity meter readings
+        - generic [ref=e83]:
+          - generic [ref=e84]:
+            - textbox [ref=e4513]:
+              - /placeholder: Search flat or resident...
+              - text: A-404
+            - paragraph [ref=e86]: 1 of 399 flats
+          - button [ref=e4514]: Add Meter Reading
+        - generic [ref=e88]:
+          - generic [ref=e89]: Meter Readings — All Flats (Latest Reading)
+          - table [ref=e93]:
+            - rowgroup [ref=e94]:
+              - row [ref=e4515]:
+                - columnheader [ref=e4516]: Flat No
+                - columnheader [ref=e4517]: Resident
+                - columnheader [ref=e4518]: Reading Date
+                - columnheader [ref=e4519]: NPCL Previous
+                - columnheader [ref=e4520]: NPCL Current
+                - columnheader [ref=e4521]: Units
+                - columnheader [ref=e4522]: DG Units
+                - columnheader [ref=e4523]: Bill
+                - columnheader [ref=e4524]: Actions
+            - rowgroup [ref=e105]:
+              - row [ref=e4525]:
+                - cell [ref=e4526]: A-404
+                - cell [ref=e4527]: Shivaji Tiwari
+                - cell [ref=e4528]: 29 Jul 2026
+                - cell [ref=e4529]: "0"
+                - cell [ref=e4530]: "1100"
+                - cell [ref=e4531]: "1100"
+                - cell [ref=e4532]: "0"
+                - cell [ref=e4533]:
+                  - generic [ref=e544]: Pending
+                - cell [ref=e4534]:
+                  - generic [ref=e546]:
+                    - button [ref=e4535]: Generate Bill
+                    - button [ref=e4536]: Delete
+  - region "Notifications alt+T"
+  - alert [ref=e4498]
+  - dialog [ref=e4540]:
+    - heading "Generate Bill — Flat A-404" [level=2] [ref=e4542]
+    - generic [ref=e4543]:
+      - generic [ref=e4544]:
+        - generic [ref=e4545]: Bill Date *
+        - textbox "Bill Date *" [active] [ref=e4546]: 2026-07-30
+      - generic [ref=e4547]:
+        - generic [ref=e4548]: Billing Period Start *
+        - textbox "Billing Period Start *" [ref=e4549]: 2026-06-30
+      - generic [ref=e4550]:
+        - generic [ref=e4551]: Billing Period End *
+        - textbox "Billing Period End *" [ref=e4552]: 2026-07-29
+      - generic [ref=e4553]:
+        - generic [ref=e4554]: Previous Dues (Rs.)
+        - spinbutton "Previous Dues (Rs.)" [ref=e4555]: "0"
+      - generic [ref=e4556]:
+        - button "Cancel" [ref=e4557]
+        - button "Generate Bill" [ref=e4558]
+    - button "Close" [ref=e4559]

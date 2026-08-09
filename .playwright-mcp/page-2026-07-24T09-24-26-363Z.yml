@@ -1,0 +1,78 @@
+- generic [active] [ref=f18e1]:
+  - generic [ref=f18e2]:
+    - generic [ref=f18e4]:
+      - generic [ref=f18e10]:
+        - paragraph [ref=f18e11]: Oasis Venetia Heights
+        - paragraph [ref=f18e12]: Admin Panel
+      - navigation [ref=f18e13]:
+        - link "Dashboard" [ref=f18e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f18e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f18e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f18e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f18e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f18e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f18e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f18e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f18e47] [cursor=pointer]:
+          - /url: /admin/flats
+        - button "Maintenance" [ref=f18e53]
+        - link "Users" [ref=f18e59] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f18e72] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f18e76]
+      - generic [ref=f18e77]:
+        - generic [ref=f18e78]:
+          - generic [ref=f18e79]:
+            - paragraph [ref=f18e80]: Admin
+            - paragraph [ref=f18e81]: admin@oasis.local
+          - button "Toggle theme" [ref=f18e82]
+        - button "Sign Out" [ref=f18e84]
+    - main [ref=f18e85]:
+      - generic [ref=f18e86]:
+        - generic [ref=f18e87]:
+          - heading "User Management" [level=1] [ref=f18e88]
+          - paragraph [ref=f18e89]: Manage manager accounts for Oasis Venetia Heights
+        - generic [ref=f18e90]:
+          - generic [ref=f18e91]:
+            - paragraph [ref=f18e92]: 2 managers
+            - button "Add Manager" [ref=f18e93]
+          - table [ref=f18e95]:
+            - rowgroup [ref=f18e96]:
+              - row [ref=f18e97]:
+                - columnheader "Name" [ref=f18e98]
+                - columnheader "Email" [ref=f18e99]
+                - columnheader "Status" [ref=f18e100]
+                - columnheader "Created" [ref=f18e101]
+                - columnheader "Actions" [ref=f18e102]
+            - rowgroup [ref=f18e103]:
+              - row [ref=f18e104]:
+                - cell "Test Manager" [ref=f18e105]
+                - cell "manager@oasis.local" [ref=f18e106]
+                - cell "Active" [ref=f18e107]
+                - cell "24 Jul 2026" [ref=f18e109]
+                - cell [ref=f18e110]:
+                  - generic [ref=f18e111]:
+                    - button [ref=f18e112]
+                    - button "Deactivate" [ref=f18e113]
+                    - button [ref=f18e114]
+              - row [ref=f18e115]:
+                - cell "Mr. Sanjeev Chauhan" [ref=f18e116]
+                - cell "sanjeevkmr135@gmail.com" [ref=f18e117]
+                - cell "Active" [ref=f18e118]
+                - cell "19 Jul 2026" [ref=f18e120]
+                - cell [ref=f18e121]:
+                  - generic [ref=f18e122]:
+                    - button [ref=f18e123]
+                    - button "Deactivate" [ref=f18e124]
+                    - button [ref=f18e125]
+  - region "Notifications alt+T"
+  - alert [ref=f18e126]

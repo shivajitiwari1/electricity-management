@@ -20,3 +20,7 @@
 - [x] Task 14: Resident layout, dashboard (pages exist under (resident)/resident/)
 - [x] Task 15: Resident pages — bills, pay, payments, profile (pages exist under (resident)/resident/)
 - [x] Task 16: Final wiring — route conflict fix, Prisma 7 adapter, build passes (34 routes)
+
+## Legal Pages Plan (2026-07-22)
+- [x] Task 1: Shared layout + About Us page (commits 4054dc2..b9dc019, review clean — 3 minor notes: report claimed /legal/terms in build output erroneously; hero uses div not section per brief; copyright year 2025 hardcoded per brief)
+- [x] Task 2: Terms & Conditions page + deploy (commits b9dc019..3c46bcf, review clean)

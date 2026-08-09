@@ -1,0 +1,89 @@
+- generic [ref=f74e1]:
+  - generic [ref=f74e2]:
+    - generic [ref=f74e4]:
+      - generic [ref=f74e10]:
+        - paragraph [ref=f74e11]: Oasis Venetia Heights
+        - paragraph [ref=f74e12]: Admin Panel
+      - navigation [ref=f74e13]:
+        - link "Dashboard" [ref=f74e5794] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f74e5795] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f74e5796] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f74e5797] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f74e5798] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f74e5799] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f74e5800] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f74e5801] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f74e5802] [cursor=pointer]:
+          - /url: /admin/flats
+        - link "Users" [ref=f74e5803] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f74e5804] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f74e69]
+      - generic [ref=f74e70]:
+        - generic [ref=f74e71]:
+          - generic [ref=f74e72]:
+            - paragraph [ref=f74e73]: Admin
+            - paragraph [ref=f74e74]: admin@oasis.local
+          - button "Toggle theme" [ref=f74e5805]
+        - button "Sign Out" [ref=f74e5806]
+    - main [ref=f74e78]:
+      - generic [ref=f74e79]:
+        - generic [ref=f74e80]:
+          - heading "Connections" [level=1] [ref=f74e5807]
+          - paragraph [ref=f74e82]: Manage electricity connections for all flats
+        - generic [ref=f74e83]:
+          - generic [ref=f74e84]:
+            - generic [ref=f74e85]: "Tower:"
+            - combobox "Tower:" [ref=f74e5808]:
+              - generic [ref=f74e87]: V
+              - img: ▼
+            - textbox [ref=f74e88]: V
+          - generic [ref=f74e89]:
+            - generic [ref=f74e90]: "Status:"
+            - combobox "Status:" [ref=f74e5809]:
+              - generic [ref=f74e92]: ALL
+              - img: ▼
+            - textbox [ref=f74e93]: ALL
+          - textbox "Search name or flat…" [ref=f74e5810]: Shivaji Tiwari Test
+          - button "Clear Filters" [ref=f74e5811]
+        - generic [ref=f74e96]:
+          - generic [ref=f74e97]: 1 Connection
+          - table [ref=f74e101]:
+            - rowgroup [ref=f74e102]:
+              - row [ref=f74e5812]:
+                - columnheader "Flat No" [ref=f74e5813]
+                - columnheader "Tower" [ref=f74e5814]
+                - columnheader "Floor" [ref=f74e5815]
+                - columnheader "Unit Type" [ref=f74e5816]
+                - columnheader "Sanctioned Load" [ref=f74e5817]
+                - columnheader "Status" [ref=f74e5818]
+                - columnheader "Resident" [ref=f74e5819]
+                - columnheader "Actions" [ref=f74e5820]
+            - rowgroup [ref=f74e112]:
+              - row [ref=f74e5821]:
+                - cell "V-1407" [ref=f74e5822]
+                - cell "V" [ref=f74e5823]
+                - cell "FOURTEENTH" [ref=f74e5824]
+                - cell "2BHK+2T(850 Sq.Ft.)" [ref=f74e5825]
+                - cell "5.0 kW" [ref=f74e5826]
+                - cell "ACTIVE" [ref=f74e5827]
+                - cell [ref=f74e5828]:
+                  - generic [ref=f74e5708]:
+                    - paragraph [ref=f74e5709]: Shivaji Tiwari Test
+                    - paragraph [ref=f74e5710]: shivaji.test@ovh.local
+                - cell [ref=f74e5829]:
+                  - button "Edit" [active] [ref=f74e5830]
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=f74e5831]:
+        - generic [ref=f74e5836]: Connection updated successfully
+  - alert [ref=f74e5713]

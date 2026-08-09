@@ -1,0 +1,20 @@
+- generic [active] [ref=f17e1]:
+  - link "Skip to content":
+    - /url: "#geist-skip-nav"
+  - main [ref=f17e3]:
+    - generic [ref=f17e7]:
+      - generic [ref=f17e8]:
+        - button "Open sidebar" [ref=f17e10] [cursor=pointer]
+        - generic [ref=f17e16]:
+          - link "Other electricity-management" [ref=f17e17] [cursor=pointer]:
+            - /url: /shivajireacts-projects/electricity-management
+            - img "Other" [ref=f17e18]:
+              - img "Other" [ref=f17e19]
+            - generic [ref=f17e20]: electricity-management
+          - button [ref=f17e22] [cursor=pointer]
+          - link "Back to team view" [ref=f17e28] [cursor=pointer]:
+            - /url: /shivajireacts-projects/~/deployments
+      - navigation "Breadcrumb" [ref=f17e32]:
+        - generic [ref=f17e33]: Deployments
+      - button "Vercel Agent is available on Pro" [ref=f17e37] [cursor=pointer]
+  - alert [ref=f17e384]

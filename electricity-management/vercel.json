@@ -5,8 +5,5 @@
       "regions": ["sin1"]
     }
   },
-  "crons": [
-    { "path": "/api/cron/generate-maintenance-bills", "schedule": "0 23 28,29,30,31 * *" },
-    { "path": "/api/cron/update-maintenance-interest", "schedule": "0 3 * * *" }
-  ]
+  "crons": []
 }

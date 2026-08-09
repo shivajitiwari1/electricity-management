@@ -1,0 +1,51 @@
+- generic [active] [ref=f33e1]:
+  - generic [ref=f33e2]:
+    - banner [ref=f33e3]:
+      - generic [ref=f33e4]:
+        - generic [ref=f33e5]:
+          - generic [ref=f33e6]: Oasis Venetia Heights
+          - navigation [ref=f33e11]:
+            - link "Dashboard" [ref=f33e12] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f33e16] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f33e20] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Profile" [ref=f33e23] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f33e27]:
+          - generic [ref=f33e28]: Shivaji Tiwari
+          - button "Toggle theme" [ref=f33e29]
+          - button "Sign Out" [ref=f33e31]
+    - main [ref=f33e33]:
+      - generic [ref=f33e34]:
+        - generic [ref=f33e38]:
+          - heading "Welcome, Shivaji Tiwari!" [level=1] [ref=f33e39]
+          - paragraph [ref=f33e40]: "Resident #RES-0399"
+          - generic [ref=f33e41]:
+            - generic [ref=f33e42]: "Flat: A-404"
+            - generic [ref=f33e43]: "Tower: A"
+            - generic [ref=f33e44]: "Floor: Fourth"
+        - generic [ref=f33e49]:
+          - generic [ref=f33e50]: Current Bill
+          - generic [ref=f33e61]:
+            - paragraph [ref=f33e62]: No outstanding bills
+            - paragraph [ref=f33e63]: You are all caught up! Your account is up to date.
+        - generic [ref=f33e64]:
+          - generic [ref=f33e65]: Maintenance Bill
+          - generic [ref=f33e75]:
+            - paragraph [ref=f33e76]: No outstanding maintenance bills
+            - paragraph [ref=f33e77]: All maintenance charges are up to date.
+        - generic [ref=f33e78]:
+          - link [ref=f33e79] [cursor=pointer]:
+            - /url: /resident/bills
+            - generic [ref=f33e86]:
+              - paragraph [ref=f33e87]: View All Bills
+              - paragraph [ref=f33e88]: Browse your complete billing history
+          - link [ref=f33e89] [cursor=pointer]:
+            - /url: /resident/payments
+            - generic [ref=f33e95]:
+              - paragraph [ref=f33e96]: Payment History
+              - paragraph [ref=f33e97]: View all your past payments
+  - region "Notifications alt+T"
+  - alert [ref=f33e98]

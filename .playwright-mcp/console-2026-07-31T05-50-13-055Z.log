@@ -1,0 +1,4 @@
+[    9316ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://www.oasisvenetia.in/api/bills?flatNo=A-404:0
+[   16942ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://www.oasisvenetia.in/api/resident/bills:0
+[ 3698727ms] [ERROR] Access to fetch at 'https://oasisvenetia.in/login' (redirected from 'https://www.oasisvenetia.in/api/residents?search=shivaji') from origin 'https://www.oasisvenetia.in' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://www.oasisvenetia.in/resident/bills:0
+[ 3698728ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://oasisvenetia.in/login:0

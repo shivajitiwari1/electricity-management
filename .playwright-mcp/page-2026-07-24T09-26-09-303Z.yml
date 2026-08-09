@@ -1,0 +1,70 @@
+- generic [active] [ref=f25e1]:
+  - generic [ref=f25e2]:
+    - generic [ref=f25e4]:
+      - generic [ref=f25e10]:
+        - paragraph [ref=f25e11]: Oasis Venetia Heights
+        - paragraph [ref=f25e12]: Manager Panel
+      - navigation [ref=f25e13]:
+        - link "Dashboard" [ref=f25e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f25e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f25e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f25e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f25e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f25e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f25e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - button "Maintenance" [ref=f25e44]
+      - separator [ref=f25e50]
+      - generic [ref=f25e51]:
+        - generic [ref=f25e52]:
+          - generic [ref=f25e53]:
+            - paragraph [ref=f25e54]: Test Manager
+            - paragraph [ref=f25e55]: manager@oasis.local
+          - button "Toggle theme" [ref=f25e56]
+        - button "Sign Out" [ref=f25e58]
+    - main [ref=f25e59]:
+      - generic [ref=f25e60]:
+        - generic [ref=f25e61]:
+          - heading "Electricity Rates" [level=1] [ref=f25e62]
+          - paragraph [ref=f25e63]: Manage NPCL and DG electricity rates
+        - table [ref=f25e67]:
+          - rowgroup [ref=f25e68]:
+            - row [ref=f25e69]:
+              - columnheader [ref=f25e70]
+              - columnheader [ref=f25e72]
+              - columnheader [ref=f25e74]
+              - columnheader [ref=f25e76]
+              - columnheader [ref=f25e78]
+          - rowgroup [ref=f25e80]:
+            - row [ref=f25e81]:
+              - cell [ref=f25e82]
+              - cell [ref=f25e84]
+              - cell [ref=f25e86]
+              - cell [ref=f25e88]
+              - cell [ref=f25e90]
+            - row [ref=f25e92]:
+              - cell [ref=f25e93]
+              - cell [ref=f25e95]
+              - cell [ref=f25e97]
+              - cell [ref=f25e99]
+              - cell [ref=f25e101]
+            - row [ref=f25e103]:
+              - cell [ref=f25e104]
+              - cell [ref=f25e106]
+              - cell [ref=f25e108]
+              - cell [ref=f25e110]
+              - cell [ref=f25e112]
+            - row [ref=f25e114]:
+              - cell [ref=f25e115]
+              - cell [ref=f25e117]
+              - cell [ref=f25e119]
+              - cell [ref=f25e121]
+              - cell [ref=f25e123]
+  - region "Notifications alt+T"
+  - alert [ref=f25e125]

@@ -1,0 +1,81 @@
+- generic [active] [ref=f38e1]:
+  - generic [ref=f38e2]:
+    - generic [ref=f38e4]:
+      - generic [ref=f38e10]:
+        - paragraph [ref=f38e11]: Oasis Venetia Heights
+        - paragraph [ref=f38e12]: Admin Panel
+      - navigation [ref=f38e13]:
+        - link "Dashboard" [ref=f38e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f38e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f38e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f38e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f38e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Maintenance" [ref=f38e37] [cursor=pointer]:
+          - /url: /admin/maintenance
+        - link "Payments" [ref=f38e40] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f38e43] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f38e46] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f38e50] [cursor=pointer]:
+          - /url: /admin/flats
+        - link "Users" [ref=f38e55] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f38e68] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f38e72]
+      - generic [ref=f38e73]:
+        - generic [ref=f38e74]:
+          - generic [ref=f38e75]:
+            - paragraph [ref=f38e76]: Admin
+            - paragraph [ref=f38e77]: admin@oasis.local
+          - button "Toggle theme" [ref=f38e78]
+        - button "Sign Out" [ref=f38e80]
+    - main [ref=f38e81]:
+      - generic [ref=f38e2161]:
+        - generic [ref=f38e2162]:
+          - generic [ref=f38e2163]:
+            - link "Maintenance Bills" [ref=f38e2165] [cursor=pointer]:
+              - /url: /admin/maintenance
+            - heading "Maintenance Rates" [level=1] [ref=f38e2168]
+            - paragraph [ref=f38e2169]: Configure the monthly maintenance charge rate per sq ft
+          - link "Bill Scheduler" [ref=f38e2170] [cursor=pointer]:
+            - /url: /admin/maintenance/generate
+        - generic [ref=f38e2173]:
+          - generic [ref=f38e2175]:
+            - paragraph [ref=f38e2176]: Current Rate
+            - paragraph [ref=f38e2177]: ₹2.50 per sq ft / month
+            - paragraph [ref=f38e2178]: Effective from 01 Jul 2026
+          - generic [ref=f38e2179]:
+            - generic [ref=f38e2180]: Add New Rate
+            - generic [ref=f38e2183]:
+              - generic [ref=f38e2184]:
+                - generic [ref=f38e2185]: Rate (₹ per sq ft)
+                - spinbutton "Rate (₹ per sq ft)" [ref=f38e2186]
+              - generic [ref=f38e2187]:
+                - generic [ref=f38e2188]: Effective From
+                - textbox "Effective From" [ref=f38e2189]
+              - button "Add Rate" [ref=f38e2190]
+          - generic [ref=f38e2191]:
+            - generic [ref=f38e2192]: Rate History
+            - table [ref=f38e2195]:
+              - rowgroup [ref=f38e2196]:
+                - row [ref=f38e2197]:
+                  - columnheader "Rate (₹/sq ft)" [ref=f38e2198]
+                  - columnheader "Effective From" [ref=f38e2199]
+                  - columnheader "Added On" [ref=f38e2200]
+                  - columnheader "Status" [ref=f38e2201]
+              - rowgroup [ref=f38e2202]:
+                - row [ref=f38e2203]:
+                  - cell "₹2.50" [ref=f38e2204]
+                  - cell "01 Jul 2026" [ref=f38e2205]
+                  - cell "24 Jul 2026" [ref=f38e2206]
+                  - cell "Current" [ref=f38e2207]
+  - region "Notifications alt+T"
+  - alert [ref=f38e132]

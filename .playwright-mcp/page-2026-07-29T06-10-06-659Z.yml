@@ -1,0 +1,81 @@
+- generic [active] [ref=f28e1]:
+  - generic [ref=f28e2]:
+    - generic [ref=f28e4]:
+      - generic [ref=f28e10]:
+        - paragraph [ref=f28e11]: Oasis Venetia Heights
+        - paragraph [ref=f28e12]: Admin Panel
+      - navigation [ref=f28e13]:
+        - link "Dashboard" [ref=f28e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f28e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f28e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f28e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f28e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f28e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f28e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f28e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f28e47] [cursor=pointer]:
+          - /url: /admin/flats
+        - link "Users" [ref=f28e52] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f28e65] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f28e69]
+      - generic [ref=f28e70]:
+        - generic [ref=f28e71]:
+          - generic [ref=f28e72]:
+            - paragraph [ref=f28e73]: Admin
+            - paragraph [ref=f28e74]: admin@oasis.local
+          - button "Toggle theme" [ref=f28e75]
+        - button "Sign Out" [ref=f28e77]
+    - main [ref=f28e78]:
+      - generic [ref=f28e79]:
+        - generic [ref=f28e80]:
+          - heading "Bills" [level=1] [ref=f28e81]
+          - paragraph [ref=f28e82]: Manage electricity bills for Oasis Venetia Heights
+        - generic [ref=f28e83]:
+          - generic [ref=f28e84]:
+            - generic [ref=f28e85]: Tower
+            - combobox [ref=f28e86]:
+              - generic [ref=f28e87]: all
+              - img: ▼
+            - textbox [ref=f28e88]: all
+          - generic [ref=f28e89]:
+            - generic [ref=f28e90]: Month (YYYY-MM)
+            - textbox "e.g. 2026-07" [ref=f28e91]: 2026-07
+          - generic [ref=f28e92]:
+            - generic [ref=f28e93]: Status
+            - combobox [ref=f28e94]:
+              - generic [ref=f28e95]: all
+              - img: ▼
+            - textbox [ref=f28e96]: all
+          - generic [ref=f28e97]:
+            - generic [ref=f28e98]: Search
+            - textbox "Name or flat…" [ref=f28e99]
+          - button "Clear Filters" [ref=f28e100]
+        - generic [ref=f28e101]:
+          - generic [ref=f28e102]: 0 Bills
+          - table [ref=f28e106]:
+            - rowgroup [ref=f28e107]:
+              - row [ref=f28e108]:
+                - 'columnheader "Bill #" [ref=f28e109]'
+                - columnheader "Flat No" [ref=f28e110]
+                - columnheader "Tower" [ref=f28e111]
+                - columnheader "Resident" [ref=f28e112]
+                - columnheader "Period" [ref=f28e113]
+                - columnheader "Amount (₹)" [ref=f28e114]
+                - columnheader "Due Date" [ref=f28e115]
+                - columnheader "Status" [ref=f28e116]
+                - columnheader "Actions" [ref=f28e117]
+            - rowgroup [ref=f28e118]:
+              - row [ref=f28e119]:
+                - cell "No bills found" [ref=f28e120]
+  - region "Notifications alt+T"
+  - alert [ref=f28e121]

@@ -1,0 +1,106 @@
+- generic [ref=f23e1]:
+  - generic [ref=f23e2]:
+    - generic [ref=f23e4]:
+      - generic [ref=f23e10]:
+        - paragraph [ref=f23e11]: Oasis Venetia Heights
+        - paragraph [ref=f23e12]: Admin Panel
+      - navigation [ref=f23e13]:
+        - link [ref=f23e183] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=f23e184] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=f23e185] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=f23e186] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=f23e187] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=f23e188] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=f23e189] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=f23e190] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=f23e191] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+        - link [ref=f23e192] [cursor=pointer]:
+          - /url: /admin/users
+          - text: Users
+        - link [ref=f23e193] [cursor=pointer]:
+          - /url: /admin/permissions
+          - text: Permissions
+      - separator [ref=f23e69]
+      - generic [ref=f23e70]:
+        - generic [ref=f23e71]:
+          - generic [ref=f23e72]:
+            - paragraph [ref=f23e73]: Admin
+            - paragraph [ref=f23e74]: admin@oasis.local
+          - button [ref=f23e194]:
+            - generic [ref=f23e76]: Toggle theme
+        - button [ref=f23e195]: Sign Out
+    - main [ref=f23e78]:
+      - generic [ref=f23e79]:
+        - generic [ref=f23e80]:
+          - heading [level=1] [ref=f23e196]: Electricity Rates
+          - paragraph [ref=f23e82]: Manage NPCL and DG electricity rates
+        - generic [ref=f23e145]:
+          - generic [ref=f23e146]:
+            - generic [ref=f23e147]: Current Rate
+            - button [ref=f23e197]: Update Rates
+          - generic [ref=f23e150]:
+            - generic [ref=f23e151]:
+              - paragraph [ref=f23e152]: NPCL / Unit
+              - paragraph [ref=f23e153]: ₹7
+            - generic [ref=f23e154]:
+              - paragraph [ref=f23e155]: DG Fixed Charge
+              - paragraph [ref=f23e156]: ₹200
+            - generic [ref=f23e157]:
+              - paragraph [ref=f23e158]: Fixed / kW
+              - paragraph [ref=f23e159]: ₹115
+            - generic [ref=f23e160]:
+              - paragraph [ref=f23e161]: Effective From
+              - paragraph [ref=f23e162]: 17 Jul 2026
+        - generic [ref=f23e163]:
+          - generic [ref=f23e164]: Rate History
+          - table [ref=f23e168]:
+            - rowgroup [ref=f23e169]:
+              - row [ref=f23e198]:
+                - columnheader [ref=f23e199]: Effective From
+                - columnheader [ref=f23e200]: NPCL / Unit (₹)
+                - columnheader [ref=f23e201]: DG Fixed (₹)
+                - columnheader [ref=f23e202]: Fixed / kW (₹)
+                - columnheader [ref=f23e175]
+            - rowgroup [ref=f23e176]:
+              - row [ref=f23e203]:
+                - cell [ref=f23e204]: 17 Jul 2026Current
+                - cell [ref=f23e205]: ₹7
+                - cell [ref=f23e206]: ₹200
+                - cell [ref=f23e207]: ₹115
+                - cell [ref=f23e182]
+  - region "Notifications alt+T"
+  - alert [ref=f23e144]
+  - dialog [ref=f23e211]:
+    - heading "Update Electricity Rates" [level=2] [ref=f23e213]
+    - generic [ref=f23e214]:
+      - generic [ref=f23e215]:
+        - generic [ref=f23e216]: NPCL Per Unit (Rs.) *
+        - spinbutton "NPCL Per Unit (Rs.) *" [active] [ref=f23e217]
+      - generic [ref=f23e218]:
+        - generic [ref=f23e219]: DG Fixed Charge (Rs.) *
+        - spinbutton "DG Fixed Charge (Rs.) *" [ref=f23e220]
+      - generic [ref=f23e221]:
+        - generic [ref=f23e222]: Fixed Charge Per kW (Rs.) *
+        - spinbutton "Fixed Charge Per kW (Rs.) *" [ref=f23e223]
+      - generic [ref=f23e224]:
+        - button "Cancel" [ref=f23e225]
+        - button "Save Rates" [ref=f23e226]
+    - button "Close" [ref=f23e227]

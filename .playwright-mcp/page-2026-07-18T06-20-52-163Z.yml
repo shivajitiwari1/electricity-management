@@ -1,0 +1,79 @@
+- generic [active] [ref=f43e1]:
+  - generic [ref=f43e2]:
+    - banner [ref=f43e3]:
+      - generic [ref=f43e4]:
+        - generic [ref=f43e5]:
+          - generic [ref=f43e6]: Oasis Venetia Heights
+          - navigation [ref=f43e11]:
+            - link "Dashboard" [ref=f43e12] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f43e16] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f43e20] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Profile" [ref=f43e23] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f43e27]:
+          - generic [ref=f43e28]: Mr. Asheesh Kumar Mishra
+          - button "Toggle theme" [ref=f43e29]
+          - button "Sign Out" [ref=f43e31]
+    - main [ref=f43e33]:
+      - generic [ref=f43e34]:
+        - generic [ref=f43e35]:
+          - heading "My Profile" [level=1] [ref=f43e36]
+          - paragraph [ref=f43e37]: Your account and connection details (managed by admin)
+        - generic [ref=f43e38]:
+          - generic [ref=f43e39]: Personal Information
+          - generic [ref=f43e45]:
+            - generic [ref=f43e46]:
+              - generic [ref=f43e47]: Full Name
+              - generic [ref=f43e48]: Mr. Asheesh Kumar Mishra
+            - generic [ref=f43e49]:
+              - generic [ref=f43e50]: Email
+              - generic [ref=f43e51]: v1402@ovh.local
+            - generic [ref=f43e52]:
+              - generic [ref=f43e53]: Phone
+              - generic [ref=f43e54]: "9457642258"
+            - generic [ref=f43e55]:
+              - generic [ref=f43e56]: Resident Number
+              - generic [ref=f43e57]: RES-0396
+        - generic [ref=f43e58]:
+          - generic [ref=f43e60]:
+            - text: Connection Details
+            - generic [ref=f43e64]: ACTIVE
+          - generic [ref=f43e67]:
+            - generic [ref=f43e68]:
+              - generic [ref=f43e69]: Flat Details
+              - generic [ref=f43e74]:
+                - generic [ref=f43e75]:
+                  - generic [ref=f43e76]: Flat No
+                  - generic [ref=f43e77]: V-1402
+                - generic [ref=f43e78]:
+                  - generic [ref=f43e79]: Tower
+                  - generic [ref=f43e80]: Tower V
+                - generic [ref=f43e81]:
+                  - generic [ref=f43e82]: Floor
+                  - generic [ref=f43e83]: FOURTEENTH
+                - generic [ref=f43e84]:
+                  - generic [ref=f43e85]: Unit Type
+                  - generic [ref=f43e86]: Premium Studio(595 Sq. Ft.)
+                - generic [ref=f43e87]:
+                  - generic [ref=f43e88]: Unit Area
+                  - generic [ref=f43e89]: 595 sq.ft
+            - generic [ref=f43e90]:
+              - generic [ref=f43e91]: Electrical Connection
+              - generic [ref=f43e95]:
+                - generic [ref=f43e96]:
+                  - generic [ref=f43e97]: Meter No
+                  - generic [ref=f43e98]: —
+                - generic [ref=f43e99]:
+                  - generic [ref=f43e100]: Sanctioned Load
+                  - generic [ref=f43e101]: 2 kW
+                - generic [ref=f43e102]:
+                  - generic [ref=f43e103]: Connected Since
+                  - generic [ref=f43e104]: 17 Jul 2026
+        - generic [ref=f43e109]:
+          - paragraph [ref=f43e110]: Need to update your details?
+          - paragraph [ref=f43e111]: Profile and connection information is managed by the admin. Please contact the Oasis Venetia Heights management office for any changes.
+  - region "Notifications alt+T"
+  - alert [ref=f43e112]

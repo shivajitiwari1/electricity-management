@@ -34,6 +34,7 @@ type SerializedPayment = {
   receiptNumber: string;
   flatNo: string;
   residentName: string;
+  email: string;
   billNumber: string;
   amount: string;
   paymentDate: string;
@@ -47,6 +48,7 @@ type PendingBill = {
   billNumber: string;
   flatNo: string;
   residentName: string;
+  email: string;
   totalAmount: string;
   paidAmount: string;
   dueDate: string;
@@ -155,7 +157,6 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
   const [filterMethod, setFilterMethod] = useState("all");
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterName, setFilterName] = useState("");
-
   const [deletingPayment, setDeletingPayment] = useState<string | null>(null);
 
   async function handleDeletePayment(id: string, receiptNumber: string) {
@@ -188,6 +189,7 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
   const [payDate, setPayDate] = useState("");
   const [isCashSubmitting, setIsCashSubmitting] = useState(false);
 
+
   const filtered = useMemo(() => {
     const q = filterName.trim().toLowerCase();
     return initialData.filter((p) => {
@@ -197,10 +199,11 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
         return false;
       }
       if (filterStatus !== "all" && p.status !== filterStatus) return false;
-      if (q && !p.residentName.toLowerCase().includes(q) && !p.flatNo.toLowerCase().includes(q)) return false;
+      if (q && !p.residentName.toLowerCase().includes(q) && !p.flatNo.toLowerCase().includes(q) && !p.email.toLowerCase().includes(q)) return false;
       return true;
     });
   }, [initialData, filterMethod, filterStatus, filterName]);
+
 
   function openCashDialog(bill: PendingBill) {
     const remaining = parseFloat(bill.totalAmount) - parseFloat(bill.paidAmount ?? "0");
@@ -284,6 +287,7 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Bill #</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Flat No</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Resident</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Email</th>
                   <th className="text-right px-4 py-3 font-medium text-muted-foreground">Balance Due</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Due Date</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
@@ -293,7 +297,7 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
               <tbody>
                 {pendingBills.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="text-center py-10 text-muted-foreground">
+                    <td colSpan={8} className="text-center py-10 text-muted-foreground">
                       No pending bills — all caught up!
                     </td>
                   </tr>
@@ -306,6 +310,7 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
                       <td className="px-4 py-3 font-mono text-xs">{bill.billNumber}</td>
                       <td className="px-4 py-3 font-mono text-xs font-medium">{bill.flatNo}</td>
                       <td className="px-4 py-3">{bill.residentName}</td>
+                      <td className="px-4 py-3 text-xs text-muted-foreground">{bill.email || "—"}</td>
                       <td className="px-4 py-3 text-right font-semibold">
                         {formatINR((parseFloat(bill.totalAmount) - parseFloat(bill.paidAmount ?? "0")).toFixed(2))}
                       </td>
@@ -373,7 +378,7 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
         <div className="flex flex-col gap-1">
           <span className="text-xs font-medium text-muted-foreground">Search</span>
           <Input
-            placeholder="Name or flat…"
+            placeholder="Name, flat or email…"
             value={filterName}
             onChange={(e) => setFilterName(e.target.value)}
             className="w-48"
@@ -398,7 +403,9 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
       <Card>
         <CardHeader className="pb-0">
           <CardTitle className="text-base font-semibold flex items-center gap-3">
-            Payment History — {filtered.length} record{filtered.length !== 1 ? "s" : ""}
+            {filtered.length > 0
+              ? `Payment History — ${filtered.length} record${filtered.length !== 1 ? "s" : ""}`
+              : "Payment History — 0 records"}
             {filtered.length > 0 && (
               <span className="flex gap-2 text-xs font-normal">
                 <span className="inline-flex items-center gap-1 text-blue-700"><Wifi className="h-3 w-3" />{filtered.filter(p => p.method === "ONLINE").length} online</span>
@@ -497,6 +504,7 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
               </tbody>
             </table>
           </div>
+
         </CardContent>
       </Card>
 

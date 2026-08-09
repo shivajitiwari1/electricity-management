@@ -1,0 +1,213 @@
+- generic [ref=f54e1]:
+  - generic [ref=f54e2]:
+    - generic [ref=f54e4]:
+      - generic [ref=f54e10]:
+        - paragraph [ref=f54e11]: Oasis Venetia Heights
+        - paragraph [ref=f54e12]: Admin Panel
+      - navigation [ref=f54e13]:
+        - link [ref=f54e4998] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=f54e4999] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=f54e5000] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=f54e5001] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=f54e5002] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=f54e5003] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=f54e5004] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=f54e5005] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=f54e5006] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+      - separator [ref=f54e52]
+      - generic [ref=f54e53]:
+        - generic [ref=f54e54]:
+          - generic [ref=f54e55]:
+            - paragraph [ref=f54e56]: Admin
+            - paragraph [ref=f54e57]: admin@oasis.local
+          - button [ref=f54e5007]:
+            - generic [ref=f54e59]: Toggle theme
+        - button [ref=f54e5008]: Sign Out
+    - main [ref=f54e61]:
+      - generic [ref=f54e62]:
+        - generic [ref=f54e63]:
+          - heading [level=1] [ref=f54e5009]: Residents
+          - paragraph [ref=f54e65]: Manage residents of Oasis Venetia Heights
+        - generic [ref=f54e199]:
+          - textbox [ref=f54e5010]:
+            - /placeholder: Search by name, email, flat...
+            - text: Gaurav
+          - button [ref=f54e5011]: Add Resident
+        - generic [ref=f54e206]:
+          - generic [ref=f54e207]: 8 Residents
+          - table [ref=f54e211]:
+            - rowgroup [ref=f54e212]:
+              - row [ref=f54e5012]:
+                - columnheader [ref=f54e5013]: Flat No
+                - columnheader [ref=f54e5014]: Tower
+                - columnheader [ref=f54e5015]: Name
+                - columnheader [ref=f54e5016]: Email
+                - columnheader [ref=f54e5017]: Phone
+                - columnheader [ref=f54e5018]: Status
+                - columnheader [ref=f54e5019]: Actions
+            - rowgroup [ref=f54e221]:
+              - row [ref=f54e5020]:
+                - cell [ref=f54e5021]: V-1404
+                - cell [ref=f54e5022]: V
+                - cell [ref=f54e5023]: Mr. Gaurav Kumar
+                - cell [ref=f54e5024]: v1404@ovh.local
+                - cell [ref=f54e5025]: "9971200074"
+                - cell [ref=f54e5026]:
+                  - generic [ref=f54e241]: ACTIVE
+                - cell [ref=f54e5027]:
+                  - generic [ref=f54e243]:
+                    - button [ref=f54e5028]: Edit
+                    - button [ref=f54e5029]: Deactivate
+              - row [ref=f54e5030]:
+                - cell [ref=f54e5031]: V-705
+                - cell [ref=f54e5032]: V
+                - cell [ref=f54e5033]: Mr. Gaurav Bahuguna
+                - cell [ref=f54e5034]: gauravbahuguna85@gmail.com
+                - cell [ref=f54e5035]: "9958516113"
+                - cell [ref=f54e5036]:
+                  - generic [ref=f54e721]: ACTIVE
+                - cell [ref=f54e5037]:
+                  - generic [ref=f54e723]:
+                    - button [ref=f54e5038]: Edit
+                    - button [ref=f54e5039]: Deactivate
+              - row [ref=f54e5040]:
+                - cell [ref=f54e5041]: C-407
+                - cell [ref=f54e5042]: C
+                - cell [ref=f54e5043]: Mr. Gaurav Kumar Yadav
+                - cell [ref=f54e5044]: gky05@rediffmail.com
+                - cell [ref=f54e5045]: "7428859495"
+                - cell [ref=f54e5046]:
+                  - generic [ref=f54e2449]: ACTIVE
+                - cell [ref=f54e5047]:
+                  - generic [ref=f54e2451]:
+                    - button [ref=f54e5048]: Edit
+                    - button [ref=f54e5049]: Deactivate
+              - row [ref=f54e5050]:
+                - cell [ref=f54e5051]: B-12A-04
+                - cell [ref=f54e5052]: B
+                - cell [ref=f54e5053]: Mrs. Chander Kanta Gulati
+                - cell [ref=f54e5054]: gulati_gaurav28@gmail.com
+                - cell [ref=f54e5055]: "9313146292"
+                - cell [ref=f54e5056]:
+                  - generic [ref=f54e3193]: ACTIVE
+                - cell [ref=f54e5057]:
+                  - generic [ref=f54e3195]:
+                    - button [ref=f54e5058]: Edit
+                    - button [ref=f54e5059]: Deactivate
+              - row [ref=f54e5060]:
+                - cell [ref=f54e5061]: B-1206
+                - cell [ref=f54e5062]: B
+                - cell [ref=f54e5063]: Mr. Gaurav Kumar
+                - cell [ref=f54e5064]: rchaudhary562@gmail.com
+                - cell [ref=f54e5065]: "7500692464"
+                - cell [ref=f54e5066]:
+                  - generic [ref=f54e3265]: ACTIVE
+                - cell [ref=f54e5067]:
+                  - generic [ref=f54e3267]:
+                    - button [ref=f54e5068]: Edit
+                    - button [ref=f54e5069]: Deactivate
+              - row [ref=f54e5070]:
+                - cell [ref=f54e5071]: B-901
+                - cell [ref=f54e5072]: B
+                - cell [ref=f54e5073]: Mr. Gaurav Gautam
+                - cell [ref=f54e5074]: gauravgautam1980@yahoo.com
+                - cell [ref=f54e5075]: "9711126887"
+                - cell [ref=f54e5076]:
+                  - generic [ref=f54e3601]: ACTIVE
+                - cell [ref=f54e5077]:
+                  - generic [ref=f54e3603]:
+                    - button [ref=f54e5078]: Edit
+                    - button [ref=f54e5079]: Deactivate
+              - row [ref=f54e5080]:
+                - cell [ref=f54e5081]: A-801
+                - cell [ref=f54e5082]: A
+                - cell [ref=f54e5083]: Mr. Gaurav Sharma
+                - cell [ref=f54e5084]: gsharma24@yahoo.com
+                - cell [ref=f54e5085]: "8279774497"
+                - cell [ref=f54e5086]:
+                  - generic [ref=f54e4693]: ACTIVE
+                - cell [ref=f54e5087]:
+                  - generic [ref=f54e4695]:
+                    - button [ref=f54e5088]: Edit
+                    - button [ref=f54e5089]: Deactivate
+              - row [ref=f54e5090]:
+                - cell [ref=f54e5091]: A-104
+                - cell [ref=f54e5092]: A
+                - cell [ref=f54e5093]: Mr. Gaurav Chaudhary
+                - cell [ref=f54e5094]: gaurav.airwil113@gmail.com
+                - cell [ref=f54e5095]: "9015518435"
+                - cell [ref=f54e5096]:
+                  - generic [ref=f54e4957]: ACTIVE
+                - cell [ref=f54e5097]:
+                  - generic [ref=f54e4959]:
+                    - button [ref=f54e5098]: Edit
+                    - button [ref=f54e5099]: Deactivate
+  - region "Notifications alt+T"
+  - alert [ref=f54e198]
+  - dialog [ref=f54e5103]:
+    - heading "Add Resident" [level=2] [ref=f54e5105]
+    - generic [ref=f54e5106]:
+      - generic [ref=f54e5107]:
+        - generic [ref=f54e5108]:
+          - generic [ref=f54e5109]: Name *
+          - textbox "Name *" [active] [ref=f54e5110]:
+            - /placeholder: Full name
+        - generic [ref=f54e5111]:
+          - generic [ref=f54e5112]: Email *
+          - textbox "Email *" [ref=f54e5113]:
+            - /placeholder: email@example.com
+            - text: admin@oasis.local
+        - generic [ref=f54e5114]:
+          - generic [ref=f54e5115]: Phone
+          - textbox "Phone" [ref=f54e5116]:
+            - /placeholder: +91 98765 43210
+        - generic [ref=f54e5117]:
+          - generic [ref=f54e5118]: Tower *
+          - combobox "Tower *" [ref=f54e5119]:
+            - generic [ref=f54e5120]: Select tower
+            - img: ▼
+          - textbox [ref=f54e5121]
+        - generic [ref=f54e5122]:
+          - generic [ref=f54e5123]: Floor *
+          - textbox "Floor *" [ref=f54e5124]:
+            - /placeholder: e.g. 3
+        - generic [ref=f54e5125]:
+          - generic [ref=f54e5126]: Flat No *
+          - button "Search flat no…" [ref=f54e5127]
+        - generic [ref=f54e5132]:
+          - generic [ref=f54e5133]: Unit Type
+          - textbox "Unit Type" [ref=f54e5134]:
+            - /placeholder: Auto-filled on flat selection
+        - generic [ref=f54e5135]:
+          - generic [ref=f54e5136]: Unit Area (sq ft)
+          - spinbutton "Unit Area (sq ft)" [ref=f54e5137]
+        - generic [ref=f54e5138]:
+          - generic [ref=f54e5139]: Sanctioned Load (kW) *
+          - spinbutton "Sanctioned Load (kW) *" [ref=f54e5140]: "5"
+        - generic [ref=f54e5141]:
+          - generic [ref=f54e5142]: Password *
+          - textbox "Password *" [ref=f54e5143]:
+            - /placeholder: Min. 6 characters
+            - text: Admin@123
+      - generic [ref=f54e5144]:
+        - button "Cancel" [ref=f54e5145]
+        - button "Add Resident" [ref=f54e5146]
+    - button "Close" [ref=f54e5147]

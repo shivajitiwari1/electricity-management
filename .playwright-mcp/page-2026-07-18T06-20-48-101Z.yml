@@ -1,0 +1,41 @@
+- generic [active] [ref=f42e1]:
+  - generic [ref=f42e2]:
+    - banner [ref=f42e3]:
+      - generic [ref=f42e4]:
+        - generic [ref=f42e5]:
+          - generic [ref=f42e6]: Oasis Venetia Heights
+          - navigation [ref=f42e11]:
+            - link "Dashboard" [ref=f42e12] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f42e16] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f42e20] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Profile" [ref=f42e23] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f42e27]:
+          - generic [ref=f42e28]: Mr. Asheesh Kumar Mishra
+          - button "Toggle theme" [ref=f42e29]
+          - button "Sign Out" [ref=f42e31]
+    - main [ref=f42e33]:
+      - generic [ref=f42e34]:
+        - generic [ref=f42e35]:
+          - heading "My Bills" [level=1] [ref=f42e36]
+          - paragraph [ref=f42e37]: View and pay your electricity bills
+        - generic [ref=f42e38]:
+          - generic [ref=f42e39]: 0 Bills
+          - table [ref=f42e43]:
+            - rowgroup [ref=f42e44]:
+              - row [ref=f42e45]:
+                - 'columnheader "Bill #" [ref=f42e46]'
+                - columnheader "Period" [ref=f42e47]
+                - columnheader "NPCL Units" [ref=f42e48]
+                - columnheader "Amount (₹)" [ref=f42e49]
+                - columnheader "Due Date" [ref=f42e50]
+                - columnheader "Status" [ref=f42e51]
+                - columnheader "Actions" [ref=f42e52]
+            - rowgroup [ref=f42e53]:
+              - row [ref=f42e54]:
+                - cell "No bills found" [ref=f42e55]
+  - region "Notifications alt+T"
+  - alert [ref=f42e56]

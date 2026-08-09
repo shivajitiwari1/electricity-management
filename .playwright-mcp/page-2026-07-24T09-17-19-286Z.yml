@@ -1,0 +1,136 @@
+- generic [active] [ref=f10e1]:
+  - generic [ref=f10e2]:
+    - generic [ref=f10e4]:
+      - generic [ref=f10e10]:
+        - paragraph [ref=f10e11]: Oasis Venetia Heights
+        - paragraph [ref=f10e12]: Admin Panel
+      - navigation [ref=f10e13]:
+        - link "Dashboard" [ref=f10e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f10e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f10e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f10e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f10e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f10e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f10e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f10e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f10e47] [cursor=pointer]:
+          - /url: /admin/flats
+        - button "Maintenance" [ref=f10e53]
+        - link "Users" [ref=f10e59] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f10e72] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f10e76]
+      - generic [ref=f10e77]:
+        - generic [ref=f10e78]:
+          - generic [ref=f10e79]:
+            - paragraph [ref=f10e80]: Admin
+            - paragraph [ref=f10e81]: admin@oasis.local
+          - button "Toggle theme" [ref=f10e82]
+        - button "Sign Out" [ref=f10e84]
+    - main [ref=f10e85]:
+      - generic [ref=f10e86]:
+        - generic [ref=f10e87]:
+          - heading "Payments" [level=1] [ref=f10e88]
+          - paragraph [ref=f10e89]: View all payment transactions for Oasis Venetia Heights
+        - generic [ref=f10e246]:
+          - generic [ref=f10e248]:
+            - text: Bills Requiring Payment
+            - generic [ref=f10e249]: 1 pending
+          - table [ref=f10e252]:
+            - rowgroup [ref=f10e253]:
+              - row [ref=f10e254]:
+                - 'columnheader "Bill #" [ref=f10e255]'
+                - columnheader "Flat No" [ref=f10e256]
+                - columnheader "Resident" [ref=f10e257]
+                - columnheader "Balance Due" [ref=f10e258]
+                - columnheader "Due Date" [ref=f10e259]
+                - columnheader "Status" [ref=f10e260]
+                - columnheader "Actions" [ref=f10e261]
+            - rowgroup [ref=f10e262]:
+              - row [ref=f10e263]:
+                - cell "OV-A-1001-202607" [ref=f10e264]
+                - cell "A-1001" [ref=f10e265]
+                - cell "Mrs. Pooja Devrani" [ref=f10e266]
+                - cell "₹4,027.00" [ref=f10e267]
+                - cell "01 Aug 2026" [ref=f10e268]
+                - cell "PENDING" [ref=f10e269]
+                - cell [ref=f10e271]:
+                  - button "Record Payment" [ref=f10e272]
+        - generic [ref=f10e273]:
+          - generic [ref=f10e274]:
+            - generic [ref=f10e275]: Method
+            - combobox [ref=f10e276]:
+              - generic [ref=f10e277]: all
+              - img: ▼
+            - textbox [ref=f10e278]: all
+          - generic [ref=f10e279]:
+            - generic [ref=f10e280]: Status
+            - combobox [ref=f10e281]:
+              - generic [ref=f10e282]: all
+              - img: ▼
+            - textbox [ref=f10e283]: all
+          - generic [ref=f10e284]:
+            - generic [ref=f10e285]: Search
+            - textbox "Name or flat…" [ref=f10e286]
+        - generic [ref=f10e287]:
+          - generic [ref=f10e289]:
+            - text: Payment History — 2 records
+            - generic [ref=f10e365]:
+              - generic [ref=f10e366]: 0 online
+              - generic [ref=f10e371]: 2 manual
+          - table [ref=f10e303]:
+            - rowgroup [ref=f10e304]:
+              - row [ref=f10e305]:
+                - 'columnheader "Receipt #" [ref=f10e306]'
+                - columnheader "Flat No" [ref=f10e307]
+                - columnheader "Resident" [ref=f10e308]
+                - 'columnheader "Bill #" [ref=f10e309]'
+                - columnheader "Amount (₹)" [ref=f10e310]
+                - columnheader "Date" [ref=f10e311]
+                - columnheader "Type" [ref=f10e312]
+                - columnheader "Method" [ref=f10e313]
+                - columnheader "Reference / Txn ID" [ref=f10e314]
+                - columnheader "Status" [ref=f10e315]
+                - columnheader "Actions" [ref=f10e316]
+            - rowgroup [ref=f10e317]:
+              - row [ref=f10e376]:
+                - cell "RCPT-20260722-0002" [ref=f10e377]
+                - cell "V-405" [ref=f10e378]
+                - cell "Mr. Alok Kumar" [ref=f10e379]
+                - cell "OV-V-405-202607" [ref=f10e380]
+                - cell "90.00" [ref=f10e381]
+                - cell "22 Jul 2026" [ref=f10e382]
+                - cell [ref=f10e383]
+                - cell "NEFT" [ref=f10e389]
+                - cell "4646" [ref=f10e391]
+                - cell "SUCCESS" [ref=f10e392]
+                - cell [ref=f10e394]:
+                  - generic [ref=f10e395]:
+                    - button "Receipt" [ref=f10e396]
+                    - button "Delete" [ref=f10e397]
+              - row [ref=f10e398]:
+                - cell "RCPT-20260722-0001" [ref=f10e399]
+                - cell "V-405" [ref=f10e400]
+                - cell "Mr. Alok Kumar" [ref=f10e401]
+                - cell "OV-V-405-202607" [ref=f10e402]
+                - cell "1,200.00" [ref=f10e403]
+                - cell "22 Jul 2026" [ref=f10e404]
+                - cell [ref=f10e405]
+                - cell "UPI" [ref=f10e411]
+                - cell "4646" [ref=f10e413]
+                - cell "SUCCESS" [ref=f10e414]
+                - cell [ref=f10e416]:
+                  - generic [ref=f10e417]:
+                    - button "Receipt" [ref=f10e418]
+                    - button "Delete" [ref=f10e419]
+  - region "Notifications alt+T"
+  - alert [ref=f10e245]

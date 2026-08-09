@@ -1,0 +1,41 @@
+- generic [ref=f3e1]:
+  - generic [ref=f3e31]:
+    - banner [ref=f3e32]:
+      - generic [ref=f3e33]:
+        - generic [ref=f3e34]:
+          - generic [ref=f3e35]: Oasis Venetia Heights
+          - navigation [ref=f3e40]:
+            - link "Dashboard" [ref=f3e41] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [active] [ref=f3e45] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f3e49] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Profile" [ref=f3e52] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f3e56]:
+          - generic [ref=f3e57]: Shivaji Tiwari
+          - button "Toggle theme" [ref=f3e58]
+          - button "Sign Out" [ref=f3e60]
+    - main [ref=f3e62]:
+      - generic [ref=f3e113]:
+        - generic [ref=f3e114]:
+          - heading "My Bills" [level=1] [ref=f3e115]
+          - paragraph [ref=f3e116]: View and pay your electricity bills
+        - generic [ref=f3e117]:
+          - generic [ref=f3e118]: 0 Bills
+          - table [ref=f3e122]:
+            - rowgroup [ref=f3e123]:
+              - row [ref=f3e124]:
+                - 'columnheader "Bill #" [ref=f3e125]'
+                - columnheader "Period" [ref=f3e126]
+                - columnheader "NPCL Units" [ref=f3e127]
+                - columnheader "Amount (₹)" [ref=f3e128]
+                - columnheader "Due Date" [ref=f3e129]
+                - columnheader "Status" [ref=f3e130]
+                - columnheader "Actions" [ref=f3e131]
+            - rowgroup [ref=f3e132]:
+              - row [ref=f3e133]:
+                - cell "No bills found" [ref=f3e134]
+  - region "Notifications alt+T"
+  - alert [ref=f3e30]

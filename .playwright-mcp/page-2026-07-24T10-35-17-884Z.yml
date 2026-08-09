@@ -1,0 +1,20 @@
+- generic [active] [ref=f63e1]:
+  - generic [ref=f63e3]:
+    - generic [ref=f63e8]:
+      - heading "Oasis Venetia Heights" [level=1] [ref=f63e9]
+      - paragraph [ref=f63e10]: Electricity Bill Management
+    - generic [ref=f63e11]:
+      - generic [ref=f63e12]:
+        - generic [ref=f63e13]: Reset Password
+        - generic [ref=f63e14]: Enter your registered email — we'll send a reset link.
+      - generic [ref=f63e16]:
+        - generic [ref=f63e17]:
+          - generic [ref=f63e18]: Email Address
+          - textbox "Email Address" [ref=f63e19]:
+            - /placeholder: your@email.com
+        - button "Send Reset Link" [ref=f63e20]
+        - link [ref=f63e21] [cursor=pointer]:
+          - /url: /login
+          - button "Back to Login" [ref=f63e22]
+  - region "Notifications alt+T"
+  - alert [ref=f63e23]

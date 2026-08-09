@@ -1,0 +1,183 @@
+- generic [active] [ref=f17e1]:
+  - generic [ref=f17e2]:
+    - generic [ref=f17e4]:
+      - generic [ref=f17e10]:
+        - paragraph [ref=f17e11]: Oasis Venetia Heights
+        - paragraph [ref=f17e12]: Admin Panel
+      - navigation [ref=f17e13]:
+        - link "Dashboard" [ref=f17e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f17e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f17e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f17e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f17e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f17e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f17e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f17e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f17e47] [cursor=pointer]:
+          - /url: /admin/flats
+        - generic [ref=f17e52]:
+          - button "Maintenance" [ref=f17e53]
+          - generic [ref=f17e59]:
+            - link "Bills" [ref=f17e60] [cursor=pointer]:
+              - /url: /admin/maintenance
+            - link "Rates" [ref=f17e64] [cursor=pointer]:
+              - /url: /admin/maintenance/rates
+            - link "Scheduler" [ref=f17e68] [cursor=pointer]:
+              - /url: /admin/maintenance/generate
+            - link "Payments" [ref=f17e71] [cursor=pointer]:
+              - /url: /admin/maintenance/payments
+        - link "Users" [ref=f17e74] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f17e87] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f17e91]
+      - generic [ref=f17e92]:
+        - generic [ref=f17e93]:
+          - generic [ref=f17e94]:
+            - paragraph [ref=f17e95]: Admin
+            - paragraph [ref=f17e96]: admin@oasis.local
+          - button "Toggle theme" [ref=f17e97]
+        - button "Sign Out" [ref=f17e99]
+    - main [ref=f17e100]:
+      - generic [ref=f17e101]:
+        - generic [ref=f17e102]:
+          - heading "Maintenance Payments" [level=1] [ref=f17e103]
+          - paragraph [ref=f17e104]: Payment history for maintenance bills
+        - generic [ref=f17e105]:
+          - generic [ref=f17e106]:
+            - generic [ref=f17e107]:
+              - generic [ref=f17e108]: Tower
+              - combobox [ref=f17e109]:
+                - generic [ref=f17e110]: all
+                - img: ▼
+              - textbox [ref=f17e111]: all
+            - generic [ref=f17e112]:
+              - generic [ref=f17e113]: Month
+              - textbox [ref=f17e114]: 2026-07
+            - generic [ref=f17e115]:
+              - generic [ref=f17e116]: Method
+              - combobox [ref=f17e117]:
+                - generic [ref=f17e118]: all
+                - img: ▼
+              - textbox [ref=f17e119]: all
+            - generic [ref=f17e120]:
+              - generic [ref=f17e121]: Search
+              - textbox "Flat or resident…" [ref=f17e122]
+            - button "Apply Filter" [ref=f17e123]
+          - generic [ref=f17e124]:
+            - generic [ref=f17e125]:
+              - strong [ref=f17e126]: "8"
+              - text: payments
+            - generic [ref=f17e127]:
+              - text: "Total Collected:"
+              - strong [ref=f17e128]: ₹21,275.00
+          - table [ref=f17e130]:
+            - rowgroup [ref=f17e131]:
+              - row [ref=f17e132]:
+                - columnheader "Receipt No" [ref=f17e133]
+                - columnheader "Flat / Resident" [ref=f17e134]
+                - columnheader "Bill No" [ref=f17e135]
+                - columnheader "Amount" [ref=f17e136]
+                - columnheader "Method" [ref=f17e137]
+                - columnheader "Reference" [ref=f17e138]
+                - columnheader "Date" [ref=f17e139]
+                - columnheader "Status" [ref=f17e140]
+            - rowgroup [ref=f17e141]:
+              - row [ref=f17e142]:
+                - cell "MRCPT-20260724-0001" [ref=f17e143]
+                - cell [ref=f17e144]:
+                  - paragraph [ref=f17e145]: A-101
+                  - paragraph [ref=f17e146]: Mr. Bachoo Singh Bhagaur
+                - cell "OM-A-101-202607" [ref=f17e147]
+                - cell "₹2,875.00" [ref=f17e148]
+                - cell "CASH" [ref=f17e149]
+                - cell "qeqweeqweq" [ref=f17e151]
+                - cell "24 Jul 2026" [ref=f17e152]
+                - cell "SUCCESS" [ref=f17e153]
+              - row [ref=f17e155]:
+                - cell "MRCPT-20260724-0002" [ref=f17e156]
+                - cell [ref=f17e157]:
+                  - paragraph [ref=f17e158]: A-404
+                  - paragraph [ref=f17e159]: Shivaji Tiwari
+                - cell "OM-A-404-202608" [ref=f17e160]
+                - cell "₹2,587.50" [ref=f17e161]
+                - cell "CASH" [ref=f17e162]
+                - cell "—" [ref=f17e164]
+                - cell "24 Jul 2026" [ref=f17e165]
+                - cell "SUCCESS" [ref=f17e166]
+              - row [ref=f17e168]:
+                - cell "MRCPT-20260724-0003" [ref=f17e169]
+                - cell [ref=f17e170]:
+                  - paragraph [ref=f17e171]: A-404
+                  - paragraph [ref=f17e172]: Shivaji Tiwari
+                - cell "OM-A-404-202609" [ref=f17e173]
+                - cell "₹2,587.50" [ref=f17e174]
+                - cell "CASH" [ref=f17e175]
+                - cell "—" [ref=f17e177]
+                - cell "24 Jul 2026" [ref=f17e178]
+                - cell "SUCCESS" [ref=f17e179]
+              - row [ref=f17e181]:
+                - cell "MRCPT-20260724-0004" [ref=f17e182]
+                - cell [ref=f17e183]:
+                  - paragraph [ref=f17e184]: A-404
+                  - paragraph [ref=f17e185]: Shivaji Tiwari
+                - cell "OM-A-404-202610" [ref=f17e186]
+                - cell "₹2,587.50" [ref=f17e187]
+                - cell "CASH" [ref=f17e188]
+                - cell "—" [ref=f17e190]
+                - cell "24 Jul 2026" [ref=f17e191]
+                - cell "SUCCESS" [ref=f17e192]
+              - row [ref=f17e194]:
+                - cell "MRCPT-20260724-0005" [ref=f17e195]
+                - cell [ref=f17e196]:
+                  - paragraph [ref=f17e197]: A-404
+                  - paragraph [ref=f17e198]: Shivaji Tiwari
+                - cell "OM-A-404-202611" [ref=f17e199]
+                - cell "₹2,587.50" [ref=f17e200]
+                - cell "CASH" [ref=f17e201]
+                - cell "—" [ref=f17e203]
+                - cell "24 Jul 2026" [ref=f17e204]
+                - cell "SUCCESS" [ref=f17e205]
+              - row [ref=f17e207]:
+                - cell "MRCPT-20260724-0006" [ref=f17e208]
+                - cell [ref=f17e209]:
+                  - paragraph [ref=f17e210]: A-404
+                  - paragraph [ref=f17e211]: Shivaji Tiwari
+                - cell "OM-A-404-202612" [ref=f17e212]
+                - cell "₹2,587.50" [ref=f17e213]
+                - cell "CASH" [ref=f17e214]
+                - cell "—" [ref=f17e216]
+                - cell "24 Jul 2026" [ref=f17e217]
+                - cell "SUCCESS" [ref=f17e218]
+              - row [ref=f17e220]:
+                - cell "MRCPT-20260724-0007" [ref=f17e221]
+                - cell [ref=f17e222]:
+                  - paragraph [ref=f17e223]: A-404
+                  - paragraph [ref=f17e224]: Shivaji Tiwari
+                - cell "OM-A-404-202701" [ref=f17e225]
+                - cell "₹2,587.50" [ref=f17e226]
+                - cell "CASH" [ref=f17e227]
+                - cell "—" [ref=f17e229]
+                - cell "24 Jul 2026" [ref=f17e230]
+                - cell "SUCCESS" [ref=f17e231]
+              - row [ref=f17e233]:
+                - cell "MRCPT-20260724-0008" [ref=f17e234]
+                - cell [ref=f17e235]:
+                  - paragraph [ref=f17e236]: A-404
+                  - paragraph [ref=f17e237]: Shivaji Tiwari
+                - cell "OM-A-404-202607" [ref=f17e238]
+                - cell "₹2,875.00" [ref=f17e239]
+                - cell "CASH" [ref=f17e240]
+                - cell "—" [ref=f17e242]
+                - cell "24 Jul 2026" [ref=f17e243]
+                - cell "SUCCESS" [ref=f17e244]
+  - region "Notifications alt+T"
+  - alert [ref=f17e246]

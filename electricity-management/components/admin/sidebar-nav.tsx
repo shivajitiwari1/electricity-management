@@ -57,7 +57,7 @@ function NavLinks({ pathname, role, permissions, onNavigate }: {
   const isMaintActive = pathname.startsWith("/admin/maintenance");
   const [maintOpen, setMaintOpen] = useState(isMaintActive);
 
-  const showMaintenance = isAdmin || permissions["maintenance"]?.canRead === true;
+  const showMaintenance = false; // hidden — re-enable when maintenance module is activated
 
   const visibleItems = NAV_ITEMS.filter(({ pageId }) => {
     if (isAdmin) return true;

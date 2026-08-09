@@ -1,0 +1,152 @@
+- generic [active] [ref=f16e1]:
+  - generic [ref=f16e2]:
+    - generic [ref=f16e4]:
+      - generic [ref=f16e10]:
+        - paragraph [ref=f16e11]: Oasis Venetia Heights
+        - paragraph [ref=f16e12]: Admin Panel
+      - navigation [ref=f16e13]:
+        - link "Dashboard" [ref=f16e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f16e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f16e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f16e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f16e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f16e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f16e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f16e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f16e47] [cursor=pointer]:
+          - /url: /admin/flats
+        - link "Users" [ref=f16e52] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f16e65] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f16e69]
+      - generic [ref=f16e70]:
+        - generic [ref=f16e71]:
+          - generic [ref=f16e72]:
+            - paragraph [ref=f16e73]: Admin
+            - paragraph [ref=f16e74]: admin@oasis.local
+          - button "Toggle theme" [ref=f16e75]
+        - button "Sign Out" [ref=f16e77]
+    - main [ref=f16e78]:
+      - generic [ref=f16e79]:
+        - generic [ref=f16e80]:
+          - heading "Dashboard" [level=1] [ref=f16e81]
+          - paragraph [ref=f16e82]: Overview of Oasis Venetia Heights electricity management
+        - generic [ref=f16e83]:
+          - generic [ref=f16e87]:
+            - paragraph [ref=f16e88]: Total Residents
+            - paragraph [ref=f16e89]: "400"
+          - generic [ref=f16e99]:
+            - paragraph [ref=f16e100]: Active Connections
+            - paragraph [ref=f16e101]: "400"
+          - generic [ref=f16e108]:
+            - paragraph [ref=f16e109]: Bills This Month
+            - paragraph [ref=f16e110]: "1"
+          - generic [ref=f16e118]:
+            - paragraph [ref=f16e119]: Revenue This Month
+            - paragraph [ref=f16e120]: ₹0.00
+          - generic [ref=f16e128]:
+            - paragraph [ref=f16e129]: Overdue Bills
+            - paragraph [ref=f16e130]: "0"
+        - generic [ref=f16e134]:
+          - link [ref=f16e135] [cursor=pointer]:
+            - /url: /admin/residents
+            - button "Add Resident" [ref=f16e136]
+          - link [ref=f16e137] [cursor=pointer]:
+            - /url: /admin/meter-readings
+            - button "Enter Reading" [ref=f16e138]
+          - link [ref=f16e139] [cursor=pointer]:
+            - /url: /admin/reports
+            - button "View Reports" [ref=f16e140]
+        - generic [ref=f16e141]:
+          - generic [ref=f16e142]: Recent Bills
+          - table [ref=f16e146]:
+            - rowgroup [ref=f16e147]:
+              - row [ref=f16e148]:
+                - 'columnheader "Bill #" [ref=f16e149]'
+                - columnheader "Flat" [ref=f16e150]
+                - columnheader "Resident" [ref=f16e151]
+                - columnheader "Amount" [ref=f16e152]
+                - columnheader "Due Date" [ref=f16e153]
+                - columnheader "Status" [ref=f16e154]
+            - rowgroup [ref=f16e155]:
+              - row [ref=f16e156]:
+                - cell "OV-A-404-202608" [ref=f16e157]
+                - cell "A-404" [ref=f16e158]
+                - cell "Shivaji Tiwari" [ref=f16e159]
+                - cell "₹3,110.00" [ref=f16e160]
+                - cell "11 Aug 2026" [ref=f16e161]
+                - cell "PENDING" [ref=f16e162]
+              - row [ref=f16e164]:
+                - cell "OV-B-1107-202607" [ref=f16e165]
+                - cell "B-1107" [ref=f16e166]
+                - cell "Mr. S K Mittal" [ref=f16e167]
+                - cell "₹9,392.00" [ref=f16e168]
+                - cell "09 Aug 2026" [ref=f16e169]
+                - cell "PENDING" [ref=f16e170]
+              - row [ref=f16e172]:
+                - cell "OV-B-1106-202607" [ref=f16e173]
+                - cell "B-1106" [ref=f16e174]
+                - cell "Mr. Ajeet Kumar Nigam" [ref=f16e175]
+                - cell "₹4,612.00" [ref=f16e176]
+                - cell "09 Aug 2026" [ref=f16e177]
+                - cell "PENDING" [ref=f16e178]
+              - row [ref=f16e180]:
+                - cell "OV-B-1008-202607" [ref=f16e181]
+                - cell "B-1008" [ref=f16e182]
+                - cell "Mr. Surender Singh" [ref=f16e183]
+                - cell "₹12,669.00" [ref=f16e184]
+                - cell "09 Aug 2026" [ref=f16e185]
+                - cell "PENDING" [ref=f16e186]
+              - row [ref=f16e188]:
+                - cell "OV-B-1007-202607" [ref=f16e189]
+                - cell "B-1007" [ref=f16e190]
+                - cell "Mr. Deepak Tyagi" [ref=f16e191]
+                - cell "₹1,853.00" [ref=f16e192]
+                - cell "09 Aug 2026" [ref=f16e193]
+                - cell "PENDING" [ref=f16e194]
+              - row [ref=f16e196]:
+                - cell "OV-B-1003-202607" [ref=f16e197]
+                - cell "B-1003" [ref=f16e198]
+                - cell "Mr. Harendra Kumar" [ref=f16e199]
+                - cell "₹7,323.00" [ref=f16e200]
+                - cell "09 Aug 2026" [ref=f16e201]
+                - cell "PENDING" [ref=f16e202]
+              - row [ref=f16e204]:
+                - cell "OV-B-908-202607" [ref=f16e205]
+                - cell "B-908" [ref=f16e206]
+                - cell "Mr. Anuj Agarwal" [ref=f16e207]
+                - cell "₹9,379.00" [ref=f16e208]
+                - cell "09 Aug 2026" [ref=f16e209]
+                - cell "PENDING" [ref=f16e210]
+              - row [ref=f16e212]:
+                - cell "OV-B-907-202607" [ref=f16e213]
+                - cell "B-907" [ref=f16e214]
+                - cell "Mr. Atishya Jain" [ref=f16e215]
+                - cell "₹5,444.00" [ref=f16e216]
+                - cell "09 Aug 2026" [ref=f16e217]
+                - cell "PENDING" [ref=f16e218]
+              - row [ref=f16e220]:
+                - cell "OV-B-906-202607" [ref=f16e221]
+                - cell "B-906" [ref=f16e222]
+                - cell "Mrs. Aakifa Maqbool" [ref=f16e223]
+                - cell "₹1,728.00" [ref=f16e224]
+                - cell "09 Aug 2026" [ref=f16e225]
+                - cell "PENDING" [ref=f16e226]
+              - row [ref=f16e228]:
+                - cell "OV-B-905-202607" [ref=f16e229]
+                - cell "B-905" [ref=f16e230]
+                - cell "Mr. Rajesh Kumar Agrawal" [ref=f16e231]
+                - cell "₹2,456.00" [ref=f16e232]
+                - cell "09 Aug 2026" [ref=f16e233]
+                - cell "PENDING" [ref=f16e234]
+  - region "Notifications alt+T"
+  - alert [ref=f16e236]

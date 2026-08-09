@@ -1,0 +1,75 @@
+- generic [ref=f65e1]:
+  - generic [ref=f65e2]:
+    - generic [ref=f65e4]:
+      - generic [ref=f65e10]:
+        - paragraph [ref=f65e11]: Oasis Venetia Heights
+        - paragraph [ref=f65e12]: Admin Panel
+      - navigation [ref=f65e13]:
+        - link "Dashboard" [ref=f65e5878] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f65e5879] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f65e5880] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f65e5881] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f65e5882] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f65e5883] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f65e5884] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f65e5885] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f65e5886] [cursor=pointer]:
+          - /url: /admin/flats
+        - link "Users" [ref=f65e5887] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f65e5888] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f65e69]
+      - generic [ref=f65e70]:
+        - generic [ref=f65e71]:
+          - generic [ref=f65e72]:
+            - paragraph [ref=f65e73]: Admin
+            - paragraph [ref=f65e74]: admin@oasis.local
+          - button "Toggle theme" [ref=f65e5889]
+        - button "Sign Out" [ref=f65e5890]
+    - main [ref=f65e78]:
+      - generic [ref=f65e79]:
+        - generic [ref=f65e80]:
+          - heading "Residents" [level=1] [ref=f65e5891]
+          - paragraph [ref=f65e82]: Manage residents of Oasis Venetia Heights
+        - generic [ref=f65e83]:
+          - textbox "Search by name, email, flat..." [ref=f65e5892]: Shivaji
+          - button "Add Resident" [active] [ref=f65e5893]
+        - generic [ref=f65e90]:
+          - generic [ref=f65e91]: 1 Resident
+          - table [ref=f65e95]:
+            - rowgroup [ref=f65e96]:
+              - row [ref=f65e5894]:
+                - columnheader "Flat No" [ref=f65e5895]
+                - columnheader "Tower" [ref=f65e5896]
+                - columnheader "Name" [ref=f65e5897]
+                - columnheader "Email" [ref=f65e5898]
+                - columnheader "Phone" [ref=f65e5899]
+                - columnheader "Status" [ref=f65e5900]
+                - columnheader "Actions" [ref=f65e5901]
+            - rowgroup [ref=f65e105]:
+              - row [ref=f65e5902]:
+                - cell "A-404" [ref=f65e5903]
+                - cell "A" [ref=f65e5904]
+                - cell "Shivaji Tiwari" [ref=f65e5905]
+                - cell "shivajitiwari@gmail.com" [ref=f65e5906]
+                - cell "9555839357" [ref=f65e5907]
+                - cell "ACTIVE" [ref=f65e5908]
+                - cell [ref=f65e5909]:
+                  - generic [ref=f65e115]:
+                    - button "History" [ref=f65e5910]
+                    - button "Edit" [ref=f65e5911]
+                    - button "Deactivate" [ref=f65e5912]
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=f65e5913]:
+        - generic [ref=f65e5918]: Resident added successfully
+  - alert [ref=f65e5293]

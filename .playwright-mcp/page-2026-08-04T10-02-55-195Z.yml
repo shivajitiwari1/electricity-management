@@ -1,0 +1,118 @@
+- generic [ref=f7e1]:
+  - generic [ref=f7e2]:
+    - generic [ref=f7e4]:
+      - generic [ref=f7e10]:
+        - paragraph [ref=f7e11]: Oasis Venetia Heights
+        - paragraph [ref=f7e12]: Admin Panel
+      - navigation [ref=f7e13]:
+        - link [ref=f7e127] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=f7e128] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=f7e129] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=f7e130] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=f7e131] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=f7e132] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=f7e133] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=f7e134] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=f7e135] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+        - link [ref=f7e136] [cursor=pointer]:
+          - /url: /admin/users
+          - text: Users
+        - link [ref=f7e137] [cursor=pointer]:
+          - /url: /admin/permissions
+          - text: Permissions
+      - separator [ref=f7e69]
+      - generic [ref=f7e70]:
+        - generic [ref=f7e71]:
+          - generic [ref=f7e72]:
+            - paragraph [ref=f7e73]: Admin
+            - paragraph [ref=f7e74]: admin@oasis.local
+          - button [ref=f7e138]:
+            - generic [ref=f7e76]: Toggle theme
+        - button [ref=f7e139]: Sign Out
+    - main [ref=f7e78]:
+      - generic [ref=f7e79]:
+        - generic [ref=f7e80]:
+          - heading [level=1] [ref=f7e140]: Meter Readings
+          - paragraph [ref=f7e82]: Record and manage electricity meter readings
+        - generic [ref=f7e83]:
+          - generic [ref=f7e84]:
+            - textbox [ref=f7e141]:
+              - /placeholder: Search flat or resident...
+            - combobox [ref=f7e86]:
+              - generic [ref=f7e87]: 2026-08
+              - img: ▼
+            - textbox [ref=f7e88]: 2026-08
+            - combobox [ref=f7e89]:
+              - generic [ref=f7e90]: all
+              - img: ▼
+            - textbox [ref=f7e91]: all
+            - paragraph [ref=f7e92]: 1 of 406 flats
+          - button [ref=f7e142]: Add Meter Reading
+        - generic [ref=f7e94]:
+          - generic [ref=f7e95]: Meter Readings — 1 Flats · August 2026
+          - table [ref=f7e99]:
+            - rowgroup [ref=f7e100]:
+              - row [ref=f7e143]:
+                - columnheader [ref=f7e144]: Flat No
+                - columnheader [ref=f7e145]: Resident
+                - columnheader [ref=f7e146]: Reading Date
+                - columnheader [ref=f7e147]: NPCL Previous
+                - columnheader [ref=f7e148]: NPCL Current
+                - columnheader [ref=f7e149]: Units
+                - columnheader [ref=f7e150]: DG Units
+                - columnheader [ref=f7e151]: Bill
+                - columnheader [ref=f7e152]: Actions
+            - rowgroup [ref=f7e111]:
+              - row [ref=f7e153]:
+                - cell [ref=f7e154]: A-404
+                - cell [ref=f7e155]: Shivaji Tiwari
+                - cell [ref=f7e156]: 04 Aug 2026
+                - cell [ref=f7e157]: "350"
+                - cell [ref=f7e158]: "2000"
+                - cell [ref=f7e159]: "1650"
+                - cell [ref=f7e160]: "0"
+                - cell [ref=f7e161]:
+                  - generic [ref=f7e121]: Pending
+                - cell [ref=f7e162]:
+                  - generic [ref=f7e123]:
+                    - button [ref=f7e163]: Generate Bill
+                    - button [ref=f7e164]: Delete
+  - region "Notifications alt+T"
+  - alert [ref=f7e126]
+  - dialog [ref=f7e168]:
+    - heading "Generate Bill — Flat A-404" [level=2] [ref=f7e170]
+    - generic [ref=f7e171]:
+      - generic [ref=f7e172]:
+        - generic [ref=f7e173]: Bill Date *
+        - textbox "Bill Date *" [active] [ref=f7e174]: 2026-08-04
+      - generic [ref=f7e175]:
+        - generic [ref=f7e176]: Billing Period Start *
+        - textbox "Billing Period Start *" [ref=f7e177]: 2026-08-01
+      - generic [ref=f7e178]:
+        - generic [ref=f7e179]: Billing Period End *
+        - textbox "Billing Period End *" [ref=f7e180]: 2026-08-31
+      - generic [ref=f7e181]:
+        - generic [ref=f7e182]: Previous Dues (Rs.)
+        - spinbutton "Previous Dues (Rs.)" [ref=f7e183]: "0"
+      - generic [ref=f7e184]:
+        - button "Cancel" [ref=f7e185]
+        - button "Generate Bill" [ref=f7e186]
+    - button "Close" [ref=f7e187]

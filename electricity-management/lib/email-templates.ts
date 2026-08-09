@@ -3,13 +3,14 @@ const ACCENT_COLOR = "#2563eb";
 const COMPANY = "Oasis Venetia Heights";
 const ADDRESS = "Oasis Buildmart India Pvt. Ltd., Plot No-HRA, 12, A, Site-C, Greater Noida - 201306";
 
-function shell(content: string): string {
+function shell(content: string, companyOverride?: string): string {
+  const heading = companyOverride ?? COMPANY;
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>${COMPANY}</title>
+  <title>${heading}</title>
 </head>
 <body style="margin:0;padding:0;background:#f3f4f6;font-family:Arial,Helvetica,sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:24px 0;">
@@ -21,7 +22,7 @@ function shell(content: string): string {
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
                 <td>
-                  <p style="margin:0;font-size:20px;font-weight:bold;color:#ffffff;letter-spacing:0.3px;">${COMPANY}</p>
+                  <p style="margin:0;font-size:20px;font-weight:bold;color:#ffffff;letter-spacing:0.3px;">${heading}</p>
                   <p style="margin:4px 0 0;font-size:12px;color:#93c5fd;">Electricity Management Portal</p>
                 </td>
               </tr>
@@ -68,7 +69,7 @@ export function billGeneratedEmail(params: {
     <tr><td style="padding:32px 32px 0;">
       <p style="margin:0;font-size:15px;color:#374151;">Dear <strong>${residentName}</strong>,</p>
       <p style="margin:12px 0 0;font-size:14px;color:#4b5563;line-height:1.6;">
-        Your electricity bill for <strong>Flat ${flatNo}</strong> has been generated. Please find the details below and make the payment before the due date.
+        Your electricity bill for <strong>Flat ${flatNo}</strong> has been generated. The bill PDF is attached to this email. Please find the details below and make the payment before the due date.
       </p>
     </td></tr>
 
@@ -94,12 +95,39 @@ export function billGeneratedEmail(params: {
       </table>
     </td></tr>
 
+    <!-- Payment Options -->
+    <tr><td style="padding:24px 32px 0;">
+      <p style="margin:0 0 12px;font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:1px;">Payment Options</p>
+      <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e5e7eb;border-radius:6px;overflow:hidden;">
+        <tr>
+          <!-- Bank Details -->
+          <td style="padding:16px 20px;vertical-align:top;width:60%;">
+            <p style="margin:0 0 10px;font-size:12px;font-weight:600;color:#374151;">Bank Transfer / NEFT / RTGS</p>
+            <table cellpadding="0" cellspacing="0">
+              <tr><td style="font-size:12px;color:#6b7280;padding:3px 0;white-space:nowrap;padding-right:12px;">Beneficiary</td><td style="font-size:12px;color:#111827;font-weight:600;">OASIS BUILDMART INDIA PVT LTD</td></tr>
+              <tr><td style="font-size:12px;color:#6b7280;padding:3px 0;padding-right:12px;">Bank</td><td style="font-size:12px;color:#111827;">Bank of Baroda</td></tr>
+              <tr><td style="font-size:12px;color:#6b7280;padding:3px 0;padding-right:12px;">Account No.</td><td style="font-size:12px;color:#111827;font-weight:600;font-family:monospace;">88340200001343</td></tr>
+              <tr><td style="font-size:12px;color:#6b7280;padding:3px 0;padding-right:12px;">IFSC</td><td style="font-size:12px;color:#111827;font-family:monospace;">BARB0DBGREA</td></tr>
+              <tr><td style="font-size:12px;color:#6b7280;padding:3px 0;padding-right:12px;">Branch</td><td style="font-size:12px;color:#111827;">Greater Noida</td></tr>
+              <tr><td style="font-size:12px;color:#6b7280;padding:3px 0;padding-right:12px;">UPI ID</td><td style="font-size:12px;color:#111827;font-family:monospace;">oasis88268343@barodampay</td></tr>
+            </table>
+          </td>
+          <!-- QR Code -->
+          <td style="padding:16px 20px;vertical-align:top;text-align:center;border-left:1px solid #e5e7eb;">
+            <p style="margin:0 0 8px;font-size:12px;font-weight:600;color:#374151;">Scan &amp; Pay via UPI</p>
+            <img src="cid:upi-qr" alt="UPI QR Code" width="140" height="140" style="display:block;margin:0 auto;border:1px solid #e5e7eb;border-radius:4px;" />
+            <p style="margin:6px 0 0;font-size:10px;color:#9ca3af;">PhonePe · Google Pay · Paytm · BHIM</p>
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+
     <!-- CTA -->
-    <tr><td style="padding:28px 32px 32px;" align="center">
+    <tr><td style="padding:24px 32px 32px;" align="center">
       <a href="${payUrl}" style="display:inline-block;background:${ACCENT_COLOR};color:#ffffff;font-size:15px;font-weight:bold;padding:14px 36px;border-radius:6px;text-decoration:none;letter-spacing:0.3px;">
         Pay Now Online
       </a>
-      <p style="margin:14px 0 0;font-size:12px;color:#9ca3af;">Secured payment · UPI, Net Banking, Cards &amp; Wallets accepted</p>
+      <p style="margin:14px 0 0;font-size:12px;color:#9ca3af;">The bill PDF (with full details &amp; QR code) is attached to this email.</p>
     </td></tr>
   `;
 
@@ -428,5 +456,5 @@ export function maintenanceBillGeneratedEmail(params: {
     </td></tr>
   `;
 
-  return shell(body);
+  return shell(body, "Oasis Venetia Heights AOA");
 }

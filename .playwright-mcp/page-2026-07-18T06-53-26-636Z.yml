@@ -1,0 +1,67 @@
+- generic [ref=f56e1]:
+  - generic [ref=f56e2]:
+    - generic [ref=f56e4]:
+      - generic [ref=f56e10]:
+        - paragraph [ref=f56e11]: Oasis Venetia Heights
+        - paragraph [ref=f56e12]: Admin Panel
+      - navigation [ref=f56e13]:
+        - link "Dashboard" [ref=f56e5094] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f56e5095] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f56e5096] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f56e5097] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f56e5098] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f56e5099] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f56e5100] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f56e5101] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f56e5102] [cursor=pointer]:
+          - /url: /admin/flats
+      - separator [ref=f56e52]
+      - generic [ref=f56e53]:
+        - generic [ref=f56e54]:
+          - generic [ref=f56e55]:
+            - paragraph [ref=f56e56]: Admin
+            - paragraph [ref=f56e57]: admin@oasis.local
+          - button "Toggle theme" [ref=f56e5103]
+        - button "Sign Out" [ref=f56e5104]
+    - main [ref=f56e61]:
+      - generic [ref=f56e62]:
+        - generic [ref=f56e63]:
+          - heading "Residents" [level=1] [ref=f56e5105]
+          - paragraph [ref=f56e65]: Manage residents of Oasis Venetia Heights
+        - generic [ref=f56e198]:
+          - textbox "Search by name, email, flat..." [ref=f56e5106]: A-404
+          - button "Add Resident" [ref=f56e5107]
+        - generic [ref=f56e205]:
+          - generic [ref=f56e206]: 1 Resident
+          - table [ref=f56e210]:
+            - rowgroup [ref=f56e211]:
+              - row [ref=f56e5108]:
+                - columnheader "Flat No" [ref=f56e5109]
+                - columnheader "Tower" [ref=f56e5110]
+                - columnheader "Name" [ref=f56e5111]
+                - columnheader "Email" [ref=f56e5112]
+                - columnheader "Phone" [ref=f56e5113]
+                - columnheader "Status" [ref=f56e5114]
+                - columnheader "Actions" [ref=f56e5115]
+            - rowgroup [ref=f56e220]:
+              - row [ref=f56e5116]:
+                - cell "A-404" [ref=f56e5117]
+                - cell "A" [ref=f56e5118]
+                - cell "Test Dummy Resident" [ref=f56e5119]
+                - cell "test.dummy@ovh.local" [ref=f56e5120]
+                - cell "—" [ref=f56e5121]
+                - cell "ACTIVE" [ref=f56e5122]
+                - cell [ref=f56e5123]:
+                  - generic [ref=f56e230]:
+                    - button "Edit" [active] [ref=f56e5124]
+                    - button "Deactivate" [ref=f56e5125]
+  - region "Notifications alt+T"
+  - alert [ref=f56e5009]

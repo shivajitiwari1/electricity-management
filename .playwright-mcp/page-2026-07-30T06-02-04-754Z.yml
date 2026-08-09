@@ -1,0 +1,97 @@
+- generic [active] [ref=f5e1]:
+  - generic [ref=f5e2]:
+    - generic [ref=f5e4]:
+      - generic [ref=f5e10]:
+        - paragraph [ref=f5e11]: Oasis Venetia Heights
+        - paragraph [ref=f5e12]: Admin Panel
+      - navigation [ref=f5e13]:
+        - link "Dashboard" [ref=f5e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f5e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f5e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f5e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f5e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f5e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f5e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f5e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f5e47] [cursor=pointer]:
+          - /url: /admin/flats
+        - link "Users" [ref=f5e52] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f5e65] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f5e69]
+      - generic [ref=f5e70]:
+        - generic [ref=f5e71]:
+          - generic [ref=f5e72]:
+            - paragraph [ref=f5e73]: Admin
+            - paragraph [ref=f5e74]: admin@oasis.local
+          - button "Toggle theme" [ref=f5e75]
+        - button "Sign Out" [ref=f5e77]
+    - main [ref=f5e78]:
+      - generic [ref=f5e79]:
+        - generic [ref=f5e80]:
+          - heading "Bills" [level=1] [ref=f5e81]
+          - paragraph [ref=f5e82]: Manage electricity bills for Oasis Venetia Heights
+        - generic [ref=f5e262]:
+          - generic [ref=f5e263]:
+            - generic [ref=f5e264]: Tower
+            - combobox [ref=f5e265]:
+              - generic [ref=f5e266]: all
+              - img: ▼
+            - textbox [ref=f5e267]: all
+          - generic [ref=f5e268]:
+            - generic [ref=f5e269]: Month (YYYY-MM)
+            - textbox "e.g. 2026-07" [ref=f5e270]
+          - generic [ref=f5e271]:
+            - generic [ref=f5e272]: Status
+            - combobox [ref=f5e273]:
+              - generic [ref=f5e274]: all
+              - img: ▼
+            - textbox [ref=f5e275]: all
+          - generic [ref=f5e276]:
+            - generic [ref=f5e277]: Search
+            - textbox "Name or flat…" [ref=f5e278]
+        - generic [ref=f5e279]:
+          - generic [ref=f5e280]: 1 Bill
+          - table [ref=f5e284]:
+            - rowgroup [ref=f5e285]:
+              - row [ref=f5e286]:
+                - 'columnheader "Bill #" [ref=f5e287]'
+                - columnheader "Flat No" [ref=f5e288]
+                - columnheader "Tower" [ref=f5e289]
+                - columnheader "Resident" [ref=f5e290]
+                - columnheader "Period" [ref=f5e291]
+                - columnheader "Amount (₹)" [ref=f5e292]
+                - columnheader "Due Date" [ref=f5e293]
+                - columnheader "Status" [ref=f5e294]
+                - columnheader "Actions" [ref=f5e295]
+            - rowgroup [ref=f5e296]:
+              - row [ref=f5e297]:
+                - cell "OV-A-404-202607" [ref=f5e298]
+                - cell "A-404" [ref=f5e299]
+                - cell "A" [ref=f5e300]
+                - cell "Shivaji Tiwari" [ref=f5e301]
+                - cell "30 Jun 2026 – 29 Jul 2026" [ref=f5e302]
+                - cell "8,360.00" [ref=f5e303]
+                - cell "08 Aug 2026" [ref=f5e304]
+                - cell "PENDING" [ref=f5e305]
+                - cell [ref=f5e307]:
+                  - generic [ref=f5e308]:
+                    - button "PDF" [ref=f5e309]
+                    - button "Details" [ref=f5e310]
+                    - button "Resend" [ref=f5e311]
+                    - button "Mark Paid" [ref=f5e312]
+                    - button "Delete" [ref=f5e313]
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=f5e314]:
+        - generic [ref=f5e319]: Invoice email resent to resident for OV-A-404-202607
+  - alert [ref=f5e261]

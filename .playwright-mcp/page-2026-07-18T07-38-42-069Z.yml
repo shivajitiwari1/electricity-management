@@ -1,0 +1,113 @@
+- generic [active] [ref=f71e1]:
+  - generic [ref=f71e2]:
+    - generic [ref=f71e4]:
+      - generic [ref=f71e10]:
+        - paragraph [ref=f71e11]: Oasis Venetia Heights
+        - paragraph [ref=f71e12]: Admin Panel
+      - navigation [ref=f71e13]:
+        - link "Dashboard" [ref=f71e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f71e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f71e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f71e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f71e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f71e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f71e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f71e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f71e47] [cursor=pointer]:
+          - /url: /admin/flats
+      - separator [ref=f71e52]
+      - generic [ref=f71e53]:
+        - generic [ref=f71e54]:
+          - generic [ref=f71e55]:
+            - paragraph [ref=f71e56]: Admin
+            - paragraph [ref=f71e57]: admin@oasis.local
+          - button "Toggle theme" [ref=f71e58]
+        - button "Sign Out" [ref=f71e60]
+    - main [ref=f71e61]:
+      - generic [ref=f71e62]:
+        - generic [ref=f71e63]:
+          - heading "Payments" [level=1] [ref=f71e64]
+          - paragraph [ref=f71e65]: View all payment transactions for Oasis Venetia Heights
+        - generic [ref=f71e66]:
+          - generic [ref=f71e68]:
+            - text: Bills Requiring Payment
+            - generic [ref=f71e69]: 1 pending
+          - table [ref=f71e72]:
+            - rowgroup [ref=f71e73]:
+              - row [ref=f71e74]:
+                - 'columnheader "Bill #" [ref=f71e75]'
+                - columnheader "Flat No" [ref=f71e76]
+                - columnheader "Resident" [ref=f71e77]
+                - columnheader "Balance Due" [ref=f71e78]
+                - columnheader "Due Date" [ref=f71e79]
+                - columnheader "Status" [ref=f71e80]
+                - columnheader "Actions" [ref=f71e81]
+            - rowgroup [ref=f71e82]:
+              - row [ref=f71e83]:
+                - cell "OV-B-1206-202607-2" [ref=f71e84]
+                - cell "B-1206" [ref=f71e85]
+                - cell "Mr. Gaurav Kumar" [ref=f71e86]
+                - cell "₹3,602.00" [ref=f71e87]
+                - cell "27 Jul 2026" [ref=f71e88]
+                - cell "PENDING" [ref=f71e89]
+                - cell [ref=f71e91]:
+                  - button "Record Payment" [ref=f71e92]
+        - generic [ref=f71e93]:
+          - generic [ref=f71e94]:
+            - generic [ref=f71e95]: Method
+            - combobox [ref=f71e96]:
+              - generic [ref=f71e97]: all
+              - img: ▼
+            - textbox [ref=f71e98]: all
+          - generic [ref=f71e99]:
+            - generic [ref=f71e100]: Status
+            - combobox [ref=f71e101]:
+              - generic [ref=f71e102]: all
+              - img: ▼
+            - textbox [ref=f71e103]: all
+        - generic [ref=f71e104]:
+          - generic [ref=f71e106]:
+            - text: Payment History — 1 record
+            - generic [ref=f71e107]:
+              - generic [ref=f71e108]: 0 online
+              - generic [ref=f71e113]: 1 manual
+          - table [ref=f71e120]:
+            - rowgroup [ref=f71e121]:
+              - row [ref=f71e122]:
+                - 'columnheader "Receipt #" [ref=f71e123]'
+                - columnheader "Flat No" [ref=f71e124]
+                - columnheader "Resident" [ref=f71e125]
+                - 'columnheader "Bill #" [ref=f71e126]'
+                - columnheader "Amount (₹)" [ref=f71e127]
+                - columnheader "Date" [ref=f71e128]
+                - columnheader "Type" [ref=f71e129]
+                - columnheader "Method" [ref=f71e130]
+                - columnheader "Reference / Txn ID" [ref=f71e131]
+                - columnheader "Status" [ref=f71e132]
+                - columnheader "Actions" [ref=f71e133]
+            - rowgroup [ref=f71e134]:
+              - row [ref=f71e135]:
+                - cell "RCPT-20260718-0001" [ref=f71e136]
+                - cell "B-1206" [ref=f71e137]
+                - cell "Mr. Gaurav Kumar" [ref=f71e138]
+                - cell "OV-B-1206-202607" [ref=f71e139]
+                - cell "1,542.00" [ref=f71e140]
+                - cell "18 Jul 2026" [ref=f71e141]
+                - cell [ref=f71e142]
+                - cell "UPI" [ref=f71e148]
+                - cell "UTR123456789TEST" [ref=f71e150]
+                - cell "SUCCESS" [ref=f71e151]
+                - cell [ref=f71e153]:
+                  - generic [ref=f71e154]:
+                    - button "Receipt" [ref=f71e155]
+                    - button "Delete" [ref=f71e156]
+  - region "Notifications alt+T"
+  - alert [ref=f71e157]

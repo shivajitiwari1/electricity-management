@@ -83,10 +83,9 @@ async function ResidentProfileData() {
                     <Zap className="h-4 w-4 text-gray-400" />
                     <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">Electrical Connection</span>
                   </div>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-5">
+                  <div className="grid grid-cols-2 gap-5">
                     <InfoRow label="Meter No" value={conn.meterNo} />
                     <InfoRow label="Sanctioned Load" value={`${Number(conn.sanctionedLoad)} kW`} />
-                    <InfoRow label="Connected Since" value={new Date(conn.connectedAt).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })} />
                   </div>
                 </div>
               </div>

@@ -1,0 +1,70 @@
+- generic [ref=e1]:
+  - generic [ref=e30]:
+    - generic [ref=e32]:
+      - generic [ref=e38]:
+        - paragraph [ref=e39]: Oasis Venetia Heights
+        - paragraph [ref=e40]: Admin Panel
+      - navigation [ref=e41]:
+        - link "Dashboard" [ref=e325] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=e326] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=e327] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=e328] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=e329] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=e330] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=e331] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=e332] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=e333] [cursor=pointer]:
+          - /url: /admin/flats
+        - link "Users" [ref=e334] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=e335] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=e97]
+      - generic [ref=e98]:
+        - generic [ref=e99]:
+          - generic [ref=e100]:
+            - paragraph [ref=e101]: Admin
+            - paragraph [ref=e102]: admin@oasis.local
+          - button "Toggle theme" [ref=e336]
+        - button "Sign Out" [ref=e337]
+    - main [ref=e106]:
+      - generic [ref=e192]:
+        - generic [ref=e193]:
+          - heading "User Management" [level=1] [ref=e338]
+          - paragraph [ref=e195]: Manage manager accounts for Oasis Venetia Heights
+        - generic [ref=e196]:
+          - generic [ref=e197]:
+            - paragraph [ref=e198]: 1 manager
+            - button "Add Manager" [active] [ref=e339]
+          - table [ref=e201]:
+            - rowgroup [ref=e202]:
+              - row [ref=e340]:
+                - columnheader "Name" [ref=e341]
+                - columnheader "Email" [ref=e342]
+                - columnheader "Status" [ref=e343]
+                - columnheader "Created" [ref=e344]
+                - columnheader "Actions" [ref=e345]
+            - rowgroup [ref=e209]:
+              - row [ref=e346]:
+                - cell "Test Manager" [ref=e347]
+                - cell "testmanager@oasis.local" [ref=e348]
+                - cell "Active" [ref=e349]
+                - cell "19 Jul 2026" [ref=e351]
+                - cell [ref=e352]:
+                  - generic [ref=e353]:
+                    - button [ref=e354]
+                    - button "Deactivate" [ref=e355]
+                    - button [ref=e356]
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=e357]:
+        - generic [ref=e362]: Manager created — welcome email sent
+  - alert [ref=e27]

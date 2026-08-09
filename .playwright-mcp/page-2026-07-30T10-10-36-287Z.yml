@@ -1,0 +1,96 @@
+- generic [active] [ref=f71e1]:
+  - generic [ref=f71e2]:
+    - generic [ref=f71e4]:
+      - generic [ref=f71e10]:
+        - paragraph [ref=f71e11]: Oasis Venetia Heights
+        - paragraph [ref=f71e12]: Admin Panel
+      - navigation [ref=f71e13]:
+        - link "Dashboard" [ref=f71e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f71e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f71e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f71e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f71e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f71e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f71e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f71e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f71e47] [cursor=pointer]:
+          - /url: /admin/flats
+        - link "Users" [ref=f71e52] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f71e65] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f71e69]
+      - generic [ref=f71e70]:
+        - generic [ref=f71e71]:
+          - generic [ref=f71e72]:
+            - paragraph [ref=f71e73]: Admin
+            - paragraph [ref=f71e74]: admin@oasis.local
+          - button "Toggle theme" [ref=f71e75]
+        - button "Sign Out" [ref=f71e77]
+    - main [ref=f71e78]:
+      - generic [ref=f71e79]:
+        - generic [ref=f71e80]:
+          - heading "Dashboard" [level=1] [ref=f71e81]
+          - paragraph [ref=f71e82]: Overview of Oasis Venetia Heights electricity management
+        - generic [ref=f71e83]:
+          - generic [ref=f71e87]:
+            - paragraph [ref=f71e88]: Total Residents
+            - paragraph [ref=f71e89]: "400"
+          - generic [ref=f71e99]:
+            - paragraph [ref=f71e100]: Active Connections
+            - paragraph [ref=f71e101]: "400"
+          - generic [ref=f71e108]:
+            - paragraph [ref=f71e109]: Bills This Month
+            - paragraph [ref=f71e110]: "2"
+          - generic [ref=f71e118]:
+            - paragraph [ref=f71e119]: Revenue This Month
+            - paragraph [ref=f71e120]: ₹3,945.00
+          - generic [ref=f71e128]:
+            - paragraph [ref=f71e129]: Overdue Bills
+            - paragraph [ref=f71e130]: "0"
+        - generic [ref=f71e134]:
+          - link [ref=f71e135] [cursor=pointer]:
+            - /url: /admin/residents
+            - button "Add Resident" [ref=f71e136]
+          - link [ref=f71e137] [cursor=pointer]:
+            - /url: /admin/meter-readings
+            - button "Enter Reading" [ref=f71e138]
+          - link [ref=f71e139] [cursor=pointer]:
+            - /url: /admin/reports
+            - button "View Reports" [ref=f71e140]
+        - generic [ref=f71e141]:
+          - generic [ref=f71e142]: Recent Bills
+          - table [ref=f71e146]:
+            - rowgroup [ref=f71e147]:
+              - row [ref=f71e148]:
+                - 'columnheader "Bill #" [ref=f71e149]'
+                - columnheader "Flat" [ref=f71e150]
+                - columnheader "Resident" [ref=f71e151]
+                - columnheader "Amount" [ref=f71e152]
+                - columnheader "Due Date" [ref=f71e153]
+                - columnheader "Status" [ref=f71e154]
+            - rowgroup [ref=f71e155]:
+              - row [ref=f71e156]:
+                - cell "OV-A-404-202607" [ref=f71e157]
+                - cell "A-404" [ref=f71e158]
+                - cell "Shivaji Tiwari" [ref=f71e159]
+                - cell "₹2,410.00" [ref=f71e160]
+                - cell "08 Aug 2026" [ref=f71e161]
+                - cell "PAID" [ref=f71e162]
+              - row [ref=f71e164]:
+                - cell "OV-V-405-202607" [ref=f71e165]
+                - cell "V-405" [ref=f71e166]
+                - cell "Mr. Alok Kumar" [ref=f71e167]
+                - cell "₹1,535.00" [ref=f71e168]
+                - cell "08 Aug 2026" [ref=f71e169]
+                - cell "PAID" [ref=f71e170]
+  - region "Notifications alt+T"
+  - alert [ref=f71e172]

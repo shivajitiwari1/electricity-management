@@ -1,0 +1,77 @@
+- generic [ref=f30e1]:
+  - generic [ref=f30e2]:
+    - generic [ref=f30e4]:
+      - generic [ref=f30e10]:
+        - paragraph [ref=f30e11]: Oasis Venetia Heights
+        - paragraph [ref=f30e12]: Admin Panel
+      - navigation [ref=f30e13]:
+        - link "Dashboard" [ref=f30e1577] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f30e1578] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f30e1579] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f30e1580] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f30e1581] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f30e1582] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f30e1583] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f30e1584] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f30e1585] [cursor=pointer]:
+          - /url: /admin/flats
+        - link "Users" [ref=f30e1586] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f30e1587] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f30e69]
+      - generic [ref=f30e70]:
+        - generic [ref=f30e71]:
+          - generic [ref=f30e72]:
+            - paragraph [ref=f30e73]: Admin
+            - paragraph [ref=f30e74]: admin@oasis.local
+          - button "Toggle theme" [ref=f30e1588]
+        - button "Sign Out" [ref=f30e1589]
+    - main [ref=f30e78]:
+      - generic [ref=f30e79]:
+        - generic [ref=f30e80]:
+          - heading "Meter Readings" [level=1] [ref=f30e1590]
+          - paragraph [ref=f30e82]: Record and manage electricity meter readings
+        - generic [ref=f30e239]:
+          - generic [ref=f30e240]:
+            - textbox "Search flat or resident..." [ref=f30e1591]: A-404
+            - paragraph [ref=f30e242]: 1 of 399 flats
+          - button "Add Meter Reading" [active] [ref=f30e1592]
+        - generic [ref=f30e244]:
+          - generic [ref=f30e245]: Meter Readings — All Flats (Latest Reading)
+          - table [ref=f30e249]:
+            - rowgroup [ref=f30e250]:
+              - row [ref=f30e1593]:
+                - columnheader "Flat No" [ref=f30e1594]
+                - columnheader "Resident" [ref=f30e1595]
+                - columnheader "Reading Date" [ref=f30e1596]
+                - columnheader "NPCL Previous" [ref=f30e1597]
+                - columnheader "NPCL Current" [ref=f30e1598]
+                - columnheader "Units" [ref=f30e1599]
+                - columnheader "DG Units" [ref=f30e1600]
+                - columnheader "Bill" [ref=f30e1601]
+                - columnheader "Actions" [ref=f30e1602]
+            - rowgroup [ref=f30e261]:
+              - row [ref=f30e1603]:
+                - cell "A-404" [ref=f30e1604]
+                - cell "Shivaji Tiwari" [ref=f30e1605]
+                - cell "29 Jul 2026" [ref=f30e1606]
+                - cell "0" [ref=f30e1607]
+                - cell "1100" [ref=f30e1608]
+                - cell "1100" [ref=f30e1609]
+                - cell "0" [ref=f30e1610]
+                - cell "Pending" [ref=f30e1611]
+                - cell [ref=f30e1612]:
+                  - generic [ref=f30e273]:
+                    - button "Generate Bill" [ref=f30e1613]
+                    - button "Delete" [ref=f30e1614]
+  - region "Notifications alt+T"
+  - alert [ref=f30e238]

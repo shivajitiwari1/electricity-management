@@ -25,7 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Download, Eye, CheckCircle, Trash2 } from "lucide-react";
+import { Download, Eye, CheckCircle, Trash2, Mail } from "lucide-react";
 
 type SerializedBill = {
   id: string;
@@ -112,6 +112,7 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
   const [viewBill, setViewBill] = useState<SerializedBill | null>(null);
   const [markingPaid, setMarkingPaid] = useState<string | null>(null);
   const [deletingBill, setDeletingBill] = useState<string | null>(null);
+  const [resendingBill, setResendingBill] = useState<string | null>(null);
   const [nameSearch, setNameSearch] = useState("");
 
   // Current filter values from URL
@@ -121,12 +122,7 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
 
   function pushFilters(overrides: Record<string, string>) {
     const params = new URLSearchParams();
-    const merged = {
-      tower: currentTower,
-      month: currentMonth,
-      status: currentStatus,
-      ...overrides,
-    };
+    const merged = { tower: currentTower, month: currentMonth, status: currentStatus, ...overrides };
     if (merged.tower) params.set("tower", merged.tower);
     if (merged.month) params.set("month", merged.month);
     if (merged.status) params.set("status", merged.status);
@@ -178,6 +174,23 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
       toast.error("Failed to update bill");
     } finally {
       setMarkingPaid(null);
+    }
+  }
+
+  async function handleResend(bill: SerializedBill) {
+    setResendingBill(bill.id);
+    try {
+      const res = await fetch(`/api/bills/${bill.id}/resend`, { method: "POST" });
+      if (!res.ok) {
+        const data = await res.json();
+        toast.error(data.error ?? "Failed to resend email");
+        return;
+      }
+      toast.success(`Invoice email resent to resident for ${bill.billNumber}`);
+    } catch {
+      toast.error("Failed to resend email");
+    } finally {
+      setResendingBill(null);
     }
   }
 
@@ -269,8 +282,12 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
           <CardTitle className="text-base font-semibold">
             {(() => {
               const q = nameSearch.trim().toLowerCase();
-              const count = q ? initialData.filter(b => b.residentName.toLowerCase().includes(q) || b.flatNo.toLowerCase().includes(q)).length : initialData.length;
-              return `${count}${q ? ` of ${initialData.length}` : ""} Bill${count !== 1 ? "s" : ""}`;
+              const count = q
+                ? initialData.filter(b => b.residentName.toLowerCase().includes(q) || b.flatNo.toLowerCase().includes(q)).length
+                : initialData.length;
+              return count > 0
+                ? `${count} Bill${count !== 1 ? "s" : ""}${q ? ` matching "${nameSearch}"` : ""}`
+                : "0 Bills";
             })()}
           </CardTitle>
         </CardHeader>
@@ -347,6 +364,18 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
                             <Eye className="h-3 w-3 mr-1" />
                             Details
                           </Button>
+                          {canWrite && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 border-blue-200"
+                              disabled={resendingBill === bill.id}
+                              onClick={() => handleResend(bill)}
+                            >
+                              <Mail className="h-3 w-3 mr-1" />
+                              {resendingBill === bill.id ? "Sending…" : "Resend"}
+                            </Button>
+                          )}
                           {canWrite && bill.status === "PENDING" && (
                             <Button
                               variant="outline"
@@ -379,6 +408,7 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
               </tbody>
             </table>
           </div>
+
         </CardContent>
       </Card>
 

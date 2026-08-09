@@ -1,0 +1,92 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e4]:
+      - generic [ref=e10]:
+        - paragraph [ref=e11]: Oasis Venetia Heights
+        - paragraph [ref=e12]: Admin Panel
+      - navigation [ref=e13]:
+        - link "Dashboard" [ref=e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=e47] [cursor=pointer]:
+          - /url: /admin/flats
+        - link "Users" [ref=e52] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=e65] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=e69]
+      - generic [ref=e70]:
+        - generic [ref=e71]:
+          - generic [ref=e72]:
+            - paragraph [ref=e73]: Admin
+            - paragraph [ref=e74]: admin@oasis.local
+          - button "Toggle theme" [ref=e75]
+        - button "Sign Out" [ref=e77]
+    - main [ref=e78]:
+      - table [ref=e126]:
+        - rowgroup [ref=e127]:
+          - row [ref=e128]:
+            - columnheader [ref=e129]
+            - columnheader [ref=e131]
+            - columnheader [ref=e133]
+            - columnheader [ref=e135]
+            - columnheader [ref=e137]
+            - columnheader [ref=e139]
+        - rowgroup [ref=e141]:
+          - row [ref=e142]:
+            - cell [ref=e143]
+            - cell [ref=e145]
+            - cell [ref=e147]
+            - cell [ref=e149]
+            - cell [ref=e151]
+            - cell [ref=e153]
+          - row [ref=e155]:
+            - cell [ref=e156]
+            - cell [ref=e158]
+            - cell [ref=e160]
+            - cell [ref=e162]
+            - cell [ref=e164]
+            - cell [ref=e166]
+          - row [ref=e168]:
+            - cell [ref=e169]
+            - cell [ref=e171]
+            - cell [ref=e173]
+            - cell [ref=e175]
+            - cell [ref=e177]
+            - cell [ref=e179]
+          - row [ref=e181]:
+            - cell [ref=e182]
+            - cell [ref=e184]
+            - cell [ref=e186]
+            - cell [ref=e188]
+            - cell [ref=e190]
+            - cell [ref=e192]
+          - row [ref=e194]:
+            - cell [ref=e195]
+            - cell [ref=e197]
+            - cell [ref=e199]
+            - cell [ref=e201]
+            - cell [ref=e203]
+            - cell [ref=e205]
+          - row [ref=e207]:
+            - cell [ref=e208]
+            - cell [ref=e210]
+            - cell [ref=e212]
+            - cell [ref=e214]
+            - cell [ref=e216]
+            - cell [ref=e218]
+  - region "Notifications alt+T"
+  - alert [ref=e220]

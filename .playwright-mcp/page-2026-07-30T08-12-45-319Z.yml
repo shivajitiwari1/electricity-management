@@ -1,0 +1,80 @@
+- generic [ref=f48e1]:
+  - generic [ref=f48e2]:
+    - banner [ref=f48e3]:
+      - generic [ref=f48e4]:
+        - generic [ref=f48e5]:
+          - generic [ref=f48e6]: Oasis Venetia Heights
+          - navigation [ref=f48e11]:
+            - link [ref=f48e178] [cursor=pointer]:
+              - /url: /resident/dashboard
+              - text: Dashboard
+            - link [ref=f48e179] [cursor=pointer]:
+              - /url: /resident/bills
+              - text: Bills
+            - link [ref=f48e180] [cursor=pointer]:
+              - /url: /resident/payments
+              - text: Payments
+            - link [ref=f48e181] [cursor=pointer]:
+              - /url: /resident/profile
+              - text: Profile
+        - generic [ref=f48e27]:
+          - generic [ref=f48e28]: Shivaji Tiwari
+          - button [ref=f48e182]:
+            - generic [ref=f48e30]: Toggle theme
+          - button [ref=f48e183]:
+            - generic [ref=f48e32]: Sign Out
+    - main [ref=f48e33]:
+      - generic [ref=f48e34]:
+        - generic [ref=f48e35]:
+          - heading [level=1] [ref=f48e184]: My Bills
+          - paragraph [ref=f48e37]: View and pay your electricity bills
+        - generic [ref=f48e149]:
+          - generic [ref=f48e150]: 1 Bill
+          - table [ref=f48e154]:
+            - rowgroup [ref=f48e155]:
+              - row [ref=f48e185]:
+                - columnheader [ref=f48e186]: "Bill #"
+                - columnheader [ref=f48e187]: Period
+                - columnheader [ref=f48e188]: NPCL Units
+                - columnheader [ref=f48e189]: Amount (₹)
+                - columnheader [ref=f48e190]: Due Date
+                - columnheader [ref=f48e191]: Status
+                - columnheader [ref=f48e192]: Actions
+            - rowgroup [ref=f48e164]:
+              - row [ref=f48e193]:
+                - cell [ref=f48e194]: OV-A-404-202607
+                - cell [ref=f48e195]: 30 Jun 2026 – 30 Jul 2026
+                - cell [ref=f48e196]: 1100 kWh
+                - cell [ref=f48e197]: 8,360.00
+                - cell [ref=f48e198]: 08 Aug 2026
+                - cell [ref=f48e199]:
+                  - generic [ref=f48e172]: PENDING
+                - cell [ref=f48e200]:
+                  - generic [ref=f48e174]:
+                    - button [ref=f48e201]: PDF
+                    - button [ref=f48e202]: Details
+                    - button [ref=f48e203]: Pay Now
+  - region "Notifications alt+T"
+  - alert [ref=f48e148]
+  - dialog [ref=f48e207]:
+    - heading "Bill Details" [level=2] [ref=f48e209]
+    - generic [ref=f48e210]:
+      - generic [ref=f48e211]:
+        - generic [ref=f48e212]: Bill Number
+        - generic [ref=f48e213]: OV-A-404-202607
+        - generic [ref=f48e214]: Flat No
+        - generic [ref=f48e215]: A-404
+        - generic [ref=f48e216]: Billing Period
+        - generic [ref=f48e217]: 30 Jun 2026 – 30 Jul 2026
+        - generic [ref=f48e218]: NPCL Units
+        - generic [ref=f48e219]: 1100 kWh
+        - generic [ref=f48e220]: Due Date
+        - generic [ref=f48e221]: 08 Aug 2026
+        - generic [ref=f48e222]: Total Amount
+        - generic [ref=f48e223]: ₹8,360.00
+        - generic [ref=f48e224]: Status
+        - generic [ref=f48e225]: PENDING
+      - generic [ref=f48e227]:
+        - button "Download PDF" [active] [ref=f48e228]
+        - button "Pay Now" [ref=f48e229]
+    - button "Close" [ref=f48e230]

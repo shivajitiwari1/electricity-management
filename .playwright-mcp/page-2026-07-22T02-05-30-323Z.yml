@@ -1,0 +1,295 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#content"
+  - generic [ref=e3]:
+    - generic [ref=e6]:
+      - link [ref=e10] [cursor=pointer]:
+        - /url: https://www.oasis.in
+      - list [ref=e15]:
+        - listitem [ref=e16]:
+          - link "+91 8010-111-777" [ref=e17] [cursor=pointer]:
+            - /url: tel:+918010111777
+      - link "offcanvas-menu" [ref=e24] [cursor=pointer]:
+        - /url: "#"
+        - generic [ref=e25]: 
+    - main [ref=e29]:
+      - article [ref=e30]:
+        - generic [ref=e32]:
+          - generic [ref=e33]:
+            - region "Slides" [ref=e37]:
+              - generic [ref=e38]:
+                - group "1 / 2" [ref=e39]:
+                  - generic [ref=e43]:
+                    - generic [ref=e44]: Ready to Move in Yamuna Expressway
+                    - generic [ref=e45]: Oasis GrandStand
+                - group "2 / 2" [ref=e46]:
+                  - generic [ref=e50]:
+                    - generic [ref=e51]: Ready to Move in Greater Noida
+                    - generic [ref=e52]: Venetia Heights
+                - group "1 / 2" [ref=e53]:
+                  - generic [ref=e57]:
+                    - generic [ref=e58]: Ready to Move in Yamuna Expressway
+                    - generic [ref=e59]: Oasis GrandStand
+                - group "2 / 2" [ref=e60]:
+                  - generic [ref=e64]:
+                    - generic [ref=e65]: Ready to Move in Greater Noida
+                    - generic [ref=e66]: Venetia Heights
+                - group "1 / 2" [ref=e67]:
+                  - generic [ref=e71]:
+                    - generic [ref=e72]: Ready to Move in Yamuna Expressway
+                    - generic [ref=e73]: Oasis GrandStand
+                - group "2 / 2" [ref=e74]:
+                  - generic [ref=e78]:
+                    - generic [ref=e79]: Ready to Move in Greater Noida
+                    - generic [ref=e80]: Venetia Heights
+              - generic [ref=e81]:
+                - button "Go to slide 1" [ref=e82] [cursor=pointer]
+                - button "Go to slide 2" [ref=e83] [cursor=pointer]
+              - button "Previous slide" [ref=e84] [cursor=pointer]
+              - button "Next slide" [ref=e87] [cursor=pointer]
+            - link "Register For Interest" [ref=e93] [cursor=pointer]:
+              - /url: https://wa.me/919999000911?text=Intrested%20in%20Oasis%20Group%20!%20
+          - generic [ref=e97]:
+            - generic [ref=e98]:
+              - generic [ref=e99]:
+                - heading "Oasis Group OF companies" [level=2] [ref=e102]
+                - heading "Oasis Group in Numbers" [level=3] [ref=e105]
+                - paragraph [ref=e108]: Oasis group has client driven approach. We have delivered more than 2.2 Million sq. ft. Of Residential Spaces and more than 2 Million Sq. Ft. Of housing project are under development, via one current ongoing project – Oasis Grandstand.
+              - link "LEARN MORE" [ref=e113] [cursor=pointer]:
+                - /url: https://www.oasis.in/?page_id=116
+            - generic [ref=e117]:
+              - generic [ref=e120]:
+                - generic [ref=e121]: Satisfied Clients
+                - generic [ref=e122]:
+                  - generic [ref=e124]: "0"
+                  - generic [ref=e125]: +
+              - generic [ref=e128]:
+                - generic [ref=e129]: Million Sqft DelivereD
+                - generic [ref=e130]:
+                  - generic [ref=e132]: "0"
+                  - generic [ref=e133]: +
+              - generic [ref=e136]:
+                - generic [ref=e137]: Years in Business
+                - generic [ref=e138]:
+                  - generic [ref=e140]: "0"
+                  - generic [ref=e141]: +
+              - generic [ref=e144]:
+                - generic [ref=e145]: Families Living Happily
+                - generic [ref=e146]:
+                  - generic [ref=e148]: "0"
+                  - generic [ref=e149]: +
+          - heading "Oasis MILESTONES" [level=2] [ref=e154]
+          - region "Carousel" [ref=e160]:
+            - generic [ref=e161]:
+              - group "1 / 3" [ref=e162]:
+                - generic [ref=e175]:
+                  - heading "OASIS HOMES Greater Noida" [level=3] [ref=e176]
+                  - generic [ref=e177]:
+                    - heading "2 & 3 BHK Options Near Noida Airport" [level=4] [ref=e178]
+                    - text: Homes exhibiting a perfect combination of beauty and functionality with 130 Families already residing.
+                  - link "Click Here" [ref=e179] [cursor=pointer]:
+                    - /url: https://www.oasis.in/oasis-homes/
+              - group "2 / 3" [ref=e180]:
+                - generic [ref=e193]:
+                  - heading "OASIS VENETIA HEIGHTS, Greater Noida" [level=3] [ref=e194]
+                  - generic [ref=e195]:
+                    - heading "1,2 & 3 BHK Ready to Move" [level=4] [ref=e196]
+                    - text: A perfect address nestled in heart of Greater Noida with limited options available, 350+ Families already residing.
+                  - link "Click Here" [ref=e197] [cursor=pointer]:
+                    - /url: https://www.oasis.in/oasis-venetia-heights/
+              - group "3 / 3" [ref=e198]:
+                - generic [ref=e211]:
+                  - heading "OASIS GRAND STAND, Yamuna Expressway" [level=3] [ref=e212]
+                  - generic [ref=e213]:
+                    - heading "2 & 3 BHK Options Near Noida Airport" [level=4] [ref=e214]
+                    - text: Bang on the main Yamuna Expressway, it is amidst the fastest emerging expanse of Delhi NCR in close vicinity to Noida Airport and F1 Circuit.
+                  - link "Click Here" [ref=e215] [cursor=pointer]:
+                    - /url: https://www.oasis.in/oasis-grandstand-yamuna-expressway/
+          - generic [ref=e217]:
+            - heading "Insights from our residents" [level=2] [ref=e220]
+            - region "Slides" [ref=e224]:
+              - generic [ref=e225]:
+                - group "5 / 6" [ref=e226]:
+                  - generic [ref=e227]:
+                    - generic [ref=e228]:
+                      - generic [ref=e229]:
+                        - generic [ref=e230]: Vikas Poddar
+                        - generic: Silverstone - 706
+                      - generic "Read More"
+                    - generic [ref=e231]: I’m extremely happy and proud to be a part of the Oasis Grandstand family. I would like to extend my appreciation to the entire Oasis team for their dedication and professionalism throughout this journey. The construction quality, design, and overall layout of the project are truly impressive. Every detail reflects thoughtful planning and a strong commitment to customer satisfaction. The support and communication from the team have been consistent and reliable, which made the entire process smooth and stress-free.
+                - group "6 / 6" [ref=e233]:
+                  - generic [ref=e234]:
+                    - generic [ref=e235]:
+                      - generic [ref=e236]:
+                        - generic [ref=e237]: Aarti Garg
+                        - generic: Detroit - 202
+                      - generic "Read More"
+                    - generic [ref=e238]: I am truly pleased to share my experience as a proud homeowner at Oasis Grandstand YXP. I would like to express my heartfelt gratitude to the entire Oasis team for their unwavering support and exceptional work. The quality of construction, attention to detail, and thoughtfully designed spaces have exceeded my expectations. Oasis Grandstand YXP isn’t just a project—it’s a community I’m proud to be a part of.
+                - group "1 / 6" [ref=e240]:
+                  - generic [ref=e241]:
+                    - generic [ref=e242]:
+                      - generic [ref=e243]:
+                        - generic [ref=e244]: Punendru Kumar
+                        - generic: A 401
+                      - generic "Read More"
+                    - generic [ref=e245]: I would like to extend my heartfelt thanks and congratulations to the Oasis team for their outstanding accomplishments. This has been a substantial project for us, and our apartment at Venetia Heights holds significant importance in our lives. Each member of your team has played a vital role in creating a truly wonderful space that will be our dream home. You have made the entire process smooth and enjoyable so far. Thank you for your dedication—I hope you take great pride in your efforts and achievements!
+                - group "2 / 6" [ref=e247]:
+                  - generic [ref=e248]:
+                    - generic [ref=e249]:
+                      - generic [ref=e250]:
+                        - generic [ref=e251]: Deepa Pathnayak
+                        - generic: B 1505-1506
+                      - generic "Read More"
+                    - generic [ref=e252]: Oasis is a fantastic builder known for its transparency and customer-friendly approach. Their team is available and approachable around the clock, with dedicated professionals in every department to ensure uncompromised quality. For Oasis, it’s not just about contracts or sales—it’s about building lasting relationships. They consistently go above and beyond to address any concerns we may have at any stage. I wholeheartedly recommend Oasis to all property buyers and can confidently vouch that Oasis is a builder you can truly trust.
+                - group "3 / 6" [ref=e254]:
+                  - generic [ref=e255]:
+                    - generic [ref=e256]:
+                      - generic [ref=e257]:
+                        - generic [ref=e258]: Raj kumar Pandey
+                        - generic: A 1401
+                      - generic "Read More"
+                    - generic [ref=e259]: Choosing Oasis Venetia Heights was one of the best decisions we made. From the initial booking to the final handover, the process has been seamless. The team was always responsive, transparent, and cooperative. Our home is not just a structure, but a reflection of thoughtful design and quality construction. A big thank you to the Oasis team for turning our vision into reality.
+                - group "4 / 6" [ref=e261]:
+                  - generic [ref=e262]:
+                    - generic [ref=e263]:
+                      - generic [ref=e264]:
+                        - generic [ref=e265]: Sudipta Banerjee
+                        - generic: Phoenix - 1405
+                      - generic "Read More"
+                    - generic [ref=e266]: I am truly delighted to be a part of the Oasis Grandstand community. I want to sincerely thank the entire Oasis team for delivering a home that exceeds expectations. The planning, construction quality, and amenities reflect a thoughtful approach and a strong commitment to excellence. My family and I feel proud to call Oasis Grandstand our home. Thank you for making our dream a reality.
+                - group "5 / 6" [ref=e268]:
+                  - generic [ref=e269]:
+                    - generic [ref=e270]:
+                      - generic [ref=e271]:
+                        - generic [ref=e272]: Vikas Poddar
+                        - generic: Silverstone - 706
+                      - generic "Read More"
+                    - generic [ref=e273]: I’m extremely happy and proud to be a part of the Oasis Grandstand family. I would like to extend my appreciation to the entire Oasis team for their dedication and professionalism throughout this journey. The construction quality, design, and overall layout of the project are truly impressive. Every detail reflects thoughtful planning and a strong commitment to customer satisfaction. The support and communication from the team have been consistent and reliable, which made the entire process smooth and stress-free.
+                - group "6 / 6" [ref=e275]:
+                  - generic [ref=e276]:
+                    - generic [ref=e277]:
+                      - generic [ref=e278]:
+                        - generic [ref=e279]: Aarti Garg
+                        - generic: Detroit - 202
+                      - generic "Read More"
+                    - generic [ref=e280]: I am truly pleased to share my experience as a proud homeowner at Oasis Grandstand YXP. I would like to express my heartfelt gratitude to the entire Oasis team for their unwavering support and exceptional work. The quality of construction, attention to detail, and thoughtfully designed spaces have exceeded my expectations. Oasis Grandstand YXP isn’t just a project—it’s a community I’m proud to be a part of.
+                - group "1 / 6" [ref=e282]:
+                  - generic [ref=e283]:
+                    - generic [ref=e284]:
+                      - generic [ref=e285]:
+                        - generic [ref=e286]: Punendru Kumar
+                        - generic: A 401
+                      - generic "Read More"
+                    - generic [ref=e287]: I would like to extend my heartfelt thanks and congratulations to the Oasis team for their outstanding accomplishments. This has been a substantial project for us, and our apartment at Venetia Heights holds significant importance in our lives. Each member of your team has played a vital role in creating a truly wonderful space that will be our dream home. You have made the entire process smooth and enjoyable so far. Thank you for your dedication—I hope you take great pride in your efforts and achievements!
+                - group "2 / 6" [ref=e289]:
+                  - generic [ref=e290]:
+                    - generic [ref=e291]:
+                      - generic [ref=e292]:
+                        - generic [ref=e293]: Deepa Pathnayak
+                        - generic: B 1505-1506
+                      - generic "Read More"
+                    - generic [ref=e294]: Oasis is a fantastic builder known for its transparency and customer-friendly approach. Their team is available and approachable around the clock, with dedicated professionals in every department to ensure uncompromised quality. For Oasis, it’s not just about contracts or sales—it’s about building lasting relationships. They consistently go above and beyond to address any concerns we may have at any stage. I wholeheartedly recommend Oasis to all property buyers and can confidently vouch that Oasis is a builder you can truly trust.
+              - generic [ref=e296]:
+                - button "Go to slide 1" [ref=e297] [cursor=pointer]
+                - button "Go to slide 2" [ref=e298] [cursor=pointer]
+                - button "Go to slide 3" [ref=e299] [cursor=pointer]
+                - button "Go to slide 4" [ref=e300] [cursor=pointer]
+                - button "Go to slide 5" [ref=e301] [cursor=pointer]
+                - button "Go to slide 6" [ref=e302] [cursor=pointer]
+              - button "Previous slide" [ref=e303] [cursor=pointer]
+              - button "Next slide" [ref=e306] [cursor=pointer]
+    - contentinfo
+    - generic [ref=e312]:
+      - generic [ref=e313]:
+        - generic [ref=e314]:
+          - heading "CONTACT INFO" [level=2] [ref=e317]
+          - list [ref=e320]:
+            - listitem [ref=e321]:
+              - generic [ref=e325]: A 77, Sector 2, Noida
+            - listitem [ref=e326]:
+              - generic [ref=e330]: +91-8010 111 777
+            - listitem [ref=e331]:
+              - generic [ref=e332]: 
+              - generic [ref=e334]: info@oasis.in
+          - list [ref=e337]:
+            - listitem [ref=e338]:
+              - link "Instagram" [ref=e339] [cursor=pointer]:
+                - /url: https://www.instagram.com/oasis_groupindia/
+            - listitem [ref=e343]:
+              - link "X-twitter" [ref=e344] [cursor=pointer]:
+                - /url: https://x.com/OasisGroupIndia
+            - listitem [ref=e348]:
+              - link "Facebook" [ref=e349] [cursor=pointer]:
+                - /url: https://www.facebook.com/OASISREALTECH/
+        - generic [ref=e353]:
+          - heading "OUR PROJECTS" [level=2] [ref=e356]
+          - navigation "Menu" [ref=e359]:
+            - list [ref=e360]:
+              - listitem [ref=e361]:
+                - link "Oasis Grandstand (Phase 2) UPRERAPRJ585804/01/2025" [ref=e362] [cursor=pointer]:
+                  - /url: https://www.oasis.in/oasis-grandstand-phase-2/
+              - listitem [ref=e363]:
+                - link "Oasis Grandstand (Phase 1) UPRERAPRJ6908" [ref=e364] [cursor=pointer]:
+                  - /url: https://www.oasis.in/oasis-grandstand-yamuna-expressway/
+              - listitem [ref=e365]:
+                - link "Oasis Venetia Heights UPRERAPRJ1646" [ref=e366] [cursor=pointer]:
+                  - /url: https://www.oasis.in/oasis-venetia-heights/
+              - listitem [ref=e367]:
+                - link "Oasis Homes" [ref=e368] [cursor=pointer]:
+                  - /url: https://www.oasis.in/oasis-homes/
+              - listitem [ref=e369]:
+                - link "Oasis Arcade" [ref=e370] [cursor=pointer]:
+                  - /url: https://www.oasis.in/oasis-arcade/
+        - generic [ref=e371]:
+          - heading "USEFUL LINKS" [level=2] [ref=e374]
+          - navigation "Menu" [ref=e377]:
+            - list [ref=e378]:
+              - listitem [ref=e379]:
+                - link "Testimonials" [ref=e380] [cursor=pointer]:
+                  - /url: https://www.oasis.in/testimonials/
+              - listitem [ref=e381]:
+                - link "Why Invest with us" [ref=e382] [cursor=pointer]:
+                  - /url: https://www.oasis.in/why-invest-with-us/
+              - listitem [ref=e383]:
+                - link "RERA FAQ" [ref=e384] [cursor=pointer]:
+                  - /url: https://www.oasis.in/rera-faq/
+              - listitem [ref=e385]:
+                - link "Media & Events" [ref=e386] [cursor=pointer]:
+                  - /url: https://www.oasis.in/print-campaigns/
+              - listitem [ref=e387]:
+                - link "Home Loan" [ref=e388] [cursor=pointer]:
+                  - /url: https://www.oasis.in/home-loan/
+              - listitem [ref=e389]:
+                - link "Careers" [ref=e390] [cursor=pointer]:
+                  - /url: https://www.oasis.in/careers/
+              - listitem [ref=e391]:
+                - link "Privacy Policy" [ref=e392] [cursor=pointer]:
+                  - /url: https://www.oasis.in/privacy-policy/
+        - generic [ref=e393]:
+          - heading "POPULAR TAGS" [level=2] [ref=e396]
+          - list [ref=e399]:
+            - listitem [ref=e400]:
+              - generic [ref=e401]: Oasis
+            - listitem [ref=e402]:
+              - generic [ref=e403]: Yamuna ExpressWay Flats
+            - listitem [ref=e404]:
+              - generic [ref=e405]: Venetia Heights
+            - listitem [ref=e406]:
+              - generic [ref=e407]: Oasis Homes
+            - listitem [ref=e408]:
+              - generic [ref=e409]: Flats in Greater Noida
+            - listitem [ref=e410]:
+              - generic [ref=e411]: Oasis Grandstand
+            - listitem [ref=e412]:
+              - generic [ref=e413]: Jewar Airport
+            - listitem [ref=e414]:
+              - generic [ref=e415]: Ready To Move Flats
+            - listitem [ref=e416]:
+              - generic [ref=e417]: Real Estate
+      - generic [ref=e418]:
+        - paragraph [ref=e421]: "Disclaimer : This disclaimer (“Disclaimer”) will be applicable to the Website. By using or accessing the Website you agree with the Disclaimer without any qualification or limitation. Oasis Group of Companies. (“Company”) makes available information and materials (the “Information”) on this website, subject to the following terms and conditions. By accessing this site, you unconditionally and without any limitation agree to the terms and conditions as outlined in this Legal Disclaimer. The Company reserves the right to change these terms and conditions from time to time at its sole discretion and without any intimation to you or without notifying the same to you and that you shall be bound by any such change effected. We thank you for your patience and understanding."
+        - paragraph [ref=e424]:
+          - text: "Copyright 2025. All Rights Reserved. Powered By :"
+          - link "Brainguru Technologies" [ref=e425] [cursor=pointer]:
+            - /url: https://www.brainguru.in/
+  - generic [ref=e426]: desktop

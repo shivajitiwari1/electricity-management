@@ -1,0 +1,77 @@
+- generic [active] [ref=f23e1]:
+  - generic [ref=f23e2]:
+    - generic [ref=f23e4]:
+      - generic [ref=f23e10]:
+        - paragraph [ref=f23e11]: Oasis Venetia Heights
+        - paragraph [ref=f23e12]: Admin Panel
+      - navigation [ref=f23e13]:
+        - link "Dashboard" [ref=f23e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f23e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f23e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f23e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f23e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f23e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f23e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f23e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f23e47] [cursor=pointer]:
+          - /url: /admin/flats
+        - link "Users" [ref=f23e52] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f23e65] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f23e69]
+      - generic [ref=f23e70]:
+        - generic [ref=f23e71]:
+          - generic [ref=f23e72]:
+            - paragraph [ref=f23e73]: Admin
+            - paragraph [ref=f23e74]: admin@oasis.local
+          - button "Toggle theme" [ref=f23e75]
+        - button "Sign Out" [ref=f23e77]
+    - main [ref=f23e78]:
+      - generic [ref=f23e79]:
+        - generic [ref=f23e80]:
+          - heading "Electricity Rates" [level=1] [ref=f23e81]
+          - paragraph [ref=f23e82]: Manage NPCL and DG electricity rates
+        - table [ref=f23e86]:
+          - rowgroup [ref=f23e87]:
+            - row [ref=f23e88]:
+              - columnheader [ref=f23e89]
+              - columnheader [ref=f23e91]
+              - columnheader [ref=f23e93]
+              - columnheader [ref=f23e95]
+              - columnheader [ref=f23e97]
+          - rowgroup [ref=f23e99]:
+            - row [ref=f23e100]:
+              - cell [ref=f23e101]
+              - cell [ref=f23e103]
+              - cell [ref=f23e105]
+              - cell [ref=f23e107]
+              - cell [ref=f23e109]
+            - row [ref=f23e111]:
+              - cell [ref=f23e112]
+              - cell [ref=f23e114]
+              - cell [ref=f23e116]
+              - cell [ref=f23e118]
+              - cell [ref=f23e120]
+            - row [ref=f23e122]:
+              - cell [ref=f23e123]
+              - cell [ref=f23e125]
+              - cell [ref=f23e127]
+              - cell [ref=f23e129]
+              - cell [ref=f23e131]
+            - row [ref=f23e133]:
+              - cell [ref=f23e134]
+              - cell [ref=f23e136]
+              - cell [ref=f23e138]
+              - cell [ref=f23e140]
+              - cell [ref=f23e142]
+  - region "Notifications alt+T"
+  - alert [ref=f23e144]

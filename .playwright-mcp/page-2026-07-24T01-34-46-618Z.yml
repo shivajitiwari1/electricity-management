@@ -1,0 +1,129 @@
+- generic [active] [ref=f36e1]:
+  - generic [ref=f36e2]:
+    - generic [ref=f36e4]:
+      - generic [ref=f36e10]:
+        - paragraph [ref=f36e11]: Oasis Venetia Heights
+        - paragraph [ref=f36e12]: Admin Panel
+      - navigation [ref=f36e13]:
+        - link "Dashboard" [ref=f36e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f36e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f36e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f36e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f36e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Maintenance" [ref=f36e37] [cursor=pointer]:
+          - /url: /admin/maintenance
+        - link "Payments" [ref=f36e40] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f36e43] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f36e46] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f36e50] [cursor=pointer]:
+          - /url: /admin/flats
+        - link "Users" [ref=f36e55] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f36e68] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f36e72]
+      - generic [ref=f36e73]:
+        - generic [ref=f36e74]:
+          - generic [ref=f36e75]:
+            - paragraph [ref=f36e76]: Admin
+            - paragraph [ref=f36e77]: admin@oasis.local
+          - button "Toggle theme" [ref=f36e78]
+        - button "Sign Out" [ref=f36e80]
+    - main [ref=f36e81]:
+      - generic [ref=f36e82]:
+        - generic [ref=f36e83]:
+          - generic [ref=f36e84]:
+            - heading "Maintenance Bills" [level=1] [ref=f36e85]
+            - paragraph [ref=f36e86]: Monthly maintenance charges · 24% p.a. interest on overdue
+          - generic [ref=f36e87]:
+            - link [ref=f36e88] [cursor=pointer]:
+              - /url: /admin/maintenance/rates
+              - button "Manage Rates" [ref=f36e89]
+            - link [ref=f36e90] [cursor=pointer]:
+              - /url: /admin/maintenance/generate
+              - button "Scheduler" [ref=f36e91]
+        - table [ref=f36e99]:
+          - rowgroup [ref=f36e100]:
+            - row [ref=f36e101]:
+              - columnheader [ref=f36e102]
+              - columnheader [ref=f36e104]
+              - columnheader [ref=f36e106]
+              - columnheader [ref=f36e108]
+              - columnheader [ref=f36e110]
+              - columnheader [ref=f36e112]
+              - columnheader [ref=f36e114]
+          - rowgroup [ref=f36e116]:
+            - row [ref=f36e117]:
+              - cell [ref=f36e118]
+              - cell [ref=f36e120]
+              - cell [ref=f36e122]
+              - cell [ref=f36e124]
+              - cell [ref=f36e126]
+              - cell [ref=f36e128]
+              - cell [ref=f36e130]
+            - row [ref=f36e132]:
+              - cell [ref=f36e133]
+              - cell [ref=f36e135]
+              - cell [ref=f36e137]
+              - cell [ref=f36e139]
+              - cell [ref=f36e141]
+              - cell [ref=f36e143]
+              - cell [ref=f36e145]
+            - row [ref=f36e147]:
+              - cell [ref=f36e148]
+              - cell [ref=f36e150]
+              - cell [ref=f36e152]
+              - cell [ref=f36e154]
+              - cell [ref=f36e156]
+              - cell [ref=f36e158]
+              - cell [ref=f36e160]
+            - row [ref=f36e162]:
+              - cell [ref=f36e163]
+              - cell [ref=f36e165]
+              - cell [ref=f36e167]
+              - cell [ref=f36e169]
+              - cell [ref=f36e171]
+              - cell [ref=f36e173]
+              - cell [ref=f36e175]
+            - row [ref=f36e177]:
+              - cell [ref=f36e178]
+              - cell [ref=f36e180]
+              - cell [ref=f36e182]
+              - cell [ref=f36e184]
+              - cell [ref=f36e186]
+              - cell [ref=f36e188]
+              - cell [ref=f36e190]
+            - row [ref=f36e192]:
+              - cell [ref=f36e193]
+              - cell [ref=f36e195]
+              - cell [ref=f36e197]
+              - cell [ref=f36e199]
+              - cell [ref=f36e201]
+              - cell [ref=f36e203]
+              - cell [ref=f36e205]
+            - row [ref=f36e207]:
+              - cell [ref=f36e208]
+              - cell [ref=f36e210]
+              - cell [ref=f36e212]
+              - cell [ref=f36e214]
+              - cell [ref=f36e216]
+              - cell [ref=f36e218]
+              - cell [ref=f36e220]
+            - row [ref=f36e222]:
+              - cell [ref=f36e223]
+              - cell [ref=f36e225]
+              - cell [ref=f36e227]
+              - cell [ref=f36e229]
+              - cell [ref=f36e231]
+              - cell [ref=f36e233]
+              - cell [ref=f36e235]
+  - region "Notifications alt+T"
+  - alert [ref=f36e237]

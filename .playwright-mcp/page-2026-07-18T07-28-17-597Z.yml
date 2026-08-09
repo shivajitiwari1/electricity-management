@@ -1,0 +1,182 @@
+- generic [ref=f63e1]:
+  - generic [ref=f63e2]:
+    - generic [ref=f63e4]:
+      - generic [ref=f63e10]:
+        - paragraph [ref=f63e11]: Oasis Venetia Heights
+        - paragraph [ref=f63e12]: Admin Panel
+      - navigation [ref=f63e13]:
+        - link [ref=f63e309] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=f63e310] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=f63e311] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=f63e312] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=f63e313] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=f63e314] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=f63e315] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=f63e316] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=f63e317] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+      - separator [ref=f63e52]
+      - generic [ref=f63e53]:
+        - generic [ref=f63e54]:
+          - generic [ref=f63e55]:
+            - paragraph [ref=f63e56]: Admin
+            - paragraph [ref=f63e57]: admin@oasis.local
+          - button [ref=f63e318]:
+            - generic [ref=f63e59]: Toggle theme
+        - button [ref=f63e319]: Sign Out
+    - main [ref=f63e61]:
+      - generic [ref=f63e62]:
+        - generic [ref=f63e63]:
+          - heading [level=1] [ref=f63e320]: Bills
+          - paragraph [ref=f63e65]: Manage electricity bills for Oasis Venetia Heights
+        - generic [ref=f63e245]:
+          - generic [ref=f63e246]:
+            - generic [ref=f63e247]: Tower
+            - combobox [ref=f63e248]:
+              - generic [ref=f63e249]: all
+              - img: ▼
+            - textbox [ref=f63e250]: all
+          - generic [ref=f63e251]:
+            - generic [ref=f63e252]: Month (YYYY-MM)
+            - textbox [ref=f63e321]:
+              - /placeholder: e.g. 2026-07
+          - generic [ref=f63e254]:
+            - generic [ref=f63e255]: Status
+            - combobox [ref=f63e256]:
+              - generic [ref=f63e257]: all
+              - img: ▼
+            - textbox [ref=f63e258]: all
+        - generic [ref=f63e259]:
+          - generic [ref=f63e260]: 2 Bills
+          - table [ref=f63e264]:
+            - rowgroup [ref=f63e265]:
+              - row [ref=f63e322]:
+                - columnheader [ref=f63e323]: "Bill #"
+                - columnheader [ref=f63e324]: Flat No
+                - columnheader [ref=f63e325]: Tower
+                - columnheader [ref=f63e326]: Resident
+                - columnheader [ref=f63e327]: Period
+                - columnheader [ref=f63e328]: Amount (₹)
+                - columnheader [ref=f63e329]: Due Date
+                - columnheader [ref=f63e330]: Status
+                - columnheader [ref=f63e331]: Actions
+            - rowgroup [ref=f63e276]:
+              - row [ref=f63e332]:
+                - cell [ref=f63e333]: OV-B-1206-202607-2
+                - cell [ref=f63e334]: B-1206
+                - cell [ref=f63e335]: B
+                - cell [ref=f63e336]: Mr. Gaurav Kumar
+                - cell [ref=f63e337]: 30 Jun 2026 – 18 Jul 2026
+                - cell [ref=f63e338]: 3,602.00
+                - cell [ref=f63e339]: 27 Jul 2026
+                - cell [ref=f63e340]:
+                  - generic [ref=f63e286]: PENDING
+                - cell [ref=f63e341]:
+                  - generic [ref=f63e288]:
+                    - button [ref=f63e342]: PDF
+                    - button [ref=f63e343]: Details
+                    - button [ref=f63e344]: Mark Paid
+                    - button [ref=f63e345]: Delete
+              - row [ref=f63e346]:
+                - cell [ref=f63e347]: OV-B-1206-202607
+                - cell [ref=f63e348]: B-1206
+                - cell [ref=f63e349]: B
+                - cell [ref=f63e350]: Mr. Gaurav Kumar
+                - cell [ref=f63e351]: 31 May 2026 – 30 Jun 2026
+                - cell [ref=f63e352]: 1,542.00
+                - cell [ref=f63e353]: 27 Jul 2026
+                - cell [ref=f63e354]:
+                  - generic [ref=f63e302]: PENDING
+                - cell [ref=f63e355]:
+                  - generic [ref=f63e304]:
+                    - button [ref=f63e356]: PDF
+                    - button [ref=f63e357]: Details
+                    - button [ref=f63e358]: Mark Paid
+                    - button [ref=f63e359]: Delete
+  - region "Notifications alt+T"
+  - alert [ref=f63e244]
+  - dialog [ref=f63e363]:
+    - heading "Bill Details — OV-B-1206-202607-2" [level=2] [ref=f63e365]
+    - generic [ref=f63e366]:
+      - generic [ref=f63e367]:
+        - paragraph [ref=f63e368]: Basic Information
+        - generic [ref=f63e369]:
+          - generic [ref=f63e370]: Bill Number
+          - generic [ref=f63e371]: OV-B-1206-202607-2
+          - generic [ref=f63e372]: Resident
+          - generic [ref=f63e373]: Mr. Gaurav Kumar
+          - generic [ref=f63e374]: Flat / Tower
+          - generic [ref=f63e375]: B-1206 — Tower B
+          - generic [ref=f63e376]: Meter No
+          - generic [ref=f63e377]: B-1206
+          - generic [ref=f63e378]: Sanctioned Load
+          - generic [ref=f63e379]: 4.0 kW
+          - generic [ref=f63e380]: Unit Area
+          - generic [ref=f63e381]: 995 Sq.Ft.
+          - generic [ref=f63e382]: Bill Date
+          - generic [ref=f63e383]: 18 Jul 2026
+          - generic [ref=f63e384]: Due Date
+          - generic [ref=f63e385]: 27 Jul 2026
+          - generic [ref=f63e386]: Billing Period
+          - generic [ref=f63e387]: 30 Jun 2026 – 18 Jul 2026
+          - generic [ref=f63e388]: Status
+          - generic [ref=f63e389]: PENDING
+      - generic [ref=f63e391]:
+        - generic [ref=f63e392]:
+          - paragraph [ref=f63e393]: Meter Reading Details
+          - paragraph [ref=f63e394]: "Reading Date: 18 Jul 2026"
+        - table [ref=f63e396]:
+          - rowgroup [ref=f63e397]:
+            - row [ref=f63e398]:
+              - columnheader "Source" [ref=f63e399]
+              - columnheader "Previous" [ref=f63e400]
+              - columnheader "Current" [ref=f63e401]
+              - columnheader "Units" [ref=f63e402]
+          - rowgroup [ref=f63e403]:
+            - row [ref=f63e404]:
+              - cell "NPCL Power" [ref=f63e405]
+              - cell "10392.00" [ref=f63e406]
+              - cell "10592.00" [ref=f63e407]
+              - cell "200.00" [ref=f63e408]
+            - row [ref=f63e409]:
+              - cell "DG Power" [ref=f63e410]
+              - cell "0.00" [ref=f63e411]
+              - cell "0.00" [ref=f63e412]
+              - cell "0.00" [ref=f63e413]
+      - generic [ref=f63e414]:
+        - paragraph [ref=f63e415]: Charge Breakdown
+        - generic [ref=f63e416]:
+          - generic [ref=f63e417]:
+            - generic [ref=f63e418]: NPCL Energy Charges (200.00 units × ₹7.00/unit)
+            - generic [ref=f63e419]: ₹1,400.00
+          - generic [ref=f63e420]:
+            - generic [ref=f63e421]: DG Energy Charges (Fixed)
+            - generic [ref=f63e422]: ₹200.00
+          - generic [ref=f63e423]:
+            - generic [ref=f63e424]: Fixed Charge (@ ₹115 per kW/month)
+            - generic [ref=f63e425]: ₹460.00
+          - generic [ref=f63e426]:
+            - generic [ref=f63e427]: Previous Outstanding Balance
+            - generic [ref=f63e428]: ₹1,542.00
+          - generic [ref=f63e429]:
+            - generic [ref=f63e430]: Net Payable Amount
+            - generic [ref=f63e431]: ₹3,602.00
+      - button "Download PDF" [active] [ref=f63e433]
+    - button "Close" [ref=f63e434]

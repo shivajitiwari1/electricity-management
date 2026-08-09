@@ -1,0 +1,85 @@
+- generic [active] [ref=f48e1]:
+  - generic [ref=f48e2]:
+    - banner [ref=f48e3]:
+      - generic [ref=f48e4]:
+        - generic [ref=f48e5]:
+          - generic [ref=f48e6]: Oasis Venetia Heights
+          - navigation [ref=f48e11]:
+            - link "Dashboard" [ref=f48e12] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f48e16] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f48e20] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Maintenance" [ref=f48e23] [cursor=pointer]:
+              - /url: /resident/maintenance
+            - link "Profile" [ref=f48e26] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f48e30]:
+          - generic [ref=f48e31]: Shivaji Tiwari
+          - button "Toggle theme" [ref=f48e32]
+          - button "Sign Out" [ref=f48e34]
+    - main [ref=f48e36]:
+      - generic [ref=f48e37]:
+        - generic [ref=f48e38]:
+          - heading "Payment History" [level=1] [ref=f48e39]
+          - paragraph [ref=f48e40]: All your electricity bill payments
+        - table [ref=f48e44]:
+          - rowgroup [ref=f48e45]:
+            - row [ref=f48e46]:
+              - columnheader [ref=f48e47]
+              - columnheader [ref=f48e49]
+              - columnheader [ref=f48e51]
+              - columnheader [ref=f48e53]
+              - columnheader [ref=f48e55]
+          - rowgroup [ref=f48e57]:
+            - row [ref=f48e58]:
+              - cell [ref=f48e59]
+              - cell [ref=f48e61]
+              - cell [ref=f48e63]
+              - cell [ref=f48e65]
+              - cell [ref=f48e67]
+            - row [ref=f48e69]:
+              - cell [ref=f48e70]
+              - cell [ref=f48e72]
+              - cell [ref=f48e74]
+              - cell [ref=f48e76]
+              - cell [ref=f48e78]
+            - row [ref=f48e80]:
+              - cell [ref=f48e81]
+              - cell [ref=f48e83]
+              - cell [ref=f48e85]
+              - cell [ref=f48e87]
+              - cell [ref=f48e89]
+            - row [ref=f48e91]:
+              - cell [ref=f48e92]
+              - cell [ref=f48e94]
+              - cell [ref=f48e96]
+              - cell [ref=f48e98]
+              - cell [ref=f48e100]
+            - row [ref=f48e102]:
+              - cell [ref=f48e103]
+              - cell [ref=f48e105]
+              - cell [ref=f48e107]
+              - cell [ref=f48e109]
+              - cell [ref=f48e111]
+            - row [ref=f48e113]:
+              - cell [ref=f48e114]
+              - cell [ref=f48e116]
+              - cell [ref=f48e118]
+              - cell [ref=f48e120]
+              - cell [ref=f48e122]
+            - row [ref=f48e124]:
+              - cell [ref=f48e125]
+              - cell [ref=f48e127]
+              - cell [ref=f48e129]
+              - cell [ref=f48e131]
+              - cell [ref=f48e133]
+            - row [ref=f48e135]:
+              - cell [ref=f48e136]
+              - cell [ref=f48e138]
+              - cell [ref=f48e140]
+              - cell [ref=f48e142]
+              - cell [ref=f48e144]
+  - region "Notifications alt+T"
+  - alert [ref=f48e146]

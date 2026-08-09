@@ -1,0 +1,25 @@
+- generic [active] [ref=f11e1]:
+  - link "Skip to content":
+    - /url: "#geist-skip-nav"
+  - main [ref=f11e3]:
+    - generic [ref=f11e6]:
+      - generic [ref=f11e7]:
+        - button "Open sidebar" [ref=f11e10] [cursor=pointer]
+        - navigation "Breadcrumb" [ref=f11e19]:
+          - link "Deployments" [ref=f11e21] [cursor=pointer]:
+            - /url: /shivajireacts-projects/electricity-management/deployments
+          - link "CnqqirEKT" [ref=f11e27] [cursor=pointer]:
+            - /url: /shivajireacts-projects/electricity-management/CnqqirEKT3BTjKgAVVCHC7SL2L6h
+          - generic [ref=f11e32]: Logs
+      - generic [ref=f11e37]:
+        - link "Deployment" [ref=f11e38] [cursor=pointer]:
+          - /url: "#intent:global:deployment"
+        - link "Logs" [ref=f11e39] [cursor=pointer]:
+          - /url: "#intent:global:logs"
+        - link "Resources" [ref=f11e40] [cursor=pointer]:
+          - /url: "#intent:global:resources"
+        - link "Source" [ref=f11e41] [cursor=pointer]:
+          - /url: "#intent:global:source"
+        - link "Open Graph" [ref=f11e42] [cursor=pointer]:
+          - /url: "#intent:global:open-graph"
+  - alert [ref=f11e43]

@@ -1,0 +1,174 @@
+- generic [ref=f14e1]:
+  - generic [ref=f14e2]:
+    - generic [ref=f14e4]:
+      - generic [ref=f14e10]:
+        - paragraph [ref=f14e11]: Oasis Venetia Heights
+        - paragraph [ref=f14e12]: Admin Panel
+      - navigation [ref=f14e13]:
+        - link [ref=f14e7263] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=f14e7264] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=f14e7265] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=f14e7266] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=f14e7267] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=f14e7268] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=f14e7269] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=f14e7270] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=f14e7271] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+        - generic [ref=f14e52]:
+          - button [ref=f14e7272]:
+            - generic [ref=f14e56]: Maintenance
+          - generic [ref=f14e59]:
+            - link [ref=f14e7273] [cursor=pointer]:
+              - /url: /admin/maintenance
+              - text: Bills
+            - link [ref=f14e7274] [cursor=pointer]:
+              - /url: /admin/maintenance/rates
+              - text: Rates
+            - link [ref=f14e7275] [cursor=pointer]:
+              - /url: /admin/maintenance/generate
+              - text: Scheduler
+            - link [ref=f14e7276] [cursor=pointer]:
+              - /url: /admin/maintenance/payments
+              - text: Payments
+        - link [ref=f14e7277] [cursor=pointer]:
+          - /url: /admin/users
+          - text: Users
+        - link [ref=f14e7278] [cursor=pointer]:
+          - /url: /admin/permissions
+          - text: Permissions
+      - separator [ref=f14e91]
+      - generic [ref=f14e92]:
+        - generic [ref=f14e93]:
+          - generic [ref=f14e94]:
+            - paragraph [ref=f14e95]: Admin
+            - paragraph [ref=f14e96]: admin@oasis.local
+          - button [ref=f14e7279]:
+            - generic [ref=f14e98]: Toggle theme
+        - button [ref=f14e7280]: Sign Out
+    - main [ref=f14e100]:
+      - generic [ref=f14e101]:
+        - generic [ref=f14e102]:
+          - heading [level=1] [ref=f14e7281]: Maintenance Bills
+          - paragraph [ref=f14e104]: Monthly maintenance charges · 24% p.a. interest on overdue
+        - generic [ref=f14e105]:
+          - generic [ref=f14e106]:
+            - generic [ref=f14e107]:
+              - generic [ref=f14e108]: Tower
+              - combobox [ref=f14e109]:
+                - generic [ref=f14e110]: all
+                - img: ▼
+              - textbox [ref=f14e111]: all
+            - generic [ref=f14e112]:
+              - generic [ref=f14e113]: Month
+              - textbox [ref=f14e114]: 2026-07
+            - generic [ref=f14e115]:
+              - generic [ref=f14e116]: Status
+              - combobox [ref=f14e117]:
+                - generic [ref=f14e118]: all
+                - img: ▼
+              - textbox [ref=f14e119]: all
+            - generic [ref=f14e120]:
+              - generic [ref=f14e121]: Search
+              - textbox [ref=f14e7282]:
+                - /placeholder: Flat or resident…
+                - text: A-404
+            - button [ref=f14e7283]: Apply Filter
+            - button [ref=f14e7284]: Download Excel
+            - generic [ref=f14e125]:
+              - button [ref=f14e7285]: Generate Bills
+              - button [ref=f14e7286]: Advance Pay
+          - generic [ref=f14e128]:
+            - generic [ref=f14e129]:
+              - strong [ref=f14e130]: "1"
+              - text: of 200 bills
+            - generic [ref=f14e131]:
+              - text: "Total Due:"
+              - strong [ref=f14e132]: ₹2,875.00
+            - generic [ref=f14e133]:
+              - text: "Collected:"
+              - strong [ref=f14e134]: ₹0.00
+            - generic [ref=f14e135]:
+              - text: "Outstanding:"
+              - strong [ref=f14e136]: ₹2,875.00
+          - table [ref=f14e138]:
+            - rowgroup [ref=f14e139]:
+              - row [ref=f14e7287]:
+                - columnheader [ref=f14e7288]: Bill No
+                - columnheader [ref=f14e7289]: Flat / Resident
+                - columnheader [ref=f14e7290]: Area
+                - columnheader [ref=f14e7291]: Amount
+                - columnheader [ref=f14e7292]: Interest
+                - columnheader [ref=f14e7293]: Due Amount
+                - columnheader [ref=f14e7294]: Due Date
+                - columnheader [ref=f14e7295]: Status
+                - columnheader [ref=f14e7296]: Actions
+            - rowgroup [ref=f14e150]:
+              - row [ref=f14e7297]:
+                - cell [ref=f14e7298]:
+                  - button [ref=f14e7299]: OM-A-404-202607
+                - cell [ref=f14e7300]:
+                  - paragraph [ref=f14e5480]: A-404
+                  - paragraph [ref=f14e5481]: Shivaji Tiwari
+                - cell [ref=f14e7301]: 1150 sq ft
+                - cell [ref=f14e7302]:
+                  - paragraph [ref=f14e5484]: ₹2,875.00
+                - cell [ref=f14e7303]: —
+                - cell [ref=f14e7304]: ₹2,875.00
+                - cell [ref=f14e7305]: 08 Aug 2026
+                - cell [ref=f14e7306]:
+                  - generic [ref=f14e5489]: PENDING
+                - cell [ref=f14e7307]:
+                  - generic [ref=f14e5491]:
+                    - button [ref=f14e7308]
+                    - button [ref=f14e7309]: Record Payment
+  - region "Notifications alt+T"
+  - alert [ref=f14e3751]
+  - dialog [ref=f14e7313]:
+    - heading "Record Maintenance Payment" [level=2] [ref=f14e7315]
+    - generic [ref=f14e7316]:
+      - generic [ref=f14e7317]:
+        - paragraph [ref=f14e7318]:
+          - text: "Bill:"
+          - strong [ref=f14e7319]: OM-A-404-202607
+        - paragraph [ref=f14e7320]: "Flat: A-404 — Shivaji Tiwari"
+        - paragraph [ref=f14e7321]: "Maintenance: ₹2,875.00"
+        - paragraph [ref=f14e7322]:
+          - text: "Outstanding:"
+          - strong [ref=f14e7323]: ₹2,875.00
+      - generic [ref=f14e7324]:
+        - generic [ref=f14e7325]: Amount (₹)
+        - spinbutton [active] [ref=f14e7326]: "2875.00"
+      - generic [ref=f14e7327]:
+        - generic [ref=f14e7328]: Method
+        - combobox [ref=f14e7329]:
+          - generic [ref=f14e7330]: CASH
+          - img: ▼
+        - textbox [ref=f14e7331]: CASH
+      - generic [ref=f14e7332]:
+        - generic [ref=f14e7333]: Payment Date
+        - textbox [ref=f14e7334]
+      - generic [ref=f14e7335]:
+        - generic [ref=f14e7336]: Reference / Transaction ID (optional)
+        - textbox "UTR / cheque no." [ref=f14e7337]
+      - generic [ref=f14e7338]:
+        - button "Cancel" [ref=f14e7339]
+        - button "Record Payment" [ref=f14e7340]
+    - button "Close" [ref=f14e7341]

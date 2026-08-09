@@ -1,0 +1,169 @@
+- generic [ref=f15e1]:
+  - generic [ref=f15e2]:
+    - generic [ref=f15e4]:
+      - generic [ref=f15e10]:
+        - paragraph [ref=f15e11]: Oasis Venetia Heights
+        - paragraph [ref=f15e12]: Admin Panel
+      - navigation [ref=f15e13]:
+        - link [ref=f15e309] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=f15e310] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=f15e311] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=f15e312] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=f15e313] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=f15e314] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=f15e315] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=f15e316] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=f15e317] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+        - link [ref=f15e318] [cursor=pointer]:
+          - /url: /admin/users
+          - text: Users
+        - link [ref=f15e319] [cursor=pointer]:
+          - /url: /admin/permissions
+          - text: Permissions
+      - separator [ref=f15e69]
+      - generic [ref=f15e70]:
+        - generic [ref=f15e71]:
+          - generic [ref=f15e72]:
+            - paragraph [ref=f15e73]: Admin
+            - paragraph [ref=f15e74]: admin@oasis.local
+          - button [ref=f15e320]:
+            - generic [ref=f15e76]: Toggle theme
+        - button [ref=f15e321]: Sign Out
+    - main [ref=f15e78]:
+      - generic [ref=f15e79]:
+        - generic [ref=f15e80]:
+          - heading [level=1] [ref=f15e322]: Payments
+          - paragraph [ref=f15e82]: View all payment transactions for Oasis Venetia Heights
+        - generic [ref=f15e239]:
+          - generic [ref=f15e241]:
+            - text: Bills Requiring Payment
+            - generic [ref=f15e242]: 2 pending
+          - table [ref=f15e245]:
+            - rowgroup [ref=f15e246]:
+              - row [ref=f15e323]:
+                - columnheader [ref=f15e324]: "Bill #"
+                - columnheader [ref=f15e325]: Flat No
+                - columnheader [ref=f15e326]: Resident
+                - columnheader [ref=f15e327]: Balance Due
+                - columnheader [ref=f15e328]: Due Date
+                - columnheader [ref=f15e329]: Status
+                - columnheader [ref=f15e330]: Actions
+            - rowgroup [ref=f15e255]:
+              - row [ref=f15e331]:
+                - cell [ref=f15e332]: OV-V-405-202607
+                - cell [ref=f15e333]: V-405
+                - cell [ref=f15e334]: Mr. Alok Kumar
+                - cell [ref=f15e335]: ₹5,854.00
+                - cell [ref=f15e336]: 27 Jul 2026
+                - cell [ref=f15e337]:
+                  - generic [ref=f15e263]: PENDING
+                - cell [ref=f15e338]:
+                  - button [ref=f15e339]: Record Payment
+              - row [ref=f15e340]:
+                - cell [ref=f15e341]: OV-A-1601-202607
+                - cell [ref=f15e342]: A-1601
+                - cell [ref=f15e343]: Test Dummy Resident
+                - cell [ref=f15e344]: ₹11,275.00
+                - cell [ref=f15e345]: 28 Jul 2026
+                - cell [ref=f15e346]:
+                  - generic [ref=f15e273]: PENDING
+                - cell [ref=f15e347]:
+                  - button [ref=f15e348]: Record Payment
+        - generic [ref=f15e276]:
+          - generic [ref=f15e277]:
+            - generic [ref=f15e278]: Method
+            - combobox [ref=f15e279]:
+              - generic [ref=f15e280]: all
+              - img: ▼
+            - textbox [ref=f15e281]: all
+          - generic [ref=f15e282]:
+            - generic [ref=f15e283]: Status
+            - combobox [ref=f15e284]:
+              - generic [ref=f15e285]: all
+              - img: ▼
+            - textbox [ref=f15e286]: all
+        - generic [ref=f15e287]:
+          - generic [ref=f15e288]: Payment History — 0 records
+          - table [ref=f15e292]:
+            - rowgroup [ref=f15e293]:
+              - row [ref=f15e349]:
+                - columnheader [ref=f15e350]: "Receipt #"
+                - columnheader [ref=f15e351]: Flat No
+                - columnheader [ref=f15e352]: Resident
+                - columnheader [ref=f15e353]: "Bill #"
+                - columnheader [ref=f15e354]: Amount (₹)
+                - columnheader [ref=f15e355]: Date
+                - columnheader [ref=f15e356]: Type
+                - columnheader [ref=f15e357]: Method
+                - columnheader [ref=f15e358]: Reference / Txn ID
+                - columnheader [ref=f15e359]: Status
+                - columnheader [ref=f15e360]: Actions
+            - rowgroup [ref=f15e306]:
+              - row [ref=f15e361]:
+                - cell [ref=f15e362]: No payments found
+  - region "Notifications alt+T"
+  - alert [ref=f15e238]
+  - dialog [ref=f15e366]:
+    - heading "Record Payment" [level=2] [ref=f15e368]
+    - generic [ref=f15e369]:
+      - generic [ref=f15e370]:
+        - generic [ref=f15e371]:
+          - generic [ref=f15e372]: Flat No
+          - generic [ref=f15e373]: A-1601
+        - generic [ref=f15e374]:
+          - generic [ref=f15e375]: Resident
+          - generic [ref=f15e376]: Test Dummy Resident
+        - generic [ref=f15e377]:
+          - generic [ref=f15e378]: "Bill #"
+          - generic [ref=f15e379]: OV-A-1601-202607
+        - generic [ref=f15e380]:
+          - generic [ref=f15e381]: Due Date
+          - generic [ref=f15e382]: 28 Jul 2026
+        - generic [ref=f15e383]:
+          - generic [ref=f15e384]: Total Bill
+          - generic [ref=f15e385]: ₹11,275.00
+        - generic [ref=f15e386]:
+          - generic [ref=f15e387]: Balance Due
+          - generic [ref=f15e388]: ₹11,275.00
+      - generic [ref=f15e389]:
+        - generic [ref=f15e390]: Payment Method
+        - generic [ref=f15e391]:
+          - button "CASH" [active] [ref=f15e392]
+          - button "UPI" [ref=f15e393]
+          - button "NEFT" [ref=f15e394]
+          - button "RTGS" [ref=f15e395]
+          - button "CHEQUE" [ref=f15e396]
+      - generic [ref=f15e397]:
+        - generic [ref=f15e398]: Payment Date
+        - textbox "Payment Date" [ref=f15e399]: 2026-07-19
+      - generic [ref=f15e400]:
+        - generic [ref=f15e401]: Amount Received (₹)
+        - spinbutton "Amount Received (₹)" [ref=f15e402]: "11275.00"
+        - generic [ref=f15e403]:
+          - button "Full amount" [ref=f15e404]
+          - button "25%" [ref=f15e405]
+          - button "50%" [ref=f15e406]
+          - button "75%" [ref=f15e407]
+      - generic [ref=f15e408]: Full payment — bill will be marked as PAID
+    - generic [ref=f15e409]:
+      - button "Cancel" [ref=f15e410]
+      - button "Confirm Payment" [ref=f15e411]
+    - button "Close" [ref=f15e412]

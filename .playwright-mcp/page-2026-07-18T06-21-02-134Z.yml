@@ -1,0 +1,25 @@
+- generic [active] [ref=f45e1]:
+  - generic [ref=f45e2]:
+    - banner [ref=f45e3]:
+      - generic [ref=f45e4]:
+        - generic [ref=f45e5]:
+          - generic [ref=f45e6]: Oasis Venetia Heights
+          - navigation [ref=f45e11]:
+            - link "Dashboard" [ref=f45e12] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f45e16] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f45e20] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Profile" [ref=f45e23] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f45e27]:
+          - generic [ref=f45e28]: Mr. Asheesh Kumar Mishra
+          - button "Toggle theme" [ref=f45e29]
+          - button "Sign Out" [ref=f45e31]
+    - main [ref=f45e33]:
+      - generic [ref=f45e35]:
+        - heading "My Profile" [level=1] [ref=f45e36]
+        - paragraph [ref=f45e37]: Your account and connection details (managed by admin)
+  - region "Notifications alt+T"
+  - alert [ref=f45e56]

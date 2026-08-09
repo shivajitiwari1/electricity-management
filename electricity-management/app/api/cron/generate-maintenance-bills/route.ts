@@ -182,9 +182,8 @@ export async function POST(req: NextRequest) {
   const connections = await fetchConnections();
   const result = await createBillsBatch(connections, rate, periodStart, periodEnd, now);
 
-  // Fire emails concurrently and don't await — bills are created, respond fast
   if (result.toCreate.length > 0) {
-    sendBillEmails(result.toCreate, rate, periodStart, periodEnd, result.dueDate!, "admin:maintenance").catch(() => {});
+    await sendBillEmails(result.toCreate, rate, periodStart, periodEnd, result.dueDate!, "admin:maintenance");
   }
 
   return NextResponse.json({ success: true, created: result.created, skipped: result.skipped });

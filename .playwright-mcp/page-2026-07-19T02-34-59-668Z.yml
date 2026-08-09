@@ -1,0 +1,59 @@
+- generic [ref=e1]:
+  - generic [ref=e30]:
+    - generic [ref=e32]:
+      - generic [ref=e38]:
+        - paragraph [ref=e39]: Oasis Venetia Heights
+        - paragraph [ref=e40]: Admin Panel
+      - navigation [ref=e41]:
+        - link "Dashboard" [ref=e42] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=e48] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=e54] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=e57] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=e61] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=e65] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=e68] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=e71] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=e75] [cursor=pointer]:
+          - /url: /admin/flats
+        - link "Users" [active] [ref=e80] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=e93] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=e97]
+      - generic [ref=e98]:
+        - generic [ref=e99]:
+          - generic [ref=e100]:
+            - paragraph [ref=e101]: Admin
+            - paragraph [ref=e102]: admin@oasis.local
+          - button "Toggle theme" [ref=e103]
+        - button "Sign Out" [ref=e105]
+    - main [ref=e106]:
+      - generic [ref=e192]:
+        - generic [ref=e193]:
+          - heading "User Management" [level=1] [ref=e194]
+          - paragraph [ref=e195]: Manage manager accounts for Oasis Venetia Heights
+        - generic [ref=e196]:
+          - generic [ref=e197]:
+            - paragraph [ref=e198]: 0 managers
+            - button "Add Manager" [ref=e199]
+          - table [ref=e201]:
+            - rowgroup [ref=e202]:
+              - row [ref=e203]:
+                - columnheader "Name" [ref=e204]
+                - columnheader "Email" [ref=e205]
+                - columnheader "Status" [ref=e206]
+                - columnheader "Created" [ref=e207]
+                - columnheader "Actions" [ref=e208]
+            - rowgroup [ref=e209]:
+              - row [ref=e210]:
+                - cell "No managers yet" [ref=e211]
+  - region "Notifications alt+T"
+  - alert [ref=e27]

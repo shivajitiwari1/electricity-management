@@ -1,0 +1,103 @@
+- generic [active] [ref=f32e1]:
+  - generic [ref=f32e31]:
+    - banner [ref=f32e32]:
+      - generic [ref=f32e33]:
+        - generic [ref=f32e34]:
+          - generic [ref=f32e35]: Oasis Venetia Heights
+          - navigation [ref=f32e40]:
+            - link "Dashboard" [ref=f32e41] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f32e45] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f32e49] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Profile" [ref=f32e52] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f32e56]:
+          - generic [ref=f32e57]: Shivaji Tiwari
+          - button "Toggle theme" [ref=f32e58]
+          - button "Sign Out" [ref=f32e60]
+    - main [ref=f32e62]:
+      - generic [ref=f32e174]:
+        - generic [ref=f32e175]:
+          - heading "Pay Bill" [level=1] [ref=f32e176]
+          - paragraph [ref=f32e177]: "Bill #OV-A-404-202607 · Flat A-404"
+        - generic [ref=f32e178]:
+          - generic [ref=f32e179]: Bill Breakdown — Oasis Venetia Heights
+          - generic [ref=f32e184]:
+            - generic [ref=f32e185]:
+              - generic [ref=f32e186]: Billing Period
+              - generic [ref=f32e187]: 30 Jun 2026 – 29 Jul 2026
+            - generic [ref=f32e188]:
+              - generic [ref=f32e189]: NPCL Units Consumed
+              - generic [ref=f32e190]: 1100 kWh @ ₹7.00/unit
+            - separator [ref=f32e191]
+            - generic [ref=f32e192]:
+              - generic [ref=f32e193]: NPCL Energy Charge
+              - generic [ref=f32e194]: ₹7,700.00
+            - generic [ref=f32e195]:
+              - generic [ref=f32e196]: DG Charge
+              - generic [ref=f32e197]: ₹200.00
+            - generic [ref=f32e198]:
+              - generic [ref=f32e199]: Fixed Charge
+              - generic [ref=f32e200]: ₹460.00
+            - separator [ref=f32e201]
+            - generic [ref=f32e202]:
+              - generic [ref=f32e203]: Total Amount Due
+              - generic [ref=f32e204]: ₹8,360.00
+            - generic [ref=f32e205]:
+              - generic [ref=f32e206]: "Due by: 08 Aug 2026"
+              - generic [ref=f32e207]: PENDING
+        - generic [ref=f32e208]:
+          - generic [ref=f32e209]: Pay via UPI
+          - generic [ref=f32e213]:
+            - img "UPI QR Code" [ref=f32e214]
+            - paragraph [ref=f32e215]: Scan with PhonePe, Google Pay, BHIM, Paytm or any UPI app
+            - generic [ref=f32e216]:
+              - text: oasis88268343@barodampay
+              - button "Copy" [ref=f32e217]
+        - generic [ref=f32e221]:
+          - generic [ref=f32e222]: Pay via Net Banking / NEFT / IMPS
+          - generic [ref=f32e228]:
+            - generic [ref=f32e229]:
+              - generic [ref=f32e230]: Account Name
+              - generic [ref=f32e231]:
+                - text: OASIS BUILDMART INDIA PVT LTD
+                - button "Copy" [ref=f32e232]
+            - generic [ref=f32e236]:
+              - generic [ref=f32e237]: Bank
+              - generic [ref=f32e238]:
+                - text: Bank of Baroda
+                - button "Copy" [ref=f32e239]
+            - generic [ref=f32e243]:
+              - generic [ref=f32e244]: Account No
+              - generic [ref=f32e245]:
+                - text: "88340200001343"
+                - button "Copy" [ref=f32e246]
+            - generic [ref=f32e250]:
+              - generic [ref=f32e251]: IFSC Code
+              - generic [ref=f32e252]:
+                - text: BARB0DBGREA
+                - button "Copy" [ref=f32e253]
+            - generic [ref=f32e257]:
+              - generic [ref=f32e258]: Branch
+              - generic [ref=f32e259]:
+                - text: Greater Noida
+                - button "Copy" [ref=f32e260]
+        - generic [ref=f32e264]:
+          - paragraph [ref=f32e265]: "After making the payment:"
+          - list [ref=f32e266]:
+            - listitem [ref=f32e267]: Note your transaction ID / UTR number
+            - listitem [ref=f32e268]: Send payment details to the number below on WhatsApp
+            - listitem [ref=f32e269]: Our team will update your payment status within 24 hours
+          - link "Share Payment Details on WhatsApp" [ref=f32e270] [cursor=pointer]:
+            - /url: https://wa.me/918826700991?text=Hi%2C%20I%20have%20paid%20Electricity%20Bill%20OV-A-404-202607%20for%20Flat%20A-404.%20Amount%3A%20%E2%82%B98%2C360.00.%20Please%20confirm%20and%20update%20my%20payment%20status.
+          - paragraph [ref=f32e273]:
+            - text: "WhatsApp:"
+            - strong [ref=f32e274]: +91 88267 00991
+        - paragraph [ref=f32e275]:
+          - text: To pay by
+          - strong [ref=f32e276]: credit card
+          - text: ", visit the maintenance office in person."
+  - region "Notifications alt+T"
+  - alert [ref=f32e30]

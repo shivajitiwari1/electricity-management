@@ -1,0 +1,58 @@
+- generic [ref=f55e1]:
+  - generic [ref=f55e2]:
+    - generic [ref=f55e4]:
+      - generic [ref=f55e10]:
+        - paragraph [ref=f55e11]: Oasis Venetia Heights
+        - paragraph [ref=f55e12]: Admin Panel
+      - navigation [ref=f55e13]:
+        - link "Dashboard" [ref=f55e5058] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f55e5059] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f55e5060] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f55e5061] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f55e5062] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f55e5063] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f55e5064] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f55e5065] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f55e5066] [cursor=pointer]:
+          - /url: /admin/flats
+      - separator [ref=f55e52]
+      - generic [ref=f55e53]:
+        - generic [ref=f55e54]:
+          - generic [ref=f55e55]:
+            - paragraph [ref=f55e56]: Admin
+            - paragraph [ref=f55e57]: admin@oasis.local
+          - button "Toggle theme" [ref=f55e5067]
+        - button "Sign Out" [ref=f55e5068]
+    - main [ref=f55e61]:
+      - generic [ref=f55e62]:
+        - generic [ref=f55e63]:
+          - heading "Residents" [level=1] [ref=f55e5069]
+          - paragraph [ref=f55e65]: Manage residents of Oasis Venetia Heights
+        - generic [ref=f55e66]:
+          - textbox "Search by name, email, flat..." [ref=f55e5070]: A-404
+          - button "Add Resident" [active] [ref=f55e5071]
+        - generic [ref=f55e73]:
+          - generic [ref=f55e74]: 0 Residents
+          - table [ref=f55e78]:
+            - rowgroup [ref=f55e79]:
+              - row [ref=f55e5072]:
+                - columnheader "Flat No" [ref=f55e5073]
+                - columnheader "Tower" [ref=f55e5074]
+                - columnheader "Name" [ref=f55e5075]
+                - columnheader "Email" [ref=f55e5076]
+                - columnheader "Phone" [ref=f55e5077]
+                - columnheader "Status" [ref=f55e5078]
+                - columnheader "Actions" [ref=f55e5079]
+            - rowgroup [ref=f55e88]:
+              - row [ref=f55e5080]:
+                - cell "No residents found" [ref=f55e5081]
+  - region "Notifications alt+T"
+  - alert [ref=f55e4865]

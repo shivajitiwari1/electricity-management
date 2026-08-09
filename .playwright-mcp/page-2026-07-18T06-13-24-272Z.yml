@@ -1,0 +1,95 @@
+- generic [active] [ref=f36e1]:
+  - generic [ref=f36e2]:
+    - generic [ref=f36e4]:
+      - generic [ref=f36e10]:
+        - paragraph [ref=f36e11]: Oasis Venetia Heights
+        - paragraph [ref=f36e12]: Admin Panel
+      - navigation [ref=f36e13]:
+        - link "Dashboard" [ref=f36e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f36e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f36e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f36e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f36e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f36e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f36e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f36e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f36e47] [cursor=pointer]:
+          - /url: /admin/flats
+      - separator [ref=f36e52]
+      - generic [ref=f36e53]:
+        - generic [ref=f36e54]:
+          - generic [ref=f36e55]:
+            - paragraph [ref=f36e56]: Admin
+            - paragraph [ref=f36e57]: admin@oasis.local
+          - button "Toggle theme" [ref=f36e58]
+        - button "Sign Out" [ref=f36e60]
+    - main [ref=f36e61]:
+      - generic [ref=f36e62]:
+        - generic [ref=f36e63]:
+          - heading "Reports" [level=1] [ref=f36e64]
+          - paragraph [ref=f36e65]: Financial reports and analytics for Oasis Venetia Heights
+        - generic [ref=f36e66]:
+          - generic [ref=f36e68]:
+            - generic [ref=f36e69]:
+              - generic [ref=f36e70]:
+                - button "Weekly" [ref=f36e71]
+                - button "Monthly" [ref=f36e72]
+                - button "Half Yearly" [ref=f36e73]
+                - button "Yearly" [ref=f36e74]
+              - generic [ref=f36e75]:
+                - button "Excel" [ref=f36e76]
+                - button "Download PDF" [ref=f36e77]
+            - generic [ref=f36e78]:
+              - generic [ref=f36e79]: Date Range
+              - generic [ref=f36e80]:
+                - textbox [ref=f36e81]: 2026-06-17
+                - generic [ref=f36e82]: to
+                - textbox [ref=f36e83]: 2026-07-18
+          - generic [ref=f36e84]:
+            - generic [ref=f36e88]:
+              - paragraph [ref=f36e89]: Revenue
+              - paragraph [ref=f36e90]: ₹0.00
+              - paragraph [ref=f36e91]: Monthly
+            - generic [ref=f36e99]:
+              - paragraph [ref=f36e100]: Bills Generated
+              - paragraph [ref=f36e101]: "0"
+              - paragraph [ref=f36e102]: Monthly
+            - generic [ref=f36e110]:
+              - paragraph [ref=f36e111]: Total Residents
+              - paragraph [ref=f36e112]: "398"
+              - paragraph [ref=f36e113]: All time
+            - generic [ref=f36e123]:
+              - paragraph [ref=f36e124]: Overdue Bills
+              - paragraph [ref=f36e125]: "0"
+              - paragraph [ref=f36e126]: Current
+          - generic [ref=f36e130]:
+            - generic [ref=f36e131]: Revenue — Monthly (Paid Bills)
+            - paragraph [ref=f36e134]: No paid bill data for this period.
+          - generic [ref=f36e135]:
+            - generic [ref=f36e136]: Revenue by Tower — Monthly
+            - paragraph [ref=f36e139]: No paid bills for this period.
+          - generic [ref=f36e140]:
+            - generic [ref=f36e141]: Overdue Bills
+            - table [ref=f36e145]:
+              - rowgroup [ref=f36e146]:
+                - row [ref=f36e147]:
+                  - columnheader "Flat No" [ref=f36e148]
+                  - columnheader "Tower" [ref=f36e149]
+                  - columnheader "Resident" [ref=f36e150]
+                  - 'columnheader "Bill #" [ref=f36e151]'
+                  - columnheader "Due Date" [ref=f36e152]
+                  - columnheader "Amount (₹)" [ref=f36e153]
+                  - columnheader "Days Overdue" [ref=f36e154]
+              - rowgroup [ref=f36e155]:
+                - row [ref=f36e156]:
+                  - cell "No overdue bills" [ref=f36e157]
+  - region "Notifications alt+T"
+  - alert [ref=f36e158]

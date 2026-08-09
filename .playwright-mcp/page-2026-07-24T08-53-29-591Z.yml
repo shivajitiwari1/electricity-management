@@ -1,0 +1,139 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e4]:
+      - generic [ref=e10]:
+        - paragraph [ref=e11]: Oasis Venetia Heights
+        - paragraph [ref=e12]: Admin Panel
+      - navigation [ref=e13]:
+        - link [ref=e5301] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=e5302] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=e5303] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=e5304] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=e5305] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=e5306] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=e5307] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=e5308] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=e5309] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+        - button [ref=e5310]:
+          - generic [ref=e56]: Maintenance
+        - link [ref=e5311] [cursor=pointer]:
+          - /url: /admin/users
+          - text: Users
+        - link [ref=e5312] [cursor=pointer]:
+          - /url: /admin/permissions
+          - text: Permissions
+      - separator [ref=e76]
+      - generic [ref=e77]:
+        - generic [ref=e78]:
+          - generic [ref=e79]:
+            - paragraph [ref=e80]: Admin
+            - paragraph [ref=e81]: admin@oasis.local
+          - button [ref=e5313]:
+            - generic [ref=e83]: Toggle theme
+        - button [ref=e5314]: Sign Out
+    - main [ref=e85]:
+      - generic [ref=e86]:
+        - generic [ref=e87]:
+          - heading [level=1] [ref=e5315]: Residents
+          - paragraph [ref=e89]: Manage residents of Oasis Venetia Heights
+        - generic [ref=e90]:
+          - textbox [ref=e5316]:
+            - /placeholder: Search by name, email, flat...
+            - text: shivaji
+          - button [ref=e5317]: Add Resident
+        - generic [ref=e97]:
+          - generic [ref=e98]: 1 Resident
+          - table [ref=e102]:
+            - rowgroup [ref=e103]:
+              - row [ref=e5318]:
+                - columnheader [ref=e5319]: Flat No
+                - columnheader [ref=e5320]: Tower
+                - columnheader [ref=e5321]: Name
+                - columnheader [ref=e5322]: Email
+                - columnheader [ref=e5323]: Phone
+                - columnheader [ref=e5324]: Status
+                - columnheader [ref=e5325]: Actions
+            - rowgroup [ref=e112]:
+              - row [ref=e5326]:
+                - cell [ref=e5327]: A-404
+                - cell [ref=e5328]: A
+                - cell [ref=e5329]: Shivaji Tiwari
+                - cell [ref=e5330]: shivajitiwari_test@gmail.com
+                - cell [ref=e5331]: "9555839357"
+                - cell [ref=e5332]:
+                  - generic [ref=e120]: ACTIVE
+                - cell [ref=e5333]:
+                  - generic [ref=e122]:
+                    - button [ref=e5334]: History
+                    - button [ref=e5335]: Edit
+                    - button [ref=e5336]: Deactivate
+  - region "Notifications alt+T"
+  - alert [ref=e5300]
+  - dialog [ref=e5340]:
+    - heading "Edit Resident — A-404" [level=2] [ref=e5342]
+    - generic [ref=e5344]:
+      - paragraph [ref=e5345]: Personal Information
+      - generic [ref=e5346]:
+        - generic [ref=e5347]: Name *
+        - textbox "Name *" [active] [ref=e5348]: Shivaji Tiwari
+      - generic [ref=e5349]:
+        - generic [ref=e5350]: Email *
+        - textbox "Email *" [ref=e5351]: shivajitiwari_test@gmail.com
+      - generic [ref=e5352]:
+        - generic [ref=e5353]: Phone
+        - textbox "Phone" [ref=e5354]:
+          - /placeholder: +91 98765 43210
+          - text: "9555839357"
+      - paragraph [ref=e5355]: Connection Details
+      - generic [ref=e5356]:
+        - generic [ref=e5357]:
+          - generic [ref=e5358]: Tower *
+          - combobox "Tower *" [ref=e5359]:
+            - generic [ref=e5360]: A
+            - img: ▼
+          - textbox [ref=e5361]: A
+        - generic [ref=e5362]:
+          - generic [ref=e5363]: Floor *
+          - textbox "Floor *" [ref=e5364]:
+            - /placeholder: e.g. First
+            - text: Fourth
+        - generic [ref=e5365]:
+          - generic [ref=e5366]: Flat No *
+          - button "A-404" [ref=e5367]
+        - generic [ref=e5371]:
+          - generic [ref=e5372]: Meter No
+          - textbox "Meter No" [ref=e5373]:
+            - /placeholder: e.g. MTR-00123
+        - generic [ref=e5374]:
+          - generic [ref=e5375]: Unit Type
+          - textbox "Unit Type" [ref=e5376]:
+            - /placeholder: Auto-filled on flat selection
+            - text: 2 BHK+2T+Study (1150 Sq.Ft.)
+        - generic [ref=e5377]:
+          - generic [ref=e5378]: Unit Area (sq ft)
+          - spinbutton "Unit Area (sq ft)" [ref=e5379]: "1150"
+        - generic [ref=e5380]:
+          - generic [ref=e5381]: Sanctioned Load (kW) *
+          - spinbutton "Sanctioned Load (kW) *" [ref=e5382]: "5"
+      - generic [ref=e5383]:
+        - button "Cancel" [ref=e5384]
+        - button "Save Changes" [ref=e5385]
+    - button "Close" [ref=e5386]

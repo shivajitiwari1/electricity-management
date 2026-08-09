@@ -1,0 +1,124 @@
+- generic [active] [ref=f77e1]:
+  - generic [ref=f77e2]:
+    - generic [ref=f77e4]:
+      - generic [ref=f77e10]:
+        - paragraph [ref=f77e11]: Oasis Venetia Heights
+        - paragraph [ref=f77e12]: Admin Panel
+      - navigation [ref=f77e13]:
+        - link "Dashboard" [ref=f77e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f77e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f77e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f77e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f77e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f77e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f77e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f77e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f77e47] [cursor=pointer]:
+          - /url: /admin/flats
+        - link "Users" [ref=f77e52] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f77e65] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f77e69]
+      - generic [ref=f77e70]:
+        - generic [ref=f77e71]:
+          - generic [ref=f77e72]:
+            - paragraph [ref=f77e73]: Admin
+            - paragraph [ref=f77e74]: admin@oasis.local
+          - button "Toggle theme" [ref=f77e75]
+        - button "Sign Out" [ref=f77e77]
+    - main [ref=f77e78]:
+      - generic [ref=f77e79]:
+        - generic [ref=f77e80]:
+          - heading "Payments" [level=1] [ref=f77e81]
+          - paragraph [ref=f77e82]: View all payment transactions for Oasis Venetia Heights
+        - table [ref=f77e92]:
+          - rowgroup [ref=f77e93]:
+            - row [ref=f77e94]:
+              - columnheader [ref=f77e95]
+              - columnheader [ref=f77e97]
+              - columnheader [ref=f77e99]
+              - columnheader [ref=f77e101]
+              - columnheader [ref=f77e103]
+              - columnheader [ref=f77e105]
+          - rowgroup [ref=f77e107]:
+            - row [ref=f77e108]:
+              - cell [ref=f77e109]
+              - cell [ref=f77e111]
+              - cell [ref=f77e113]
+              - cell [ref=f77e115]
+              - cell [ref=f77e117]
+              - cell [ref=f77e119]
+            - row [ref=f77e121]:
+              - cell [ref=f77e122]
+              - cell [ref=f77e124]
+              - cell [ref=f77e126]
+              - cell [ref=f77e128]
+              - cell [ref=f77e130]
+              - cell [ref=f77e132]
+            - row [ref=f77e134]:
+              - cell [ref=f77e135]
+              - cell [ref=f77e137]
+              - cell [ref=f77e139]
+              - cell [ref=f77e141]
+              - cell [ref=f77e143]
+              - cell [ref=f77e145]
+            - row [ref=f77e147]:
+              - cell [ref=f77e148]
+              - cell [ref=f77e150]
+              - cell [ref=f77e152]
+              - cell [ref=f77e154]
+              - cell [ref=f77e156]
+              - cell [ref=f77e158]
+            - row [ref=f77e160]:
+              - cell [ref=f77e161]
+              - cell [ref=f77e163]
+              - cell [ref=f77e165]
+              - cell [ref=f77e167]
+              - cell [ref=f77e169]
+              - cell [ref=f77e171]
+            - row [ref=f77e173]:
+              - cell [ref=f77e174]
+              - cell [ref=f77e176]
+              - cell [ref=f77e178]
+              - cell [ref=f77e180]
+              - cell [ref=f77e182]
+              - cell [ref=f77e184]
+            - row [ref=f77e186]:
+              - cell [ref=f77e187]
+              - cell [ref=f77e189]
+              - cell [ref=f77e191]
+              - cell [ref=f77e193]
+              - cell [ref=f77e195]
+              - cell [ref=f77e197]
+            - row [ref=f77e199]:
+              - cell [ref=f77e200]
+              - cell [ref=f77e202]
+              - cell [ref=f77e204]
+              - cell [ref=f77e206]
+              - cell [ref=f77e208]
+              - cell [ref=f77e210]
+            - row [ref=f77e212]:
+              - cell [ref=f77e213]
+              - cell [ref=f77e215]
+              - cell [ref=f77e217]
+              - cell [ref=f77e219]
+              - cell [ref=f77e221]
+              - cell [ref=f77e223]
+            - row [ref=f77e225]:
+              - cell [ref=f77e226]
+              - cell [ref=f77e228]
+              - cell [ref=f77e230]
+              - cell [ref=f77e232]
+              - cell [ref=f77e234]
+              - cell [ref=f77e236]
+  - region "Notifications alt+T"
+  - alert [ref=f77e238]

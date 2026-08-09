@@ -1,0 +1,30 @@
+[     747ms] [LOG] %c
+▲
+
+__  __                                     _            __
+\ \/ /___  __  __   _________ _____       (_)_  _______/ /_
+ \  / __ \/ / / /  / ___/ __ `/ __ \     / / / / / ___/ __/
+ / / /_/ / /_/ /  / /__/ /_/ / / / /    / / /_/ (__  ) /_
+/_/\____/\__,_/   \___/\__,_/_/ /_/  __/ /\__,_/____/\__/
+         __    _          __  __    /___/
+   _____/ /_  (_)___     / /_/ /_  (_)___  ____ ______
+  / ___/ __ \/ / __ \   / __/ __ \/ / __ \/ __ `/ ___/
+ (__  ) / / / / /_/ /  / /_/ / / / / / / / /_/ (__  )
+/____/_/ /_/_/ .___/   \__/_/ /_/_/_/ /_/\__, /____/
+            /_/                         /____/
+  
+
+Hello!
+
+- Open Source https://vercel.com/oss
+- Careers https://vercel.com/careers
+- Status https://vercel-status.com
+
+ font-family: "Geist Mono", monospace; white-space: pre; line-height: 1; @ https://vercel.com/_next/static/immutable/chunks/1bfsdnun77trp.js:78
+[    1689ms] [WARNING] [GSI_LOGGER]: Your client application uses one of the Google One Tap prompt UI status methods that may stop functioning when FedCM becomes mandatory. Refer to the migration guide to update your code accordingly and opt-in to FedCM to test your changes. Learn more: https://developers.google.com/identity/gsi/web/guides/fedcm-migration?s=dc#display_moment and https://developers.google.com/identity/gsi/web/guides/fedcm-migration?s=dc#skipped_moment @ https://accounts.google.com/gsi/client:86
+[    1895ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://vercel.com/api/jwt:0
+[    1993ms] [WARNING] Deprecated API for given entry type. @ https://vercel.com/_next/static/immutable/chunks/3t_14ji9k0zx2.js:18
+[    5190ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/3hh9s8_5a_t64.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/login?next=%2Fsso-api%3Furl%3Dhttps%253A%252F%252Felectricity-management-h79sthp7d-shivajireacts-projects.vercel.app%252Fadmin%252Fresidents%26nonce%3D2b71d5a5b1b9fea27cc19eb1d262a045cae076353a3cbbcc8ca59e507aaa4b7c:0
+[    5190ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/2xbfzgewmgp31.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/login?next=%2Fsso-api%3Furl%3Dhttps%253A%252F%252Felectricity-management-h79sthp7d-shivajireacts-projects.vercel.app%252Fadmin%252Fresidents%26nonce%3D2b71d5a5b1b9fea27cc19eb1d262a045cae076353a3cbbcc8ca59e507aaa4b7c:0
+[   15616ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/3hh9s8_5a_t64.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/login?next=%2Fsso-api%3Furl%3Dhttps%253A%252F%252Felectricity-management-h79sthp7d-shivajireacts-projects.vercel.app%252Fadmin%252Fresidents%26nonce%3D2b71d5a5b1b9fea27cc19eb1d262a045cae076353a3cbbcc8ca59e507aaa4b7c:0
+[   15616ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/2xbfzgewmgp31.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/login?next=%2Fsso-api%3Furl%3Dhttps%253A%252F%252Felectricity-management-h79sthp7d-shivajireacts-projects.vercel.app%252Fadmin%252Fresidents%26nonce%3D2b71d5a5b1b9fea27cc19eb1d262a045cae076353a3cbbcc8ca59e507aaa4b7c:0

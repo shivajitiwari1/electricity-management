@@ -1,0 +1,94 @@
+- generic [active] [ref=f58e1]:
+  - generic [ref=f58e2]:
+    - generic [ref=f58e4]:
+      - generic [ref=f58e10]:
+        - paragraph [ref=f58e11]: Oasis Venetia Heights
+        - paragraph [ref=f58e12]: Admin Panel
+      - navigation [ref=f58e13]:
+        - link "Dashboard" [ref=f58e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f58e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f58e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f58e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f58e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f58e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f58e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f58e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f58e47] [cursor=pointer]:
+          - /url: /admin/flats
+        - link "Users" [ref=f58e52] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f58e65] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f58e69]
+      - generic [ref=f58e70]:
+        - generic [ref=f58e71]:
+          - generic [ref=f58e72]:
+            - paragraph [ref=f58e73]: Admin
+            - paragraph [ref=f58e74]: admin@oasis.local
+          - button "Toggle theme" [ref=f58e75]
+        - button "Sign Out" [ref=f58e77]
+    - main [ref=f58e78]:
+      - generic [ref=f58e79]:
+        - generic [ref=f58e80]:
+          - heading "Meter Readings" [level=1] [ref=f58e81]
+          - paragraph [ref=f58e82]: Record and manage electricity meter readings
+        - generic [ref=f58e83]:
+          - generic [ref=f58e84]:
+            - textbox "Search flat or resident..." [ref=f58e85]
+            - combobox [ref=f58e86]:
+              - generic [ref=f58e87]: 2026-07
+              - img: ▼
+            - textbox [ref=f58e88]: 2026-07
+            - combobox [ref=f58e89]:
+              - generic [ref=f58e90]: all
+              - img: ▼
+            - textbox [ref=f58e91]: all
+            - paragraph [ref=f58e92]: 2 of 399 flats
+          - button "Add Meter Reading" [ref=f58e93]
+        - generic [ref=f58e94]:
+          - generic [ref=f58e95]: Meter Readings — 2 Flats · July 2026
+          - table [ref=f58e99]:
+            - rowgroup [ref=f58e100]:
+              - row [ref=f58e101]:
+                - columnheader "Flat No" [ref=f58e102]
+                - columnheader "Resident" [ref=f58e103]
+                - columnheader "Reading Date" [ref=f58e104]
+                - columnheader "NPCL Previous" [ref=f58e105]
+                - columnheader "NPCL Current" [ref=f58e106]
+                - columnheader "Units" [ref=f58e107]
+                - columnheader "DG Units" [ref=f58e108]
+                - columnheader "Bill" [ref=f58e109]
+                - columnheader "Actions" [ref=f58e110]
+            - rowgroup [ref=f58e111]:
+              - row [ref=f58e112]:
+                - cell "A-404" [ref=f58e113]
+                - cell "Shivaji Tiwari" [ref=f58e114]
+                - cell "30 Jul 2026" [ref=f58e115]
+                - cell "1100" [ref=f58e116]
+                - cell "1350" [ref=f58e117]
+                - cell "250" [ref=f58e118]
+                - cell "0" [ref=f58e119]
+                - cell "Generated" [ref=f58e120]
+                - cell [ref=f58e122]:
+                  - button "Delete" [ref=f58e124]
+              - row [ref=f58e125]:
+                - cell "V-405" [ref=f58e126]
+                - cell "Mr. Alok Kumar" [ref=f58e127]
+                - cell "30 Jul 2026" [ref=f58e128]
+                - cell "15375" [ref=f58e129]
+                - cell "15500" [ref=f58e130]
+                - cell "125" [ref=f58e131]
+                - cell "0" [ref=f58e132]
+                - cell "Generated" [ref=f58e133]
+                - cell [ref=f58e135]:
+                  - button "Delete" [ref=f58e137]
+  - region "Notifications alt+T"
+  - alert [ref=f58e138]

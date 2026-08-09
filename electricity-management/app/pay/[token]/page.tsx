@@ -82,6 +82,7 @@ export default async function PublicPayPage({
           <PublicPaymentForm
             bill={serialized}
             qrCodeDataUrl={qrCodeDataUrl}
+            token={token}
           />
         )}
       </main>

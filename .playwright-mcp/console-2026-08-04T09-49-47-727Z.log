@@ -1,0 +1,8 @@
+[   56137ms] [ERROR] Access to fetch at 'https://oasisvenetia.in/admin/dashboard' (redirected from 'https://www.oasisvenetia.in/login?_rsc=Sdev7PUlRw12F58X') from origin 'https://www.oasisvenetia.in' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: Redirect is not allowed for a preflight request. @ https://www.oasisvenetia.in/about:0
+[   56138ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://oasisvenetia.in/admin/dashboard:0
+[   58156ms] [ERROR] Access to fetch at 'https://oasisvenetia.in/admin/dashboard' (redirected from 'https://www.oasisvenetia.in/login?_rsc=to9FnyWyGBvkJSMK') from origin 'https://www.oasisvenetia.in' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: Redirect is not allowed for a preflight request. @ https://www.oasisvenetia.in/about:0
+[   58156ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://oasisvenetia.in/admin/dashboard:0
+[   58156ms] [ERROR] Failed to fetch RSC payload for https://www.oasisvenetia.in/login. Falling back to browser navigation. TypeError: Failed to fetch
+    at T (https://www.oasisvenetia.in/_next/static/chunks/2nsq1ek51g625.js:1:95464)
+    at async m (https://www.oasisvenetia.in/_next/static/chunks/2nsq1ek51g625.js:1:93600)
+    at async m (https://www.oasisvenetia.in/_next/static/chunks/2nsq1ek51g625.js:1:115439) @ https://www.oasisvenetia.in/_next/static/chunks/2nsq1ek51g625.js:0

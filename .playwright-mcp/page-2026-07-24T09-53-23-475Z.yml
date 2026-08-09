@@ -1,0 +1,58 @@
+- generic [ref=f49e1]:
+  - generic [ref=f49e2]:
+    - banner [ref=f49e3]:
+      - generic [ref=f49e4]:
+        - generic [ref=f49e5]:
+          - generic [ref=f49e6]: Oasis Venetia Heights
+          - navigation [ref=f49e11]:
+            - link "Dashboard" [ref=f49e12] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f49e16] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f49e20] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Maintenance" [ref=f49e23] [cursor=pointer]:
+              - /url: /resident/maintenance
+            - link "Profile" [ref=f49e26] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f49e30]:
+          - generic [ref=f49e31]: Shivaji Tiwari
+          - button "Toggle theme" [ref=f49e32]
+          - button "Sign Out" [ref=f49e34]
+    - main [ref=f49e36]:
+      - generic [ref=f49e217]:
+        - generic [ref=f49e218]:
+          - heading "Pay Maintenance Bill" [level=1] [ref=f49e219]
+          - paragraph [ref=f49e220]: Secure payment via Razorpay
+        - generic [ref=f49e221]:
+          - generic [ref=f49e223]:
+            - generic [ref=f49e224]: OM-A-404-202607
+            - generic [ref=f49e225]: PENDING
+          - generic [ref=f49e226]:
+            - generic [ref=f49e227]:
+              - generic [ref=f49e228]: Flat
+              - generic [ref=f49e229]: A-404
+              - generic [ref=f49e230]: Billing Period
+              - generic [ref=f49e231]: 01 Jul 2026 – 01 Aug 2026
+              - generic [ref=f49e232]: Unit Area
+              - generic [ref=f49e233]: 1150 sq ft
+              - generic [ref=f49e234]: Rate
+              - generic [ref=f49e235]: ₹2.50 per sq ft
+              - generic [ref=f49e236]: Maintenance
+              - generic [ref=f49e237]: ₹2,875.00
+              - generic [ref=f49e238]: Due Date
+              - generic [ref=f49e239]: 08 Aug 2026
+            - generic [ref=f49e241]:
+              - generic [ref=f49e242]: Total Payable
+              - generic [ref=f49e243]: ₹2,875.00
+            - button "Processing…" [disabled]
+            - paragraph [ref=f49e245]: UPI · Cards · Net Banking · Wallets
+  - region "Notifications alt+T"
+  - alert [ref=f49e216]
+  - generic [ref=f49e246]:
+    - generic [ref=f49e247]: Test Mode
+    - iframe [active] [ref=f49e249]:
+      - generic [active] [ref=f50e1]:
+        - generic:
+          - img:
+            - generic: Secured By

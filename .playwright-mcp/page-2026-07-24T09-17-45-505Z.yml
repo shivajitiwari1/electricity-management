@@ -1,0 +1,203 @@
+- generic [ref=f10e1]:
+  - generic [ref=f10e2]:
+    - generic [ref=f10e4]:
+      - generic [ref=f10e10]:
+        - paragraph [ref=f10e11]: Oasis Venetia Heights
+        - paragraph [ref=f10e12]: Admin Panel
+      - navigation [ref=f10e13]:
+        - link [ref=f10e420] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=f10e421] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=f10e422] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=f10e423] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=f10e424] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=f10e425] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=f10e426] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=f10e427] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=f10e428] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+        - button [ref=f10e429]:
+          - generic [ref=f10e56]: Maintenance
+        - link [ref=f10e430] [cursor=pointer]:
+          - /url: /admin/users
+          - text: Users
+        - link [ref=f10e431] [cursor=pointer]:
+          - /url: /admin/permissions
+          - text: Permissions
+      - separator [ref=f10e76]
+      - generic [ref=f10e77]:
+        - generic [ref=f10e78]:
+          - generic [ref=f10e79]:
+            - paragraph [ref=f10e80]: Admin
+            - paragraph [ref=f10e81]: admin@oasis.local
+          - button [ref=f10e432]:
+            - generic [ref=f10e83]: Toggle theme
+        - button [ref=f10e433]: Sign Out
+    - main [ref=f10e85]:
+      - generic [ref=f10e86]:
+        - generic [ref=f10e87]:
+          - heading [level=1] [ref=f10e434]: Payments
+          - paragraph [ref=f10e89]: View all payment transactions for Oasis Venetia Heights
+        - generic [ref=f10e246]:
+          - generic [ref=f10e248]:
+            - text: Bills Requiring Payment
+            - generic [ref=f10e249]: 1 pending
+          - table [ref=f10e252]:
+            - rowgroup [ref=f10e253]:
+              - row [ref=f10e435]:
+                - columnheader [ref=f10e436]: "Bill #"
+                - columnheader [ref=f10e437]: Flat No
+                - columnheader [ref=f10e438]: Resident
+                - columnheader [ref=f10e439]: Balance Due
+                - columnheader [ref=f10e440]: Due Date
+                - columnheader [ref=f10e441]: Status
+                - columnheader [ref=f10e442]: Actions
+            - rowgroup [ref=f10e262]:
+              - row [ref=f10e443]:
+                - cell [ref=f10e444]: OV-A-1001-202607
+                - cell [ref=f10e445]: A-1001
+                - cell [ref=f10e446]: Mrs. Pooja Devrani
+                - cell [ref=f10e447]: ₹4,027.00
+                - cell [ref=f10e448]: 01 Aug 2026
+                - cell [ref=f10e449]:
+                  - generic [ref=f10e270]: PENDING
+                - cell [ref=f10e450]:
+                  - button [ref=f10e451]: Record Payment
+        - generic [ref=f10e273]:
+          - generic [ref=f10e274]:
+            - generic [ref=f10e275]: Method
+            - combobox [ref=f10e276]:
+              - generic [ref=f10e277]: all
+              - img: ▼
+            - textbox [ref=f10e278]: all
+          - generic [ref=f10e279]:
+            - generic [ref=f10e280]: Status
+            - combobox [ref=f10e281]:
+              - generic [ref=f10e282]: all
+              - img: ▼
+            - textbox [ref=f10e283]: all
+          - generic [ref=f10e284]:
+            - generic [ref=f10e285]: Search
+            - textbox [ref=f10e452]:
+              - /placeholder: Name or flat…
+        - generic [ref=f10e287]:
+          - generic [ref=f10e289]:
+            - text: Payment History — 2 records
+            - generic [ref=f10e365]:
+              - generic [ref=f10e366]: 0 online
+              - generic [ref=f10e371]: 2 manual
+          - table [ref=f10e303]:
+            - rowgroup [ref=f10e304]:
+              - row [ref=f10e453]:
+                - columnheader [ref=f10e454]: "Receipt #"
+                - columnheader [ref=f10e455]: Flat No
+                - columnheader [ref=f10e456]: Resident
+                - columnheader [ref=f10e457]: "Bill #"
+                - columnheader [ref=f10e458]: Amount (₹)
+                - columnheader [ref=f10e459]: Date
+                - columnheader [ref=f10e460]: Type
+                - columnheader [ref=f10e461]: Method
+                - columnheader [ref=f10e462]: Reference / Txn ID
+                - columnheader [ref=f10e463]: Status
+                - columnheader [ref=f10e464]: Actions
+            - rowgroup [ref=f10e317]:
+              - row [ref=f10e465]:
+                - cell [ref=f10e466]: RCPT-20260722-0002
+                - cell [ref=f10e467]: V-405
+                - cell [ref=f10e468]: Mr. Alok Kumar
+                - cell [ref=f10e469]: OV-V-405-202607
+                - cell [ref=f10e470]: "90.00"
+                - cell [ref=f10e471]: 22 Jul 2026
+                - cell [ref=f10e472]:
+                  - generic [ref=f10e384]: Manual
+                - cell [ref=f10e473]:
+                  - generic [ref=f10e390]: NEFT
+                - cell [ref=f10e474]: "4646"
+                - cell [ref=f10e475]:
+                  - generic [ref=f10e393]: SUCCESS
+                - cell [ref=f10e476]:
+                  - generic [ref=f10e395]:
+                    - button [ref=f10e477]: Receipt
+                    - button [ref=f10e478]: Delete
+              - row [ref=f10e479]:
+                - cell [ref=f10e480]: RCPT-20260722-0001
+                - cell [ref=f10e481]: V-405
+                - cell [ref=f10e482]: Mr. Alok Kumar
+                - cell [ref=f10e483]: OV-V-405-202607
+                - cell [ref=f10e484]: 1,200.00
+                - cell [ref=f10e485]: 22 Jul 2026
+                - cell [ref=f10e486]:
+                  - generic [ref=f10e406]: Manual
+                - cell [ref=f10e487]:
+                  - generic [ref=f10e412]: UPI
+                - cell [ref=f10e488]: "4646"
+                - cell [ref=f10e489]:
+                  - generic [ref=f10e415]: SUCCESS
+                - cell [ref=f10e490]:
+                  - generic [ref=f10e417]:
+                    - button [ref=f10e491]: Receipt
+                    - button [ref=f10e492]: Delete
+  - region "Notifications alt+T"
+  - alert [ref=f10e245]
+  - dialog [ref=f10e496]:
+    - heading "Record Payment" [level=2] [ref=f10e498]
+    - generic [ref=f10e499]:
+      - generic [ref=f10e500]:
+        - generic [ref=f10e501]:
+          - generic [ref=f10e502]: Flat No
+          - generic [ref=f10e503]: A-1001
+        - generic [ref=f10e504]:
+          - generic [ref=f10e505]: Resident
+          - generic [ref=f10e506]: Mrs. Pooja Devrani
+        - generic [ref=f10e507]:
+          - generic [ref=f10e508]: "Bill #"
+          - generic [ref=f10e509]: OV-A-1001-202607
+        - generic [ref=f10e510]:
+          - generic [ref=f10e511]: Due Date
+          - generic [ref=f10e512]: 01 Aug 2026
+        - generic [ref=f10e513]:
+          - generic [ref=f10e514]: Total Bill
+          - generic [ref=f10e515]: ₹4,027.00
+        - generic [ref=f10e516]:
+          - generic [ref=f10e517]: Balance Due
+          - generic [ref=f10e518]: ₹4,027.00
+      - generic [ref=f10e519]:
+        - generic [ref=f10e520]: Payment Method
+        - generic [ref=f10e521]:
+          - button "CASH" [active] [ref=f10e522]
+          - button "UPI" [ref=f10e523]
+          - button "NEFT" [ref=f10e524]
+          - button "RTGS" [ref=f10e525]
+          - button "CHEQUE" [ref=f10e526]
+      - generic [ref=f10e527]:
+        - generic [ref=f10e528]: Payment Date
+        - textbox "Payment Date" [ref=f10e529]: 2026-07-24
+      - generic [ref=f10e530]:
+        - generic [ref=f10e531]: Amount Received (₹)
+        - spinbutton "Amount Received (₹)" [ref=f10e532]: "4027.00"
+        - generic [ref=f10e533]:
+          - button "Full amount" [ref=f10e534]
+          - button "25%" [ref=f10e535]
+          - button "50%" [ref=f10e536]
+          - button "75%" [ref=f10e537]
+      - generic [ref=f10e538]: Full payment — bill will be marked as PAID
+    - generic [ref=f10e539]:
+      - button "Cancel" [ref=f10e540]
+      - button "Confirm Payment" [ref=f10e541]
+    - button "Close" [ref=f10e542]

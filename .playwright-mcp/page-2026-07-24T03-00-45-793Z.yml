@@ -1,0 +1,69 @@
+- generic [active] [ref=f14e1]:
+  - link "Skip to content":
+    - /url: "#geist-skip-nav"
+  - main [ref=f14e3]:
+    - generic [ref=f14e6]:
+      - generic [ref=f14e7]:
+        - generic [ref=f14e8]:
+          - button "Open sidebar" [ref=f14e10] [cursor=pointer]
+          - generic [ref=f14e16]:
+            - link "Other electricity-management" [ref=f14e127] [cursor=pointer]:
+              - /url: /shivajireacts-projects/electricity-management
+              - img "Other" [ref=f14e128]:
+                - img "Other" [ref=f14e129]
+              - generic [ref=f14e19]: electricity-management
+            - button [ref=f14e21] [cursor=pointer]
+            - link "Back to team view" [ref=f14e27] [cursor=pointer]:
+              - /url: /shivajireacts-projects/~/deployments
+        - navigation "Breadcrumb" [ref=f14e31]:
+          - link "Deployments" [ref=f14e33] [cursor=pointer]:
+            - /url: /shivajireacts-projects/electricity-management/deployments
+          - link "CnqqirEKT" [ref=f14e39] [cursor=pointer]:
+            - /url: /shivajireacts-projects/electricity-management/CnqqirEKT3BTjKgAVVCHC7SL2L6h
+          - generic [ref=f14e44]: Logs
+        - button "Vercel Agent is available on Pro" [ref=f14e48] [cursor=pointer]
+      - generic [ref=f14e62]:
+        - generic [ref=f14e64]:
+          - link "Deployment" [ref=f14e65] [cursor=pointer]:
+            - /url: /shivajireacts-projects/electricity-management/CnqqirEKT3BTjKgAVVCHC7SL2L6h
+          - link "Logs" [ref=f14e66] [cursor=pointer]:
+            - /url: /shivajireacts-projects/electricity-management/CnqqirEKT3BTjKgAVVCHC7SL2L6h/logs
+          - link "Resources" [ref=f14e67] [cursor=pointer]:
+            - /url: /shivajireacts-projects/electricity-management/CnqqirEKT3BTjKgAVVCHC7SL2L6h/resources
+          - link "Source" [ref=f14e68] [cursor=pointer]:
+            - /url: /shivajireacts-projects/electricity-management/CnqqirEKT3BTjKgAVVCHC7SL2L6h/source
+          - link "Open Graph" [ref=f14e69] [cursor=pointer]:
+            - /url: /shivajireacts-projects/electricity-management/CnqqirEKT3BTjKgAVVCHC7SL2L6h/og
+        - generic [ref=f14e196]:
+          - generic [ref=f14e198]:
+            - generic [ref=f14e199]:
+              - generic [ref=f14e201]:
+                - textbox [ref=f14e202]:
+                  - paragraph [ref=f14e203]
+                - generic: Search logs...
+              - generic [ref=f14e204]:
+                - button "Enable My Logs" [ref=f14e206] [cursor=pointer]
+                - button "Enable Has Traces" [ref=f14e213] [cursor=pointer]
+                - generic [ref=f14e219]:
+                  - button "Live" [ref=f14e220] [cursor=pointer]
+                  - button "Refresh Logs" [ref=f14e225] [cursor=pointer]
+                - button "Query Actions" [ref=f14e229] [cursor=pointer]
+            - img [ref=f14e236]:
+              - generic [ref=f14e238]:
+                - generic [ref=f14e239]: 08:01:00
+                - generic [ref=f14e241]: 08:14:30
+                - generic [ref=f14e243]: 08:31:00
+            - generic [ref=f14e246]:
+              - generic [ref=f14e247]: Time
+              - generic [ref=f14e248]: Status
+              - generic [ref=f14e249]: Host
+              - generic [ref=f14e250]: Request
+              - generic [ref=f14e251]: Messages
+          - generic [ref=f14e253]:
+            - paragraph [ref=f14e257]: There are no request logs in this time range
+            - generic [ref=f14e258]:
+              - button "Refresh Query" [ref=f14e259] [cursor=pointer]
+              - link "Learn More" [ref=f14e261] [cursor=pointer]:
+                - /url: /docs/runtime-logs
+  - alert [ref=f14e126]
+  - generic [ref=f14e264]: 08:14:30

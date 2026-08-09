@@ -1,0 +1,211 @@
+- generic [ref=f49e1]:
+  - generic [ref=f49e2]:
+    - banner [ref=f49e3]:
+      - generic [ref=f49e4]:
+        - generic [ref=f49e5]:
+          - generic [ref=f49e6]: Oasis Venetia Heights
+          - navigation [ref=f49e11]:
+            - link "Dashboard" [ref=f49e12] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f49e16] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f49e20] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Maintenance" [ref=f49e23] [cursor=pointer]:
+              - /url: /resident/maintenance
+            - link "Profile" [ref=f49e26] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f49e30]:
+          - generic [ref=f49e31]: Shivaji Tiwari
+          - button "Toggle theme" [ref=f49e32]
+          - button "Sign Out" [ref=f49e34]
+    - main [ref=f49e36]:
+      - generic [ref=f49e217]:
+        - generic [ref=f49e218]:
+          - heading "Pay Maintenance Bill" [level=1] [ref=f49e219]
+          - paragraph [ref=f49e220]: Secure payment via Razorpay
+        - generic [ref=f49e221]:
+          - generic [ref=f49e223]:
+            - generic [ref=f49e224]: OM-A-404-202607
+            - generic [ref=f49e225]: PENDING
+          - generic [ref=f49e226]:
+            - generic [ref=f49e227]:
+              - generic [ref=f49e228]: Flat
+              - generic [ref=f49e229]: A-404
+              - generic [ref=f49e230]: Billing Period
+              - generic [ref=f49e231]: 01 Jul 2026 – 01 Aug 2026
+              - generic [ref=f49e232]: Unit Area
+              - generic [ref=f49e233]: 1150 sq ft
+              - generic [ref=f49e234]: Rate
+              - generic [ref=f49e235]: ₹2.50 per sq ft
+              - generic [ref=f49e236]: Maintenance
+              - generic [ref=f49e237]: ₹2,875.00
+              - generic [ref=f49e238]: Due Date
+              - generic [ref=f49e239]: 08 Aug 2026
+            - generic [ref=f49e241]:
+              - generic [ref=f49e242]: Total Payable
+              - generic [ref=f49e243]: ₹2,875.00
+            - button "Processing…" [disabled]
+            - paragraph [ref=f49e245]: UPI · Cards · Net Banking · Wallets
+  - region "Notifications alt+T"
+  - alert [ref=f49e216]
+  - generic [ref=f49e246]:
+    - generic [ref=f49e247]: Test Mode
+    - iframe [active] [ref=f49e249]:
+      - generic [ref=f50e2]:
+        - generic [ref=f50e4]:
+          - generic [ref=f50e6]:
+            - button "Go back" [ref=f50e7] [cursor=pointer]
+            - generic [ref=f50e11]:
+              - generic [ref=f50e12]: O
+              - generic "Oasis Venetia Heights" [ref=f50e14]
+            - button [ref=f50e16] [cursor=pointer]:
+              - generic "options" [ref=f50e75]
+          - generic [ref=f50e80]:
+            - generic [ref=f50e84]:
+              - generic [ref=f50e85]: Price Summary
+              - heading "₹ 0 1 2 3 4 5 6 7 8 9 0 , 0 1 2 3 4 5 6 7 8 9 0 0 1 2 3 4 5 6 7 8 9 0 0 1 2 3 4 5 6 7 8 9 0" [level=3] [ref=f50e89]:
+                - generic [ref=f50e90]: ₹
+                - generic [ref=f50e91]:
+                  - generic [ref=f50e92]: "0"
+                  - generic [ref=f50e93]: "1"
+                  - generic [ref=f50e94]: "2"
+                  - generic [ref=f50e95]: "3"
+                  - generic [ref=f50e96]: "4"
+                  - generic [ref=f50e97]: "5"
+                  - generic [ref=f50e98]: "6"
+                  - generic [ref=f50e99]: "7"
+                  - generic [ref=f50e100]: "8"
+                  - generic [ref=f50e101]: "9"
+                  - generic [ref=f50e102]: "0"
+                - generic [ref=f50e103]: ","
+                - generic [ref=f50e104]:
+                  - generic [ref=f50e105]: "0"
+                  - generic [ref=f50e106]: "1"
+                  - generic [ref=f50e107]: "2"
+                  - generic [ref=f50e108]: "3"
+                  - generic [ref=f50e109]: "4"
+                  - generic [ref=f50e110]: "5"
+                  - generic [ref=f50e111]: "6"
+                  - generic [ref=f50e112]: "7"
+                  - generic [ref=f50e113]: "8"
+                  - generic [ref=f50e114]: "9"
+                  - generic [ref=f50e115]: "0"
+                - generic [ref=f50e116]:
+                  - generic [ref=f50e117]: "0"
+                  - generic [ref=f50e118]: "1"
+                  - generic [ref=f50e119]: "2"
+                  - generic [ref=f50e120]: "3"
+                  - generic [ref=f50e121]: "4"
+                  - generic [ref=f50e122]: "5"
+                  - generic [ref=f50e123]: "6"
+                  - generic [ref=f50e124]: "7"
+                  - generic [ref=f50e125]: "8"
+                  - generic [ref=f50e126]: "9"
+                  - generic [ref=f50e127]: "0"
+                - generic [ref=f50e128]:
+                  - generic [ref=f50e129]: "0"
+                  - generic [ref=f50e130]: "1"
+                  - generic [ref=f50e131]: "2"
+                  - generic [ref=f50e132]: "3"
+                  - generic [ref=f50e133]: "4"
+                  - generic [ref=f50e134]: "5"
+                  - generic [ref=f50e135]: "6"
+                  - generic [ref=f50e136]: "7"
+                  - generic [ref=f50e137]: "8"
+                  - generic [ref=f50e138]: "9"
+                  - generic [ref=f50e139]: "0"
+            - button "Using as +91 80000 00001" [ref=f50e140] [cursor=pointer]
+          - generic [ref=f50e22]:
+            - generic [ref=f50e23]:
+              - separator [ref=f50e24]
+              - generic [ref=f50e338]:
+                - heading "Card" [level=3] [ref=f50e340]
+                - generic [ref=f50e342]:
+                  - heading "Add a new card" [level=3] [ref=f50e343]
+                  - generic [ref=f50e344]:
+                    - generic [ref=f50e345]:
+                      - textbox "Card Number" [ref=f50e348]: 4111 1111 1111 1111
+                      - generic [ref=f50e349]:
+                        - textbox "MM / YY" [ref=f50e351]: 12 / 28
+                        - textbox "CVV" [ref=f50e353]: "123"
+                      - textbox "Enter name on card" [ref=f50e360]: Shivaji Tiwari
+                    - generic [ref=f50e355] [cursor=pointer]:
+                      - checkbox "Save this card securely for future payments" [ref=f50e361]
+                      - generic [ref=f50e357]: Save this card securely for future payments
+                    - paragraph [ref=f50e362]:
+                      - text: By completing your order, you will agree with Razorpay's
+                      - link "terms and conditions" [ref=f50e363] [cursor=pointer]:
+                        - /url: https://razorpay.com/s/terms/customer/
+              - generic [ref=f50e48]:
+                - generic [ref=f50e50]:
+                  - generic [ref=f50e51]: Secured by
+                  - generic "RazorPay" [ref=f50e52]
+                - generic [ref=f50e56]: •
+                - button "Account & Terms" [ref=f50e58] [cursor=pointer]
+            - generic [ref=f50e275]:
+              - generic [ref=f50e276]:
+                - generic [ref=f50e279]:
+                  - generic [ref=f50e280]: ₹
+                  - generic [ref=f50e281]:
+                    - generic [ref=f50e282]: "0"
+                    - generic [ref=f50e283]: "1"
+                    - generic [ref=f50e284]: "2"
+                    - generic [ref=f50e285]: "3"
+                    - generic [ref=f50e286]: "4"
+                    - generic [ref=f50e287]: "5"
+                    - generic [ref=f50e288]: "6"
+                    - generic [ref=f50e289]: "7"
+                    - generic [ref=f50e290]: "8"
+                    - generic [ref=f50e291]: "9"
+                    - generic [ref=f50e292]: "0"
+                  - generic [ref=f50e293]: ","
+                  - generic [ref=f50e294]:
+                    - generic [ref=f50e295]: "0"
+                    - generic [ref=f50e296]: "1"
+                    - generic [ref=f50e297]: "2"
+                    - generic [ref=f50e298]: "3"
+                    - generic [ref=f50e299]: "4"
+                    - generic [ref=f50e300]: "5"
+                    - generic [ref=f50e301]: "6"
+                    - generic [ref=f50e302]: "7"
+                    - generic [ref=f50e303]: "8"
+                    - generic [ref=f50e304]: "9"
+                    - generic [ref=f50e305]: "0"
+                  - generic [ref=f50e306]:
+                    - generic [ref=f50e307]: "0"
+                    - generic [ref=f50e308]: "1"
+                    - generic [ref=f50e309]: "2"
+                    - generic [ref=f50e310]: "3"
+                    - generic [ref=f50e311]: "4"
+                    - generic [ref=f50e312]: "5"
+                    - generic [ref=f50e313]: "6"
+                    - generic [ref=f50e314]: "7"
+                    - generic [ref=f50e315]: "8"
+                    - generic [ref=f50e316]: "9"
+                    - generic [ref=f50e317]: "0"
+                  - generic [ref=f50e318]:
+                    - generic [ref=f50e319]: "0"
+                    - generic [ref=f50e320]: "1"
+                    - generic [ref=f50e321]: "2"
+                    - generic [ref=f50e322]: "3"
+                    - generic [ref=f50e323]: "4"
+                    - generic [ref=f50e324]: "5"
+                    - generic [ref=f50e325]: "6"
+                    - generic [ref=f50e326]: "7"
+                    - generic [ref=f50e327]: "8"
+                    - generic [ref=f50e328]: "9"
+                    - generic [ref=f50e329]: "0"
+                - button "View Details" [ref=f50e330] [cursor=pointer]
+              - button "Continue" [ref=f50e335] [cursor=pointer]
+        - generic [ref=f50e367]:
+          - button [ref=f50e368] [cursor=pointer]
+          - generic [ref=f50e374]:
+            - paragraph [ref=f50e380]: Save your card for future payments?
+            - generic [ref=f50e381]:
+              - generic [ref=f50e382]: No need to enter details every time you make a payment
+              - generic [ref=f50e388]: Secure and faster payments
+            - paragraph [ref=f50e395]: Card information will be saved and secured using PCI DSS encryption, ensuring your details are safe with highest security.
+            - generic [ref=f50e396]:
+              - button "Maybe later" [ref=f50e397] [cursor=pointer]
+              - button "Yes, secure my card" [ref=f50e398] [cursor=pointer]

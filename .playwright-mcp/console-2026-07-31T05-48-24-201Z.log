@@ -1,0 +1,2 @@
+[   14578ms] [ERROR] Access to fetch at 'https://oasisvenetia.in/login?error=MissingCSRF' (redirected from 'https://www.oasisvenetia.in/api/auth/signout') from origin 'https://www.oasisvenetia.in' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://www.oasisvenetia.in/resident/bills:0
+[   14579ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://oasisvenetia.in/login?error=MissingCSRF:0

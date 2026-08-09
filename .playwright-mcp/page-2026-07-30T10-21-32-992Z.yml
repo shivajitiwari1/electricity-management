@@ -1,0 +1,189 @@
+- generic [ref=f80e1]:
+  - generic [ref=f80e2]:
+    - generic [ref=f80e4]:
+      - generic [ref=f80e10]:
+        - paragraph [ref=f80e11]: Oasis Venetia Heights
+        - paragraph [ref=f80e12]: Admin Panel
+      - navigation [ref=f80e13]:
+        - link [ref=f80e333] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=f80e334] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=f80e335] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=f80e336] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=f80e337] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=f80e338] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=f80e339] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=f80e340] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=f80e341] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+        - link [ref=f80e342] [cursor=pointer]:
+          - /url: /admin/users
+          - text: Users
+        - link [ref=f80e343] [cursor=pointer]:
+          - /url: /admin/permissions
+          - text: Permissions
+      - separator [ref=f80e69]
+      - generic [ref=f80e70]:
+        - generic [ref=f80e71]:
+          - generic [ref=f80e72]:
+            - paragraph [ref=f80e73]: Admin
+            - paragraph [ref=f80e74]: admin@oasis.local
+          - button [ref=f80e344]:
+            - generic [ref=f80e76]: Toggle theme
+        - button [ref=f80e345]: Sign Out
+    - main [ref=f80e78]:
+      - generic [ref=f80e79]:
+        - generic [ref=f80e80]:
+          - heading [level=1] [ref=f80e346]: Payments
+          - paragraph [ref=f80e82]: View all payment transactions for Oasis Venetia Heights
+        - generic [ref=f80e239]:
+          - generic [ref=f80e241]:
+            - text: Bills Requiring Payment
+            - generic [ref=f80e242]: 1 pending
+          - table [ref=f80e245]:
+            - rowgroup [ref=f80e246]:
+              - row [ref=f80e347]:
+                - columnheader [ref=f80e348]: "Bill #"
+                - columnheader [ref=f80e349]: Flat No
+                - columnheader [ref=f80e350]: Resident
+                - columnheader [ref=f80e351]: Balance Due
+                - columnheader [ref=f80e352]: Due Date
+                - columnheader [ref=f80e353]: Status
+                - columnheader [ref=f80e354]: Actions
+            - rowgroup [ref=f80e255]:
+              - row [ref=f80e355]:
+                - cell [ref=f80e356]: OV-V-1407-202607
+                - cell [ref=f80e357]: V-1407
+                - cell [ref=f80e358]: Shivaji Tiwari Test
+                - cell [ref=f80e359]: ₹2,035.00
+                - cell [ref=f80e360]: 08 Aug 2026
+                - cell [ref=f80e361]:
+                  - generic [ref=f80e263]: PENDING
+                - cell [ref=f80e362]:
+                  - button [ref=f80e363]: Record Payment
+        - generic [ref=f80e266]:
+          - generic [ref=f80e267]:
+            - generic [ref=f80e268]: Method
+            - combobox [ref=f80e269]:
+              - generic [ref=f80e270]: all
+              - img: ▼
+            - textbox [ref=f80e271]: all
+          - generic [ref=f80e272]:
+            - generic [ref=f80e273]: Status
+            - combobox [ref=f80e274]:
+              - generic [ref=f80e275]: all
+              - img: ▼
+            - textbox [ref=f80e276]: all
+          - generic [ref=f80e277]:
+            - generic [ref=f80e278]: Search
+            - textbox [ref=f80e364]:
+              - /placeholder: Name or flat…
+        - generic [ref=f80e280]:
+          - generic [ref=f80e282]:
+            - text: Payment History — 1 record
+            - generic [ref=f80e283]:
+              - generic [ref=f80e284]: 0 online
+              - generic [ref=f80e289]: 1 manual
+          - table [ref=f80e296]:
+            - rowgroup [ref=f80e297]:
+              - row [ref=f80e365]:
+                - columnheader [ref=f80e366]: "Receipt #"
+                - columnheader [ref=f80e367]: Flat No
+                - columnheader [ref=f80e368]: Resident
+                - columnheader [ref=f80e369]: "Bill #"
+                - columnheader [ref=f80e370]: Amount (₹)
+                - columnheader [ref=f80e371]: Date
+                - columnheader [ref=f80e372]: Type
+                - columnheader [ref=f80e373]: Method
+                - columnheader [ref=f80e374]: Reference / Txn ID
+                - columnheader [ref=f80e375]: Status
+                - columnheader [ref=f80e376]: Actions
+            - rowgroup [ref=f80e310]:
+              - row [ref=f80e377]:
+                - cell [ref=f80e378]: RCPT-20260730-0001
+                - cell [ref=f80e379]: V-405
+                - cell [ref=f80e380]: Mr. Alok Kumar
+                - cell [ref=f80e381]: OV-V-405-202607
+                - cell [ref=f80e382]: 1,535.00
+                - cell [ref=f80e383]: 30 Jul 2026
+                - cell [ref=f80e384]:
+                  - generic [ref=f80e319]: Manual
+                - cell [ref=f80e385]:
+                  - generic [ref=f80e325]: UPI
+                - cell [ref=f80e386]: UTR426789012345
+                - cell [ref=f80e387]:
+                  - generic [ref=f80e328]: SUCCESS
+                - cell [ref=f80e388]:
+                  - generic [ref=f80e330]:
+                    - button [ref=f80e389]: Receipt
+                    - button [ref=f80e390]: Delete
+  - region "Notifications alt+T"
+  - alert [ref=f80e238]
+  - dialog [ref=f80e394]:
+    - heading "Record Payment" [level=2] [ref=f80e396]
+    - generic [ref=f80e397]:
+      - generic [ref=f80e398]:
+        - generic [ref=f80e399]:
+          - generic [ref=f80e400]: Flat No
+          - generic [ref=f80e401]: V-1407
+        - generic [ref=f80e402]:
+          - generic [ref=f80e403]: Resident
+          - generic [ref=f80e404]: Shivaji Tiwari Test
+        - generic [ref=f80e405]:
+          - generic [ref=f80e406]: "Bill #"
+          - generic [ref=f80e407]: OV-V-1407-202607
+        - generic [ref=f80e408]:
+          - generic [ref=f80e409]: Due Date
+          - generic [ref=f80e410]: 08 Aug 2026
+        - generic [ref=f80e411]:
+          - generic [ref=f80e412]: Total Bill
+          - generic [ref=f80e413]: ₹2,035.00
+        - generic [ref=f80e414]:
+          - generic [ref=f80e415]: Balance Due
+          - generic [ref=f80e416]: ₹2,035.00
+      - generic [ref=f80e417]:
+        - generic [ref=f80e418]: Payment Method
+        - generic [ref=f80e419]:
+          - button "CASH" [ref=f80e420]
+          - button "UPI" [active] [ref=f80e421]
+          - button "NEFT" [ref=f80e422]
+          - button "RTGS" [ref=f80e423]
+          - button "CHEQUE" [ref=f80e424]
+      - generic [ref=f80e443]:
+        - generic [ref=f80e444]:
+          - text: UTR / Transaction Reference
+          - generic [ref=f80e445]: "*"
+        - textbox "UTR / Transaction Reference *" [ref=f80e446]:
+          - /placeholder: e.g. UTR123456789
+      - generic [ref=f80e425]:
+        - generic [ref=f80e426]: Payment Date
+        - textbox "Payment Date" [ref=f80e427]: 2026-07-30
+      - generic [ref=f80e428]:
+        - generic [ref=f80e429]: Amount Received (₹)
+        - spinbutton "Amount Received (₹)" [ref=f80e430]: "2035.00"
+        - generic [ref=f80e431]:
+          - button "Full amount" [ref=f80e432]
+          - button "25%" [ref=f80e433]
+          - button "50%" [ref=f80e434]
+          - button "75%" [ref=f80e435]
+      - generic [ref=f80e436]: Full payment — bill will be marked as PAID
+    - generic [ref=f80e437]:
+      - button "Cancel" [ref=f80e438]
+      - button "Confirm Payment" [ref=f80e439]
+    - button "Close" [ref=f80e440]

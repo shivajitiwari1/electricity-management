@@ -1,0 +1,153 @@
+- generic [ref=f64e1]:
+  - generic [ref=f64e2]:
+    - generic [ref=f64e4]:
+      - generic [ref=f64e10]:
+        - paragraph [ref=f64e11]: Oasis Venetia Heights
+        - paragraph [ref=f64e12]: Admin Panel
+      - navigation [ref=f64e13]:
+        - link [ref=f64e282] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=f64e283] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=f64e284] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=f64e285] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=f64e286] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=f64e287] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=f64e288] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=f64e289] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=f64e290] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+      - separator [ref=f64e52]
+      - generic [ref=f64e53]:
+        - generic [ref=f64e54]:
+          - generic [ref=f64e55]:
+            - paragraph [ref=f64e56]: Admin
+            - paragraph [ref=f64e57]: admin@oasis.local
+          - button [ref=f64e291]:
+            - generic [ref=f64e59]: Toggle theme
+        - button [ref=f64e292]: Sign Out
+    - main [ref=f64e61]:
+      - generic [ref=f64e62]:
+        - generic [ref=f64e63]:
+          - heading [level=1] [ref=f64e293]: Payments
+          - paragraph [ref=f64e65]: View all payment transactions for Oasis Venetia Heights
+        - generic [ref=f64e221]:
+          - generic [ref=f64e223]:
+            - text: Bills Requiring Payment
+            - generic [ref=f64e224]: 1 pending
+          - table [ref=f64e227]:
+            - rowgroup [ref=f64e228]:
+              - row [ref=f64e294]:
+                - columnheader [ref=f64e295]: "Bill #"
+                - columnheader [ref=f64e296]: Flat No
+                - columnheader [ref=f64e297]: Resident
+                - columnheader [ref=f64e298]: Balance Due
+                - columnheader [ref=f64e299]: Due Date
+                - columnheader [ref=f64e300]: Status
+                - columnheader [ref=f64e301]: Actions
+            - rowgroup [ref=f64e237]:
+              - row [ref=f64e302]:
+                - cell [ref=f64e303]: OV-B-1206-202607
+                - cell [ref=f64e304]: B-1206
+                - cell [ref=f64e305]: Mr. Gaurav Kumar
+                - cell [ref=f64e306]: ₹1,542.00
+                - cell [ref=f64e307]: 27 Jul 2026
+                - cell [ref=f64e308]:
+                  - generic [ref=f64e245]: PENDING
+                - cell [ref=f64e309]:
+                  - button [ref=f64e310]: Record Payment
+        - generic [ref=f64e248]:
+          - generic [ref=f64e249]:
+            - generic [ref=f64e250]: Method
+            - combobox [ref=f64e251]:
+              - generic [ref=f64e252]: all
+              - img: ▼
+            - textbox [ref=f64e253]: all
+          - generic [ref=f64e254]:
+            - generic [ref=f64e255]: Status
+            - combobox [ref=f64e256]:
+              - generic [ref=f64e257]: all
+              - img: ▼
+            - textbox [ref=f64e258]: all
+        - generic [ref=f64e259]:
+          - generic [ref=f64e260]: Payment History — 0 records
+          - table [ref=f64e264]:
+            - rowgroup [ref=f64e265]:
+              - row [ref=f64e311]:
+                - columnheader [ref=f64e312]: "Receipt #"
+                - columnheader [ref=f64e313]: Flat No
+                - columnheader [ref=f64e314]: Resident
+                - columnheader [ref=f64e315]: "Bill #"
+                - columnheader [ref=f64e316]: Amount (₹)
+                - columnheader [ref=f64e317]: Date
+                - columnheader [ref=f64e318]: Type
+                - columnheader [ref=f64e319]: Method
+                - columnheader [ref=f64e320]: Reference / Txn ID
+                - columnheader [ref=f64e321]: Status
+                - columnheader [ref=f64e322]: Actions
+            - rowgroup [ref=f64e278]:
+              - row [ref=f64e323]:
+                - cell [ref=f64e324]: No payments found
+  - region "Notifications alt+T"
+  - alert [ref=f64e281]
+  - dialog [ref=f64e328]:
+    - heading "Record Payment" [level=2] [ref=f64e330]
+    - generic [ref=f64e331]:
+      - generic [ref=f64e332]:
+        - generic [ref=f64e333]:
+          - generic [ref=f64e334]: Flat No
+          - generic [ref=f64e335]: B-1206
+        - generic [ref=f64e336]:
+          - generic [ref=f64e337]: Resident
+          - generic [ref=f64e338]: Mr. Gaurav Kumar
+        - generic [ref=f64e339]:
+          - generic [ref=f64e340]: "Bill #"
+          - generic [ref=f64e341]: OV-B-1206-202607
+        - generic [ref=f64e342]:
+          - generic [ref=f64e343]: Due Date
+          - generic [ref=f64e344]: 27 Jul 2026
+        - generic [ref=f64e345]:
+          - generic [ref=f64e346]: Total Bill
+          - generic [ref=f64e347]: ₹1,542.00
+        - generic [ref=f64e348]:
+          - generic [ref=f64e349]: Balance Due
+          - generic [ref=f64e350]: ₹1,542.00
+      - generic [ref=f64e351]:
+        - generic [ref=f64e352]: Payment Method
+        - generic [ref=f64e353]:
+          - button "CASH" [active] [ref=f64e354]
+          - button "UPI" [ref=f64e355]
+          - button "NEFT" [ref=f64e356]
+          - button "RTGS" [ref=f64e357]
+          - button "CHEQUE" [ref=f64e358]
+      - generic [ref=f64e359]:
+        - generic [ref=f64e360]: Payment Date
+        - textbox "Payment Date" [ref=f64e361]: 2026-07-18
+      - generic [ref=f64e362]:
+        - generic [ref=f64e363]: Amount Received (₹)
+        - spinbutton "Amount Received (₹)" [ref=f64e364]: "1542.00"
+        - generic [ref=f64e365]:
+          - button "Full amount" [ref=f64e366]
+          - button "25%" [ref=f64e367]
+          - button "50%" [ref=f64e368]
+          - button "75%" [ref=f64e369]
+      - generic [ref=f64e370]: Full payment — bill will be marked as PAID
+    - generic [ref=f64e371]:
+      - button "Cancel" [ref=f64e372]
+      - button "Confirm Payment" [ref=f64e373]
+    - button "Close" [ref=f64e374]

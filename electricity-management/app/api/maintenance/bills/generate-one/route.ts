@@ -77,20 +77,24 @@ export async function POST(req: NextRequest) {
   });
 
   const billingPeriodStr = `${periodStart.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })} – ${periodEnd.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}`;
-  sendEmail(
-    connection.resident.user.email,
-    `Maintenance Bill — ${periodStart.toLocaleString("en-IN", { month: "long", year: "numeric" })} — ${connection.flatNo}`,
-    maintenanceBillGeneratedEmail({
-      residentName: connection.resident.user.name ?? "Resident",
-      flatNo: connection.flatNo,
-      billNumber,
-      billingPeriod: billingPeriodStr,
-      unitArea: Number(connection.unitArea),
-      ratePerSqFt: Number(rate.ratePerSqFt).toFixed(2),
-      amount: (Number(connection.unitArea) * Number(rate.ratePerSqFt)).toFixed(2),
-      dueDate: dueDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
-    })
-  ).catch(() => {});
+  try {
+    await sendEmail(
+      connection.resident.user.email,
+      `Maintenance Bill — ${periodStart.toLocaleString("en-IN", { month: "long", year: "numeric" })} — ${connection.flatNo}`,
+      maintenanceBillGeneratedEmail({
+        residentName: connection.resident.user.name ?? "Resident",
+        flatNo: connection.flatNo,
+        billNumber,
+        billingPeriod: billingPeriodStr,
+        unitArea: Number(connection.unitArea),
+        ratePerSqFt: Number(rate.ratePerSqFt).toFixed(2),
+        amount: (Number(connection.unitArea) * Number(rate.ratePerSqFt)).toFixed(2),
+        dueDate: dueDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
+      })
+    );
+  } catch {
+    // email failure must not fail bill creation
+  }
 
   return NextResponse.json({ created: true, billNumber: bill.billNumber });
 }

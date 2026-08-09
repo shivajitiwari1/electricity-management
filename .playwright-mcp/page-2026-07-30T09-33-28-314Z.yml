@@ -1,0 +1,132 @@
+- generic [ref=f67e1]:
+  - generic [ref=f67e2]:
+    - generic [ref=f67e4]:
+      - generic [ref=f67e10]:
+        - paragraph [ref=f67e11]: Oasis Venetia Heights
+        - paragraph [ref=f67e12]: Admin Panel
+      - navigation [ref=f67e13]:
+        - link [ref=f67e239] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=f67e240] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=f67e241] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=f67e242] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=f67e243] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=f67e244] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=f67e245] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=f67e246] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=f67e247] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+        - link [ref=f67e248] [cursor=pointer]:
+          - /url: /admin/users
+          - text: Users
+        - link [ref=f67e249] [cursor=pointer]:
+          - /url: /admin/permissions
+          - text: Permissions
+      - separator [ref=f67e69]
+      - generic [ref=f67e70]:
+        - generic [ref=f67e71]:
+          - generic [ref=f67e72]:
+            - paragraph [ref=f67e73]: Admin
+            - paragraph [ref=f67e74]: admin@oasis.local
+          - button [ref=f67e250]:
+            - generic [ref=f67e76]: Toggle theme
+        - button [ref=f67e251]: Sign Out
+    - main [ref=f67e78]:
+      - generic [ref=f67e79]:
+        - generic [ref=f67e80]:
+          - heading [level=1] [ref=f67e252]: Meter Readings
+          - paragraph [ref=f67e82]: Record and manage electricity meter readings
+        - generic [ref=f67e253]:
+          - generic [ref=f67e254]:
+            - textbox [ref=f67e255]:
+              - /placeholder: Search flat or resident...
+            - combobox [ref=f67e256]:
+              - generic [ref=f67e257]: 2026-07
+              - img: ▼
+            - textbox [ref=f67e258]: 2026-07
+            - combobox [ref=f67e259]:
+              - generic [ref=f67e260]: all
+              - img: ▼
+            - textbox [ref=f67e261]: all
+            - paragraph [ref=f67e262]: 2 of 399 flats
+          - button [ref=f67e263]: Add Meter Reading
+        - generic [ref=f67e264]:
+          - generic [ref=f67e265]: Meter Readings — 2 Flats · July 2026
+          - table [ref=f67e269]:
+            - rowgroup [ref=f67e270]:
+              - row [ref=f67e271]:
+                - columnheader [ref=f67e272]: Flat No
+                - columnheader [ref=f67e273]: Resident
+                - columnheader [ref=f67e274]: Reading Date
+                - columnheader [ref=f67e275]: NPCL Previous
+                - columnheader [ref=f67e276]: NPCL Current
+                - columnheader [ref=f67e277]: Units
+                - columnheader [ref=f67e278]: DG Units
+                - columnheader [ref=f67e279]: Bill
+                - columnheader [ref=f67e280]: Actions
+            - rowgroup [ref=f67e281]:
+              - row [ref=f67e282]:
+                - cell [ref=f67e283]: A-404
+                - cell [ref=f67e284]: Shivaji Tiwari
+                - cell [ref=f67e285]: 30 Jul 2026
+                - cell [ref=f67e286]: "1100"
+                - cell [ref=f67e287]: "1350"
+                - cell [ref=f67e288]: "250"
+                - cell [ref=f67e289]: "0"
+                - cell [ref=f67e290]:
+                  - generic [ref=f67e291]: Generated
+                - cell [ref=f67e292]:
+                  - button [ref=f67e294]: Delete
+              - row [ref=f67e295]:
+                - cell [ref=f67e296]: V-405
+                - cell [ref=f67e297]: Mr. Alok Kumar
+                - cell [ref=f67e298]: 30 Jul 2026
+                - cell [ref=f67e299]: "15375"
+                - cell [ref=f67e300]: "15500"
+                - cell [ref=f67e301]: "125"
+                - cell [ref=f67e302]: "0"
+                - cell [ref=f67e303]:
+                  - generic [ref=f67e304]: Generated
+                - cell [ref=f67e305]:
+                  - button [ref=f67e307]: Delete
+  - region "Notifications alt+T"
+  - alert [ref=f67e238]
+  - dialog [ref=f67e311]:
+    - heading "Add Meter Reading" [level=2] [ref=f67e313]
+    - generic [ref=f67e314]:
+      - generic [ref=f67e315]:
+        - generic [ref=f67e316]: Flat *
+        - button "Search flat or resident…" [active] [ref=f67e317]
+      - generic [ref=f67e322]:
+        - generic [ref=f67e323]: Reading Date *
+        - textbox "Reading Date *" [ref=f67e324]: 2026-07-30
+      - generic [ref=f67e325]:
+        - generic [ref=f67e326]:
+          - generic [ref=f67e327]: NPCL Previous Reading *
+          - spinbutton "NPCL Previous Reading *" [ref=f67e328]
+        - generic [ref=f67e329]:
+          - generic [ref=f67e330]: NPCL Current Reading *
+          - spinbutton "NPCL Current Reading *" [ref=f67e331]
+      - generic [ref=f67e332]:
+        - generic [ref=f67e333]: DG Charge (Fixed)
+        - generic [ref=f67e334]: ₹200.00 — fixed per billing cycle
+      - generic [ref=f67e335]:
+        - button "Cancel" [ref=f67e336]
+        - button "Save Reading" [ref=f67e337]
+    - button "Close" [ref=f67e338]

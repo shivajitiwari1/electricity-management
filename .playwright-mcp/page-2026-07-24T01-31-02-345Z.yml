@@ -1,0 +1,24 @@
+- generic [active] [ref=f22e1]:
+  - generic [ref=f22e2]:
+    - banner [ref=f22e3]:
+      - generic [ref=f22e4]:
+        - generic [ref=f22e5]:
+          - generic [ref=f22e6]: Oasis Venetia Heights
+          - navigation [ref=f22e11]:
+            - link "Dashboard" [ref=f22e12] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f22e16] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f22e20] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Maintenance" [ref=f22e23] [cursor=pointer]:
+              - /url: /resident/maintenance
+            - link "Profile" [ref=f22e26] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f22e30]:
+          - generic [ref=f22e31]: Mr. Bachoo Singh Bhagaur
+          - button "Toggle theme" [ref=f22e32]
+          - button "Sign Out" [ref=f22e34]
+    - main [ref=f22e36]
+  - region "Notifications alt+T"
+  - alert [ref=f22e60]

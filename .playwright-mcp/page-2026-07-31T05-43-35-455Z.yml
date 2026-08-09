@@ -1,0 +1,81 @@
+- generic [active] [ref=f2e1]:
+  - generic [ref=f2e2]:
+    - banner [ref=f2e3]:
+      - generic [ref=f2e4]:
+        - generic [ref=f2e5]:
+          - link "Oasis Venetia Heights" [ref=f2e6] [cursor=pointer]:
+            - /url: /login
+          - paragraph [ref=f2e7]: Electricity Management Portal
+        - navigation [ref=f2e8]:
+          - link "Home" [ref=f2e9] [cursor=pointer]:
+            - /url: /login
+          - link "About Us" [ref=f2e10] [cursor=pointer]:
+            - /url: /about
+          - link "Terms & Conditions" [ref=f2e11] [cursor=pointer]:
+            - /url: /terms
+    - main [ref=f2e12]:
+      - generic [ref=f2e14]:
+        - generic [ref=f2e15]:
+          - heading "About Oasis Venetia Heights" [level=1] [ref=f2e16]
+          - paragraph [ref=f2e17]: A residential community in Greater Noida, managed by Oasis Group of Companies
+        - generic [ref=f2e18]:
+          - heading "Legal Entity" [level=2] [ref=f2e19]
+          - paragraph [ref=f2e20]: Oasis Buildmart India Pvt. Ltd.
+          - paragraph [ref=f2e21]: Plot No. HRA-12-A, Site-C, Greater Noida – 201306, Uttar Pradesh, India
+          - paragraph [ref=f2e22]: "CIN: Available on request · Email: info@oasis.in"
+        - generic [ref=f2e23]:
+          - heading "About the Project" [level=2] [ref=f2e24]
+          - paragraph [ref=f2e25]: Oasis Venetia Heights offers 1, 2 & 3 BHK ready-to-move homes in the heart of Greater Noida, with 350+ families currently residing. The project is registered under the Real Estate (Regulation and Development) Act, 2016.
+          - paragraph [ref=f2e26]: "RERA Registration: UPRERAPRJ1646"
+        - generic [ref=f2e27]:
+          - heading "About This Portal" [level=2] [ref=f2e28]
+          - paragraph [ref=f2e29]: "The Oasis Venetia Heights Electricity Management Portal enables residents to:"
+          - list [ref=f2e30]:
+            - listitem [ref=f2e31]: View their monthly electricity bills
+            - listitem [ref=f2e32]: Make secure online payments via Razorpay
+            - listitem [ref=f2e33]: Track payment history
+          - paragraph [ref=f2e34]: This portal is operated by Oasis Group of Companies on behalf of Oasis Venetia Heights residents.
+        - generic [ref=f2e35]:
+          - heading "About Oasis Group" [level=2] [ref=f2e36]
+          - paragraph [ref=f2e37]:
+            - text: Oasis Group of Companies —
+            - emphasis [ref=f2e38]: Spaces for Life
+            - text: — is a real estate developer with over 25 years of experience. We have delivered more than 2.2 million sq ft of residential spaces across projects including Oasis Venetia Heights, Oasis Homes, and Oasis Grandstand.
+        - generic [ref=f2e39]:
+          - heading "Contact Information" [level=2] [ref=f2e40]
+          - generic [ref=f2e41]:
+            - paragraph [ref=f2e42]: Oasis Buildmart India Pvt. Ltd.
+            - paragraph [ref=f2e43]: (Trading as Oasis Group of Companies)
+            - paragraph [ref=f2e44]: Plot No. HRA-12-A, Site-C, Greater Noida – 201306
+            - paragraph [ref=f2e45]: A-77, Sector 2, Noida
+            - paragraph [ref=f2e46]: +91-8010-111-777
+            - paragraph [ref=f2e47]:
+              - link "info@oasis.in" [ref=f2e48] [cursor=pointer]:
+                - /url: mailto:info@oasis.in
+            - paragraph [ref=f2e49]:
+              - link "www.oasis.in" [ref=f2e50] [cursor=pointer]:
+                - /url: https://www.oasis.in/
+        - paragraph [ref=f2e52]:
+          - text: Online payments on this portal are processed securely by
+          - strong [ref=f2e53]: Razorpay Payment Gateway
+          - text: .
+    - contentinfo [ref=f2e54]:
+      - generic [ref=f2e56]:
+        - generic [ref=f2e57]:
+          - paragraph [ref=f2e58]: © 2026 Oasis Buildmart India Pvt. Ltd.
+          - paragraph [ref=f2e59]: Trading as Oasis Group of Companies. All rights reserved.
+        - generic [ref=f2e60]:
+          - paragraph [ref=f2e61]: A-77, Sector 2, Noida
+          - paragraph [ref=f2e62]: +91-8010-111-777
+          - paragraph [ref=f2e63]:
+            - link "info@oasis.in" [ref=f2e64] [cursor=pointer]:
+              - /url: mailto:info@oasis.in
+        - generic [ref=f2e65]:
+          - paragraph [ref=f2e66]:
+            - link "Resident Portal" [ref=f2e67] [cursor=pointer]:
+              - /url: /login
+          - paragraph [ref=f2e68]:
+            - link "Oasis Group Website" [ref=f2e69] [cursor=pointer]:
+              - /url: https://www.oasis.in/
+  - region "Notifications alt+T"
+  - alert [ref=f2e70]

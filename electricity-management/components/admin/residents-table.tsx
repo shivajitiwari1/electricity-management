@@ -161,6 +161,7 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
     unitArea: "",
     sanctionedLoad: "",
     meterNo: "",
+    connectionStatus: "ACTIVE",
   });
 
   const filtered = useMemo(() => {
@@ -179,6 +180,7 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
     });
   }, [initialData, debouncedSearch]);
 
+
   function openEditModal(resident: Resident) {
     setEditResident(resident);
     const conn = resident.connections[0];
@@ -193,6 +195,7 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
       unitArea: conn?.unitArea ?? "",
       sanctionedLoad: conn ? conn.sanctionedLoad.toString() : "",
       meterNo: conn?.meterNo ?? "",
+      connectionStatus: conn?.status ?? "ACTIVE",
     });
   }
 
@@ -281,6 +284,16 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
         toast.error(data.error ?? "Failed to update resident");
         return;
       }
+
+      // Update connection status if changed
+      if (conn && editForm.connectionStatus !== conn.status) {
+        await fetch(`/api/connections/${conn.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: editForm.connectionStatus }),
+        });
+      }
+
       toast.success("Resident updated successfully");
       setEditResident(null);
       router.refresh();
@@ -381,7 +394,9 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
       <Card>
         <CardHeader className="pb-0">
           <CardTitle className="text-base font-semibold">
-            {filtered.length} Resident{filtered.length !== 1 ? "s" : ""}
+            {filtered.length > 0
+              ? `${filtered.length} Resident${filtered.length !== 1 ? "s" : ""}`
+              : "0 Residents"}
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0 mt-3">
@@ -475,6 +490,7 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
               </tbody>
             </table>
           </div>
+
         </CardContent>
       </Card>
 
@@ -827,6 +843,36 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
                     </div>
                   </div>
                 </>
+              )}
+
+              {/* Connection Status */}
+              {editResident?.connections[0] && (
+                <div className="flex items-center justify-between rounded-lg border px-4 py-3">
+                  <div>
+                    <p className="text-sm font-medium">Connection Status</p>
+                    <p className="text-xs text-muted-foreground">Active residents appear in meter readings and billing</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant={editForm.connectionStatus === "ACTIVE" ? "default" : "outline"}
+                      className={editForm.connectionStatus === "ACTIVE" ? "bg-green-600 hover:bg-green-700" : ""}
+                      onClick={() => setEditForm((p) => ({ ...p, connectionStatus: "ACTIVE" }))}
+                    >
+                      Active
+                    </Button>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant={editForm.connectionStatus === "INACTIVE" ? "default" : "outline"}
+                      className={editForm.connectionStatus === "INACTIVE" ? "bg-red-600 hover:bg-red-700" : ""}
+                      onClick={() => setEditForm((p) => ({ ...p, connectionStatus: "INACTIVE" }))}
+                    >
+                      Inactive
+                    </Button>
+                  </div>
+                </div>
               )}
 
               <DialogFooter className="pt-2">

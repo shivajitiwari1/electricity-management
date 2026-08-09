@@ -1,0 +1,79 @@
+- generic [active] [ref=f12e1]:
+  - generic [ref=f12e2]:
+    - generic [ref=f12e4]:
+      - generic [ref=f12e10]:
+        - paragraph [ref=f12e11]: Oasis Venetia Heights
+        - paragraph [ref=f12e12]: Admin Panel
+      - navigation [ref=f12e13]:
+        - link "Dashboard" [ref=f12e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f12e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f12e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f12e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f12e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f12e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f12e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f12e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f12e47] [cursor=pointer]:
+          - /url: /admin/flats
+        - button "Maintenance" [ref=f12e53]
+        - link "Users" [ref=f12e59] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f12e72] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f12e76]
+      - generic [ref=f12e77]:
+        - generic [ref=f12e78]:
+          - generic [ref=f12e79]:
+            - paragraph [ref=f12e80]: Admin
+            - paragraph [ref=f12e81]: admin@oasis.local
+          - button "Toggle theme" [ref=f12e82]
+        - button "Sign Out" [ref=f12e84]
+    - main [ref=f12e85]:
+      - generic [ref=f12e86]:
+        - generic [ref=f12e87]:
+          - heading "Electricity Rates" [level=1] [ref=f12e88]
+          - paragraph [ref=f12e89]: Manage NPCL and DG electricity rates
+        - generic [ref=f12e90]:
+          - generic [ref=f12e91]:
+            - generic [ref=f12e92]: Current Rate
+            - button "Update Rates" [ref=f12e93]
+          - generic [ref=f12e95]:
+            - generic [ref=f12e96]:
+              - paragraph [ref=f12e97]: NPCL / Unit
+              - paragraph [ref=f12e98]: ₹7
+            - generic [ref=f12e99]:
+              - paragraph [ref=f12e100]: DG Fixed Charge
+              - paragraph [ref=f12e101]: ₹200
+            - generic [ref=f12e102]:
+              - paragraph [ref=f12e103]: Fixed / kW
+              - paragraph [ref=f12e104]: ₹115
+            - generic [ref=f12e105]:
+              - paragraph [ref=f12e106]: Effective From
+              - paragraph [ref=f12e107]: 17 Jul 2026
+        - generic [ref=f12e108]:
+          - generic [ref=f12e109]: Rate History
+          - table [ref=f12e113]:
+            - rowgroup [ref=f12e114]:
+              - row [ref=f12e115]:
+                - columnheader "Effective From" [ref=f12e116]
+                - columnheader "NPCL / Unit (₹)" [ref=f12e117]
+                - columnheader "DG Fixed (₹)" [ref=f12e118]
+                - columnheader "Fixed / kW (₹)" [ref=f12e119]
+                - columnheader [ref=f12e120]
+            - rowgroup [ref=f12e121]:
+              - row [ref=f12e122]:
+                - cell "17 Jul 2026Current" [ref=f12e123]
+                - cell "₹7" [ref=f12e124]
+                - cell "₹200" [ref=f12e125]
+                - cell "₹115" [ref=f12e126]
+                - cell [ref=f12e127]
+  - region "Notifications alt+T"
+  - alert [ref=f12e128]

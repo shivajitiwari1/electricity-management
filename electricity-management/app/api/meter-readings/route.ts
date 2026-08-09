@@ -80,6 +80,23 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Connection not found" }, { status: 404 });
   }
 
+  // Duplicate guard: same connection + same calendar month
+  const readingDateObj = new Date(readingDate);
+  const monthStart = new Date(readingDateObj.getFullYear(), readingDateObj.getMonth(), 1);
+  const monthEnd = new Date(readingDateObj.getFullYear(), readingDateObj.getMonth() + 1, 1);
+  const existingReading = await prisma.meterReading.findFirst({
+    where: {
+      connectionId,
+      readingDate: { gte: monthStart, lt: monthEnd },
+    },
+  });
+  if (existingReading) {
+    return NextResponse.json(
+      { error: `A meter reading already exists for this flat in ${readingDateObj.toLocaleString("en-IN", { month: "long", year: "numeric" })}` },
+      { status: 409 }
+    );
+  }
+
   const ncplUnits = new Decimal(ncplCurrent).sub(new Decimal(ncplPrevious));
   const dgUnitsVal = dgCurrent !== undefined && dgPrevious !== undefined
     ? new Decimal(dgCurrent).sub(new Decimal(dgPrevious))

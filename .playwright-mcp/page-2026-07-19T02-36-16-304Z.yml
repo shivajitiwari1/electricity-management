@@ -1,0 +1,88 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - generic [ref=f1e4]:
+      - generic [ref=f1e10]:
+        - paragraph [ref=f1e11]: Oasis Venetia Heights
+        - paragraph [ref=f1e12]: Admin Panel
+      - navigation [ref=f1e13]:
+        - link "Dashboard" [ref=f1e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f1e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f1e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f1e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f1e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f1e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f1e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f1e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f1e47] [cursor=pointer]:
+          - /url: /admin/flats
+        - link "Users" [ref=f1e52] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f1e65] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f1e69]
+      - generic [ref=f1e70]:
+        - generic [ref=f1e71]:
+          - generic [ref=f1e72]:
+            - paragraph [ref=f1e73]: Admin
+            - paragraph [ref=f1e74]: admin@oasis.local
+          - button "Toggle theme" [ref=f1e75]
+        - button "Sign Out" [ref=f1e77]
+    - main [ref=f1e78]:
+      - generic [ref=f1e79]:
+        - generic [ref=f1e80]:
+          - heading "Dashboard" [level=1] [ref=f1e81]
+          - paragraph [ref=f1e82]: Overview of Oasis Venetia Heights electricity management
+        - generic [ref=f1e83]:
+          - generic [ref=f1e87]:
+            - paragraph [ref=f1e88]: Total Residents
+            - paragraph [ref=f1e89]: "398"
+          - generic [ref=f1e99]:
+            - paragraph [ref=f1e100]: Active Connections
+            - paragraph [ref=f1e101]: "398"
+          - generic [ref=f1e108]:
+            - paragraph [ref=f1e109]: Bills This Month
+            - paragraph [ref=f1e110]: "1"
+          - generic [ref=f1e118]:
+            - paragraph [ref=f1e119]: Revenue This Month
+            - paragraph [ref=f1e120]: ₹0.00
+          - generic [ref=f1e128]:
+            - paragraph [ref=f1e129]: Overdue Bills
+            - paragraph [ref=f1e130]: "0"
+        - generic [ref=f1e134]:
+          - link [ref=f1e135] [cursor=pointer]:
+            - /url: /admin/residents
+            - button "Add Resident" [ref=f1e136]
+          - link [ref=f1e137] [cursor=pointer]:
+            - /url: /admin/meter-readings
+            - button "Enter Reading" [ref=f1e138]
+          - link [ref=f1e139] [cursor=pointer]:
+            - /url: /admin/reports
+            - button "View Reports" [ref=f1e140]
+        - generic [ref=f1e141]:
+          - generic [ref=f1e142]: Recent Bills
+          - table [ref=f1e146]:
+            - rowgroup [ref=f1e147]:
+              - row [ref=f1e148]:
+                - 'columnheader "Bill #" [ref=f1e149]'
+                - columnheader "Flat" [ref=f1e150]
+                - columnheader "Resident" [ref=f1e151]
+                - columnheader "Amount" [ref=f1e152]
+                - columnheader "Due Date" [ref=f1e153]
+                - columnheader "Status" [ref=f1e154]
+            - rowgroup [ref=f1e155]:
+              - row [ref=f1e156]:
+                - cell "OV-V-405-202607" [ref=f1e157]
+                - cell "V-405" [ref=f1e158]
+                - cell "Mr. Alok Kumar" [ref=f1e159]
+                - cell "₹5,854.00" [ref=f1e160]
+                - cell "27 Jul 2026" [ref=f1e161]
+                - cell "PENDING" [ref=f1e162]
+  - region "Notifications alt+T"

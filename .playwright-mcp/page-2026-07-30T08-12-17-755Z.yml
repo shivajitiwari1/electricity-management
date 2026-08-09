@@ -1,0 +1,79 @@
+- generic [ref=f47e1]:
+  - generic [ref=f47e31]:
+    - banner [ref=f47e32]:
+      - generic [ref=f47e33]:
+        - generic [ref=f47e34]:
+          - generic [ref=f47e35]: Oasis Venetia Heights
+          - navigation [ref=f47e40]:
+            - link "Dashboard" [ref=f47e41] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f47e45] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f47e49] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Profile" [active] [ref=f47e52] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f47e56]:
+          - generic [ref=f47e57]: Shivaji Tiwari
+          - button "Toggle theme" [ref=f47e58]
+          - button "Sign Out" [ref=f47e60]
+    - main [ref=f47e62]:
+      - generic [ref=f47e301]:
+        - generic [ref=f47e302]:
+          - heading "My Profile" [level=1] [ref=f47e303]
+          - paragraph [ref=f47e304]: Your account and connection details (managed by admin)
+        - generic [ref=f47e305]:
+          - generic [ref=f47e306]: Personal Information
+          - generic [ref=f47e312]:
+            - generic [ref=f47e313]:
+              - generic [ref=f47e314]: Full Name
+              - generic [ref=f47e315]: Shivaji Tiwari
+            - generic [ref=f47e316]:
+              - generic [ref=f47e317]: Email
+              - generic [ref=f47e318]: shivajitiwari@gmail.com
+            - generic [ref=f47e319]:
+              - generic [ref=f47e320]: Phone
+              - generic [ref=f47e321]: "9555839357"
+            - generic [ref=f47e322]:
+              - generic [ref=f47e323]: Resident Number
+              - generic [ref=f47e324]: RES-0399
+        - generic [ref=f47e325]:
+          - generic [ref=f47e327]:
+            - text: Connection Details
+            - generic [ref=f47e331]: ACTIVE
+          - generic [ref=f47e334]:
+            - generic [ref=f47e335]:
+              - generic [ref=f47e336]: Flat Details
+              - generic [ref=f47e341]:
+                - generic [ref=f47e342]:
+                  - generic [ref=f47e343]: Flat No
+                  - generic [ref=f47e344]: A-404
+                - generic [ref=f47e345]:
+                  - generic [ref=f47e346]: Tower
+                  - generic [ref=f47e347]: Tower A
+                - generic [ref=f47e348]:
+                  - generic [ref=f47e349]: Floor
+                  - generic [ref=f47e350]: Fourth
+                - generic [ref=f47e351]:
+                  - generic [ref=f47e352]: Unit Type
+                  - generic [ref=f47e353]: 2 BHK+2T+Study (1150 Sq.Ft.)
+                - generic [ref=f47e354]:
+                  - generic [ref=f47e355]: Unit Area
+                  - generic [ref=f47e356]: 1150 sq.ft
+            - generic [ref=f47e357]:
+              - generic [ref=f47e358]: Electrical Connection
+              - generic [ref=f47e362]:
+                - generic [ref=f47e363]:
+                  - generic [ref=f47e364]: Meter No
+                  - generic [ref=f47e365]: —
+                - generic [ref=f47e366]:
+                  - generic [ref=f47e367]: Sanctioned Load
+                  - generic [ref=f47e368]: 4 kW
+                - generic [ref=f47e369]:
+                  - generic [ref=f47e370]: Connected Since
+                  - generic [ref=f47e371]: 24 Jul 2026
+        - generic [ref=f47e376]:
+          - paragraph [ref=f47e377]: Need to update your details?
+          - paragraph [ref=f47e378]: Profile and connection information is managed by the admin. Please contact the Oasis Venetia Heights management office for any changes.
+  - region "Notifications alt+T"
+  - alert [ref=f47e30]

@@ -1,0 +1,1801 @@
+- generic [ref=f55e1]:
+  - generic [ref=f55e2]:
+    - generic [ref=f55e4]:
+      - generic [ref=f55e10]:
+        - paragraph [ref=f55e11]: Oasis Venetia Heights
+        - paragraph [ref=f55e12]: Admin Panel
+      - navigation [ref=f55e13]:
+        - link [ref=f55e4868] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=f55e4869] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=f55e4870] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=f55e4871] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=f55e4872] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=f55e4873] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=f55e4874] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=f55e4875] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=f55e4876] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+      - separator [ref=f55e52]
+      - generic [ref=f55e53]:
+        - generic [ref=f55e54]:
+          - generic [ref=f55e55]:
+            - paragraph [ref=f55e56]: Admin
+            - paragraph [ref=f55e57]: admin@oasis.local
+          - button [ref=f55e4877]:
+            - generic [ref=f55e59]: Toggle theme
+        - button [ref=f55e4878]: Sign Out
+    - main [ref=f55e61]:
+      - generic [ref=f55e62]:
+        - generic [ref=f55e63]:
+          - heading [level=1] [ref=f55e4879]: Residents
+          - paragraph [ref=f55e65]: Manage residents of Oasis Venetia Heights
+        - generic [ref=f55e66]:
+          - textbox [ref=f55e4880]:
+            - /placeholder: Search by name, email, flat...
+            - text: A-404
+          - button [ref=f55e4881]: Add Resident
+        - generic [ref=f55e73]:
+          - generic [ref=f55e74]: 0 Residents
+          - table [ref=f55e78]:
+            - rowgroup [ref=f55e79]:
+              - row [ref=f55e4882]:
+                - columnheader [ref=f55e4883]: Flat No
+                - columnheader [ref=f55e4884]: Tower
+                - columnheader [ref=f55e4885]: Name
+                - columnheader [ref=f55e4886]: Email
+                - columnheader [ref=f55e4887]: Phone
+                - columnheader [ref=f55e4888]: Status
+                - columnheader [ref=f55e4889]: Actions
+            - rowgroup [ref=f55e88]:
+              - row [ref=f55e4890]:
+                - cell [ref=f55e4891]: No residents found
+  - region "Notifications alt+T"
+  - alert [ref=f55e4865]
+  - dialog [ref=f55e4895]:
+    - heading "Add Resident" [level=2] [ref=f55e4897]
+    - generic [ref=f55e4898]:
+      - generic [ref=f55e4899]:
+        - generic [ref=f55e4900]:
+          - generic [ref=f55e4901]: Name *
+          - textbox "Name *" [ref=f55e4902]:
+            - /placeholder: Full name
+            - text: Test Dummy Resident
+        - generic [ref=f55e4903]:
+          - generic [ref=f55e4904]: Email *
+          - textbox "Email *" [ref=f55e4905]:
+            - /placeholder: email@example.com
+            - text: test.dummy@ovh.local
+        - generic [ref=f55e4906]:
+          - generic [ref=f55e4907]: Phone
+          - textbox "Phone" [ref=f55e4908]:
+            - /placeholder: +91 98765 43210
+            - text: "9999999999"
+        - generic [ref=f55e4909]:
+          - generic [ref=f55e4910]: Tower *
+          - combobox "Tower *" [ref=f55e4911]:
+            - generic [ref=f55e4912]: Select tower
+            - img: ▼
+          - textbox [ref=f55e4913]
+        - generic [ref=f55e4914]:
+          - generic [ref=f55e4915]: Floor *
+          - textbox "Floor *" [ref=f55e4916]:
+            - /placeholder: e.g. 3
+        - generic [ref=f55e4917]:
+          - generic [ref=f55e4918]: Flat No *
+          - button "Search flat no…" [expanded] [ref=f55e4919]
+          - dialog [ref=f55e4946]:
+            - generic [ref=f55e4947]:
+              - group [ref=f55e4950]:
+                - combobox [expanded] [active] [ref=f55e4951]
+                - group [ref=f55e4952]
+              - listbox "Suggestions" [ref=f55e4956]:
+                - generic [ref=f55e4957]:
+                  - generic [ref=f55e4958]: 425 flats
+                  - group "425 flats" [ref=f55e4959]:
+                    - option "A-101 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-101
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-102 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-102
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-103 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-103
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-104 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-104
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-201 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-201
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-202 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-202
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-203 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-203
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-204 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-204
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-301 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-301
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-302 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-302
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-303 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-303
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-304 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-304
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-401 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-401
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-402 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-402
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-403 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-403
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-404 2 BHK+2T+Study (1150 Sq.Ft.)" [selected] [ref=f55e4960]:
+                      - generic [ref=f55e4961]: A-404
+                      - generic [ref=f55e4962]: 2 BHK+2T+Study (1150 Sq.Ft.)
+                    - option "A-501 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-501
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-502 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-502
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-503 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-503
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-504 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-504
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-601 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-601
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-602 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-602
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-604 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-604
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-701 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-701
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-703 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-703
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-704 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-704
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-801 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-801
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-802 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-802
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-803 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-803
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-804 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-804
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-901 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-901
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-902 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-902
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-903 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-903
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-904 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-904
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-1001 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-1001
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-1002 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-1002
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-1003 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-1003
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-1004 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-1004
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-1101 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-1101
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-1102 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-1102
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-1104 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-1104
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-1201 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-1201
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-1202 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-1202
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-1204 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-1204
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-12A-01 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-12A-01
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-12A-02 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-12A-02
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-12A-03 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-12A-03
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-12A-04 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-12A-04
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-1401 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-1401
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-1404 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-1404
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-1501 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-1501
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-1503 2 BHK+2T+Study (1150 Sq.Ft.)" [ref=f55e4963]:
+                      - generic [ref=f55e4964]: A-1503
+                      - generic [ref=f55e4965]: 2 BHK+2T+Study (1150 Sq.Ft.)
+                    - option "A-1504 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-1504
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-1601 2 BHK+2T+Study (1150 Sq.Ft.)" [ref=f55e4966]:
+                      - generic [ref=f55e4967]: A-1601
+                      - generic [ref=f55e4968]: 2 BHK+2T+Study (1150 Sq.Ft.)
+                    - option "A-1602 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-1602
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-1603 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-1603
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-1604 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-1604
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-1701 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-1701
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-1702 2 BHK+2T+Study (1150 Sq.Ft.) occupied" [disabled]:
+                      - generic: A-1702
+                      - generic: 2 BHK+2T+Study (1150 Sq.Ft.)
+                      - generic: occupied
+                    - option "A-1802 Pent House - Duplex (2300 Sq. Ft.) occupied" [disabled]:
+                      - generic: A-1802
+                      - generic: Pent House - Duplex (2300 Sq. Ft.)
+                      - generic: occupied
+                    - option "B-101 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-101
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-102 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-102
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-103 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-103
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-104 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-104
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-105 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-105
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-106 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-106
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-107 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-107
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-202 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-202
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-203 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-203
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-204 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-204
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-205 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-205
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-206 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-206
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-207 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-207
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-208 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-208
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-301 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-301
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-302 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-302
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-303 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-303
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-304 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-304
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-305 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-305
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-306 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-306
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-401 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-401
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-402 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-402
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-403 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-403
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-404 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-404
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-405 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-405
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-406 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-406
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-407 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-407
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-408 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-408
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-501 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-501
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-502 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-502
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-503 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-503
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-504 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-504
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-505 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-505
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-506 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-506
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-507 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-507
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-508 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-508
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-601 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-601
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-602 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-602
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-603 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-603
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-604 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-604
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-606 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-606
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-607 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-607
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-608 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-608
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-701 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-701
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-702 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-702
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-703 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-703
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-704 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-704
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-705 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-705
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-706 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-706
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-707 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-707
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-708 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-708
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-801 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-801
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-802 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-802
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-803 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-803
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-804 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-804
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-805 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-805
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-806 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-806
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-807 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-807
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-901 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-901
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-902 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-902
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-903 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-903
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-904 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-904
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-905 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-905
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-906 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-906
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-907 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-907
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-908 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-908
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1001 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1001
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1002 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1002
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1003 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1003
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1004 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1004
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1005 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1005
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1006 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1006
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1007 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1007
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1008 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1008
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1101 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1101
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1102 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1102
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1103 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1103
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1104 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1104
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1105 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1105
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1106 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1106
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1107 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1107
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1201 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1201
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1202 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1202
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1203 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1203
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1204 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1204
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1205 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1205
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1206 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1206
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1207 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1207
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1208 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1208
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-12A-01 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-12A-01
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-12A-02 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-12A-02
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-12A-03 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-12A-03
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-12A-04 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-12A-04
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-12A-05 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-12A-05
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-12A-06 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-12A-06
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-12A-07 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-12A-07
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1401 3BHK+2T (1290 Sq.Ft)" [ref=f55e4969]:
+                      - generic [ref=f55e4970]: B-1401
+                      - generic [ref=f55e4971]: 3BHK+2T (1290 Sq.Ft)
+                    - option "B-1402 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1402
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1403 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1403
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1404 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1404
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1405 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1405
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1407 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1407
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1501 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1501
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1502 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1502
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1503 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1503
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1504 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1504
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1505 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1505
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1506 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1506
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1507 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1507
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1601 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1601
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1602 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1602
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1603 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1603
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1604 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1604
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1605 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1605
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1606 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1606
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1701 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1701
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1702 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1702
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1703 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1703
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1704 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1704
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1705 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1705
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1706 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1706
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1801 3BHK+2T (1290 Sq.Ft)" [ref=f55e4972]:
+                      - generic [ref=f55e4973]: B-1801
+                      - generic [ref=f55e4974]: 3BHK+2T (1290 Sq.Ft)
+                    - option "B-1802 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1802
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1804 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1804
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1902 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1902
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1904 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1904
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "B-1906 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: B-1906
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-101 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-101
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-102 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-102
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-104 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-104
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-105 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-105
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-106 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-106
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-107 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-107
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-108 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-108
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-202 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-202
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-203 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-203
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-204 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-204
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-205 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-205
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-206 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-206
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-207 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-207
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-208 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-208
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-301 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-301
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-302 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-302
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-303 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-303
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-304 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-304
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-305 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-305
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-306 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-306
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-307 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-307
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-308 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-308
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-401 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-401
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-402 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-402
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-403 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-403
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-404 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-404
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-405 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-405
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-406 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-406
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-407 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-407
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-408 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-408
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-501 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-501
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-502 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-502
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-503 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-503
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-504 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-504
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-505 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-505
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-506 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-506
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-507 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-507
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-508 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-508
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-601 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-601
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-602 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-602
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-603 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-603
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-604 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-604
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-605 2BHK+2T(995 Sq.Ft)" [ref=f55e4975]:
+                      - generic [ref=f55e4976]: C-605
+                      - generic [ref=f55e4977]: 2BHK+2T(995 Sq.Ft)
+                    - option "C-606 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-606
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-607 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-607
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-608 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-608
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-701 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-701
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-702 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-702
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-703 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-703
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-705 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-705
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-706 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-706
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-707 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-707
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-708 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-708
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-801 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-801
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-802 3BHK+2T (1290 Sq.Ft)" [ref=f55e4978]:
+                      - generic [ref=f55e4979]: C-802
+                      - generic [ref=f55e4980]: 3BHK+2T (1290 Sq.Ft)
+                    - option "C-803 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-803
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-804 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-804
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-805 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-805
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-806 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-806
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-807 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-807
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-808 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-808
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-901 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-901
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-902 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-902
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-903 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-903
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-904 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-904
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-905 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-905
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-906 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-906
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-907 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-907
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-908 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-908
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1001 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1001
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1002 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1002
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1003 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1003
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1004 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1004
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1005 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1005
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1006 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1006
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1007 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1007
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1008 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1008
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1101 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1101
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1102 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1102
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1103 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1103
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1104 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1104
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1105 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1105
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1106 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1106
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1107 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1107
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1108 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1108
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1203 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1203
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1204 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1204
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1205 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1205
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1206 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1206
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1207 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1207
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1208 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1208
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-12A-01 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-12A-01
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-12A-02 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-12A-02
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-12A-03 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-12A-03
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-12A-04 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-12A-04
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-12A-05 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-12A-05
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-12A-06 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-12A-06
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-12A-07 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-12A-07
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-12A-08 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-12A-08
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1401 3BHK+2T (1290 Sq.Ft)" [ref=f55e4981]:
+                      - generic [ref=f55e4982]: C-1401
+                      - generic [ref=f55e4983]: 3BHK+2T (1290 Sq.Ft)
+                    - option "C-1402 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1402
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1403 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1403
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1404 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1404
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1405 2BHK+2T(995 Sq.Ft)" [ref=f55e4984]:
+                      - generic [ref=f55e4985]: C-1405
+                      - generic [ref=f55e4986]: 2BHK+2T(995 Sq.Ft)
+                    - option "C-1406 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1406
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1407 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1407
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1408 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1408
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1501 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1501
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1503 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1503
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1504 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1504
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1505 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1505
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1506 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1506
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1507 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1507
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1508 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1508
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1601 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1601
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1602 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1602
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1604 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1604
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1605 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1605
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1606 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1606
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1607 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1607
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1608 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1608
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1701 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1701
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1702 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1702
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1704 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1704
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1705 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1705
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1706 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1706
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1707 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1707
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1708 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1708
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1802 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1802
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1803 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1803
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1804 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1804
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1807 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1807
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1808 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1808
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1901 3BHK+2T (1290 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1901
+                      - generic: 3BHK+2T (1290 Sq.Ft)
+                      - generic: occupied
+                    - option "C-1903 2BHK+2T(995 Sq.Ft)" [ref=f55e4987]:
+                      - generic [ref=f55e4988]: C-1903
+                      - generic [ref=f55e4989]: 2BHK+2T(995 Sq.Ft)
+                    - option "C-1904 2BHK+2T(995 Sq.Ft)" [ref=f55e4990]:
+                      - generic [ref=f55e4991]: C-1904
+                      - generic [ref=f55e4992]: 2BHK+2T(995 Sq.Ft)
+                    - option "C-1907 2BHK+2T(995 Sq.Ft) occupied" [disabled]:
+                      - generic: C-1907
+                      - generic: 2BHK+2T(995 Sq.Ft)
+                      - generic: occupied
+                    - option "V-101 Executive Studio(455 Sq. Ft.) occupied" [disabled]:
+                      - generic: V-101
+                      - generic: Executive Studio(455 Sq. Ft.)
+                      - generic: occupied
+                    - option "V-103 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-103
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-104 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-104
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-108 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-108
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-201 Executive Studio(455 Sq. Ft.) occupied" [disabled]:
+                      - generic: V-201
+                      - generic: Executive Studio(455 Sq. Ft.)
+                      - generic: occupied
+                    - option "V-202 Premium Studio(595 Sq. Ft.) occupied" [disabled]:
+                      - generic: V-202
+                      - generic: Premium Studio(595 Sq. Ft.)
+                      - generic: occupied
+                    - option "V-203 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-203
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-204 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-204
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-206 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-206
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-207 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-207
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-208 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-208
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-302 Premium Studio(595 Sq. Ft.) occupied" [disabled]:
+                      - generic: V-302
+                      - generic: Premium Studio(595 Sq. Ft.)
+                      - generic: occupied
+                    - option "V-303 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-303
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-304 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-304
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-306 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-306
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-307 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-307
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-308 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-308
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-402 Premium Studio(595 Sq. Ft.) occupied" [disabled]:
+                      - generic: V-402
+                      - generic: Premium Studio(595 Sq. Ft.)
+                      - generic: occupied
+                    - option "V-404 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-404
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-405 2BHK+2T(1015 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-405
+                      - generic: 2BHK+2T(1015 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-406 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-406
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-407 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-407
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-408 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-408
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-501 Executive Studio(455 Sq. Ft.) occupied" [disabled]:
+                      - generic: V-501
+                      - generic: Executive Studio(455 Sq. Ft.)
+                      - generic: occupied
+                    - option "V-502 Premium Studio(595 Sq. Ft.) occupied" [disabled]:
+                      - generic: V-502
+                      - generic: Premium Studio(595 Sq. Ft.)
+                      - generic: occupied
+                    - option "V-503 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-503
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-504 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-504
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-505 2BHK+2T(1015 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-505
+                      - generic: 2BHK+2T(1015 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-506 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-506
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-507 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-507
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-508 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-508
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-601 Executive Studio(455 Sq. Ft.) occupied" [disabled]:
+                      - generic: V-601
+                      - generic: Executive Studio(455 Sq. Ft.)
+                      - generic: occupied
+                    - option "V-602 Premium Studio(595 Sq. Ft.) occupied" [disabled]:
+                      - generic: V-602
+                      - generic: Premium Studio(595 Sq. Ft.)
+                      - generic: occupied
+                    - option "V-603 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-603
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-604 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-604
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-605 2BHK+2T(1100 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-605
+                      - generic: 2BHK+2T(1100 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-606 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-606
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-607 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-607
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-608 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-608
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-701 Executive Studio(455 Sq. Ft.)" [ref=f55e4993]:
+                      - generic [ref=f55e4994]: V-701
+                      - generic [ref=f55e4995]: Executive Studio(455 Sq. Ft.)
+                    - option "V-703 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-703
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-704 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-704
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-705 2BHK+2T(1100 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-705
+                      - generic: 2BHK+2T(1100 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-706 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-706
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-707 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-707
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-708 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-708
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-801 Executive Studio(455 Sq. Ft.) occupied" [disabled]:
+                      - generic: V-801
+                      - generic: Executive Studio(455 Sq. Ft.)
+                      - generic: occupied
+                    - option "V-802 Premium Studio(595 Sq. Ft.) occupied" [disabled]:
+                      - generic: V-802
+                      - generic: Premium Studio(595 Sq. Ft.)
+                      - generic: occupied
+                    - option "V-803 2BHK+2T(850 Sq.Ft.)" [ref=f55e4996]:
+                      - generic [ref=f55e4997]: V-803
+                      - generic [ref=f55e4998]: 2BHK+2T(850 Sq.Ft.)
+                    - option "V-804 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-804
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-805 2BHK+2T(1100 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-805
+                      - generic: 2BHK+2T(1100 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-806 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-806
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-807 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-807
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-808 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-808
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-901 Executive Studio(455 Sq. Ft.) occupied" [disabled]:
+                      - generic: V-901
+                      - generic: Executive Studio(455 Sq. Ft.)
+                      - generic: occupied
+                    - option "V-903 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-903
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-904 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-904
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-905 2BHK+2T(1100 Sq.Ft.)" [ref=f55e4999]:
+                      - generic [ref=f55e5000]: V-905
+                      - generic [ref=f55e5001]: 2BHK+2T(1100 Sq.Ft.)
+                    - option "V-906 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-906
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-907 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-907
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-908 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-908
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-1001 Executive Studio(455 Sq. Ft.)" [ref=f55e5002]:
+                      - generic [ref=f55e5003]: V-1001
+                      - generic [ref=f55e5004]: Executive Studio(455 Sq. Ft.)
+                    - option "V-1002 Premium Studio(595 Sq. Ft.) occupied" [disabled]:
+                      - generic: V-1002
+                      - generic: Premium Studio(595 Sq. Ft.)
+                      - generic: occupied
+                    - option "V-1003 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-1003
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-1004 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-1004
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-1006 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-1006
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-1007 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-1007
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-1008 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-1008
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-1101 Executive Studio(455 Sq. Ft.) occupied" [disabled]:
+                      - generic: V-1101
+                      - generic: Executive Studio(455 Sq. Ft.)
+                      - generic: occupied
+                    - option "V-1102 Premium Studio(595 Sq. Ft.)" [ref=f55e5005]:
+                      - generic [ref=f55e5006]: V-1102
+                      - generic [ref=f55e5007]: Premium Studio(595 Sq. Ft.)
+                    - option "V-1103 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-1103
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-1106 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-1106
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-1107 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-1107
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-1108 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-1108
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-1201 Executive Studio(455 Sq. Ft.)" [ref=f55e5008]:
+                      - generic [ref=f55e5009]: V-1201
+                      - generic [ref=f55e5010]: Executive Studio(455 Sq. Ft.)
+                    - option "V-1203 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-1203
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-1204 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-1204
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-1206 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-1206
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-1207 2BHK+2T(850 Sq.Ft.)" [ref=f55e5011]:
+                      - generic [ref=f55e5012]: V-1207
+                      - generic [ref=f55e5013]: 2BHK+2T(850 Sq.Ft.)
+                    - option "V-1208 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-1208
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-12A-01 Executive Studio(455 Sq. Ft.) occupied" [disabled]:
+                      - generic: V-12A-01
+                      - generic: Executive Studio(455 Sq. Ft.)
+                      - generic: occupied
+                    - option "V-12A-02 Premium Studio(595 Sq. Ft.)" [ref=f55e5014]:
+                      - generic [ref=f55e5015]: V-12A-02
+                      - generic [ref=f55e5016]: Premium Studio(595 Sq. Ft.)
+                    - option "V-12A-03 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-12A-03
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-12A-04 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-12A-04
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-12A-06 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-12A-06
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-12A-07 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-12A-07
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-12A-08 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-12A-08
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-1401 Executive Studio(455 Sq. Ft.) occupied" [disabled]:
+                      - generic: V-1401
+                      - generic: Executive Studio(455 Sq. Ft.)
+                      - generic: occupied
+                    - option "V-1402 Premium Studio(595 Sq. Ft.) occupied" [disabled]:
+                      - generic: V-1402
+                      - generic: Premium Studio(595 Sq. Ft.)
+                      - generic: occupied
+                    - option "V-1404 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-1404
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-1406 2BHK+2T(850 Sq.Ft.) occupied" [disabled]:
+                      - generic: V-1406
+                      - generic: 2BHK+2T(850 Sq.Ft.)
+                      - generic: occupied
+                    - option "V-1407 2BHK+2T(850 Sq.Ft.)" [ref=f55e5017]:
+                      - generic [ref=f55e5018]: V-1407
+                      - generic [ref=f55e5019]: 2BHK+2T(850 Sq.Ft.)
+                    - option "V-1408 2BHK+2T(850 Sq.Ft.)" [ref=f55e5020]:
+                      - generic [ref=f55e5021]: V-1408
+                      - generic [ref=f55e5022]: 2BHK+2T(850 Sq.Ft.)
+                    - option "SHOP 1 Shop 129 Sq.Ft" [ref=f55e5023]:
+                      - generic [ref=f55e5024]: SHOP 1
+                      - generic [ref=f55e5025]: Shop 129 Sq.Ft
+                    - option "SHOP 2 Shop 125 Sq.Ft" [ref=f55e5026]:
+                      - generic [ref=f55e5027]: SHOP 2
+                      - generic [ref=f55e5028]: Shop 125 Sq.Ft
+                    - option "SHOP 3 Shop 290 Sq.Ft" [ref=f55e5029]:
+                      - generic [ref=f55e5030]: SHOP 3
+                      - generic [ref=f55e5031]: Shop 290 Sq.Ft
+                    - option "SHOP 4 Shop 393 Sq.Ft" [ref=f55e5032]:
+                      - generic [ref=f55e5033]: SHOP 4
+                      - generic [ref=f55e5034]: Shop 393 Sq.Ft
+                    - option "SHOP 6 Shop 290 Sq.Ft" [ref=f55e5035]:
+                      - generic [ref=f55e5036]: SHOP 6
+                      - generic [ref=f55e5037]: Shop 290 Sq.Ft
+                    - option "SHOP 10 Shop 390 Sq.Ft" [ref=f55e5038]:
+                      - generic [ref=f55e5039]: SHOP 10
+                      - generic [ref=f55e5040]: Shop 390 Sq.Ft
+                    - option "SHOP 12 Shop 341 Sq.Ft" [ref=f55e5041]:
+                      - generic [ref=f55e5042]: SHOP 12
+                      - generic [ref=f55e5043]: Shop 341 Sq.Ft
+                    - option "SHOP 14 Shop 365 Sq.Ft" [ref=f55e5044]:
+                      - generic [ref=f55e5045]: SHOP 14
+                      - generic [ref=f55e5046]: Shop 365 Sq.Ft
+        - generic [ref=f55e4924]:
+          - generic [ref=f55e4925]: Unit Type
+          - textbox "Unit Type" [ref=f55e4926]:
+            - /placeholder: Auto-filled on flat selection
+        - generic [ref=f55e4927]:
+          - generic [ref=f55e4928]: Unit Area (sq ft)
+          - spinbutton "Unit Area (sq ft)" [ref=f55e4929]
+        - generic [ref=f55e4930]:
+          - generic [ref=f55e4931]: Sanctioned Load (kW) *
+          - spinbutton "Sanctioned Load (kW) *" [ref=f55e4932]: "5"
+        - generic [ref=f55e4933]:
+          - generic [ref=f55e4934]: Password *
+          - textbox "Password *" [ref=f55e4935]:
+            - /placeholder: Min. 6 characters
+            - text: Admin@123
+      - generic [ref=f55e4936]:
+        - button "Cancel" [ref=f55e4937]
+        - button "Add Resident" [ref=f55e4938]
+    - button "Close" [ref=f55e4939]

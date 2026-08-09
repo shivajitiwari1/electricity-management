@@ -1,0 +1,119 @@
+- generic [active] [ref=f64e1]:
+  - generic [ref=f64e2]:
+    - generic [ref=f64e4]:
+      - generic [ref=f64e10]:
+        - paragraph [ref=f64e11]: Oasis Venetia Heights
+        - paragraph [ref=f64e12]: Admin Panel
+      - navigation [ref=f64e13]:
+        - link "Dashboard" [ref=f64e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f64e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f64e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f64e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f64e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f64e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f64e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f64e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f64e47] [cursor=pointer]:
+          - /url: /admin/flats
+      - separator [ref=f64e52]
+      - generic [ref=f64e53]:
+        - generic [ref=f64e54]:
+          - generic [ref=f64e55]:
+            - paragraph [ref=f64e56]: Admin
+            - paragraph [ref=f64e57]: admin@oasis.local
+          - button "Toggle theme" [ref=f64e58]
+        - button "Sign Out" [ref=f64e60]
+    - main [ref=f64e61]:
+      - generic [ref=f64e62]:
+        - generic [ref=f64e63]:
+          - heading "Payments" [level=1] [ref=f64e64]
+          - paragraph [ref=f64e65]: View all payment transactions for Oasis Venetia Heights
+        - table [ref=f64e75]:
+          - rowgroup [ref=f64e76]:
+            - row [ref=f64e77]:
+              - columnheader [ref=f64e78]
+              - columnheader [ref=f64e80]
+              - columnheader [ref=f64e82]
+              - columnheader [ref=f64e84]
+              - columnheader [ref=f64e86]
+              - columnheader [ref=f64e88]
+          - rowgroup [ref=f64e90]:
+            - row [ref=f64e91]:
+              - cell [ref=f64e92]
+              - cell [ref=f64e94]
+              - cell [ref=f64e96]
+              - cell [ref=f64e98]
+              - cell [ref=f64e100]
+              - cell [ref=f64e102]
+            - row [ref=f64e104]:
+              - cell [ref=f64e105]
+              - cell [ref=f64e107]
+              - cell [ref=f64e109]
+              - cell [ref=f64e111]
+              - cell [ref=f64e113]
+              - cell [ref=f64e115]
+            - row [ref=f64e117]:
+              - cell [ref=f64e118]
+              - cell [ref=f64e120]
+              - cell [ref=f64e122]
+              - cell [ref=f64e124]
+              - cell [ref=f64e126]
+              - cell [ref=f64e128]
+            - row [ref=f64e130]:
+              - cell [ref=f64e131]
+              - cell [ref=f64e133]
+              - cell [ref=f64e135]
+              - cell [ref=f64e137]
+              - cell [ref=f64e139]
+              - cell [ref=f64e141]
+            - row [ref=f64e143]:
+              - cell [ref=f64e144]
+              - cell [ref=f64e146]
+              - cell [ref=f64e148]
+              - cell [ref=f64e150]
+              - cell [ref=f64e152]
+              - cell [ref=f64e154]
+            - row [ref=f64e156]:
+              - cell [ref=f64e157]
+              - cell [ref=f64e159]
+              - cell [ref=f64e161]
+              - cell [ref=f64e163]
+              - cell [ref=f64e165]
+              - cell [ref=f64e167]
+            - row [ref=f64e169]:
+              - cell [ref=f64e170]
+              - cell [ref=f64e172]
+              - cell [ref=f64e174]
+              - cell [ref=f64e176]
+              - cell [ref=f64e178]
+              - cell [ref=f64e180]
+            - row [ref=f64e182]:
+              - cell [ref=f64e183]
+              - cell [ref=f64e185]
+              - cell [ref=f64e187]
+              - cell [ref=f64e189]
+              - cell [ref=f64e191]
+              - cell [ref=f64e193]
+            - row [ref=f64e195]:
+              - cell [ref=f64e196]
+              - cell [ref=f64e198]
+              - cell [ref=f64e200]
+              - cell [ref=f64e202]
+              - cell [ref=f64e204]
+              - cell [ref=f64e206]
+            - row [ref=f64e208]:
+              - cell [ref=f64e209]
+              - cell [ref=f64e211]
+              - cell [ref=f64e213]
+              - cell [ref=f64e215]
+              - cell [ref=f64e217]
+              - cell [ref=f64e219]
+  - region "Notifications alt+T"

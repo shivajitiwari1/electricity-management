@@ -1,0 +1,121 @@
+- generic [ref=f65e1]:
+  - generic [ref=f65e2]:
+    - generic [ref=f65e4]:
+      - generic [ref=f65e10]:
+        - paragraph [ref=f65e11]: Oasis Venetia Heights
+        - paragraph [ref=f65e12]: Admin Panel
+      - navigation [ref=f65e13]:
+        - link [ref=f65e5554] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=f65e5555] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=f65e5556] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=f65e5557] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=f65e5558] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=f65e5559] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=f65e5560] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=f65e5561] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=f65e5562] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+        - link [ref=f65e5563] [cursor=pointer]:
+          - /url: /admin/users
+          - text: Users
+        - link [ref=f65e5564] [cursor=pointer]:
+          - /url: /admin/permissions
+          - text: Permissions
+      - separator [ref=f65e69]
+      - generic [ref=f65e70]:
+        - generic [ref=f65e71]:
+          - generic [ref=f65e72]:
+            - paragraph [ref=f65e73]: Admin
+            - paragraph [ref=f65e74]: admin@oasis.local
+          - button [ref=f65e5565]:
+            - generic [ref=f65e76]: Toggle theme
+        - button [ref=f65e5566]: Sign Out
+    - main [ref=f65e78]:
+      - generic [ref=f65e79]:
+        - generic [ref=f65e80]:
+          - heading [level=1] [ref=f65e5567]: Residents
+          - paragraph [ref=f65e82]: Manage residents of Oasis Venetia Heights
+        - generic [ref=f65e83]:
+          - textbox [ref=f65e5568]:
+            - /placeholder: Search by name, email, flat...
+            - text: Shivaji
+          - button [ref=f65e5569]: Add Resident
+        - generic [ref=f65e90]:
+          - generic [ref=f65e91]: 1 Resident
+          - table [ref=f65e95]:
+            - rowgroup [ref=f65e96]:
+              - row [ref=f65e5570]:
+                - columnheader [ref=f65e5571]: Flat No
+                - columnheader [ref=f65e5572]: Tower
+                - columnheader [ref=f65e5573]: Name
+                - columnheader [ref=f65e5574]: Email
+                - columnheader [ref=f65e5575]: Phone
+                - columnheader [ref=f65e5576]: Status
+                - columnheader [ref=f65e5577]: Actions
+            - rowgroup [ref=f65e105]:
+              - row [ref=f65e5578]:
+                - cell [ref=f65e5579]: A-404
+                - cell [ref=f65e5580]: A
+                - cell [ref=f65e5581]: Shivaji Tiwari
+                - cell [ref=f65e5582]: shivajitiwari@gmail.com
+                - cell [ref=f65e5583]: "9555839357"
+                - cell [ref=f65e5584]:
+                  - generic [ref=f65e113]: ACTIVE
+                - cell [ref=f65e5585]:
+                  - generic [ref=f65e115]:
+                    - button [ref=f65e5586]: History
+                    - button [ref=f65e5587]: Edit
+                    - button [ref=f65e5588]: Deactivate
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=f65e5547]:
+        - generic [ref=f65e5552]: Resident updated successfully
+  - alert [ref=f65e5293]
+  - dialog [ref=f65e5592]:
+    - generic [ref=f65e5594]:
+      - heading "History — Shivaji Tiwari (A-404)" [level=2] [ref=f65e5595]
+      - button "Download Excel" [ref=f65e5596]
+    - generic [ref=f65e5597]:
+      - generic [ref=f65e5598]:
+        - heading "Electricity Bills (1)" [level=3] [ref=f65e5599]
+        - table [ref=f65e5601]:
+          - rowgroup [ref=f65e5602]:
+            - row [ref=f65e5603]:
+              - 'columnheader "Bill #" [ref=f65e5604]'
+              - columnheader "Billing Period" [ref=f65e5605]
+              - columnheader "Amount (₹)" [ref=f65e5606]
+              - columnheader "Units" [ref=f65e5607]
+              - columnheader "Due Date" [ref=f65e5608]
+              - columnheader "Status" [ref=f65e5609]
+          - rowgroup [ref=f65e5610]:
+            - row [ref=f65e5611]:
+              - cell "OV-A-404-202607" [ref=f65e5612]
+              - cell "30 Jun 2026 – 30 Jul 2026" [ref=f65e5613]
+              - cell "2,410.00" [ref=f65e5614]
+              - cell "250" [ref=f65e5615]
+              - cell "08 Aug 2026" [ref=f65e5616]
+              - cell "PAID" [ref=f65e5617]
+      - generic [ref=f65e5618]:
+        - heading "Payments (0)" [level=3] [ref=f65e5619]
+        - paragraph [ref=f65e5620]: No payments found.
+      - generic [ref=f65e5621]:
+        - heading "Maintenance Bills (0)" [level=3] [ref=f65e5622]
+        - paragraph [ref=f65e5623]: No maintenance bills found.
+    - button "Close" [active] [ref=f65e5624]

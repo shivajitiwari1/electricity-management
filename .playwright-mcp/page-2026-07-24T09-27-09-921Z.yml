@@ -1,0 +1,52 @@
+- generic [active] [ref=f28e1]:
+  - generic [ref=f28e2]:
+    - banner [ref=f28e3]:
+      - generic [ref=f28e4]:
+        - generic [ref=f28e5]:
+          - generic [ref=f28e6]: Oasis Venetia Heights
+          - navigation [ref=f28e11]:
+            - link "Dashboard" [ref=f28e12] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f28e16] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f28e20] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Maintenance" [ref=f28e23] [cursor=pointer]:
+              - /url: /resident/maintenance
+            - link "Profile" [ref=f28e26] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f28e30]:
+          - generic [ref=f28e31]: Shivaji Tiwari
+          - button "Toggle theme" [ref=f28e32]
+          - button "Sign Out" [ref=f28e34]
+    - main [ref=f28e36]:
+      - generic [ref=f28e37]:
+        - generic [ref=f28e38]:
+          - heading "My Bills" [level=1] [ref=f28e39]
+          - paragraph [ref=f28e40]: View and pay your electricity bills
+        - generic [ref=f28e41]:
+          - generic [ref=f28e42]: 1 Bill
+          - table [ref=f28e46]:
+            - rowgroup [ref=f28e47]:
+              - row [ref=f28e48]:
+                - 'columnheader "Bill #" [ref=f28e49]'
+                - columnheader "Period" [ref=f28e50]
+                - columnheader "NPCL Units" [ref=f28e51]
+                - columnheader "Amount (₹)" [ref=f28e52]
+                - columnheader "Due Date" [ref=f28e53]
+                - columnheader "Status" [ref=f28e54]
+                - columnheader "Actions" [ref=f28e55]
+            - rowgroup [ref=f28e56]:
+              - row [ref=f28e57]:
+                - cell "OV-A-404-202607" [ref=f28e58]
+                - cell "30 Jun 2026 – 24 Jul 2026" [ref=f28e59]
+                - cell "250 kWh" [ref=f28e60]
+                - cell "2,410.00" [ref=f28e61]
+                - cell "02 Aug 2026" [ref=f28e62]
+                - cell [ref=f28e63]
+                - cell [ref=f28e65]:
+                  - generic [ref=f28e66]:
+                    - button "PDF" [ref=f28e67]
+                    - button "Details" [ref=f28e68]
+  - region "Notifications alt+T"
+  - alert [ref=f28e69]

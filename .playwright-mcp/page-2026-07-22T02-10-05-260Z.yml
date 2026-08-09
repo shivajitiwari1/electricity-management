@@ -1,0 +1,70 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]:
+          - paragraph [ref=e6]: Oasis Venetia Heights
+          - paragraph [ref=e7]: Electricity Management Portal
+        - navigation [ref=e8]:
+          - link "About Us" [ref=e9] [cursor=pointer]:
+            - /url: /legal/about
+          - link "Terms & Conditions" [ref=e10] [cursor=pointer]:
+            - /url: /legal/terms
+    - main [ref=e11]:
+      - generic [ref=e13]:
+        - generic [ref=e14]:
+          - heading "About Oasis Venetia Heights" [level=1] [ref=e15]
+          - paragraph [ref=e16]: A residential community in Greater Noida, managed by Oasis Group of Companies
+        - generic [ref=e17]:
+          - heading "About the Project" [level=2] [ref=e18]
+          - paragraph [ref=e19]: Oasis Venetia Heights offers 1, 2 & 3 BHK ready-to-move homes in the heart of Greater Noida, with 350+ families currently residing. The project is registered under the Real Estate (Regulation and Development) Act, 2016.
+          - paragraph [ref=e20]: "RERA Registration: UPRERAPRJ1646"
+        - generic [ref=e21]:
+          - heading "About This Portal" [level=2] [ref=e22]
+          - paragraph [ref=e23]: "The Oasis Venetia Heights Electricity Management Portal enables residents to:"
+          - list [ref=e24]:
+            - listitem [ref=e25]: View their monthly electricity bills
+            - listitem [ref=e26]: Make secure online payments via Razorpay
+            - listitem [ref=e27]: Track payment history
+          - paragraph [ref=e28]: This portal is operated by Oasis Group of Companies on behalf of Oasis Venetia Heights residents.
+        - generic [ref=e29]:
+          - heading "About Oasis Group" [level=2] [ref=e30]
+          - paragraph [ref=e31]:
+            - text: Oasis Group of Companies —
+            - emphasis [ref=e32]: Spaces for Life
+            - text: — is a real estate developer with over 25 years of experience. We have delivered more than 2.2 million sq ft of residential spaces across projects including Oasis Venetia Heights, Oasis Homes, and Oasis Grandstand.
+        - generic [ref=e33]:
+          - heading "Contact Information" [level=2] [ref=e34]
+          - generic [ref=e35]:
+            - paragraph [ref=e36]: A-77, Sector 2, Noida
+            - paragraph [ref=e37]: +91-8010-111-777
+            - paragraph [ref=e38]:
+              - link "info@oasis.in" [ref=e39] [cursor=pointer]:
+                - /url: mailto:info@oasis.in
+            - paragraph [ref=e40]:
+              - link "www.oasis.in" [ref=e41] [cursor=pointer]:
+                - /url: https://www.oasis.in/
+        - paragraph [ref=e43]:
+          - text: Online payments on this portal are processed securely by
+          - strong [ref=e44]: Razorpay Payment Gateway
+          - text: .
+    - contentinfo [ref=e45]:
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - paragraph [ref=e49]: © 2025 Oasis Group of Companies
+          - paragraph [ref=e50]: All rights reserved.
+        - generic [ref=e51]:
+          - paragraph [ref=e52]: A-77, Sector 2, Noida
+          - paragraph [ref=e53]: +91-8010-111-777
+          - paragraph [ref=e54]:
+            - link "info@oasis.in" [ref=e55] [cursor=pointer]:
+              - /url: mailto:info@oasis.in
+        - generic [ref=e56]:
+          - paragraph [ref=e57]:
+            - link "Resident Portal" [ref=e58] [cursor=pointer]:
+              - /url: /login
+          - paragraph [ref=e59]:
+            - link "Oasis Group Website" [ref=e60] [cursor=pointer]:
+              - /url: https://www.oasis.in/
+  - region "Notifications alt+T"
+  - alert [ref=e61]

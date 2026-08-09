@@ -1,0 +1,102 @@
+- generic [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - generic [ref=f1e4]:
+      - generic [ref=f1e10]:
+        - paragraph [ref=f1e11]: Oasis Venetia Heights
+        - paragraph [ref=f1e12]: Admin Panel
+      - navigation [ref=f1e13]:
+        - link [ref=f1e5301] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=f1e5302] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=f1e5303] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=f1e5304] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=f1e5305] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=f1e5306] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=f1e5307] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=f1e5308] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=f1e5309] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+        - button [ref=f1e5310]:
+          - generic [ref=f1e56]: Maintenance
+        - link [ref=f1e5311] [cursor=pointer]:
+          - /url: /admin/users
+          - text: Users
+        - link [ref=f1e5312] [cursor=pointer]:
+          - /url: /admin/permissions
+          - text: Permissions
+      - separator [ref=f1e76]
+      - generic [ref=f1e77]:
+        - generic [ref=f1e78]:
+          - generic [ref=f1e79]:
+            - paragraph [ref=f1e80]: Admin
+            - paragraph [ref=f1e81]: admin@oasis.local
+          - button [ref=f1e5313]:
+            - generic [ref=f1e83]: Toggle theme
+        - button [ref=f1e5314]: Sign Out
+    - main [ref=f1e85]:
+      - generic [ref=f1e86]:
+        - generic [ref=f1e87]:
+          - heading [level=1] [ref=f1e5315]: Residents
+          - paragraph [ref=f1e89]: Manage residents of Oasis Venetia Heights
+        - generic [ref=f1e90]:
+          - textbox [ref=f1e5316]:
+            - /placeholder: Search by name, email, flat...
+            - text: shivaji
+          - button [ref=f1e5317]: Add Resident
+        - generic [ref=f1e97]:
+          - generic [ref=f1e98]: 1 Resident
+          - table [ref=f1e102]:
+            - rowgroup [ref=f1e103]:
+              - row [ref=f1e5318]:
+                - columnheader [ref=f1e5319]: Flat No
+                - columnheader [ref=f1e5320]: Tower
+                - columnheader [ref=f1e5321]: Name
+                - columnheader [ref=f1e5322]: Email
+                - columnheader [ref=f1e5323]: Phone
+                - columnheader [ref=f1e5324]: Status
+                - columnheader [ref=f1e5325]: Actions
+            - rowgroup [ref=f1e112]:
+              - row [ref=f1e5326]:
+                - cell [ref=f1e5327]: A-404
+                - cell [ref=f1e5328]: A
+                - cell [ref=f1e5329]: Shivaji Tiwari
+                - cell [ref=f1e5330]: shivajitiwari@gmail.com
+                - cell [ref=f1e5331]: "9555839357"
+                - cell [ref=f1e5332]:
+                  - generic [ref=f1e120]: ACTIVE
+                - cell [ref=f1e5333]:
+                  - generic [ref=f1e122]:
+                    - button [ref=f1e5334]: History
+                    - button [ref=f1e5335]: Edit
+                    - button [ref=f1e5336]: Deactivate
+  - region "Notifications alt+T"
+  - alert [ref=f1e5300]
+  - dialog [ref=f1e5340]:
+    - heading "History — Shivaji Tiwari (A-404)" [level=2] [ref=f1e5343]
+    - generic [ref=f1e5344]:
+      - generic [ref=f1e5345]:
+        - heading "Electricity Bills (0)" [level=3] [ref=f1e5346]
+        - paragraph [ref=f1e5347]: No bills found.
+      - generic [ref=f1e5348]:
+        - heading "Payments (0)" [level=3] [ref=f1e5349]
+        - paragraph [ref=f1e5350]: No payments found.
+      - generic [ref=f1e5351]:
+        - heading "Maintenance Bills (0)" [level=3] [ref=f1e5352]
+        - paragraph [ref=f1e5353]: No maintenance bills found.
+    - button "Close" [active] [ref=f1e5354]

@@ -1,0 +1,68 @@
+- generic [active] [ref=f40e1]:
+  - generic [ref=f40e2]:
+    - generic [ref=f40e4]:
+      - generic [ref=f40e10]:
+        - paragraph [ref=f40e11]: Oasis Venetia Heights
+        - paragraph [ref=f40e12]: Admin Panel
+      - navigation [ref=f40e13]:
+        - link "Dashboard" [ref=f40e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f40e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f40e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f40e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f40e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f40e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f40e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f40e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f40e47] [cursor=pointer]:
+          - /url: /admin/flats
+        - link "Users" [ref=f40e52] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f40e65] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f40e69]
+      - generic [ref=f40e70]:
+        - generic [ref=f40e71]:
+          - generic [ref=f40e72]:
+            - paragraph [ref=f40e73]: Admin
+            - paragraph [ref=f40e74]: admin@oasis.local
+          - button "Toggle theme" [ref=f40e75]
+        - button "Sign Out" [ref=f40e77]
+    - main [ref=f40e78]:
+      - generic [ref=f40e79]:
+        - generic [ref=f40e80]:
+          - heading "Dashboard" [level=1] [ref=f40e81]
+          - paragraph [ref=f40e82]: Overview of Oasis Venetia Heights electricity management
+        - generic [ref=f40e119]:
+          - link [ref=f40e120] [cursor=pointer]:
+            - /url: /admin/residents
+            - button "Add Resident" [ref=f40e121]
+          - link [ref=f40e122] [cursor=pointer]:
+            - /url: /admin/meter-readings
+            - button "Enter Reading" [ref=f40e123]
+          - link [ref=f40e124] [cursor=pointer]:
+            - /url: /admin/reports
+            - button "View Reports" [ref=f40e125]
+        - generic [ref=f40e126]:
+          - generic [ref=f40e127]: Recent Bills
+          - table [ref=f40e131]:
+            - rowgroup [ref=f40e132]:
+              - row [ref=f40e133]:
+                - 'columnheader "Bill #" [ref=f40e134]'
+                - columnheader "Flat" [ref=f40e135]
+                - columnheader "Resident" [ref=f40e136]
+                - columnheader "Amount" [ref=f40e137]
+                - columnheader "Due Date" [ref=f40e138]
+                - columnheader "Status" [ref=f40e139]
+            - rowgroup [ref=f40e140]:
+              - row [ref=f40e141]:
+                - cell "No bills found" [ref=f40e142]
+  - region "Notifications alt+T"
+  - alert [ref=f40e143]

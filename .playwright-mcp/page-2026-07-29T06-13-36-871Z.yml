@@ -1,0 +1,112 @@
+- generic [ref=f30e1]:
+  - generic [ref=f30e2]:
+    - generic [ref=f30e4]:
+      - generic [ref=f30e10]:
+        - paragraph [ref=f30e11]: Oasis Venetia Heights
+        - paragraph [ref=f30e12]: Admin Panel
+      - navigation [ref=f30e13]:
+        - link [ref=f30e290] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=f30e291] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=f30e292] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=f30e293] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=f30e294] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=f30e295] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=f30e296] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=f30e297] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=f30e298] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+        - link [ref=f30e299] [cursor=pointer]:
+          - /url: /admin/users
+          - text: Users
+        - link [ref=f30e300] [cursor=pointer]:
+          - /url: /admin/permissions
+          - text: Permissions
+      - separator [ref=f30e69]
+      - generic [ref=f30e70]:
+        - generic [ref=f30e71]:
+          - generic [ref=f30e72]:
+            - paragraph [ref=f30e73]: Admin
+            - paragraph [ref=f30e74]: admin@oasis.local
+          - button [ref=f30e301]:
+            - generic [ref=f30e76]: Toggle theme
+        - button [ref=f30e302]: Sign Out
+    - main [ref=f30e78]:
+      - generic [ref=f30e79]:
+        - generic [ref=f30e80]:
+          - heading [level=1] [ref=f30e303]: Meter Readings
+          - paragraph [ref=f30e82]: Record and manage electricity meter readings
+        - generic [ref=f30e239]:
+          - generic [ref=f30e240]:
+            - textbox [ref=f30e304]:
+              - /placeholder: Search flat or resident...
+              - text: A-404
+            - paragraph [ref=f30e242]: 1 of 399 flats
+          - button [ref=f30e305]: Add Meter Reading
+        - generic [ref=f30e244]:
+          - generic [ref=f30e245]: Meter Readings — All Flats (Latest Reading)
+          - table [ref=f30e249]:
+            - rowgroup [ref=f30e250]:
+              - row [ref=f30e306]:
+                - columnheader [ref=f30e307]: Flat No
+                - columnheader [ref=f30e308]: Resident
+                - columnheader [ref=f30e309]: Reading Date
+                - columnheader [ref=f30e310]: NPCL Previous
+                - columnheader [ref=f30e311]: NPCL Current
+                - columnheader [ref=f30e312]: Units
+                - columnheader [ref=f30e313]: DG Units
+                - columnheader [ref=f30e314]: Bill
+                - columnheader [ref=f30e315]: Actions
+            - rowgroup [ref=f30e261]:
+              - row [ref=f30e316]:
+                - cell [ref=f30e317]: A-404
+                - cell [ref=f30e318]: Shivaji Tiwari
+                - cell [ref=f30e319]: No reading
+                - cell [ref=f30e320]: —
+                - cell [ref=f30e321]: —
+                - cell [ref=f30e322]: —
+                - cell [ref=f30e323]: —
+                - cell [ref=f30e324]:
+                  - generic [ref=f30e271]: No Reading
+                - cell [ref=f30e282]
+  - region "Notifications alt+T"
+  - alert [ref=f30e238]
+  - dialog [ref=f30e328]:
+    - heading "Add Meter Reading" [level=2] [ref=f30e330]
+    - generic [ref=f30e331]:
+      - generic [ref=f30e332]:
+        - generic [ref=f30e333]: Flat *
+        - button "A-404 — Shivaji Tiwari" [active] [ref=f30e1576]
+      - generic [ref=f30e339]:
+        - generic [ref=f30e340]: Reading Date *
+        - textbox "Reading Date *" [ref=f30e341]: 2026-07-29
+      - generic [ref=f30e342]:
+        - generic [ref=f30e343]:
+          - generic [ref=f30e344]: NPCL Previous Reading *
+          - spinbutton "NPCL Previous Reading *" [ref=f30e345]: "0"
+        - generic [ref=f30e346]:
+          - generic [ref=f30e347]: NPCL Current Reading *
+          - spinbutton "NPCL Current Reading *" [ref=f30e348]
+      - generic [ref=f30e349]:
+        - generic [ref=f30e350]: DG Charge (Fixed)
+        - generic [ref=f30e351]: ₹200.00 — fixed per billing cycle
+      - generic [ref=f30e352]:
+        - button "Cancel" [ref=f30e353]
+        - button "Save Reading" [ref=f30e354]
+    - button "Close" [ref=f30e355]

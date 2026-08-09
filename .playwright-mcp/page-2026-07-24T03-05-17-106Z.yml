@@ -1,0 +1,145 @@
+- generic [ref=f61e1]:
+  - generic [ref=f61e2]:
+    - generic [ref=f61e4]:
+      - generic [ref=f61e10]:
+        - paragraph [ref=f61e11]: Oasis Venetia Heights
+        - paragraph [ref=f61e12]: Admin Panel
+      - navigation [ref=f61e13]:
+        - link [ref=f61e5416] [cursor=pointer]:
+          - /url: /admin/dashboard
+          - text: Dashboard
+        - link [ref=f61e5417] [cursor=pointer]:
+          - /url: /admin/residents
+          - text: Residents
+        - link [ref=f61e5418] [cursor=pointer]:
+          - /url: /admin/connections
+          - text: Connections
+        - link [ref=f61e5419] [cursor=pointer]:
+          - /url: /admin/meter-readings
+          - text: Meter Readings
+        - link [ref=f61e5420] [cursor=pointer]:
+          - /url: /admin/bills
+          - text: Bills
+        - link [ref=f61e5421] [cursor=pointer]:
+          - /url: /admin/maintenance
+          - text: Maintenance
+        - link [ref=f61e5422] [cursor=pointer]:
+          - /url: /admin/payments
+          - text: Payments
+        - link [ref=f61e5423] [cursor=pointer]:
+          - /url: /admin/reports
+          - text: Reports
+        - link [ref=f61e5424] [cursor=pointer]:
+          - /url: /admin/rates
+          - text: Rates
+        - link [ref=f61e5425] [cursor=pointer]:
+          - /url: /admin/flats
+          - text: Flat Info
+        - link [ref=f61e5426] [cursor=pointer]:
+          - /url: /admin/users
+          - text: Users
+        - link [ref=f61e5427] [cursor=pointer]:
+          - /url: /admin/permissions
+          - text: Permissions
+      - separator [ref=f61e72]
+      - generic [ref=f61e73]:
+        - generic [ref=f61e74]:
+          - generic [ref=f61e75]:
+            - paragraph [ref=f61e76]: Admin
+            - paragraph [ref=f61e77]: admin@oasis.local
+          - button [ref=f61e5428]:
+            - generic [ref=f61e79]: Toggle theme
+        - button [ref=f61e5429]: Sign Out
+    - main [ref=f61e81]:
+      - generic [ref=f61e82]:
+        - generic [ref=f61e83]:
+          - heading [level=1] [ref=f61e5430]: Residents
+          - paragraph [ref=f61e85]: Manage residents of Oasis Venetia Heights
+        - generic [ref=f61e219]:
+          - textbox [ref=f61e5431]:
+            - /placeholder: Search by name, email, flat...
+            - text: V-405
+          - button [ref=f61e5432]: Add Resident
+        - generic [ref=f61e226]:
+          - generic [ref=f61e227]: 1 Resident
+          - table [ref=f61e231]:
+            - rowgroup [ref=f61e232]:
+              - row [ref=f61e5433]:
+                - columnheader [ref=f61e5434]: Flat No
+                - columnheader [ref=f61e5435]: Tower
+                - columnheader [ref=f61e5436]: Name
+                - columnheader [ref=f61e5437]: Email
+                - columnheader [ref=f61e5438]: Phone
+                - columnheader [ref=f61e5439]: Status
+                - columnheader [ref=f61e5440]: Actions
+            - rowgroup [ref=f61e241]:
+              - row [ref=f61e5441]:
+                - cell [ref=f61e5442]: V-405
+                - cell [ref=f61e5443]: V
+                - cell [ref=f61e5444]: Mr. Alok Kumar
+                - cell [ref=f61e5445]: ovhemaintenance@gmail.com
+                - cell [ref=f61e5446]: "9829088252"
+                - cell [ref=f61e5447]:
+                  - generic [ref=f61e1068]: ACTIVE
+                - cell [ref=f61e5448]:
+                  - generic [ref=f61e1070]:
+                    - button [ref=f61e5449]: History
+                    - button [ref=f61e5450]: Edit
+                    - button [ref=f61e5451]: Deactivate
+  - region "Notifications alt+T"
+  - alert [ref=f61e218]
+  - dialog [ref=f61e5455]:
+    - generic [ref=f61e5457]:
+      - heading "History — Mr. Alok Kumar (V-405)" [level=2] [ref=f61e5458]
+      - button "Download Excel" [ref=f61e5459]
+    - generic [ref=f61e5460]:
+      - generic [ref=f61e5461]:
+        - heading "Electricity Bills (1)" [level=3] [ref=f61e5462]
+        - table [ref=f61e5464]:
+          - rowgroup [ref=f61e5465]:
+            - row [ref=f61e5466]:
+              - 'columnheader "Bill #" [ref=f61e5467]'
+              - columnheader "Billing Period" [ref=f61e5468]
+              - columnheader "Amount (₹)" [ref=f61e5469]
+              - columnheader "Units" [ref=f61e5470]
+              - columnheader "Due Date" [ref=f61e5471]
+              - columnheader "Status" [ref=f61e5472]
+          - rowgroup [ref=f61e5473]:
+            - row [ref=f61e5474]:
+              - cell "OV-V-405-202607" [ref=f61e5475]
+              - cell "30 Jun 2026 – 22 Jul 2026" [ref=f61e5476]
+              - cell "1,290.00" [ref=f61e5477]
+              - cell "90" [ref=f61e5478]
+              - cell "31 Jul 2026" [ref=f61e5479]
+              - cell "PAID" [ref=f61e5480]
+      - generic [ref=f61e5481]:
+        - heading "Payments (2)" [level=3] [ref=f61e5482]
+        - table [ref=f61e5484]:
+          - rowgroup [ref=f61e5485]:
+            - row [ref=f61e5486]:
+              - 'columnheader "Receipt #" [ref=f61e5487]'
+              - 'columnheader "Bill #" [ref=f61e5488]'
+              - columnheader "Amount (₹)" [ref=f61e5489]
+              - columnheader "Date & Time" [ref=f61e5490]
+              - columnheader "Mode / Ref" [ref=f61e5491]
+              - columnheader "Status" [ref=f61e5492]
+          - rowgroup [ref=f61e5493]:
+            - row [ref=f61e5494]:
+              - cell "RCPT-20260722-0001" [ref=f61e5495]
+              - cell "OV-V-405-202607" [ref=f61e5496]
+              - cell "1,200.00" [ref=f61e5497]
+              - cell "22 Jul 202605:30 am" [ref=f61e5498]
+              - cell "UPI 4646" [ref=f61e5499]:
+                - generic [ref=f61e5500]: UPI
+                - generic [ref=f61e5501]: "4646"
+              - cell "SUCCESS" [ref=f61e5502]
+            - row [ref=f61e5503]:
+              - cell "RCPT-20260722-0002" [ref=f61e5504]
+              - cell "OV-V-405-202607" [ref=f61e5505]
+              - cell "90.00" [ref=f61e5506]
+              - cell "22 Jul 202605:30 am" [ref=f61e5507]
+              - cell "NEFT 4646" [ref=f61e5508]:
+                - generic [ref=f61e5509]: NEFT
+                - generic [ref=f61e5510]: "4646"
+              - cell "SUCCESS" [ref=f61e5511]
+    - button "Close" [active] [ref=f61e5512]

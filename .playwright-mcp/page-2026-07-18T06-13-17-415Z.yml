@@ -1,0 +1,87 @@
+- generic [active] [ref=f35e1]:
+  - generic [ref=f35e2]:
+    - generic [ref=f35e4]:
+      - generic [ref=f35e10]:
+        - paragraph [ref=f35e11]: Oasis Venetia Heights
+        - paragraph [ref=f35e12]: Admin Panel
+      - navigation [ref=f35e13]:
+        - link "Dashboard" [ref=f35e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f35e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f35e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f35e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f35e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f35e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f35e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f35e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f35e47] [cursor=pointer]:
+          - /url: /admin/flats
+      - separator [ref=f35e52]
+      - generic [ref=f35e53]:
+        - generic [ref=f35e54]:
+          - generic [ref=f35e55]:
+            - paragraph [ref=f35e56]: Admin
+            - paragraph [ref=f35e57]: admin@oasis.local
+          - button "Toggle theme" [ref=f35e58]
+        - button "Sign Out" [ref=f35e60]
+    - main [ref=f35e61]:
+      - generic [ref=f35e62]:
+        - generic [ref=f35e63]:
+          - heading "Payments" [level=1] [ref=f35e64]
+          - paragraph [ref=f35e65]: View all payment transactions for Oasis Venetia Heights
+        - generic [ref=f35e66]:
+          - generic [ref=f35e68]:
+            - text: Bills Requiring Payment
+            - generic [ref=f35e69]: 0 pending
+          - table [ref=f35e72]:
+            - rowgroup [ref=f35e73]:
+              - row [ref=f35e74]:
+                - 'columnheader "Bill #" [ref=f35e75]'
+                - columnheader "Flat No" [ref=f35e76]
+                - columnheader "Resident" [ref=f35e77]
+                - columnheader "Balance Due" [ref=f35e78]
+                - columnheader "Due Date" [ref=f35e79]
+                - columnheader "Status" [ref=f35e80]
+                - columnheader "Actions" [ref=f35e81]
+            - rowgroup [ref=f35e82]:
+              - row [ref=f35e83]:
+                - cell "No pending bills — all caught up!" [ref=f35e84]
+        - generic [ref=f35e85]:
+          - generic [ref=f35e86]:
+            - generic [ref=f35e87]: Method
+            - combobox [ref=f35e88]:
+              - generic [ref=f35e89]: all
+              - img: ▼
+            - textbox [ref=f35e90]: all
+          - generic [ref=f35e91]:
+            - generic [ref=f35e92]: Status
+            - combobox [ref=f35e93]:
+              - generic [ref=f35e94]: all
+              - img: ▼
+            - textbox [ref=f35e95]: all
+        - generic [ref=f35e96]:
+          - generic [ref=f35e97]: Payment History — 0 records
+          - table [ref=f35e101]:
+            - rowgroup [ref=f35e102]:
+              - row [ref=f35e103]:
+                - 'columnheader "Receipt #" [ref=f35e104]'
+                - columnheader "Flat No" [ref=f35e105]
+                - columnheader "Resident" [ref=f35e106]
+                - 'columnheader "Bill #" [ref=f35e107]'
+                - columnheader "Amount (₹)" [ref=f35e108]
+                - columnheader "Date" [ref=f35e109]
+                - columnheader "Method" [ref=f35e110]
+                - columnheader "Transaction ID" [ref=f35e111]
+                - columnheader "Status" [ref=f35e112]
+                - columnheader "Actions" [ref=f35e113]
+            - rowgroup [ref=f35e114]:
+              - row [ref=f35e115]:
+                - cell "No payments found" [ref=f35e116]
+  - region "Notifications alt+T"

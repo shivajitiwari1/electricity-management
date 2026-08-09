@@ -1,0 +1,67 @@
+- generic [active] [ref=f28e1]:
+  - generic [ref=f28e2]:
+    - banner [ref=f28e3]:
+      - generic [ref=f28e4]:
+        - generic [ref=f28e5]:
+          - generic [ref=f28e6]: Oasis Venetia Heights
+          - navigation [ref=f28e11]:
+            - link "Dashboard" [ref=f28e12] [cursor=pointer]:
+              - /url: /resident/dashboard
+            - link "Bills" [ref=f28e16] [cursor=pointer]:
+              - /url: /resident/bills
+            - link "Payments" [ref=f28e20] [cursor=pointer]:
+              - /url: /resident/payments
+            - link "Profile" [ref=f28e23] [cursor=pointer]:
+              - /url: /resident/profile
+        - generic [ref=f28e27]:
+          - generic [ref=f28e28]: Shivaji Tiwari
+          - button "Toggle theme" [ref=f28e29]
+          - button "Sign Out" [ref=f28e31]
+    - main [ref=f28e33]:
+      - generic [ref=f28e34]:
+        - generic [ref=f28e38]:
+          - heading "Welcome, Shivaji Tiwari!" [level=1] [ref=f28e39]
+          - paragraph [ref=f28e40]: "Resident #RES-0399"
+          - generic [ref=f28e41]:
+            - generic [ref=f28e42]: "Flat: A-404"
+            - generic [ref=f28e43]: "Tower: A"
+            - generic [ref=f28e44]: "Floor: Fourth"
+        - generic [ref=f28e49]:
+          - generic [ref=f28e50]: Current Bill
+          - generic [ref=f28e56]:
+            - generic [ref=f28e57]:
+              - generic [ref=f28e58]:
+                - paragraph [ref=f28e59]: ₹8,360.00
+                - paragraph [ref=f28e60]: "Bill #OV-A-404-202607"
+              - generic [ref=f28e61]: PENDING
+            - generic [ref=f28e62]:
+              - generic [ref=f28e63]:
+                - paragraph [ref=f28e64]: Bill Date
+                - paragraph [ref=f28e65]: 30 Jul 2026
+              - generic [ref=f28e66]:
+                - paragraph [ref=f28e67]: Due Date
+                - paragraph [ref=f28e68]: 08 Aug 2026
+              - generic [ref=f28e69]:
+                - paragraph [ref=f28e70]: Units (NCPL)
+                - paragraph [ref=f28e71]: 1100 kWh
+            - link [ref=f28e72] [cursor=pointer]:
+              - /url: /resident/bills/cms73ur55000004kz5kcxjvge/pay
+              - button "Pay Now — ₹8,360.00" [ref=f28e73]
+        - generic [ref=f28e74]:
+          - generic [ref=f28e75]: Maintenance Bill
+          - generic [ref=f28e85]:
+            - paragraph [ref=f28e86]: No outstanding maintenance bills
+            - paragraph [ref=f28e87]: All maintenance charges are up to date.
+        - generic [ref=f28e88]:
+          - link [ref=f28e89] [cursor=pointer]:
+            - /url: /resident/bills
+            - generic [ref=f28e96]:
+              - paragraph [ref=f28e97]: View All Bills
+              - paragraph [ref=f28e98]: Browse your complete billing history
+          - link [ref=f28e99] [cursor=pointer]:
+            - /url: /resident/payments
+            - generic [ref=f28e105]:
+              - paragraph [ref=f28e106]: Payment History
+              - paragraph [ref=f28e107]: View all your past payments
+  - region "Notifications alt+T"
+  - alert [ref=f28e108]

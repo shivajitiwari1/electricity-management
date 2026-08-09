@@ -1,0 +1,40 @@
+- generic [active] [ref=f83e1]:
+  - generic [ref=f83e2]:
+    - generic [ref=f83e4]:
+      - generic [ref=f83e10]:
+        - paragraph [ref=f83e11]: Oasis Venetia Heights
+        - paragraph [ref=f83e12]: Admin Panel
+      - navigation [ref=f83e13]:
+        - link "Dashboard" [ref=f83e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f83e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f83e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f83e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f83e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f83e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f83e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f83e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f83e47] [cursor=pointer]:
+          - /url: /admin/flats
+        - link "Users" [ref=f83e52] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f83e65] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f83e69]
+      - generic [ref=f83e70]:
+        - generic [ref=f83e71]:
+          - generic [ref=f83e72]:
+            - paragraph [ref=f83e73]: Admin
+            - paragraph [ref=f83e74]: admin@oasis.local
+          - button "Toggle theme" [ref=f83e75]
+        - button "Sign Out" [ref=f83e77]
+    - main [ref=f83e78]
+  - region "Notifications alt+T"
+  - alert [ref=f83e86]

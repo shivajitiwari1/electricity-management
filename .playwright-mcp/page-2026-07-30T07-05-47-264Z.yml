@@ -1,0 +1,32 @@
+- generic [active] [ref=f21e1]:
+  - generic [ref=f21e3]:
+    - generic [ref=f21e8]:
+      - heading "Oasis Venetia Heights" [level=1] [ref=f21e9]
+      - paragraph [ref=f21e10]: Electricity Bill Management
+    - generic [ref=f21e11]:
+      - generic [ref=f21e12]:
+        - generic [ref=f21e13]: Sign in to your account
+        - generic [ref=f21e14]: Enter your credentials to continue
+      - generic [ref=f21e16]:
+        - generic [ref=f21e17]:
+          - generic [ref=f21e18]: Email
+          - textbox "Email" [ref=f21e19]:
+            - /placeholder: your@email.com
+            - text: admin@oasis.local
+        - generic [ref=f21e20]:
+          - generic [ref=f21e21]: Password
+          - textbox "Password" [ref=f21e22]:
+            - /placeholder: ••••••••
+            - text: Admin@123
+        - link "Forgot password?" [ref=f21e24] [cursor=pointer]:
+          - /url: /forgot-password
+        - button "Sign In" [ref=f21e25]
+    - paragraph [ref=f21e26]: Oasis Venetia Heights · Greater Noida
+    - paragraph [ref=f21e27]:
+      - link "About Us" [ref=f21e28] [cursor=pointer]:
+        - /url: /about
+      - text: ·
+      - link "Terms & Conditions" [ref=f21e29] [cursor=pointer]:
+        - /url: /terms
+  - region "Notifications alt+T"
+  - alert [ref=f21e30]

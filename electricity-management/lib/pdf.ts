@@ -1,4 +1,5 @@
 import PDFDocument from "pdfkit";
+import { generateUpiQrDataUrl } from "@/lib/qr";
 
 export interface BillData {
   flatNo: string;
@@ -67,7 +68,11 @@ function cell(doc: InstanceType<typeof PDFDocument>, text: string, x: number, y:
   doc.text(text, x, y, { width, lineBreak: false, ...opts });
 }
 
-export function generateBillPdf(data: BillData): Promise<Buffer> {
+export async function generateBillPdf(data: BillData): Promise<Buffer> {
+  // Generate QR code before entering the PDFKit Promise callback (no await inside Promise constructor)
+  const qrDataUrl = await generateUpiQrDataUrl(data.totalAmount);
+  const qrBuffer = Buffer.from(qrDataUrl.replace(/^data:image\/png;base64,/, ""), "base64");
+
   return new Promise((resolve, reject) => {
     const chunks: Buffer[] = [];
     const doc = new PDFDocument({ margin: 40, size: "A4" });
@@ -81,7 +86,7 @@ export function generateBillPdf(data: BillData): Promise<Buffer> {
       .text("OASIS BUILDMART INDIA PVT. LTD.", 40, doc.y, { width: 515, align: "center" });
     doc.fontSize(9).font("Helvetica")
       .text("Oasis Venetia Heights, Plot No-HRA, 12, A, Site-C, Greater Noida - 201306 (UP)", 40, doc.y, { width: 515, align: "center" });
-    doc.text("Phone: 8130334857", 40, doc.y, { width: 515, align: "center" });
+    doc.text("Phone: 9355011978", 40, doc.y, { width: 515, align: "center" });
     doc.fontSize(12).font("Helvetica-Bold")
       .text("ELECTRICITY BILL", 40, doc.y, { width: 515, align: "center" });
     doc.moveDown(0.6);
@@ -202,6 +207,47 @@ export function generateBillPdf(data: BillData): Promise<Buffer> {
     doc.text("2. Electricity will be disconnected after due date without further notice.", 40, doc.y, { width: 515 });
     doc.text("3. Reconnection fee: Rs.500 + 24% p.a. interest on outstanding amount.", 40, doc.y, { width: 515 });
 
+    doc.moveDown(0.6);
+    doc.moveTo(40, doc.y).lineTo(555, doc.y).stroke();
+    doc.moveDown(0.5);
+
+    // ── Payment Details ──────────────────────────────────────
+    doc.font("Helvetica-Bold").fontSize(9).text("PAYMENT DETAILS", 40, doc.y, { width: 515 });
+    doc.moveDown(0.4);
+
+    const qrTop = doc.y;
+    const qrSize = 110;
+
+    // QR code on the right side
+    doc.image(qrBuffer, 555 - qrSize, qrTop, { width: qrSize, height: qrSize });
+
+    // Bank details on the left
+    const bankX = 40;
+    const bankW = 380;
+    doc.font("Helvetica-Bold").fontSize(8);
+    doc.text("Pay via UPI / Bank Transfer:", bankX, qrTop, { width: bankW });
+    doc.moveDown(0.3);
+    doc.font("Helvetica").fontSize(8);
+
+    const bankRows: [string, string][] = [
+      ["Beneficiary Name", "OASIS BUILDMART INDIA PVT LTD"],
+      ["Bank Name", "Bank of Baroda"],
+      ["Account Number", "88340200001343"],
+      ["IFSC Code", "BARB0DBGREA"],
+      ["Branch", "Greater Noida"],
+      ["UPI ID", "oasis88268343@barodampay"],
+    ];
+
+    for (const [label, value] of bankRows) {
+      const rowY = doc.y;
+      doc.font("Helvetica-Bold").text(`${label}: `, bankX, rowY, { width: bankW, continued: true });
+      doc.font("Helvetica").text(value, { width: bankW });
+    }
+
+    // Scan label under QR
+    doc.font("Helvetica").fontSize(7)
+      .text("Scan to Pay", 555 - qrSize, qrTop + qrSize + 2, { width: qrSize, align: "center" });
+
     doc.end();
   });
 }
@@ -227,7 +273,7 @@ export function generateReceiptPdf(data: ReceiptData): Promise<Buffer> {
     doc.fillColor("#93b8d4").font("Helvetica").fontSize(8.5)
       .text("Oasis Venetia Heights, Plot No-HRA, 12, A, Site-C, Greater Noida - 201306 (UP)", L, 42, { width: CW, align: "center" });
     doc.fillColor("#93b8d4").fontSize(8.5)
-      .text("Phone: 8130334857", L, 56, { width: CW, align: "center" });
+      .text("Phone: 9355011978", L, 56, { width: CW, align: "center" });
 
     // "PAYMENT RECEIPT" badge on header
     doc.rect(PW / 2 - 75, 74, 150, 22).fill("#2563eb");
@@ -323,7 +369,7 @@ export function generateReceiptPdf(data: ReceiptData): Promise<Buffer> {
     y += 8;
     doc.fillColor("#9ca3af").font("Helvetica").fontSize(7)
       .text(
-        "Oasis Buildmart India Pvt. Ltd.  |  Oasis Venetia Heights, Greater Noida - 201306 (UP)  |  Phone: 8130334857",
+        "Oasis Buildmart India Pvt. Ltd.  |  Oasis Venetia Heights, Greater Noida - 201306 (UP)  |  Phone: 9355011978",
         L, y, { width: CW, align: "center" }
       );
 
@@ -368,7 +414,7 @@ export function generateMaintenanceBillPdf(data: MaintenanceBillPdfData): Promis
     doc.fillColor("#93b8d4").font("Helvetica").fontSize(8.5)
       .text("Oasis Venetia Heights, Plot No-HRA, 12, A, Site-C, Greater Noida - 201306 (UP)", L, 42, { width: CW, align: "center" });
     doc.fillColor("#93b8d4").fontSize(8.5)
-      .text("Phone: 8130334857", L, 56, { width: CW, align: "center" });
+      .text("Phone: 9355011978", L, 56, { width: CW, align: "center" });
 
     doc.rect(PW / 2 - 75, 74, 150, 22).fill("#2563eb");
     doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(10)
@@ -485,7 +531,7 @@ export function generateMaintenanceBillPdf(data: MaintenanceBillPdfData): Promis
     y += 8;
     doc.fillColor("#9ca3af").font("Helvetica").fontSize(7)
       .text(
-        "Oasis Buildmart India Pvt. Ltd.  |  Oasis Venetia Heights, Greater Noida - 201306 (UP)  |  Phone: 8130334857",
+        "Oasis Buildmart India Pvt. Ltd.  |  Oasis Venetia Heights, Greater Noida - 201306 (UP)  |  Phone: 9355011978",
         L, y, { width: CW, align: "center" }
       );
 

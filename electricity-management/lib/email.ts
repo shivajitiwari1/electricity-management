@@ -12,12 +12,25 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export async function sendEmail(to: string, subject: string, html: string) {
+export interface EmailAttachment {
+  filename: string;
+  content: Buffer;
+  contentType?: string;
+  cid?: string;
+}
+
+export async function sendEmail(
+  to: string,
+  subject: string,
+  html: string,
+  attachments?: EmailAttachment[]
+) {
   if (process.env.DISABLE_EMAILS === "true") return;
   await transporter.sendMail({
     from: process.env.SMTP_FROM || "Oasis Venetia Heights <noreply@oasis.local>",
     to,
     subject,
     html,
+    attachments,
   });
 }

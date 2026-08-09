@@ -1,0 +1,110 @@
+- generic [active] [ref=f23e1]:
+  - generic [ref=f23e2]:
+    - generic [ref=f23e4]:
+      - generic [ref=f23e10]:
+        - paragraph [ref=f23e11]: Oasis Venetia Heights
+        - paragraph [ref=f23e12]: Manager Panel
+      - navigation [ref=f23e13]:
+        - link "Dashboard" [ref=f23e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f23e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f23e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f23e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f23e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f23e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f23e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - button "Maintenance" [ref=f23e44]
+      - separator [ref=f23e50]
+      - generic [ref=f23e51]:
+        - generic [ref=f23e52]:
+          - generic [ref=f23e53]:
+            - paragraph [ref=f23e54]: Test Manager
+            - paragraph [ref=f23e55]: manager@oasis.local
+          - button "Toggle theme" [ref=f23e56]
+        - button "Sign Out" [ref=f23e58]
+    - main [ref=f23e59]:
+      - generic [ref=f23e60]:
+        - generic [ref=f23e61]:
+          - heading "Bills" [level=1] [ref=f23e62]
+          - paragraph [ref=f23e63]: Manage electricity bills for Oasis Venetia Heights
+        - generic [ref=f23e64]:
+          - generic [ref=f23e65]:
+            - generic [ref=f23e66]: Tower
+            - combobox [ref=f23e67]:
+              - generic [ref=f23e68]: all
+              - img: ▼
+            - textbox [ref=f23e69]: all
+          - generic [ref=f23e70]:
+            - generic [ref=f23e71]: Month (YYYY-MM)
+            - textbox "e.g. 2026-07" [ref=f23e72]
+          - generic [ref=f23e73]:
+            - generic [ref=f23e74]: Status
+            - combobox [ref=f23e75]:
+              - generic [ref=f23e76]: all
+              - img: ▼
+            - textbox [ref=f23e77]: all
+          - generic [ref=f23e78]:
+            - generic [ref=f23e79]: Search
+            - textbox "Name or flat…" [ref=f23e80]
+        - generic [ref=f23e81]:
+          - generic [ref=f23e82]: 3 Bills
+          - table [ref=f23e86]:
+            - rowgroup [ref=f23e87]:
+              - row [ref=f23e88]:
+                - 'columnheader "Bill #" [ref=f23e89]'
+                - columnheader "Flat No" [ref=f23e90]
+                - columnheader "Tower" [ref=f23e91]
+                - columnheader "Resident" [ref=f23e92]
+                - columnheader "Period" [ref=f23e93]
+                - columnheader "Amount (₹)" [ref=f23e94]
+                - columnheader "Due Date" [ref=f23e95]
+                - columnheader "Status" [ref=f23e96]
+                - columnheader "Actions" [ref=f23e97]
+            - rowgroup [ref=f23e98]:
+              - row [ref=f23e99]:
+                - cell "OV-A-404-202607" [ref=f23e100]
+                - cell "A-404" [ref=f23e101]
+                - cell "A" [ref=f23e102]
+                - cell "Shivaji Tiwari" [ref=f23e103]
+                - cell "30 Jun 2026 – 24 Jul 2026" [ref=f23e104]
+                - cell "2,410.00" [ref=f23e105]
+                - cell "02 Aug 2026" [ref=f23e106]
+                - cell "PAID" [ref=f23e107]
+                - cell [ref=f23e109]:
+                  - generic [ref=f23e110]:
+                    - button "PDF" [ref=f23e111]
+                    - button "Details" [ref=f23e112]
+              - row [ref=f23e113]:
+                - cell "OV-A-1001-202607" [ref=f23e114]
+                - cell "A-1001" [ref=f23e115]
+                - cell "A" [ref=f23e116]
+                - cell "Mrs. Pooja Devrani" [ref=f23e117]
+                - cell "31 May 2026 – 30 Jun 2026" [ref=f23e118]
+                - cell "4,027.00" [ref=f23e119]
+                - cell "01 Aug 2026" [ref=f23e120]
+                - cell "PAID" [ref=f23e121]
+                - cell [ref=f23e123]:
+                  - generic [ref=f23e124]:
+                    - button "PDF" [ref=f23e125]
+                    - button "Details" [ref=f23e126]
+              - row [ref=f23e127]:
+                - cell "OV-V-405-202607" [ref=f23e128]
+                - cell "V-405" [ref=f23e129]
+                - cell "V" [ref=f23e130]
+                - cell "Mr. Alok Kumar" [ref=f23e131]
+                - cell "30 Jun 2026 – 22 Jul 2026" [ref=f23e132]
+                - cell "1,290.00" [ref=f23e133]
+                - cell "31 Jul 2026" [ref=f23e134]
+                - cell "PAID" [ref=f23e135]
+                - cell [ref=f23e137]:
+                  - generic [ref=f23e138]:
+                    - button "PDF" [ref=f23e139]
+                    - button "Details" [ref=f23e140]
+  - region "Notifications alt+T"
+  - alert [ref=f23e141]

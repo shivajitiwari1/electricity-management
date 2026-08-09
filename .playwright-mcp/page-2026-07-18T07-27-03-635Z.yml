@@ -1,0 +1,76 @@
+- generic [ref=f62e1]:
+  - generic [ref=f62e2]:
+    - generic [ref=f62e4]:
+      - generic [ref=f62e10]:
+        - paragraph [ref=f62e11]: Oasis Venetia Heights
+        - paragraph [ref=f62e12]: Admin Panel
+      - navigation [ref=f62e13]:
+        - link "Dashboard" [ref=f62e5661] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f62e5662] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f62e5663] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f62e5664] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f62e5665] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f62e5666] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f62e5667] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f62e5668] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f62e5669] [cursor=pointer]:
+          - /url: /admin/flats
+      - separator [ref=f62e52]
+      - generic [ref=f62e53]:
+        - generic [ref=f62e54]:
+          - generic [ref=f62e55]:
+            - paragraph [ref=f62e56]: Admin
+            - paragraph [ref=f62e57]: admin@oasis.local
+          - button "Toggle theme" [ref=f62e5670]
+        - button "Sign Out" [ref=f62e5671]
+    - main [ref=f62e61]:
+      - generic [ref=f62e62]:
+        - generic [ref=f62e63]:
+          - heading "Meter Readings" [level=1] [ref=f62e5672]
+          - paragraph [ref=f62e65]: Record and manage electricity meter readings
+        - generic [ref=f62e66]:
+          - generic [ref=f62e67]:
+            - textbox "Search flat or resident..." [ref=f62e5673]: B-1206
+            - paragraph [ref=f62e69]: 1 of 398 flats
+          - button "Add Meter Reading" [ref=f62e5674]
+        - generic [ref=f62e71]:
+          - generic [ref=f62e72]: Meter Readings — All Flats (Latest Reading)
+          - table [ref=f62e76]:
+            - rowgroup [ref=f62e77]:
+              - row [ref=f62e5675]:
+                - columnheader "Flat No" [ref=f62e5676]
+                - columnheader "Resident" [ref=f62e5677]
+                - columnheader "Reading Date" [ref=f62e5678]
+                - columnheader "NPCL Previous" [ref=f62e5679]
+                - columnheader "NPCL Current" [ref=f62e5680]
+                - columnheader "Units" [ref=f62e5681]
+                - columnheader "DG Units" [ref=f62e5682]
+                - columnheader "Bill" [ref=f62e5683]
+                - columnheader "Actions" [ref=f62e5684]
+            - rowgroup [ref=f62e88]:
+              - row [ref=f62e5685]:
+                - cell "B-1206" [ref=f62e5686]
+                - cell "Mr. Gaurav Kumar" [ref=f62e5687]
+                - cell "18 Jul 2026" [ref=f62e5688]
+                - cell "10392" [ref=f62e5689]
+                - cell "10592" [ref=f62e5690]
+                - cell "200" [ref=f62e5691]
+                - cell "0" [ref=f62e5692]
+                - cell "Pending" [ref=f62e5693]
+                - cell [ref=f62e5694]:
+                  - generic [ref=f62e1267]:
+                    - button "Generate Bill" [active] [ref=f62e5695]
+                    - button "Delete" [ref=f62e5696]
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=f62e5697]:
+        - generic [ref=f62e5702]: Bill generated for Flat B-1206
+  - alert [ref=f62e5598]

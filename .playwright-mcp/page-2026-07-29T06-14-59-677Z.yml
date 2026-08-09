@@ -1,0 +1,93 @@
+- generic [active] [ref=f31e1]:
+  - generic [ref=f31e2]:
+    - generic [ref=f31e4]:
+      - generic [ref=f31e10]:
+        - paragraph [ref=f31e11]: Oasis Venetia Heights
+        - paragraph [ref=f31e12]: Admin Panel
+      - navigation [ref=f31e13]:
+        - link "Dashboard" [ref=f31e14] [cursor=pointer]:
+          - /url: /admin/dashboard
+        - link "Residents" [ref=f31e20] [cursor=pointer]:
+          - /url: /admin/residents
+        - link "Connections" [ref=f31e26] [cursor=pointer]:
+          - /url: /admin/connections
+        - link "Meter Readings" [ref=f31e29] [cursor=pointer]:
+          - /url: /admin/meter-readings
+        - link "Bills" [ref=f31e33] [cursor=pointer]:
+          - /url: /admin/bills
+        - link "Payments" [ref=f31e37] [cursor=pointer]:
+          - /url: /admin/payments
+        - link "Reports" [ref=f31e40] [cursor=pointer]:
+          - /url: /admin/reports
+        - link "Rates" [ref=f31e43] [cursor=pointer]:
+          - /url: /admin/rates
+        - link "Flat Info" [ref=f31e47] [cursor=pointer]:
+          - /url: /admin/flats
+        - link "Users" [ref=f31e52] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Permissions" [ref=f31e65] [cursor=pointer]:
+          - /url: /admin/permissions
+      - separator [ref=f31e69]
+      - generic [ref=f31e70]:
+        - generic [ref=f31e71]:
+          - generic [ref=f31e72]:
+            - paragraph [ref=f31e73]: Admin
+            - paragraph [ref=f31e74]: admin@oasis.local
+          - button "Toggle theme" [ref=f31e75]
+        - button "Sign Out" [ref=f31e77]
+    - main [ref=f31e78]:
+      - generic [ref=f31e79]:
+        - generic [ref=f31e80]:
+          - heading "Bills" [level=1] [ref=f31e81]
+          - paragraph [ref=f31e82]: Manage electricity bills for Oasis Venetia Heights
+        - generic [ref=f31e83]:
+          - generic [ref=f31e84]:
+            - generic [ref=f31e85]: Tower
+            - combobox [ref=f31e86]:
+              - generic [ref=f31e87]: all
+              - img: ▼
+            - textbox [ref=f31e88]: all
+          - generic [ref=f31e89]:
+            - generic [ref=f31e90]: Month (YYYY-MM)
+            - textbox "e.g. 2026-07" [ref=f31e91]
+          - generic [ref=f31e92]:
+            - generic [ref=f31e93]: Status
+            - combobox [ref=f31e94]:
+              - generic [ref=f31e95]: all
+              - img: ▼
+            - textbox [ref=f31e96]: all
+          - generic [ref=f31e97]:
+            - generic [ref=f31e98]: Search
+            - textbox "Name or flat…" [ref=f31e99]
+        - generic [ref=f31e100]:
+          - generic [ref=f31e101]: 1 Bill
+          - table [ref=f31e105]:
+            - rowgroup [ref=f31e106]:
+              - row [ref=f31e107]:
+                - 'columnheader "Bill #" [ref=f31e108]'
+                - columnheader "Flat No" [ref=f31e109]
+                - columnheader "Tower" [ref=f31e110]
+                - columnheader "Resident" [ref=f31e111]
+                - columnheader "Period" [ref=f31e112]
+                - columnheader "Amount (₹)" [ref=f31e113]
+                - columnheader "Due Date" [ref=f31e114]
+                - columnheader "Status" [ref=f31e115]
+                - columnheader "Actions" [ref=f31e116]
+            - rowgroup [ref=f31e117]:
+              - row [ref=f31e118]:
+                - cell "OV-A-404-202607" [ref=f31e119]
+                - cell "A-404" [ref=f31e120]
+                - cell "A" [ref=f31e121]
+                - cell "Shivaji Tiwari" [ref=f31e122]
+                - cell "30 Jun 2026 – 29 Jul 2026" [ref=f31e123]
+                - cell "8,360.00" [ref=f31e124]
+                - cell "07 Aug 2026" [ref=f31e125]
+                - cell "PENDING" [ref=f31e126]
+                - cell [ref=f31e128]:
+                  - generic [ref=f31e129]:
+                    - button "PDF" [ref=f31e130]
+                    - button "Details" [ref=f31e131]
+                    - button "Mark Paid" [ref=f31e132]
+                    - button "Delete" [ref=f31e133]
+  - region "Notifications alt+T"
+  - alert [ref=f31e134]

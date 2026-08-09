@@ -130,14 +130,13 @@ export const getCachedPaymentsData = unstable_cache(
     const [payments, pendingBills] = await Promise.all([
       prisma.payment.findMany({
         include: {
-          bill: { include: { connection: { include: { resident: { include: { user: { select: { name: true } } } } } } } },
+          bill: { include: { connection: { include: { resident: { include: { user: { select: { name: true, email: true } } } } } } } },
         },
         orderBy: { createdAt: "desc" },
-        take: 100,
       }),
       prisma.bill.findMany({
         where: { status: { in: ["PENDING", "OVERDUE", "PARTIAL"] } },
-        include: { connection: { include: { resident: { include: { user: { select: { name: true } } } } } } },
+        include: { connection: { include: { resident: { include: { user: { select: { name: true, email: true } } } } } } },
         orderBy: [{ status: "asc" }, { dueDate: "asc" }],
       }),
     ]);

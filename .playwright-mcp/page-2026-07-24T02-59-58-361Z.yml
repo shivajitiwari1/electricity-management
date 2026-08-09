@@ -1,0 +1,67 @@
+- generic [active] [ref=f6e1]:
+  - link "Skip to content":
+    - /url: "#geist-skip-nav"
+  - main [ref=f6e3]:
+    - generic [ref=f6e6]:
+      - generic [ref=f6e7]:
+        - button "Open sidebar" [ref=f6e10] [cursor=pointer]
+        - navigation "Breadcrumb" [ref=f6e19]:
+          - link "Deployments" [ref=f6e21] [cursor=pointer]:
+            - /url: /shivajireacts-projects/electricity-management/deployments
+          - generic [ref=f6e26]:
+            - generic [ref=f6e27]: CnqqirEKT
+            - button "Copy ID" [ref=f6e31] [cursor=pointer]
+      - generic [ref=f6e40]:
+        - generic [ref=f6e42]:
+          - link "Deployment" [ref=f6e43] [cursor=pointer]:
+            - /url: "#intent:global:deployment"
+          - link "Logs" [ref=f6e44] [cursor=pointer]:
+            - /url: "#intent:global:logs"
+          - link "Resources" [ref=f6e45] [cursor=pointer]:
+            - /url: "#intent:global:resources"
+          - link "Source" [ref=f6e46] [cursor=pointer]:
+            - /url: "#intent:global:source"
+          - link "Open Graph" [ref=f6e47] [cursor=pointer]:
+            - /url: "#intent:global:open-graph"
+        - generic [ref=f6e48]:
+          - generic [ref=f6e50]:
+            - heading "Deployment Details" [level=3] [ref=f6e53]
+            - generic [ref=f6e61]:
+              - generic [ref=f6e62]:
+                - generic [ref=f6e63]: Created
+                - generic [ref=f6e67]: Status
+                - generic [ref=f6e71]: Duration
+                - generic [ref=f6e75]: Environment
+              - generic [ref=f6e79]: Domains
+              - generic [ref=f6e85]: Source
+          - generic [ref=f6e91]:
+            - generic [ref=f6e92]:
+              - heading [level=2] [ref=f6e94]
+              - heading [level=2] [ref=f6e96]
+              - heading [level=2] [ref=f6e98]
+            - generic [ref=f6e100]:
+              - link [ref=f6e101] [cursor=pointer]:
+                - /url: /shivajireacts-projects/electricity-management/logs
+                - generic [ref=f6e105]:
+                  - paragraph [ref=f6e107]: Runtime Logs
+                  - paragraph [ref=f6e108]: View and debug runtime logs & errors
+              - link [ref=f6e109] [cursor=pointer]:
+                - /url: /shivajireacts-projects/electricity-management/observability/serverless-functions
+                - generic [ref=f6e113]:
+                  - paragraph [ref=f6e115]: Observability
+                  - paragraph [ref=f6e116]: Monitor app health & performance
+              - link "Speed Insights Not Enabled Performance metrics from real users" [ref=f6e117] [cursor=pointer]:
+                - /url: /shivajireacts-projects/electricity-management/speed-insights
+                - generic [ref=f6e121]:
+                  - generic [ref=f6e122]:
+                    - paragraph [ref=f6e123]: Speed Insights
+                    - generic [ref=f6e124]: Not Enabled
+                  - paragraph [ref=f6e125]: Performance metrics from real users
+              - link "Web Analytics Not Enabled Analyze visitors & traffic in real-time" [ref=f6e126] [cursor=pointer]:
+                - /url: /shivajireacts-projects/electricity-management/analytics
+                - generic [ref=f6e130]:
+                  - generic [ref=f6e131]:
+                    - paragraph [ref=f6e132]: Web Analytics
+                    - generic [ref=f6e133]: Not Enabled
+                  - paragraph [ref=f6e134]: Analyze visitors & traffic in real-time
+  - alert [ref=f6e135]

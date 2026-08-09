@@ -1,0 +1,4 @@
+Type,#,Bill #,Billing Period,Amount (INR),Due Date / Payment Date & Time,Mode,Transaction ID,Status
+"Bill","OV-V-405-202607","OV-V-405-202607","30/6/2026 - 22/7/2026","1290.00","31/7/2026","","","PAID"
+"Payment","RCPT-20260722-0001","OV-V-405-202607","30/6/2026 - 22/7/2026","1200.00","22/7/2026 05:30 am","UPI","4646","SUCCESS"
+"Payment","RCPT-20260722-0002","OV-V-405-202607","30/6/2026 - 22/7/2026","90.00","22/7/2026 05:30 am","NEFT","4646","SUCCESS"
