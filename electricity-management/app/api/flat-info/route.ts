@@ -43,6 +43,6 @@ export async function POST(req: NextRequest) {
   }
 
   const flat = await prisma.flatInfo.create({ data: parsed.data });
-  revalidateTag("flats");
+  revalidateTag("flats", {});
   return NextResponse.json(flat, { status: 201 });
 }
