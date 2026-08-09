@@ -1,4 +1,5 @@
 import { Zap } from "lucide-react";
+import { MaintenanceAnimation } from "@/components/maintenance-animation";
 
 export default function MaintenancePage() {
   return (
@@ -10,17 +11,8 @@ export default function MaintenancePage() {
           <span className="text-lg font-bold text-gray-900">Oasis Venetia Heights</span>
         </div>
 
-        {/* Animated GIF */}
-        <div className="flex justify-center">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif"
-            alt="Under maintenance animation"
-            width={200}
-            height={200}
-            className="rounded-lg"
-          />
-        </div>
+        {/* AI animation */}
+        <MaintenanceAnimation />
 
         {/* Heading */}
         <div className="space-y-2">
