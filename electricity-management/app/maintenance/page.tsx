@@ -3,6 +3,8 @@ import { Zap } from "lucide-react";
 import { MaintenanceAnimation } from "@/components/maintenance-animation";
 import { getCachedSiteConfig } from "@/lib/server-cache";
 
+export const dynamic = "force-dynamic";
+
 export default async function MaintenancePage() {
   const config = await getCachedSiteConfig();
   if (!config.maintenanceMode) {
