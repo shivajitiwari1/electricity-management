@@ -3,6 +3,18 @@ import type { NextAuthConfig } from "next-auth";
 export const authConfig: NextAuthConfig = {
   trustHost: true,
   session: { strategy: "jwt" },
+  cookies: {
+    sessionToken: {
+      name: "__Secure-authjs.session-token",
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: true,
+        domain: ".oasisvenetia.in",
+      },
+    },
+  },
   providers: [],
   callbacks: {
     jwt({ token, user }) {
