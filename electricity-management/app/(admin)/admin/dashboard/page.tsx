@@ -11,9 +11,13 @@ import { MaintenanceToggle } from "@/components/admin/maintenance-toggle";
 
 export const dynamic = "force-dynamic";
 
+function effectiveStatus(status: string, dueDate: Date) {
+  return status === "PENDING" && dueDate < new Date() ? "OVERDUE" : status;
+}
+
 function getBadgeClass(status: string) {
   switch (status) {
-    case "PAID":   return "bg-green-100 text-green-800 hover:bg-green-100";
+    case "PAID":    return "bg-green-100 text-green-800 hover:bg-green-100";
     case "OVERDUE": return "bg-red-100 text-red-800 hover:bg-red-100";
     default:        return "bg-yellow-100 text-yellow-800 hover:bg-yellow-100";
   }
@@ -93,7 +97,7 @@ async function RecentBillsSection() {
                       {new Date(bill.dueDate).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
                     </td>
                     <td className="px-4 py-3">
-                      <Badge className={getBadgeClass(bill.status)}>{bill.status}</Badge>
+                      <Badge className={getBadgeClass(effectiveStatus(bill.status, bill.dueDate))}>{effectiveStatus(bill.status, bill.dueDate)}</Badge>
                     </td>
                   </tr>
                 ))

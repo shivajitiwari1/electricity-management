@@ -115,26 +115,11 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
-function BillStatusBadge({ status }: { status: string }) {
-  if (status === "OVERDUE") {
-    return (
-      <Badge className="bg-red-100 text-red-800 hover:bg-red-100">
-        OVERDUE
-      </Badge>
-    );
-  }
-  if (status === "PARTIAL") {
-    return (
-      <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-100">
-        PARTIAL
-      </Badge>
-    );
-  }
-  return (
-    <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">
-      PENDING
-    </Badge>
-  );
+function BillStatusBadge({ status, dueDate }: { status: string; dueDate?: string }) {
+  const display = (status === "PENDING" && dueDate && new Date(dueDate) < new Date()) ? "OVERDUE" : status;
+  if (display === "OVERDUE") return <Badge className="bg-red-100 text-red-800 hover:bg-red-100">OVERDUE</Badge>;
+  if (display === "PARTIAL") return <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-100">PARTIAL</Badge>;
+  return <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">PENDING</Badge>;
 }
 
 function formatDate(iso: string) {
@@ -270,7 +255,7 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
     }
   }
 
-  const overdueCount = pendingBills.filter((b) => b.status === "OVERDUE").length;
+  const overdueCount = pendingBills.filter((b) => b.status === "OVERDUE" || (b.status === "PENDING" && new Date(b.dueDate) < new Date())).length;
 
   return (
     <>
@@ -328,7 +313,7 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
                   filteredPending.map((bill) => (
                     <tr
                       key={bill.id}
-                      className={`border-b last:border-0 hover:bg-muted/50 ${bill.status === "OVERDUE" ? "bg-red-50/40" : bill.status === "PARTIAL" ? "bg-amber-50/40" : ""}`}
+                      className={`border-b last:border-0 hover:bg-muted/50 ${(bill.status === "OVERDUE" || (bill.status === "PENDING" && new Date(bill.dueDate) < new Date())) ? "bg-red-50/40" : bill.status === "PARTIAL" ? "bg-amber-50/40" : ""}`}
                     >
                       <td className="px-4 py-3 font-mono text-xs">{bill.billNumber}</td>
                       <td className="px-4 py-3 font-mono text-xs font-medium">{bill.flatNo}</td>
@@ -339,7 +324,7 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
                       </td>
                       <td className="px-4 py-3 text-muted-foreground text-xs">{formatDate(bill.dueDate)}</td>
                       <td className="px-4 py-3">
-                        <BillStatusBadge status={bill.status} />
+                        <BillStatusBadge status={bill.status} dueDate={bill.dueDate} />
                       </td>
                       <td className="px-4 py-3">
                         {canWrite && (

@@ -64,33 +64,14 @@ interface Props {
   canDelete: boolean;
 }
 
-function StatusBadge({ status }: { status: string }) {
-  if (status === "PAID") {
-    return (
-      <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
-        PAID
-      </Badge>
-    );
-  }
-  if (status === "OVERDUE") {
-    return (
-      <Badge className="bg-red-100 text-red-800 hover:bg-red-100">
-        OVERDUE
-      </Badge>
-    );
-  }
-  if (status === "PARTIAL") {
-    return (
-      <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-100">
-        PARTIAL
-      </Badge>
-    );
-  }
-  return (
-    <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">
-      PENDING
-    </Badge>
-  );
+function StatusBadge({ status, dueDate }: { status: string; dueDate?: string }) {
+  const display = (status === "PENDING" && dueDate && new Date(dueDate) < new Date())
+    ? "OVERDUE"
+    : status;
+  if (display === "PAID") return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">PAID</Badge>;
+  if (display === "OVERDUE") return <Badge className="bg-red-100 text-red-800 hover:bg-red-100">OVERDUE</Badge>;
+  if (display === "PARTIAL") return <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-100">PARTIAL</Badge>;
+  return <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">PENDING</Badge>;
 }
 
 function formatDate(iso: string) {
@@ -346,7 +327,7 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
                         {formatDate(bill.dueDate)}
                       </td>
                       <td className="px-4 py-3">
-                        <StatusBadge status={bill.status} />
+                        <StatusBadge status={bill.status} dueDate={bill.dueDate} />
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2">
@@ -448,7 +429,7 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
                   <span className="text-muted-foreground">Billing Period</span>
                   <span>{formatPeriod(viewBill.billingPeriodStart, viewBill.billingPeriodEnd)}</span>
                   <span className="text-muted-foreground">Status</span>
-                  <span><StatusBadge status={viewBill.status} /></span>
+                  <span><StatusBadge status={viewBill.status} dueDate={viewBill.dueDate} /></span>
                 </div>
               </div>
 
