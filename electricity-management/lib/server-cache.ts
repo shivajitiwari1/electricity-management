@@ -10,9 +10,9 @@ export const getCachedDashboardStats = unstable_cache(
       await Promise.all([
         prisma.resident.count(),
         prisma.connection.count({ where: { status: "ACTIVE" } }),
-        prisma.bill.count({ where: { billDate: { gte: monthStart } } }),
-        prisma.bill.aggregate({ where: { status: "PAID", billDate: { gte: monthStart } }, _sum: { totalAmount: true } }),
-        prisma.bill.count({ where: { status: "OVERDUE" } }),
+        prisma.bill.count({ where: { dueDate: { gte: monthStart } } }),
+        prisma.payment.aggregate({ where: { status: "SUCCESS", paymentDate: { gte: monthStart } }, _sum: { amount: true } }),
+        prisma.bill.count({ where: { status: { in: ["PENDING", "OVERDUE"] }, dueDate: { lt: now } } }),
       ]);
     return { totalResidents, activeConnections, billsThisMonth, revenueThisMonth, overdueBills };
   },

@@ -362,6 +362,8 @@ export function generateReceiptPdf(data: ReceiptData): Promise<Buffer> {
       .text("PAYMENT CONFIRMED", L + 52, y + 14, { width: CW - 60 });
     doc.fillColor("#4b7a5a").font("Helvetica").fontSize(8)
       .text("This is a computer-generated receipt and does not require a signature.", L + 52, y + 33, { width: CW - 60 });
+    doc.fillColor("#6b7280").font("Helvetica-Oblique").fontSize(7.5)
+      .text("Note: Payment is subject to realization.", L + 52, y + 47, { width: CW - 60 });
 
     // ── Footer ────────────────────────────────────────────────────────────
     y += 78;

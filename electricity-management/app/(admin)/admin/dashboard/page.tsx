@@ -23,31 +23,34 @@ async function DashboardStats() {
   const { totalResidents, activeConnections, billsThisMonth, revenueThisMonth, overdueBills } =
     await getCachedDashboardStats();
 
-  const revenue = revenueThisMonth._sum.totalAmount ?? 0;
+  const revenue = revenueThisMonth._sum.amount ?? 0;
+  const currentMonth = `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, "0")}`;
   const statCards = [
-    { title: "Total Residents",     value: totalResidents,    icon: Users,        color: "text-blue-600",    bg: "bg-blue-50" },
-    { title: "Active Connections",  value: activeConnections, icon: Plug,         color: "text-green-600",   bg: "bg-green-50" },
-    { title: "Bills This Month",    value: billsThisMonth,    icon: FileText,     color: "text-purple-600",  bg: "bg-purple-50" },
-    { title: "Revenue This Month",  value: `₹${Number(revenue).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, icon: IndianRupee, color: "text-emerald-600", bg: "bg-emerald-50" },
-    { title: "Overdue Bills",       value: overdueBills,      icon: AlertCircle,  color: "text-red-600",     bg: "bg-red-50" },
+    { title: "Total Residents",    value: totalResidents,    icon: Users,        color: "text-blue-600",   bg: "bg-blue-50",   href: "/admin/residents" },
+    { title: "Active Connections", value: activeConnections, icon: Plug,         color: "text-green-600",  bg: "bg-green-50",  href: "/admin/connections" },
+    { title: "Bills This Month",   value: billsThisMonth,    icon: FileText,     color: "text-purple-600", bg: "bg-purple-50", href: `/admin/bills?month=${currentMonth}` },
+    { title: "Revenue This Month", value: `₹${Number(revenue).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, icon: IndianRupee, color: "text-emerald-600", bg: "bg-emerald-50", href: "/admin/payments" },
+    { title: "Overdue Bills",      value: overdueBills,      icon: AlertCircle,  color: "text-red-600",    bg: "bg-red-50",    href: "/admin/bills?status=PENDING" },
   ];
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
-      {statCards.map(({ title, value, icon: Icon, color, bg }) => (
-        <Card key={title}>
-          <CardContent className="p-5">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{title}</p>
-                <p className="text-2xl font-bold text-foreground mt-1">{value}</p>
+      {statCards.map(({ title, value, icon: Icon, color, bg, href }) => (
+        <Link key={title} href={href}>
+          <Card className="hover:shadow-md transition-shadow cursor-pointer">
+            <CardContent className="p-5">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{title}</p>
+                  <p className="text-2xl font-bold text-foreground mt-1">{value}</p>
+                </div>
+                <div className={`p-3 rounded-full ${bg} dark:opacity-80`}>
+                  <Icon className={`h-5 w-5 ${color}`} />
+                </div>
               </div>
-              <div className={`p-3 rounded-full ${bg} dark:opacity-80`}>
-                <Icon className={`h-5 w-5 ${color}`} />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </Link>
       ))}
     </div>
   );

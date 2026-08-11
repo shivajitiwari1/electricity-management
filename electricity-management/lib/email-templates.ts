@@ -188,10 +188,15 @@ export function paymentSuccessEmail(params: {
     </td></tr>
 
     <!-- CTA -->
-    <tr><td style="padding:28px 32px 32px;" align="center">
+    <tr><td style="padding:28px 32px 20px;" align="center">
       <a href="${receiptUrl}" style="display:inline-block;background:#16a34a;color:#ffffff;font-size:15px;font-weight:bold;padding:14px 36px;border-radius:6px;text-decoration:none;letter-spacing:0.3px;">
         Download Receipt PDF
       </a>
+    </td></tr>
+
+    <!-- Realization note -->
+    <tr><td style="padding:0 32px 28px;" align="center">
+      <p style="margin:0;font-size:11px;color:#9ca3af;font-style:italic;">Note: Payment is subject to realization.</p>
     </td></tr>
   `;
 
