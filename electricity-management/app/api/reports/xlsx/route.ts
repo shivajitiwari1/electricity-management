@@ -81,28 +81,36 @@ export async function GET(req: NextRequest) {
     label = "Last 30 Days";
   }
 
-  const bills = await prisma.bill.findMany({
-    where: { billDate: { gte: start, lte: end } },
-    select: {
-      billNumber: true,
-      billDate: true,
-      dueDate: true,
-      totalAmount: true,
-      status: true,
-      connection: {
-        select: {
-          flatNo: true,
-          tower: true,
-          resident: { select: { user: { select: { name: true } } } },
+  const [payments, bills] = await Promise.all([
+    prisma.payment.findMany({
+      where: { status: "SUCCESS", paymentDate: { gte: start, lte: end } },
+      select: { amount: true },
+    }),
+    prisma.bill.findMany({
+      where: { billDate: { gte: start, lte: end } },
+      select: {
+        billNumber: true,
+        billDate: true,
+        dueDate: true,
+        totalAmount: true,
+        status: true,
+        connection: {
+          select: {
+            flatNo: true,
+            tower: true,
+            resident: { select: { user: { select: { name: true } } } },
+          },
         },
       },
-    },
-    orderBy: { billDate: "desc" },
-  });
+      orderBy: { billDate: "desc" },
+    }),
+  ]);
 
+  const totalRevenue = payments.reduce((s, p) => s + Number(p.amount), 0);
   const paid = bills.filter(b => b.status === "PAID");
-  const totalRevenue = paid.reduce((s, b) => s + Number(b.totalAmount), 0);
-  const overdueCount = bills.filter(b => b.status === "OVERDUE").length;
+  const overdueCount = await prisma.bill.count({
+    where: { status: { in: ["OVERDUE", "PENDING"] }, dueDate: { lt: now } },
+  });
 
   // ── Build Workbook ──────────────────────────────────────────────────────────
   const wb = new ExcelJS.Workbook();

@@ -12,7 +12,7 @@ function inr(n: number): string {
 }
 
 function buildBuckets(
-  paidBills: { billDate: Date; totalAmount: number }[],
+  payments: { paymentDate: Date; amount: number }[],
   start: Date,
   end: Date
 ): { label: string; revenue: number }[] {
@@ -28,7 +28,7 @@ function buildBuckets(
       next.setDate(cursor.getDate() + 1);
       result.push({
         label: cursor.toLocaleDateString("en-IN", { weekday: "short", day: "2-digit", month: "short" }),
-        revenue: paidBills.filter(b => b.billDate >= cursor && b.billDate < next).reduce((s, b) => s + Number(b.totalAmount), 0),
+        revenue: payments.filter(p => p.paymentDate >= cursor && p.paymentDate < next).reduce((s, p) => s + p.amount, 0),
       });
       cursor.setDate(cursor.getDate() + 1);
     }
@@ -47,7 +47,7 @@ function buildBuckets(
       const actualEnd = wEnd > end ? new Date(end) : wEnd;
       result.push({
         label: `${cursor.toLocaleDateString("en-IN", { day: "numeric", month: "short" })} – ${actualEnd.toLocaleDateString("en-IN", { day: "numeric", month: "short" })}`,
-        revenue: paidBills.filter(b => b.billDate >= cursor && b.billDate <= actualEnd).reduce((s, b) => s + Number(b.totalAmount), 0),
+        revenue: payments.filter(p => p.paymentDate >= cursor && p.paymentDate <= actualEnd).reduce((s, p) => s + p.amount, 0),
       });
       cursor.setDate(cursor.getDate() + 7);
     }
@@ -62,7 +62,7 @@ function buildBuckets(
     const actualEnd = mEnd > end ? new Date(end) : mEnd;
     result.push({
       label: cursor.toLocaleDateString("en-IN", { month: "short", year: "numeric" }),
-      revenue: paidBills.filter(b => b.billDate >= cursor && b.billDate <= actualEnd).reduce((s, b) => s + Number(b.totalAmount), 0),
+      revenue: payments.filter(p => p.paymentDate >= cursor && p.paymentDate <= actualEnd).reduce((s, p) => s + p.amount, 0),
     });
     cursor.setMonth(cursor.getMonth() + 1);
   }
@@ -98,32 +98,36 @@ export async function GET(req: NextRequest) {
     label = "Last 30 Days";
   }
 
-  const bills = await prisma.bill.findMany({
-    where: { billDate: { gte: start, lte: end } },
-    select: {
-      billNumber: true,
-      billDate: true,
-      totalAmount: true,
-      status: true,
-      connection: {
-        select: {
-          flatNo: true,
-          tower: true,
-          resident: {
-            select: {
-              user: { select: { name: true } },
-            },
+  const [payments, bills] = await Promise.all([
+    prisma.payment.findMany({
+      where: { status: "SUCCESS", paymentDate: { gte: start, lte: end } },
+      select: { paymentDate: true, amount: true },
+    }),
+    prisma.bill.findMany({
+      where: { billDate: { gte: start, lte: end } },
+      select: {
+        billNumber: true,
+        billDate: true,
+        totalAmount: true,
+        status: true,
+        connection: {
+          select: {
+            flatNo: true,
+            tower: true,
+            resident: { select: { user: { select: { name: true } } } },
           },
         },
       },
-    },
-    orderBy: { billDate: "desc" },
-  });
+      orderBy: { billDate: "desc" },
+    }),
+  ]);
 
+  const totalRevenue = payments.reduce((s, p) => s + Number(p.amount), 0);
   const paid = bills.filter(b => b.status === "PAID");
-  const totalRevenue = paid.reduce((s, b) => s + Number(b.totalAmount), 0);
-  const overdueCount = bills.filter(b => b.status === "OVERDUE").length;
-  const buckets = buildBuckets(paid.map(b => ({ ...b, totalAmount: Number(b.totalAmount) })), start, end);
+  const overdueCount = await prisma.bill.count({
+    where: { status: { in: ["OVERDUE", "PENDING"] }, dueDate: { lt: now } },
+  });
+  const buckets = buildBuckets(payments.map(p => ({ paymentDate: p.paymentDate, amount: Number(p.amount) })), start, end);
 
   const doc = new PDFDocument({ margin: 0, size: "A4" });
   const chunks: Buffer[] = [];
