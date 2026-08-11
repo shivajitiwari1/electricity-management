@@ -33,6 +33,7 @@ type SerializedBill = {
   flatNo: string;
   tower: string;
   residentName: string;
+  residentEmail: string;
   meterNo: string | null;
   sanctionedLoad: string;
   unitArea: number;
@@ -328,7 +329,10 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
                       <td className="px-4 py-3 font-mono text-xs">{bill.billNumber}</td>
                       <td className="px-4 py-3 font-mono text-xs">{bill.flatNo}</td>
                       <td className="px-4 py-3">{bill.tower}</td>
-                      <td className="px-4 py-3 font-medium">{bill.residentName}</td>
+                      <td className="px-4 py-3">
+                        <div className="font-medium">{bill.residentName}</div>
+                        <div className="text-xs text-muted-foreground">{bill.residentEmail}</div>
+                      </td>
                       <td className="px-4 py-3 text-muted-foreground text-xs">
                         {formatPeriod(bill.billingPeriodStart, bill.billingPeriodEnd)}
                       </td>

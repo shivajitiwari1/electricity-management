@@ -35,7 +35,7 @@ async function BillsData({ searchParams }: { searchParams: Promise<SearchParams>
   const bills = await prisma.bill.findMany({
       where,
       include: {
-        connection: { include: { resident: { include: { user: { select: { name: true } } } } } },
+        connection: { include: { resident: { include: { user: { select: { name: true, email: true } } } } } },
         meterReading: true,
         payments: { select: { id: true, status: true }, orderBy: { paymentDate: "desc" as const }, take: 1 },
       },
@@ -48,6 +48,7 @@ async function BillsData({ searchParams }: { searchParams: Promise<SearchParams>
     flatNo: b.connection.flatNo,
     tower: b.connection.tower,
     residentName: b.connection.resident.user.name,
+    residentEmail: b.connection.resident.user.email,
     meterNo: b.connection.meterNo ?? null,
     sanctionedLoad: b.connection.sanctionedLoad.toString(),
     unitArea: b.connection.unitArea,
