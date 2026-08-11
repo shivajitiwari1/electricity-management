@@ -289,7 +289,7 @@ export default function MeterReadingsTable({ connections, readings, dgFixed, can
 
   const filteredReadings = readings.filter((r) => {
     const q = tableSearch.toLowerCase();
-    const matchesSearch = !q || r.flatNo.toLowerCase().includes(q) || r.residentName.toLowerCase().includes(q);
+    const matchesSearch = !q || r.flatNo.toLowerCase().includes(q) || r.residentName.toLowerCase().includes(q) || (r.residentEmail ?? "").toLowerCase().includes(q);
     const matchesBill =
       billFilter === "all" ||
       (billFilter === "generated" && r.hasReading && r.hasBill) ||

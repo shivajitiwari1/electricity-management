@@ -120,7 +120,7 @@ export const getCachedMeterReadingsData = unstable_cache(
 
     return { connections, currentRate, latestByConnection: Object.fromEntries(latestByConnection), billedReadingIds };
   },
-  ["admin-meter-readings"],
+  ["admin-meter-readings-v2"],
   { revalidate: 30, tags: ["meter-readings"] }
 );
 
