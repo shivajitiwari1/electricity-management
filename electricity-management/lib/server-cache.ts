@@ -86,7 +86,7 @@ export const getCachedMeterReadingsData = unstable_cache(
       prisma.connection.findMany({
         where: { status: "ACTIVE" },
         include: {
-          resident: { include: { user: { select: { name: true } } } },
+          resident: { include: { user: { select: { name: true, email: true } } } },
         },
         orderBy: { flatNo: "asc" },
       }),

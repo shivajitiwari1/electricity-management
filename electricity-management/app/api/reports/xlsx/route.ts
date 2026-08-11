@@ -212,7 +212,8 @@ export async function GET(req: NextRequest) {
   bills.forEach((b, idx) => {
     const rowNum = 12 + idx;
     const bg = idx % 2 === 1 ? C.ROW_ALT : C.WHITE;
-    const statusColor = b.status === "PAID" ? C.GREEN : b.status === "OVERDUE" ? C.RED : C.AMBER;
+    const displayStatus = (b.status === "PENDING" && b.dueDate < now) ? "OVERDUE" : b.status;
+    const statusColor = displayStatus === "PAID" ? C.GREEN : displayStatus === "OVERDUE" ? C.RED : C.AMBER;
 
     ws.getRow(rowNum).height = 15;
 
@@ -224,7 +225,7 @@ export async function GET(req: NextRequest) {
       fmt(b.billDate),
       fmt(b.dueDate),
       Number(b.totalAmount),
-      b.status,
+      displayStatus,
     ];
 
     rowData.forEach((val, ci) => {

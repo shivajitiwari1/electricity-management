@@ -33,6 +33,7 @@ async function MeterReadingsData() {
       id: r?.id ?? "",
       flatNo: c.flatNo,
       residentName: c.resident.user.name,
+      residentEmail: c.resident.user.email,
       readingDate: r?.readingDate ? new Date(r.readingDate).toISOString().split("T")[0] : "",
       ncplPrevious: r?.ncplPrevious?.toString() ?? "",
       ncplCurrent: r?.ncplCurrent?.toString() ?? "",

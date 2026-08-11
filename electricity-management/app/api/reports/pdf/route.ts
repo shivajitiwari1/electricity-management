@@ -108,6 +108,7 @@ export async function GET(req: NextRequest) {
       select: {
         billNumber: true,
         billDate: true,
+        dueDate: true,
         totalAmount: true,
         status: true,
         connection: {
@@ -235,7 +236,8 @@ export async function GET(req: NextRequest) {
         if (y > 790) { doc.addPage(); y = 40; }
         const idx = bills.indexOf(b);
         if (idx % 2 === 0) doc.rect(L, y, CW, 15).fill("#f9fafb");
-        const sc = b.status === "PAID" ? "#16a34a" : b.status === "OVERDUE" ? "#dc2626" : "#d97706";
+        const displayStatus = (b.status === "PENDING" && b.dueDate < now) ? "OVERDUE" : b.status;
+        const sc = displayStatus === "PAID" ? "#16a34a" : displayStatus === "OVERDUE" ? "#dc2626" : "#d97706";
         doc.fillColor("#374151").font("Helvetica").fontSize(7);
         doc.text(b.billNumber, C[0] + 4, y + 3, { width: colW[0], lineBreak: false });
         doc.text(b.connection.flatNo, C[1] + 4, y + 3, { width: colW[1], lineBreak: false });
@@ -244,7 +246,7 @@ export async function GET(req: NextRequest) {
         doc.font("Helvetica-Bold")
           .text(inr(Number(b.totalAmount)), C[4] + 4, y + 3, { width: colW[4], align: "right", lineBreak: false });
         doc.fillColor(sc)
-          .text(b.status, C[5] + 4, y + 3, { width: colW[5], lineBreak: false });
+          .text(displayStatus, C[5] + 4, y + 3, { width: colW[5], lineBreak: false });
         y += 15;
       }
 

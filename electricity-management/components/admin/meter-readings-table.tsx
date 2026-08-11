@@ -54,6 +54,7 @@ type SerializedReading = {
   id: string;
   flatNo: string;
   residentName: string;
+  residentEmail?: string;
   readingDate: string;
   ncplPrevious: string;
   ncplCurrent: string;
@@ -384,7 +385,10 @@ export default function MeterReadingsTable({ connections, readings, dgFixed, can
                       <td className="px-4 py-3 font-mono text-xs font-medium">
                         {reading.flatNo}
                       </td>
-                      <td className="px-4 py-3">{reading.residentName}</td>
+                      <td className="px-4 py-3">
+                        <div className="font-medium">{reading.residentName}</div>
+                        {reading.residentEmail && <div className="text-xs text-muted-foreground">{reading.residentEmail}</div>}
+                      </td>
                       <td className="px-4 py-3 text-muted-foreground">
                         {reading.readingDate
                           ? new Date(reading.readingDate).toLocaleDateString("en-IN", {
