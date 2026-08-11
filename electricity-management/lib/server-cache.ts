@@ -16,7 +16,7 @@ export const getCachedDashboardStats = unstable_cache(
       ]);
     return { totalResidents, activeConnections, billsThisMonth, revenueThisMonth, overdueBills };
   },
-  ["admin-dashboard-stats"],
+  ["admin-dashboard-stats-v2"],
   { revalidate: 60, tags: ["dashboard"] }
 );
 
@@ -152,14 +152,18 @@ export const getCachedReportsData = unstable_cache(
     const twelveMonthsAgo = new Date();
     twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
 
-    const [paidBills, overdueBills, allBills, totalRevenue, totalBills, totalResidents] =
+    const [paidPayments, overdueBills, allBills, totalRevenue, totalBills, totalResidents] =
       await Promise.all([
-        prisma.bill.findMany({
-          where: { status: "PAID", billDate: { gte: twelveMonthsAgo } },
-          select: { billDate: true, totalAmount: true, ncplUnits: true, connection: { select: { tower: true, flatNo: true } } },
+        prisma.payment.findMany({
+          where: { status: "SUCCESS", paymentDate: { gte: twelveMonthsAgo } },
+          select: {
+            paymentDate: true,
+            amount: true,
+            bill: { select: { ncplUnits: true, connection: { select: { tower: true, flatNo: true } } } },
+          },
         }),
         prisma.bill.findMany({
-          where: { status: "OVERDUE" },
+          where: { status: { in: ["OVERDUE", "PENDING"] }, dueDate: { lt: new Date() } },
           select: {
             id: true, billNumber: true, dueDate: true, totalAmount: true,
             connection: { include: { resident: { include: { user: { select: { name: true } } } } } },
@@ -174,14 +178,14 @@ export const getCachedReportsData = unstable_cache(
           orderBy: { billDate: "desc" },
           take: 500,
         }),
-        prisma.bill.aggregate({ where: { status: "PAID" }, _sum: { totalAmount: true } }),
+        prisma.payment.aggregate({ where: { status: "SUCCESS" }, _sum: { amount: true } }),
         prisma.bill.count(),
         prisma.resident.count(),
       ]);
 
-    return { paidBills, overdueBills, allBills, totalRevenue, totalBills, totalResidents };
+    return { paidPayments, overdueBills, allBills, totalRevenue, totalBills, totalResidents };
   },
-  ["admin-reports"],
+  ["admin-reports-v2"],
   { revalidate: 300, tags: ["reports"] }
 );
 

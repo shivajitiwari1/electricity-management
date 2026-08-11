@@ -4,9 +4,11 @@ import { sendEmail } from "@/lib/email";
 import { overdueNoticeEmail } from "@/lib/email-templates";
 
 export async function GET(req: NextRequest) {
-  // Cron secret check — no JWT auth
-  const cronSecret = req.headers.get("x-cron-secret");
-  if (!cronSecret || cronSecret !== process.env.CRON_SECRET) {
+  // Accept x-cron-secret (manual calls) or Authorization: Bearer (Vercel cron)
+  const xSecret = req.headers.get("x-cron-secret");
+  const bearerToken = req.headers.get("authorization")?.replace("Bearer ", "");
+  const secret = xSecret ?? bearerToken;
+  if (!secret || secret !== process.env.CRON_SECRET) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

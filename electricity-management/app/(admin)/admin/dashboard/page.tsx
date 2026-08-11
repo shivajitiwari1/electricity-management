@@ -30,7 +30,7 @@ async function DashboardStats() {
     { title: "Active Connections", value: activeConnections, icon: Plug,         color: "text-green-600",  bg: "bg-green-50",  href: "/admin/connections" },
     { title: "Bills This Month",   value: billsThisMonth,    icon: FileText,     color: "text-purple-600", bg: "bg-purple-50", href: `/admin/bills?month=${currentMonth}` },
     { title: "Revenue This Month", value: `₹${Number(revenue).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, icon: IndianRupee, color: "text-emerald-600", bg: "bg-emerald-50", href: "/admin/payments" },
-    { title: "Overdue Bills",      value: overdueBills,      icon: AlertCircle,  color: "text-red-600",    bg: "bg-red-50",    href: "/admin/bills?status=PENDING" },
+    { title: "Overdue Bills",      value: overdueBills,      icon: AlertCircle,  color: "text-red-600",    bg: "bg-red-50",    href: "/admin/bills?status=OVERDUE" },
   ];
 
   return (

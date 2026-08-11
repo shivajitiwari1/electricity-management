@@ -25,10 +25,24 @@ async function BillsData({ searchParams }: { searchParams: Promise<SearchParams>
     dateFilter = { gte: new Date(year, mon - 1, 1), lt: new Date(year, mon, 1) };
   }
 
-  const where = {
+  // OVERDUE filter includes both status=OVERDUE and PENDING bills past their due date
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let statusCondition: Record<string, any> = {};
+  if (status === "OVERDUE") {
+    statusCondition = {
+      OR: [
+        { status: "OVERDUE" as const },
+        { status: "PENDING" as const, dueDate: { lt: new Date() } },
+      ],
+    };
+  } else if (status) {
+    statusCondition = { status: status as any };
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const where: any = {
     ...(tower ? { connection: { tower } } : {}),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ...(status ? { status: status as any } : {}),
+    ...statusCondition,
     ...(dateFilter ? { billDate: dateFilter } : {}),
   };
 

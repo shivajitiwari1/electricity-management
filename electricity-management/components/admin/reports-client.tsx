@@ -20,7 +20,7 @@ import { IndianRupee, FileText, Users, AlertCircle, FileSpreadsheet, FileDown } 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 type SerializedPaidBill = {
-  billDate: string;
+  paymentDate: string;
   totalAmount: number;
   ncplUnits: number;
   tower: string;
@@ -111,7 +111,7 @@ function buildChartData(
       result.push({
         label: cursor.toLocaleDateString("en-IN", { day: "numeric", month: "short" }),
         revenue: bills
-          .filter(b => { const bd = new Date(b.billDate); return bd >= cursor && bd < next; })
+          .filter(b => { const bd = new Date(b.paymentDate); return bd >= cursor && bd < next; })
           .reduce((s, b) => s + b.totalAmount, 0),
       });
       cursor.setDate(cursor.getDate() + 1);
@@ -131,7 +131,7 @@ function buildChartData(
       result.push({
         label: `${cursor.toLocaleDateString("en-IN", { day: "numeric", month: "short" })} – ${actualEnd.toLocaleDateString("en-IN", { day: "numeric", month: "short" })}`,
         revenue: bills
-          .filter(b => { const bd = new Date(b.billDate); return bd >= cursor && bd <= actualEnd; })
+          .filter(b => { const bd = new Date(b.paymentDate); return bd >= cursor && bd <= actualEnd; })
           .reduce((s, b) => s + b.totalAmount, 0),
       });
       cursor.setDate(cursor.getDate() + 7);
@@ -148,7 +148,7 @@ function buildChartData(
     result.push({
       label: cursor.toLocaleDateString("en-IN", { month: "short", year: "2-digit" }),
       revenue: bills
-        .filter(b => { const bd = new Date(b.billDate); return bd >= cursor && bd <= actualEnd; })
+        .filter(b => { const bd = new Date(b.paymentDate); return bd >= cursor && bd <= actualEnd; })
         .reduce((s, b) => s + b.totalAmount, 0),
     });
     cursor.setMonth(cursor.getMonth() + 1);
@@ -208,7 +208,7 @@ export default function ReportsClient({ paidBills, overdueBills, allBills, stats
 
   const filteredPaidBills = useMemo(
     () => paidBills.filter(b => {
-      const bd = new Date(b.billDate);
+      const bd = new Date(b.paymentDate);
       return bd >= effectiveStart && bd <= effectiveEnd;
     }),
     [paidBills, effectiveStart, effectiveEnd]
@@ -378,7 +378,7 @@ export default function ReportsClient({ paidBills, overdueBills, allBills, stats
       <Card>
         <CardHeader>
           <CardTitle className="text-base font-semibold">
-            Revenue — {rangeLabelShort} (Paid Bills)
+            Revenue — {rangeLabelShort} (Payments Received)
           </CardTitle>
         </CardHeader>
         <CardContent>

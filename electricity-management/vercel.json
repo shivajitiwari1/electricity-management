@@ -5,5 +5,7 @@
       "regions": ["sin1"]
     }
   },
-  "crons": []
+  "crons": [
+    { "path": "/api/cron/overdue-notices", "schedule": "0 2 * * *" }
+  ]
 }
