@@ -83,6 +83,7 @@ async function BillsData({ searchParams }: { searchParams: Promise<SearchParams>
     fixedCharge: b.fixedCharge.toString(),
     previousDues: b.previousDues.toString(),
     totalAmount: b.totalAmount.toString(),
+    paidAmount: b.paidAmount.toString(),
     status: b.status,
     paymentId: b.payments[0]?.id ?? null,
   }));

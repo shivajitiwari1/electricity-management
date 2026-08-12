@@ -54,6 +54,7 @@ type SerializedBill = {
   fixedCharge: string;
   previousDues: string;
   totalAmount: string;
+  paidAmount: string;
   status: string;
   paymentId: string | null;
 };
@@ -95,6 +96,7 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
   const [markingPaid, setMarkingPaid] = useState<string | null>(null);
   const [deletingBill, setDeletingBill] = useState<string | null>(null);
   const [resendingBill, setResendingBill] = useState<string | null>(null);
+  const [sendingBalanceDue, setSendingBalanceDue] = useState<string | null>(null);
   const [nameSearch, setNameSearch] = useState("");
 
   // Current filter values from URL
@@ -173,6 +175,25 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
       toast.error("Failed to resend email");
     } finally {
       setResendingBill(null);
+    }
+  }
+
+  async function handleBalanceDue(bill: SerializedBill) {
+    setSendingBalanceDue(bill.id);
+    try {
+      const res = await fetch(`/api/bills/${bill.id}/balance-reminder`, {
+        method: "POST",
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        toast.error(data.error ?? "Failed to send balance reminder");
+        return;
+      }
+      toast.success(`Balance reminder sent to resident for ${bill.billNumber}`);
+    } catch {
+      toast.error("Failed to send balance reminder");
+    } finally {
+      setSendingBalanceDue(null);
     }
   }
 
@@ -359,6 +380,18 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
                             >
                               <Mail className="h-3 w-3 mr-1" />
                               {resendingBill === bill.id ? "Sending…" : "Resend"}
+                            </Button>
+                          )}
+                          {canWrite && bill.status === "PARTIAL" && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-amber-600 hover:text-amber-700 hover:bg-amber-50 border-amber-200"
+                              disabled={sendingBalanceDue === bill.id}
+                              onClick={() => handleBalanceDue(bill)}
+                            >
+                              <Mail className="h-3 w-3 mr-1" />
+                              {sendingBalanceDue === bill.id ? "Sending…" : "Balance Due"}
                             </Button>
                           )}
                           {canWrite && bill.status === "PENDING" && (
