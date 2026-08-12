@@ -463,3 +463,111 @@ export function maintenanceBillGeneratedEmail(params: {
 
   return shell(body, "Oasis Venetia Heights AOA");
 }
+
+export function balanceDueEmail(params: {
+  residentName: string;
+  flatNo: string;
+  billNumber: string;
+  billingPeriod: string;
+  ncplCharge: string;
+  dgCharge: string;
+  fixedCharge: string;
+  previousDues: string;
+  totalAmount: string;
+  paidAmount: string;
+  balanceDue: string;
+  dueDate: string;
+  payUrl: string;
+}): string {
+  const {
+    residentName, flatNo, billNumber, billingPeriod,
+    ncplCharge, dgCharge, fixedCharge, previousDues,
+    totalAmount, paidAmount, balanceDue, dueDate, payUrl,
+  } = params;
+
+  const body = `
+    <tr><td style="padding:32px 32px 0;">
+      <!-- Amber notice bar -->
+      <table width="100%" cellpadding="0" cellspacing="0" style="background:#fffbeb;border:1px solid #fcd34d;border-radius:6px;padding:16px 20px;margin-bottom:20px;">
+        <tr>
+          <td width="36">
+            <div style="width:32px;height:32px;background:#f59e0b;border-radius:50%;text-align:center;line-height:32px;font-size:18px;color:#fff;">&#9888;</div>
+          </td>
+          <td style="padding-left:12px;">
+            <p style="margin:0;font-size:14px;font-weight:bold;color:#92400e;">Balance Due Notice</p>
+            <p style="margin:2px 0 0;font-size:12px;color:#b45309;">A partial payment was received. Please clear the remaining balance.</p>
+          </td>
+        </tr>
+      </table>
+      <p style="margin:0;font-size:15px;color:#374151;">Dear <strong>${residentName}</strong>,</p>
+      <p style="margin:12px 0 0;font-size:14px;color:#4b5563;line-height:1.6;">
+        We have received a partial payment for your electricity bill for <strong>Flat ${flatNo}</strong>.
+        Please find the outstanding balance details below and make the remaining payment before the due date.
+      </p>
+    </td></tr>
+
+    <!-- Balance Due Banner -->
+    <tr><td style="padding:24px 32px 0;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background:#fffbeb;border:2px solid #f59e0b;border-radius:6px;padding:20px;">
+        <tr><td align="center">
+          <p style="margin:0;font-size:12px;font-weight:600;color:#92400e;text-transform:uppercase;letter-spacing:1px;">Balance Due</p>
+          <p style="margin:6px 0 0;font-size:36px;font-weight:bold;color:#78350f;">Rs. ${balanceDue}</p>
+          <p style="margin:4px 0 0;font-size:12px;color:#6b7280;">Please pay by: <strong style="color:#dc2626;">${dueDate}</strong></p>
+        </td></tr>
+      </table>
+    </td></tr>
+
+    <!-- Charge Breakdown -->
+    <tr><td style="padding:24px 32px 0;">
+      <p style="margin:0 0 12px;font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:1px;">Charge Breakdown</p>
+      <table width="100%" cellpadding="0" cellspacing="0">
+        ${row("Bill Number", billNumber)}
+        ${row("Flat No", flatNo)}
+        ${row("Billing Period", billingPeriod)}
+        ${row("NPCL Energy Charges", "Rs. " + ncplCharge)}
+        ${row("DG Charges", "Rs. " + dgCharge)}
+        ${row("Fixed Charges", "Rs. " + fixedCharge)}
+        ${row("Previous Dues", "Rs. " + previousDues)}
+        ${row("Total Bill Amount", "Rs. " + totalAmount, true)}
+        <tr style="background:#f0fdf4;">
+          <td style="padding:10px 0;font-size:13px;color:#15803d;font-weight:bold;border-bottom:1px solid #f3f4f6;">Already Paid</td>
+          <td style="padding:10px 0;font-size:13px;color:#15803d;font-weight:bold;text-align:right;border-bottom:1px solid #f3f4f6;">- Rs. ${paidAmount}</td>
+        </tr>
+        <tr style="background:#fffbeb;">
+          <td style="padding:10px 0;font-size:14px;color:#92400e;font-weight:bold;border-bottom:1px solid #f3f4f6;">Balance Due</td>
+          <td style="padding:10px 0;font-size:14px;color:#92400e;font-weight:bold;text-align:right;border-bottom:1px solid #f3f4f6;">Rs. ${balanceDue}</td>
+        </tr>
+      </table>
+    </td></tr>
+
+    <!-- Payment Options -->
+    <tr><td style="padding:24px 32px 0;">
+      <p style="margin:0 0 12px;font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:1px;">Payment Options</p>
+      <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e5e7eb;border-radius:6px;overflow:hidden;">
+        <tr>
+          <td style="padding:16px 20px;vertical-align:top;">
+            <p style="margin:0 0 10px;font-size:12px;font-weight:600;color:#374151;">Bank Transfer / NEFT / RTGS / UPI</p>
+            <table cellpadding="0" cellspacing="0">
+              <tr><td style="font-size:12px;color:#6b7280;padding:3px 0;white-space:nowrap;padding-right:12px;">Beneficiary</td><td style="font-size:12px;color:#111827;font-weight:600;">OASIS BUILDMART INDIA PVT LTD</td></tr>
+              <tr><td style="font-size:12px;color:#6b7280;padding:3px 0;padding-right:12px;">Bank</td><td style="font-size:12px;color:#111827;">Bank of Baroda</td></tr>
+              <tr><td style="font-size:12px;color:#6b7280;padding:3px 0;padding-right:12px;">Account No.</td><td style="font-size:12px;color:#111827;font-weight:600;font-family:monospace;">88340200001343</td></tr>
+              <tr><td style="font-size:12px;color:#6b7280;padding:3px 0;padding-right:12px;">IFSC</td><td style="font-size:12px;color:#111827;font-family:monospace;">BARB0DBGREA</td></tr>
+              <tr><td style="font-size:12px;color:#6b7280;padding:3px 0;padding-right:12px;">Branch</td><td style="font-size:12px;color:#111827;">Greater Noida</td></tr>
+              <tr><td style="font-size:12px;color:#6b7280;padding:3px 0;padding-right:12px;">UPI ID</td><td style="font-size:12px;color:#111827;font-family:monospace;">oasis88268343@barodampay</td></tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+
+    <!-- CTA -->
+    <tr><td style="padding:24px 32px 32px;" align="center">
+      <a href="${payUrl}" style="display:inline-block;background:#f59e0b;color:#ffffff;font-size:15px;font-weight:bold;padding:14px 36px;border-radius:6px;text-decoration:none;letter-spacing:0.3px;">
+        Pay Balance Now
+      </a>
+      <p style="margin:14px 0 0;font-size:12px;color:#9ca3af;">Please quote your bill number <strong>${billNumber}</strong> when making a bank transfer.</p>
+    </td></tr>
+  `;
+
+  return shell(body);
+}
