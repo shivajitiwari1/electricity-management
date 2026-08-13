@@ -72,7 +72,10 @@ function cell(doc: InstanceType<typeof PDFDocument>, text: string, x: number, y:
 
 export async function generateBillPdf(data: BillData): Promise<Buffer> {
   // Generate QR code before entering the PDFKit Promise callback (no await inside Promise constructor)
-  const qrDataUrl = await generateUpiQrDataUrl(data.totalAmount);
+  const qrPayable = (data.status === "PARTIAL" && data.paidAmount && data.paidAmount > 0)
+    ? data.totalAmount - data.paidAmount
+    : data.totalAmount;
+  const qrDataUrl = await generateUpiQrDataUrl(qrPayable);
   const qrBuffer = Buffer.from(qrDataUrl.replace(/^data:image\/png;base64,/, ""), "base64");
 
   return new Promise((resolve, reject) => {
