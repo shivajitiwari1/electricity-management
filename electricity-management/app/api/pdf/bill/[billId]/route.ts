@@ -81,6 +81,8 @@ export async function GET(
     previousDues: bill.previousDues.toNumber(),
     totalAmount: bill.totalAmount.toNumber(),
     billNumber: bill.billNumber,
+    paidAmount: bill.paidAmount.toNumber(),
+    status: bill.status,
   };
 
   const buffer = await generateBillPdf(billData);

@@ -23,6 +23,8 @@ export interface BillData {
   previousDues: number;
   totalAmount: number;
   billNumber: string;
+  paidAmount?: number;
+  status?: string;
 }
 
 export interface ReceiptData {
@@ -189,12 +191,49 @@ export async function generateBillPdf(data: BillData): Promise<Buffer> {
     doc.moveTo(40, doc.y).lineTo(555, doc.y).stroke();
     doc.moveDown(0.3);
 
-    // Net payable
-    y = doc.y;
-    doc.font("Helvetica-Bold").fontSize(11);
-    cell(doc, "Net Payable Amount", BL, y, BLW);
-    cell(doc, `Rs. ${formatCurrency(data.totalAmount)}`, BR, y, BRW, { align: "right" });
-    doc.text("", 40, y + 16);
+    const paidAmount = data.paidAmount ?? 0;
+    const isPartial = data.status === "PARTIAL" && paidAmount > 0;
+
+    if (isPartial) {
+      // Gross payable
+      y = doc.y;
+      doc.font("Helvetica-Bold").fontSize(10);
+      cell(doc, "Gross Payable Amount", BL, y, BLW);
+      cell(doc, `Rs. ${formatCurrency(data.totalAmount)}`, BR, y, BRW, { align: "right" });
+      doc.text("", 40, y + 14);
+
+      // Amount paid (green)
+      y = doc.y;
+      doc.fillColor("#16a34a").font("Helvetica").fontSize(9);
+      cell(doc, "Amount Already Paid", BL, y, BLW);
+      cell(doc, `- Rs. ${formatCurrency(paidAmount)}`, BR, y, BRW, { align: "right" });
+      doc.text("", 40, y + 14);
+      doc.fillColor("black");
+
+      doc.moveDown(0.3);
+      doc.moveTo(40, doc.y).lineTo(555, doc.y).stroke();
+      doc.moveDown(0.3);
+
+      // Balance due amber box
+      const balanceDue = data.totalAmount - paidAmount;
+      y = doc.y;
+      doc.rect(40, y, 515, 36).fill("#fff7ed");
+      doc.moveTo(40, y).lineTo(555, y).strokeColor("#f97316").lineWidth(1).stroke();
+      doc.moveTo(40, y + 36).lineTo(555, y + 36).strokeColor("#f97316").lineWidth(1).stroke();
+      doc.strokeColor("black").lineWidth(0.5);
+      doc.fillColor("#b45309").font("Helvetica-Bold").fontSize(12);
+      cell(doc, "BALANCE DUE", BL, y + 10, BLW);
+      cell(doc, `Rs. ${formatCurrency(balanceDue)}`, BR, y + 10, BRW, { align: "right" });
+      doc.text("", 40, y + 44);
+      doc.fillColor("black");
+    } else {
+      // Net payable
+      y = doc.y;
+      doc.font("Helvetica-Bold").fontSize(11);
+      cell(doc, "Net Payable Amount", BL, y, BLW);
+      cell(doc, `Rs. ${formatCurrency(data.totalAmount)}`, BR, y, BRW, { align: "right" });
+      doc.text("", 40, y + 16);
+    }
 
     doc.moveDown(0.3);
     doc.moveTo(40, doc.y).lineTo(555, doc.y).stroke();
