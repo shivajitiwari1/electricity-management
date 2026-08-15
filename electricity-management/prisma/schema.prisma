@@ -31,6 +31,7 @@ enum PaymentMethod {
   NEFT
   RTGS
   CHEQUE
+  CREDIT_CARD
 }
 
 enum PaymentStatus {

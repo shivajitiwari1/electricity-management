@@ -95,8 +95,8 @@ export default function MaintenancePaymentsTable({ initialData }: { initialData:
           <Select value={method} onValueChange={(v) => setMethod(v ?? "all")}>
             <SelectTrigger className="w-32"><SelectValue /></SelectTrigger>
             <SelectContent>
-              {["all", "CASH", "UPI", "NEFT", "RTGS", "CHEQUE"].map((m) => (
-                <SelectItem key={m} value={m}>{m === "all" ? "All" : m}</SelectItem>
+              {["all", "CASH", "UPI", "NEFT", "RTGS", "CHEQUE", "CREDIT_CARD"].map((m) => (
+                <SelectItem key={m} value={m}>{m === "all" ? "All" : m === "CREDIT_CARD" ? "Credit Card" : m}</SelectItem>
               ))}
             </SelectContent>
           </Select>

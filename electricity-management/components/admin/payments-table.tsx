@@ -62,15 +62,16 @@ interface Props {
   canDelete: boolean;
 }
 
-const MANUAL_METHODS = new Set(["CASH", "UPI", "NEFT", "RTGS", "CHEQUE"]);
+const MANUAL_METHODS = new Set(["CASH", "UPI", "NEFT", "RTGS", "CHEQUE", "CREDIT_CARD"]);
 
 const METHOD_STYLES: Record<string, string> = {
-  ONLINE: "bg-blue-100 text-blue-800",
-  CASH:   "bg-gray-100 text-gray-700",
-  UPI:    "bg-purple-100 text-purple-800",
-  NEFT:   "bg-teal-100 text-teal-800",
-  RTGS:   "bg-cyan-100 text-cyan-800",
-  CHEQUE: "bg-orange-100 text-orange-800",
+  ONLINE:      "bg-blue-100 text-blue-800",
+  CASH:        "bg-gray-100 text-gray-700",
+  UPI:         "bg-purple-100 text-purple-800",
+  NEFT:        "bg-teal-100 text-teal-800",
+  RTGS:        "bg-cyan-100 text-cyan-800",
+  CHEQUE:      "bg-orange-100 text-orange-800",
+  CREDIT_CARD: "bg-pink-100 text-pink-800",
 };
 
 function TypeBadge({ method }: { method: string }) {
@@ -364,6 +365,7 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
               <SelectItem value="NEFT">— NEFT</SelectItem>
               <SelectItem value="RTGS">— RTGS</SelectItem>
               <SelectItem value="CHEQUE">— Cheque</SelectItem>
+              <SelectItem value="CREDIT_CARD">— Credit Card</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -568,7 +570,7 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
                 <div className="space-y-1.5">
                   <Label>Payment Method</Label>
                   <div className="grid grid-cols-3 gap-2">
-                    {(["CASH", "UPI", "NEFT", "RTGS", "CHEQUE"] as const).map((m) => (
+                    {(["CASH", "UPI", "NEFT", "RTGS", "CHEQUE", "CREDIT_CARD"] as const).map((m) => (
                       <button
                         key={m}
                         type="button"
@@ -579,7 +581,7 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
                             : "border-input hover:bg-muted"
                         }`}
                       >
-                        {m}
+                        {m === "CREDIT_CARD" ? "Credit Card" : m}
                       </button>
                     ))}
                   </div>
@@ -589,14 +591,14 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
                 {payMethod !== "CASH" && (
                   <div className="space-y-1.5">
                     <Label htmlFor="ref-id">
-                      {payMethod === "CHEQUE" ? "Cheque Number" : "UTR / Transaction Reference"}
+                      {payMethod === "CHEQUE" ? "Cheque Number" : payMethod === "CREDIT_CARD" ? "Card / Transaction Reference" : "UTR / Transaction Reference"}
                       <span className="text-red-500 ml-0.5">*</span>
                     </Label>
                     <Input
                       id="ref-id"
                       value={referenceId}
                       onChange={e => setReferenceId(e.target.value)}
-                      placeholder={payMethod === "CHEQUE" ? "e.g. 123456" : "e.g. UTR123456789"}
+                      placeholder={payMethod === "CHEQUE" ? "e.g. 123456" : payMethod === "CREDIT_CARD" ? "e.g. TXN123456" : "e.g. UTR123456789"}
                     />
                   </div>
                 )}
