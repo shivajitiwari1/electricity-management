@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Trash2 } from "lucide-react";
 
 export interface MaintenancePaymentRow {
   id: string;
@@ -28,7 +29,7 @@ const fmtINR = (v: string | number) =>
 const fmtDate = (d: string) =>
   new Date(d).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
 
-export default function MaintenancePaymentsTable({ initialData }: { initialData: MaintenancePaymentRow[] }) {
+export default function MaintenancePaymentsTable({ initialData, canDelete = false }: { initialData: MaintenancePaymentRow[]; canDelete?: boolean }) {
   const currentMonth = new Date().toISOString().slice(0, 7);
   const [payments, setPayments] = useState(initialData);
   const [tower, setTower] = useState("all");
@@ -71,6 +72,17 @@ export default function MaintenancePaymentsTable({ initialData }: { initialData:
     : payments;
 
   const total = filteredPayments.reduce((s, p) => s + Number(p.amount), 0);
+
+  const handleDelete = async (p: MaintenancePaymentRow) => {
+    if (!confirm(`Delete payment ${p.receiptNumber} of ${fmtINR(p.amount)}? This will revert the bill status.`)) return;
+    try {
+      const res = await fetch(`/api/maintenance/payments/${p.id}`, { method: "DELETE" });
+      const data = await res.json();
+      if (!res.ok) { toast.error(data.error ?? "Failed to delete"); return; }
+      toast.success(`Payment ${p.receiptNumber} deleted`);
+      setPayments((prev) => prev.filter((x) => x.id !== p.id));
+    } catch { toast.error("Network error"); }
+  };
 
   return (
     <div className="space-y-4">
@@ -132,6 +144,7 @@ export default function MaintenancePaymentsTable({ initialData }: { initialData:
               <th className="px-4 py-3 text-left font-medium text-gray-600">Reference</th>
               <th className="px-4 py-3 text-left font-medium text-gray-600">Date</th>
               <th className="px-4 py-3 text-left font-medium text-gray-600">Status</th>
+              {canDelete && <th className="px-4 py-3" />}
             </tr>
           </thead>
           <tbody>
@@ -152,11 +165,24 @@ export default function MaintenancePaymentsTable({ initialData }: { initialData:
                 <td className="px-4 py-3">
                   <Badge className="bg-green-100 text-green-800 hover:bg-green-100 text-xs">{p.status}</Badge>
                 </td>
+                {canDelete && (
+                  <td className="px-4 py-3">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="h-7 w-7 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
+                      title="Delete Payment"
+                      onClick={() => handleDelete(p)}
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </Button>
+                  </td>
+                )}
               </tr>
             ))}
             {filteredPayments.length === 0 && (
               <tr>
-                <td colSpan={8} className="px-4 py-12 text-center text-gray-400">
+                <td colSpan={canDelete ? 9 : 8} className="px-4 py-12 text-center text-gray-400">
                   {q ? `No payments match "${search}"` : "No payments found"}
                 </td>
               </tr>

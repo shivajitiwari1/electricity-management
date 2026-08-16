@@ -53,7 +53,7 @@ export default async function MaintenancePaymentsPage() {
         <h1 className="text-2xl font-bold">Maintenance Payments</h1>
         <p className="text-muted-foreground">Payments received for maintenance charges</p>
       </div>
-      <MaintenancePaymentsTable initialData={initialData} />
+      <MaintenancePaymentsTable initialData={initialData} canDelete={role === "ADMIN" || !!permissions["maintenance"]?.canDelete} />
     </main>
   );
 }
