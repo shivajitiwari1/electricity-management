@@ -595,8 +595,8 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
                 <Select value={payMethod} onValueChange={(val) => setPayMethod(val ?? "CASH")}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    {["CASH", "UPI", "NEFT", "RTGS", "CHEQUE"].map((m) => (
-                      <SelectItem key={m} value={m}>{m}</SelectItem>
+                    {[["CASH","Cash"],["UPI","UPI"],["NEFT","NEFT"],["RTGS","RTGS"],["CHEQUE","Cheque"],["CREDIT_CARD","Credit Card"]].map(([val,label]) => (
+                      <SelectItem key={val} value={val}>{label}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -841,7 +841,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
               <Select value={advMethod} onValueChange={(val) => setAdvMethod(val ?? "CASH")}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  {["CASH", "UPI", "NEFT", "RTGS", "CHEQUE"].map((m) => (
+                  {["CASH", "UPI", "NEFT", "RTGS", "CHEQUE", "CREDIT_CARD"].map((m) => (
                     <SelectItem key={m} value={m}>{m}</SelectItem>
                   ))}
                 </SelectContent>
