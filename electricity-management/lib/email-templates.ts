@@ -425,9 +425,24 @@ export function maintenanceBillGeneratedEmail(params: {
   unitArea: number;
   ratePerSqFt: string;
   amount: string;
+  cgstRate: string;
+  sgstRate: string;
+  cgst: string;
+  sgst: string;
+  currentMonthTotal: string;
+  previousDue: string;
+  interestCharge: string;
+  netPayable: string;
   dueDate: string;
 }): string {
-  const { residentName, flatNo, billNumber, billingPeriod, unitArea, ratePerSqFt, amount, dueDate } = params;
+  const {
+    residentName, flatNo, billNumber, billingPeriod, unitArea, ratePerSqFt,
+    amount, cgstRate, sgstRate, cgst, sgst, currentMonthTotal,
+    previousDue, interestCharge, netPayable, dueDate,
+  } = params;
+
+  const hasPrevDue = parseFloat(previousDue) > 0;
+  const hasInterest = parseFloat(interestCharge) > 0;
 
   const body = `
     <tr><td style="padding:32px 32px 0;">
@@ -440,8 +455,8 @@ export function maintenanceBillGeneratedEmail(params: {
     <tr><td style="padding:24px 32px 0;">
       <table width="100%" cellpadding="0" cellspacing="0" style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;padding:20px;">
         <tr><td align="center">
-          <p style="margin:0;font-size:12px;font-weight:600;color:#1e40af;text-transform:uppercase;letter-spacing:1px;">Maintenance Amount Due</p>
-          <p style="margin:6px 0 0;font-size:36px;font-weight:bold;color:#1e3a5f;">Rs. ${amount}</p>
+          <p style="margin:0;font-size:12px;font-weight:600;color:#1e40af;text-transform:uppercase;letter-spacing:1px;">Net Payable Amount</p>
+          <p style="margin:6px 0 0;font-size:36px;font-weight:bold;color:#1e3a5f;">Rs. ${netPayable}</p>
           <p style="margin:4px 0 0;font-size:12px;color:#6b7280;">Due by: <strong style="color:#dc2626;">${dueDate}</strong></p>
         </td></tr>
       </table>
@@ -455,7 +470,13 @@ export function maintenanceBillGeneratedEmail(params: {
         ${row("Billing Period", billingPeriod)}
         ${row("Unit Area", `${unitArea} sq ft`)}
         ${row("Rate", `Rs. ${ratePerSqFt} per sq ft`)}
-        ${row("Total Amount Due", "Rs. " + amount, true)}
+        ${row("Maintenance Charge", "Rs. " + amount)}
+        ${row(`CGST @ ${cgstRate}%`, "Rs. " + cgst)}
+        ${row(`SGST @ ${sgstRate}%`, "Rs. " + sgst)}
+        ${row("Total Current Month Bill", "Rs. " + currentMonthTotal, true)}
+        ${hasPrevDue ? `<tr><td style="padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:13px;color:#dc2626;">Previous Due</td><td style="padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:13px;color:#dc2626;text-align:right;">Rs. ${previousDue}</td></tr>` : ""}
+        ${hasInterest ? `<tr><td style="padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:13px;color:#dc2626;">Interest Charge</td><td style="padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:13px;color:#dc2626;text-align:right;">Rs. ${interestCharge}</td></tr>` : ""}
+        ${row("Net Payable", "Rs. " + netPayable, true)}
       </table>
       <p style="margin:16px 0 0;font-size:12px;color:#6b7280;">Log in to the resident portal to pay online. Interest @ 24% p.a. applies after the due date.</p>
     </td></tr>

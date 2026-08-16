@@ -32,6 +32,19 @@ export async function POST(
   const recipientEmail = bill.connection.resident.user.email;
   if (!recipientEmail) return NextResponse.json({ error: "Resident has no email address" }, { status: 422 });
 
+  const siteConfig = await prisma.siteConfig.findUnique({ where: { id: "singleton" } });
+  const cgstRate = Number(siteConfig?.cgstRate ?? 0);
+  const sgstRate = Number(siteConfig?.sgstRate ?? 0);
+  const amount = Number(bill.amount);
+  const cgst = parseFloat((amount * cgstRate / 100).toFixed(2));
+  const sgst = parseFloat((amount * sgstRate / 100).toFixed(2));
+  const currentMonthTotal = parseFloat((amount + cgst + sgst).toFixed(2));
+  const previousDue = Number(bill.previousDue);
+  const interestCharge = Number(bill.interestCharge);
+  const paidAmount = Number(bill.paidAmount);
+  const netPayable = parseFloat((currentMonthTotal + previousDue + interestCharge - paidAmount).toFixed(2));
+
+  const fmt = (n: number) => n.toFixed(2);
   const billingPeriodStr = `${bill.billingPeriodStart.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })} – ${bill.billingPeriodEnd.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}`;
 
   try {
@@ -45,7 +58,15 @@ export async function POST(
         billingPeriod: billingPeriodStr,
         unitArea: Number(bill.unitArea),
         ratePerSqFt: Number(bill.ratePerSqFt).toFixed(2),
-        amount: Number(bill.amount).toFixed(2),
+        amount: fmt(amount),
+        cgstRate: fmt(cgstRate),
+        sgstRate: fmt(sgstRate),
+        cgst: fmt(cgst),
+        sgst: fmt(sgst),
+        currentMonthTotal: fmt(currentMonthTotal),
+        previousDue: fmt(previousDue),
+        interestCharge: fmt(interestCharge),
+        netPayable: fmt(netPayable),
         dueDate: bill.dueDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
       })
     );
