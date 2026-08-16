@@ -542,7 +542,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
                           Record Payment
                         </Button>
                       )}
-                      {canDelete && bill.status === "PENDING" && Number(bill.paidAmount) === 0 && (
+                      {canDelete && (
                         <Button
                           size="sm"
                           variant="ghost"
