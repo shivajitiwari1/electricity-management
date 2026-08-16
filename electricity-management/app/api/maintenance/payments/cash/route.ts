@@ -6,7 +6,7 @@ import { nextMaintenanceReceiptNumber } from "@/lib/maintenance-billing";
 import { sendEmail } from "@/lib/email";
 import { paymentSuccessEmail } from "@/lib/email-templates";
 
-const ALLOWED_METHODS = ["CASH", "UPI", "NEFT", "RTGS", "CHEQUE"] as const;
+const ALLOWED_METHODS = ["CASH", "UPI", "NEFT", "RTGS", "CHEQUE", "CREDIT_CARD", "ADJUSTMENT"] as const;
 type ManualMethod = (typeof ALLOWED_METHODS)[number];
 
 export async function POST(req: NextRequest) {
@@ -84,7 +84,7 @@ export async function POST(req: NextRequest) {
         method,
         status: "SUCCESS",
         receiptNumber,
-        razorpayPaymentId: referenceId ?? (method === "CASH" ? "CASH" : null),
+        razorpayPaymentId: referenceId ?? (method === "CASH" || method === "ADJUSTMENT" ? method : null),
       },
     });
     await tx.maintenanceBill.update({
@@ -94,20 +94,22 @@ export async function POST(req: NextRequest) {
     return newPayment;
   });
 
-  try {
-    const resident = bill.connection.resident;
-    const html = paymentSuccessEmail({
-      residentName: resident.user.name ?? "Resident",
-      flatNo: bill.connection.flatNo,
-      receiptNumber,
-      amount: payAmount.toFixed(2),
-      paymentDate: pDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
-      razorpayPaymentId: referenceId ?? method,
-      receiptUrl: "",
-    });
-    await sendEmail(resident.user.email, `Maintenance Payment Received — ${bill.billNumber}`, html);
-  } catch (err) {
-    console.error("Maintenance payment email failed:", err);
+  if (method !== "ADJUSTMENT") {
+    try {
+      const resident = bill.connection.resident;
+      const html = paymentSuccessEmail({
+        residentName: resident.user.name ?? "Resident",
+        flatNo: bill.connection.flatNo,
+        receiptNumber,
+        amount: payAmount.toFixed(2),
+        paymentDate: pDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
+        razorpayPaymentId: referenceId ?? method,
+        receiptUrl: "",
+      });
+      await sendEmail(resident.user.email, `Maintenance Payment Received — ${bill.billNumber}`, html);
+    } catch (err) {
+      console.error("Maintenance payment email failed:", err);
+    }
   }
 
   return NextResponse.json({ success: true, receiptNumber, paymentId: payment.id, isFullyPaid, newStatus });

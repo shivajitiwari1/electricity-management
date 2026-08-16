@@ -603,19 +603,24 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
                 <Select value={payMethod} onValueChange={(val) => setPayMethod(val ?? "CASH")}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    {[["CASH","Cash"],["UPI","UPI"],["NEFT","NEFT"],["RTGS","RTGS"],["CHEQUE","Cheque"],["CREDIT_CARD","Credit Card"]].map(([val,label]) => (
+                    {[["CASH","Cash"],["UPI","UPI"],["NEFT","NEFT"],["RTGS","RTGS"],["CHEQUE","Cheque"],["CREDIT_CARD","Credit Card"],["ADJUSTMENT","Adjustment / Rebate"]].map(([val,label]) => (
                       <SelectItem key={val} value={val}>{label}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
+                {payMethod === "ADJUSTMENT" && (
+                  <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1 mt-1">
+                    Adjustment reduces the outstanding amount without sending a payment email.
+                  </p>
+                )}
               </div>
               <div className="space-y-1">
                 <Label>Payment Date</Label>
                 <Input type="date" value={payDate} onChange={(e) => setPayDate(e.target.value)} />
               </div>
               <div className="space-y-1">
-                <Label>Reference / Transaction ID (optional)</Label>
-                <Input value={payRef} onChange={(e) => setPayRef(e.target.value)} placeholder="UTR / cheque no." />
+                <Label>{payMethod === "ADJUSTMENT" ? "Reason (optional)" : "Reference / Transaction ID (optional)"}</Label>
+                <Input value={payRef} onChange={(e) => setPayRef(e.target.value)} placeholder={payMethod === "ADJUSTMENT" ? "e.g. Society waiver, early payment rebate…" : "UTR / cheque no."} />
               </div>
               <div className="flex gap-2 justify-end">
                 <Button variant="outline" onClick={() => setPayBill(null)}>Cancel</Button>
@@ -873,11 +878,16 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
               <Select value={advMethod} onValueChange={(val) => setAdvMethod(val ?? "CASH")}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  {[["CASH","Cash"],["UPI","UPI"],["NEFT","NEFT"],["RTGS","RTGS"],["CHEQUE","Cheque"],["CREDIT_CARD","Credit Card"]].map(([val,label]) => (
+                  {[["CASH","Cash"],["UPI","UPI"],["NEFT","NEFT"],["RTGS","RTGS"],["CHEQUE","Cheque"],["CREDIT_CARD","Credit Card"],["ADJUSTMENT","Adjustment / Waiver"]].map(([val,label]) => (
                     <SelectItem key={val} value={val}>{label}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
+              {advMethod === "ADJUSTMENT" && (
+                <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1 mt-1">
+                  Bills will be generated and marked as waived — no payment email is sent.
+                </p>
+              )}
             </div>
             <div className="space-y-1">
               <Label>Payment Date</Label>
@@ -888,11 +898,11 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
               />
             </div>
             <div className="space-y-1">
-              <Label>Reference / UTR (optional)</Label>
+              <Label>{advMethod === "ADJUSTMENT" ? "Reason (optional)" : "Reference / UTR (optional)"}</Label>
               <Input
                 value={advRef}
                 onChange={(e) => setAdvRef(e.target.value)}
-                placeholder="UTR / cheque no."
+                placeholder={advMethod === "ADJUSTMENT" ? "e.g. Society waiver, festive discount…" : "UTR / cheque no."}
               />
             </div>
             <div className="flex gap-2 justify-end">
