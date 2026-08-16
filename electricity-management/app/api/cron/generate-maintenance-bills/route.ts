@@ -68,13 +68,19 @@ function sendBillEmails(
   periodEnd: Date,
   dueDate: Date,
   logPrefix: string,
+  cgstRate: number,
+  sgstRate: number,
 ) {
   const billingPeriodStr = `${periodStart.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })} – ${periodEnd.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}`;
   const subject = `Maintenance Bill — ${periodStart.toLocaleString("en-IN", { month: "long", year: "numeric" })}`;
+  const fmt = (n: number) => n.toFixed(2);
 
   return Promise.allSettled(
     toCreate.map(async (c) => {
-      const amount = Number(c.unitArea) * Number(rate.ratePerSqFt);
+      const baseAmount = Number(c.unitArea) * Number(rate.ratePerSqFt);
+      const cgst = parseFloat((baseAmount * cgstRate / 100).toFixed(2));
+      const sgst = parseFloat((baseAmount * sgstRate / 100).toFixed(2));
+      const currentMonthTotal = parseFloat((baseAmount + cgst + sgst).toFixed(2));
       const billNumber = generateMaintenanceBillNumber(c.flatNo, periodStart);
       try {
         const html = maintenanceBillGeneratedEmail({
@@ -84,7 +90,15 @@ function sendBillEmails(
           billingPeriod: billingPeriodStr,
           unitArea: Number(c.unitArea),
           ratePerSqFt: Number(rate.ratePerSqFt).toFixed(2),
-          amount: amount.toFixed(2),
+          amount: fmt(baseAmount),
+          cgstRate: fmt(cgstRate),
+          sgstRate: fmt(sgstRate),
+          cgst: fmt(cgst),
+          sgst: fmt(sgst),
+          currentMonthTotal: fmt(currentMonthTotal),
+          previousDue: "0.00",
+          interestCharge: "0.00",
+          netPayable: fmt(currentMonthTotal),
           dueDate: dueDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
         });
         await sendEmail(c.resident.user.email, `${subject} — ${c.flatNo}`, html);
@@ -146,7 +160,7 @@ export async function GET(req: NextRequest) {
   const result = await createBillsBatch(connections, rate, periodStart, periodEnd, now);
 
   if (result.toCreate.length > 0) {
-    await sendBillEmails(result.toCreate, rate, periodStart, periodEnd, result.dueDate!, "cron:maintenance");
+    await sendBillEmails(result.toCreate, rate, periodStart, periodEnd, result.dueDate!, "cron:maintenance", Number(siteConfig.cgstRate ?? 0), Number(siteConfig.sgstRate ?? 0));
   }
 
   return NextResponse.json({ success: true, created: result.created, skipped: result.skipped });
@@ -193,7 +207,7 @@ export async function POST(req: NextRequest) {
   const result = await createBillsBatch(connections, rate, periodStart, periodEnd, now);
 
   if (result.toCreate.length > 0) {
-    await sendBillEmails(result.toCreate, rate, periodStart, periodEnd, result.dueDate!, "admin:maintenance");
+    await sendBillEmails(result.toCreate, rate, periodStart, periodEnd, result.dueDate!, "admin:maintenance", Number(siteConfig.cgstRate ?? 0), Number(siteConfig.sgstRate ?? 0));
   }
 
   return NextResponse.json({ success: true, created: result.created, skipped: result.skipped });

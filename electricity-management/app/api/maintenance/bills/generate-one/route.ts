@@ -82,6 +82,16 @@ export async function POST(req: NextRequest) {
     },
   });
 
+  const cgstRate = Number(siteConfig.cgstRate ?? 0);
+  const sgstRate = Number(siteConfig.sgstRate ?? 0);
+  const baseAmount = Number(connection.unitArea) * Number(rate.ratePerSqFt);
+  const cgst = parseFloat((baseAmount * cgstRate / 100).toFixed(2));
+  const sgst = parseFloat((baseAmount * sgstRate / 100).toFixed(2));
+  const currentMonthTotal = parseFloat((baseAmount + cgst + sgst).toFixed(2));
+  const prevDueNum = previousDue ? Number(previousDue) : 0;
+  const netPayable = parseFloat((currentMonthTotal + prevDueNum).toFixed(2));
+  const fmt = (n: number) => n.toFixed(2);
+
   const billingPeriodStr = `${periodStart.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })} – ${periodEnd.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}`;
   try {
     await sendEmail(
@@ -94,7 +104,15 @@ export async function POST(req: NextRequest) {
         billingPeriod: billingPeriodStr,
         unitArea: Number(connection.unitArea),
         ratePerSqFt: Number(rate.ratePerSqFt).toFixed(2),
-        amount: (Number(connection.unitArea) * Number(rate.ratePerSqFt)).toFixed(2),
+        amount: fmt(baseAmount),
+        cgstRate: fmt(cgstRate),
+        sgstRate: fmt(sgstRate),
+        cgst: fmt(cgst),
+        sgst: fmt(sgst),
+        currentMonthTotal: fmt(currentMonthTotal),
+        previousDue: fmt(prevDueNum),
+        interestCharge: "0.00",
+        netPayable: fmt(netPayable),
         dueDate: dueDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
       })
     );
