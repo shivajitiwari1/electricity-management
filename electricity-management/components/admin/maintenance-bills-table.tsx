@@ -86,6 +86,8 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
     return next.toISOString().slice(0, 7);
   });
   const [advAmount, setAdvAmount] = useState("");
+  const [advCgstRate, setAdvCgstRate] = useState(0);
+  const [advSgstRate, setAdvSgstRate] = useState(0);
   const [advMethod, setAdvMethod] = useState("CASH");
   const [advDate, setAdvDate] = useState(new Date().toISOString().slice(0, 10));
   const [advRef, setAdvRef] = useState("");
@@ -173,12 +175,16 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
   const loadConnections = async () => {
     if (advConnections.length > 0) return;
     try {
-      const [connRes, rateRes] = await Promise.all([
+      const [connRes, rateRes, gstRes] = await Promise.all([
         fetch("/api/connections?status=ACTIVE"),
         fetch("/api/maintenance/rates"),
+        fetch("/api/maintenance/gst-config"),
       ]);
       const conns = connRes.ok ? await connRes.json() : [];
       const rates = rateRes.ok ? await rateRes.json() : [];
+      const gst = gstRes.ok ? await gstRes.json() : { cgstRate: 0, sgstRate: 0 };
+      setAdvCgstRate(Number(gst.cgstRate ?? 0));
+      setAdvSgstRate(Number(gst.sgstRate ?? 0));
       const currentRate = rates[0]?.ratePerSqFt ?? 0;
       setAdvConnections(
         conns.map((c: { id: string; flatNo: string; tower: string; unitArea: number; resident?: { user?: { name?: string } } }) => ({
@@ -247,9 +253,11 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
     }
   };
 
-  const advTotal = advAmount && advMonths
-    ? (parseFloat(advAmount) * advMonths).toFixed(2)
-    : "0.00";
+  const advBase = parseFloat(advAmount) || 0;
+  const advCgst = parseFloat((advBase * advCgstRate / 100).toFixed(2));
+  const advSgst = parseFloat((advBase * advSgstRate / 100).toFixed(2));
+  const advMonthlyWithGst = parseFloat((advBase + advCgst + advSgst).toFixed(2));
+  const advTotal = advMonthlyWithGst > 0 ? (advMonthlyWithGst * advMonths).toFixed(2) : "0.00";
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
@@ -832,17 +840,41 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
                 onChange={(e) => setAdvAmount(e.target.value)}
               />
             </div>
-            <div className="bg-gray-50 rounded-md px-3 py-2 text-sm flex justify-between">
-              <span className="text-gray-500">Total ({advMonths} months)</span>
-              <strong>₹{Number(advTotal).toLocaleString("en-IN", { minimumFractionDigits: 2 })}</strong>
+            <div className="bg-gray-50 rounded-md px-3 py-2 text-sm space-y-1.5">
+              <div className="flex justify-between">
+                <span className="text-gray-500">Base Amount / Month</span>
+                <span>{fmtINR(advBase)}</span>
+              </div>
+              {advCgstRate > 0 && (
+                <div className="flex justify-between">
+                  <span className="text-gray-500">CGST ({advCgstRate}%)</span>
+                  <span>{fmtINR(advCgst)}</span>
+                </div>
+              )}
+              {advSgstRate > 0 && (
+                <div className="flex justify-between">
+                  <span className="text-gray-500">SGST ({advSgstRate}%)</span>
+                  <span>{fmtINR(advSgst)}</span>
+                </div>
+              )}
+              {(advCgstRate > 0 || advSgstRate > 0) && (
+                <div className="flex justify-between border-t border-gray-200 pt-1.5">
+                  <span className="text-gray-500">Monthly Total (incl. GST)</span>
+                  <span className="font-medium">{fmtINR(advMonthlyWithGst)}</span>
+                </div>
+              )}
+              <div className="flex justify-between border-t border-gray-200 pt-1.5">
+                <span className="text-gray-500">Grand Total ({advMonths} months)</span>
+                <strong>₹{Number(advTotal).toLocaleString("en-IN", { minimumFractionDigits: 2 })}</strong>
+              </div>
             </div>
             <div className="space-y-1">
               <Label>Method</Label>
               <Select value={advMethod} onValueChange={(val) => setAdvMethod(val ?? "CASH")}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  {["CASH", "UPI", "NEFT", "RTGS", "CHEQUE", "CREDIT_CARD"].map((m) => (
-                    <SelectItem key={m} value={m}>{m}</SelectItem>
+                  {[["CASH","Cash"],["UPI","UPI"],["NEFT","NEFT"],["RTGS","RTGS"],["CHEQUE","Cheque"],["CREDIT_CARD","Credit Card"]].map(([val,label]) => (
+                    <SelectItem key={val} value={val}>{label}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
