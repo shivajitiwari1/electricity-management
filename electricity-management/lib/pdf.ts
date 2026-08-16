@@ -36,6 +36,7 @@ export interface ReceiptData {
   paymentDate: Date;
   razorpayPaymentId?: string;
   method: string;
+  rebateAmount?: number;
 }
 
 function formatDate(date: Date): string {
@@ -383,11 +384,27 @@ export function generateReceiptPdf(data: ReceiptData): Promise<Buffer> {
 
     // ── Amount box ────────────────────────────────────────────────────────
     y += 14;
-    doc.rect(L, y, CW, 80).fill("#eef2ff");
-    doc.fillColor("#4b5563").font("Helvetica").fontSize(8)
-      .text("TOTAL AMOUNT PAID", L, y + 14, { width: CW, align: "center" });
-    doc.fillColor("#1e3a5f").font("Helvetica-Bold").fontSize(28)
-      .text(`Rs. ${formatCurrency(data.amount)}`, L, y + 28, { width: CW, align: "center" });
+    if (data.rebateAmount && data.rebateAmount > 0) {
+      doc.rect(L, y, CW, 110).fill("#eef2ff");
+      doc.fillColor("#4b5563").font("Helvetica").fontSize(8)
+        .text("AMOUNT PAID (CASH)", L, y + 10, { width: CW, align: "center" });
+      doc.fillColor("#1e3a5f").font("Helvetica-Bold").fontSize(22)
+        .text(`Rs. ${formatCurrency(data.amount)}`, L, y + 22, { width: CW, align: "center" });
+      doc.fillColor("#4b5563").font("Helvetica").fontSize(8)
+        .text("REBATE / WAIVER", L, y + 52, { width: CW, align: "center" });
+      doc.fillColor("#16a34a").font("Helvetica-Bold").fontSize(14)
+        .text(`− Rs. ${formatCurrency(data.rebateAmount)}`, L, y + 64, { width: CW, align: "center" });
+      doc.moveTo(L + 120, y + 84).lineTo(L + CW - 120, y + 84).strokeColor("#1e3a5f").lineWidth(0.5).stroke();
+      doc.fillColor("#1e3a5f").font("Helvetica-Bold").fontSize(11)
+        .text(`Total Settled: Rs. ${formatCurrency(data.amount + data.rebateAmount)}`, L, y + 90, { width: CW, align: "center" });
+      y += 26; // extra height for rebate section
+    } else {
+      doc.rect(L, y, CW, 80).fill("#eef2ff");
+      doc.fillColor("#4b5563").font("Helvetica").fontSize(8)
+        .text("TOTAL AMOUNT PAID", L, y + 14, { width: CW, align: "center" });
+      doc.fillColor("#1e3a5f").font("Helvetica-Bold").fontSize(28)
+        .text(`Rs. ${formatCurrency(data.amount)}`, L, y + 28, { width: CW, align: "center" });
+    }
 
     // ── Confirmation box ──────────────────────────────────────────────────
     y += 96;
@@ -435,6 +452,7 @@ export interface MaintenanceBillPdfData {
   interestCharge: number;
   previousDue: number;
   paidAmount: number;
+  rebateAmount?: number;
   status: string;
   cgstRate: number;
   sgstRate: number;
@@ -544,7 +562,10 @@ export function generateMaintenanceBillPdf(data: MaintenanceBillPdfData): Promis
       chargeRows.push([`Interest Charge (24% p.a. overdue)`, data.interestCharge, true, false, false, false]);
     }
     if (data.paidAmount > 0) {
-      chargeRows.push([`Amount Already Paid`, -data.paidAmount, false, false, false, false]);
+      chargeRows.push([`Amount Paid (Cash)`, -data.paidAmount, false, false, false, false]);
+    }
+    if (data.rebateAmount && data.rebateAmount > 0) {
+      chargeRows.push([`Rebate / Waiver`, -data.rebateAmount, false, false, false, false]);
     }
 
     for (let i = 0; i < chargeRows.length; i++) {
@@ -572,7 +593,7 @@ export function generateMaintenanceBillPdf(data: MaintenanceBillPdfData): Promis
     }
 
     // ── Net payable box ──────────────────────────────────────
-    const netPayable = r2(currentMonthTotal + data.previousDue + data.interestCharge - data.paidAmount);
+    const netPayable = r2(currentMonthTotal + data.previousDue + data.interestCharge - data.paidAmount - (data.rebateAmount ?? 0));
     y += 8;
     doc.rect(L, y, CW, 80).fill("#eef2ff");
     doc.fillColor("#4b5563").font("Helvetica").fontSize(8)

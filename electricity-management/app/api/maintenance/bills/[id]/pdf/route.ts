@@ -23,6 +23,7 @@ export async function GET(
             resident: { include: { user: { select: { name: true, id: true } } } },
           },
         },
+        payments: { select: { method: true, amount: true } },
       },
     }),
     prisma.siteConfig.upsert({
@@ -44,6 +45,11 @@ export async function GET(
     if (guard) return guard;
   }
 
+  const rebateTotal = bill.payments
+    .filter((p) => p.method === "ADJUSTMENT")
+    .reduce((s, p) => s + Number(p.amount), 0);
+  const cashPaid = Number(bill.paidAmount) - rebateTotal;
+
   const pdfBuffer = await generateMaintenanceBillPdf({
     billNumber: bill.billNumber,
     flatNo: bill.connection.flatNo,
@@ -57,7 +63,8 @@ export async function GET(
     amount: Number(bill.amount),
     previousDue: Number(bill.previousDue),
     interestCharge: Number(bill.interestCharge),
-    paidAmount: Number(bill.paidAmount),
+    paidAmount: cashPaid > 0 ? cashPaid : 0,
+    rebateAmount: rebateTotal > 0 ? rebateTotal : undefined,
     status: bill.status,
     cgstRate: Number(siteConfig.cgstRate),
     sgstRate: Number(siteConfig.sgstRate),

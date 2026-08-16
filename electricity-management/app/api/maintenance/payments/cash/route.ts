@@ -25,12 +25,14 @@ export async function POST(req: NextRequest) {
     method: methodParam = "CASH",
     referenceId = null,
     paymentDate: paymentDateParam = null,
+    rebateAmount: rebateParam,
   } = body as {
     maintenanceBillId?: string;
     amount?: number;
     method?: string;
     referenceId?: string | null;
     paymentDate?: string | null;
+    rebateAmount?: number;
   };
 
   if (!maintenanceBillId) {
@@ -61,15 +63,19 @@ export async function POST(req: NextRequest) {
 
   if (remaining <= 0) return NextResponse.json({ error: "Bill already fully paid" }, { status: 409 });
 
-  let payAmount = amountParam != null ? Number(amountParam) : remaining;
-  if (isNaN(payAmount) || payAmount <= 0) {
-    return NextResponse.json({ error: "Amount must be greater than 0" }, { status: 400 });
+  const rebateAmount = rebateParam != null && !isNaN(Number(rebateParam)) && Number(rebateParam) > 0
+    ? Math.min(Number(rebateParam), remaining)
+    : 0;
+
+  let payAmount = amountParam != null ? Number(amountParam) : remaining - rebateAmount;
+  if (isNaN(payAmount) || payAmount < 0) {
+    return NextResponse.json({ error: "Amount must be 0 or greater" }, { status: 400 });
   }
-  if (payAmount > remaining + 0.01) {
-    return NextResponse.json({ error: `Amount cannot exceed remaining balance of ₹${remaining.toFixed(2)}` }, { status: 400 });
+  if (payAmount + rebateAmount > remaining + 0.01) {
+    return NextResponse.json({ error: `Total (payment + rebate) cannot exceed remaining balance of ₹${remaining.toFixed(2)}` }, { status: 400 });
   }
 
-  const newPaidAmount = alreadyPaid + payAmount;
+  const newPaidAmount = alreadyPaid + payAmount + rebateAmount;
   const isFullyPaid = newPaidAmount >= totalDue - 0.01;
   const newStatus = isFullyPaid ? "PAID" : "PARTIAL";
   const receiptNumber = await nextMaintenanceReceiptNumber();
@@ -84,9 +90,23 @@ export async function POST(req: NextRequest) {
         method,
         status: "SUCCESS",
         receiptNumber,
-        razorpayPaymentId: referenceId ?? (method === "CASH" || method === "ADJUSTMENT" ? method : null),
+        razorpayPaymentId: referenceId ?? (method === "CASH" ? "CASH" : null),
       },
     });
+    if (rebateAmount > 0) {
+      const rebateReceipt = await nextMaintenanceReceiptNumber();
+      await tx.maintenancePayment.create({
+        data: {
+          maintenanceBillId,
+          amount: rebateAmount,
+          paymentDate: pDate,
+          method: "ADJUSTMENT",
+          status: "SUCCESS",
+          receiptNumber: rebateReceipt,
+          razorpayPaymentId: referenceId ? `Rebate: ${referenceId}` : "Rebate/Waiver",
+        },
+      });
+    }
     await tx.maintenanceBill.update({
       where: { id: maintenanceBillId },
       data: { status: newStatus, paidAmount: newPaidAmount },
@@ -105,6 +125,7 @@ export async function POST(req: NextRequest) {
         paymentDate: pDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
         razorpayPaymentId: referenceId ?? method,
         receiptUrl: "",
+        rebateAmount: rebateAmount > 0 ? rebateAmount.toFixed(2) : undefined,
       });
       await sendEmail(resident.user.email, `Maintenance Payment Received — ${bill.billNumber}`, html);
     } catch (err) {

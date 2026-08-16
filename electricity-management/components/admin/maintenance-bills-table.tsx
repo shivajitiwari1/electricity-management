@@ -62,6 +62,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
   const [payMethod, setPayMethod] = useState("CASH");
   const [payDate, setPayDate] = useState("");
   const [payRef, setPayRef] = useState("");
+  const [payRebate, setPayRebate] = useState("");
   const [paying, setPaying] = useState(false);
   const [detailBill, setDetailBill] = useState<MaintenanceBillRow | null>(null);
 
@@ -91,6 +92,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
   const [advMethod, setAdvMethod] = useState("CASH");
   const [advDate, setAdvDate] = useState(new Date().toISOString().slice(0, 10));
   const [advRef, setAdvRef] = useState("");
+  const [advRebate, setAdvRebate] = useState("");
   const [advSubmitting, setAdvSubmitting] = useState(false);
 
   useEffect(() => { fetchBills(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -131,12 +133,13 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
           method: payMethod,
           referenceId: payRef || null,
           paymentDate: payDate || null,
+          rebateAmount: payRebate ? parseFloat(payRebate) : undefined,
         }),
       });
       const data = await res.json();
       if (!res.ok) { toast.error(data.error ?? "Payment failed"); return; }
       toast.success(`Recorded. Receipt: ${data.receiptNumber}`);
-      setPayBill(null); setPayAmount(""); setPayMethod("CASH"); setPayDate(""); setPayRef("");
+      setPayBill(null); setPayAmount(""); setPayMethod("CASH"); setPayDate(""); setPayRef(""); setPayRebate("");
       await fetchBills();
     } finally { setPaying(false); }
   };
@@ -284,6 +287,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
           method: advMethod,
           paymentDate: advDate,
           referenceId: advRef || null,
+          rebateAmount: advRebate ? parseFloat(advRebate) : undefined,
         }),
       });
       const data = await res.json();
@@ -297,6 +301,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
         }`
       );
       setAdvanceOpen(false);
+      setAdvRebate("");
       await fetchBills();
     } finally {
       setAdvSubmitting(false);
@@ -603,24 +608,47 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
                 <Select value={payMethod} onValueChange={(val) => setPayMethod(val ?? "CASH")}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    {[["CASH","Cash"],["UPI","UPI"],["NEFT","NEFT"],["RTGS","RTGS"],["CHEQUE","Cheque"],["CREDIT_CARD","Credit Card"],["ADJUSTMENT","Adjustment / Rebate"]].map(([val,label]) => (
+                    {[["CASH","Cash"],["UPI","UPI"],["NEFT","NEFT"],["RTGS","RTGS"],["CHEQUE","Cheque"],["CREDIT_CARD","Credit Card"]].map(([val,label]) => (
                       <SelectItem key={val} value={val}>{label}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
-                {payMethod === "ADJUSTMENT" && (
-                  <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1 mt-1">
-                    Adjustment reduces the outstanding amount without sending a payment email.
-                  </p>
-                )}
+              </div>
+              <div className="space-y-1">
+                <Label>Rebate / Waiver (₹) <span className="text-muted-foreground font-normal text-xs">(optional)</span></Label>
+                <Input
+                  type="number" step="0.01" min="0"
+                  value={payRebate}
+                  onChange={(e) => {
+                    setPayRebate(e.target.value);
+                    if (payBill) {
+                      const outstanding = Number(payBill.amount) + Number(payBill.interestCharge) - Number(payBill.paidAmount);
+                      const rebate = parseFloat(e.target.value) || 0;
+                      setPayAmount((outstanding - rebate).toFixed(2));
+                    }
+                  }}
+                  placeholder="0.00"
+                />
+                {payRebate && parseFloat(payRebate) > 0 && payBill && (() => {
+                  const outstanding = Number(payBill.amount) + Number(payBill.interestCharge) - Number(payBill.paidAmount);
+                  const rebate = parseFloat(payRebate) || 0;
+                  const net = outstanding - rebate;
+                  return (
+                    <div className="text-xs bg-blue-50 border border-blue-200 rounded px-2 py-1.5 space-y-0.5 mt-1">
+                      <div className="flex justify-between text-gray-500"><span>Outstanding</span><span>{fmtINR(outstanding)}</span></div>
+                      <div className="flex justify-between text-green-700"><span>Rebate / Waiver</span><span>− {fmtINR(rebate)}</span></div>
+                      <div className="flex justify-between font-semibold text-blue-800 border-t border-blue-200 pt-1"><span>Net Payable</span><span>{fmtINR(net > 0 ? net : 0)}</span></div>
+                    </div>
+                  );
+                })()}
+              </div>
+              <div className="space-y-1">
+                <Label>Reference / Notes <span className="text-muted-foreground font-normal text-xs">(optional)</span></Label>
+                <Input value={payRef} onChange={(e) => setPayRef(e.target.value)} placeholder="UTR, cheque no., rebate reason…" />
               </div>
               <div className="space-y-1">
                 <Label>Payment Date</Label>
                 <Input type="date" value={payDate} onChange={(e) => setPayDate(e.target.value)} />
-              </div>
-              <div className="space-y-1">
-                <Label>{payMethod === "ADJUSTMENT" ? "Reason (optional)" : "Reference / Transaction ID (optional)"}</Label>
-                <Input value={payRef} onChange={(e) => setPayRef(e.target.value)} placeholder={payMethod === "ADJUSTMENT" ? "e.g. Society waiver, early payment rebate…" : "UTR / cheque no."} />
               </div>
               <div className="flex gap-2 justify-end">
                 <Button variant="outline" onClick={() => setPayBill(null)}>Cancel</Button>
@@ -872,22 +900,46 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
                 <span className="text-gray-500">Grand Total ({advMonths} months)</span>
                 <strong>₹{Number(advTotal).toLocaleString("en-IN", { minimumFractionDigits: 2 })}</strong>
               </div>
+              {advRebate && parseFloat(advRebate) > 0 && (
+                <>
+                  <div className="flex justify-between text-green-700 border-t border-gray-200 pt-1.5">
+                    <span>Rebate / Waiver</span>
+                    <span>− {fmtINR(parseFloat(advRebate))}</span>
+                  </div>
+                  <div className="flex justify-between font-semibold text-blue-800 border-t border-gray-200 pt-1.5">
+                    <span>Net Payable</span>
+                    <strong>{fmtINR(Math.max(0, Number(advTotal) - parseFloat(advRebate)))}</strong>
+                  </div>
+                </>
+              )}
             </div>
             <div className="space-y-1">
               <Label>Method</Label>
               <Select value={advMethod} onValueChange={(val) => setAdvMethod(val ?? "CASH")}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  {[["CASH","Cash"],["UPI","UPI"],["NEFT","NEFT"],["RTGS","RTGS"],["CHEQUE","Cheque"],["CREDIT_CARD","Credit Card"],["ADJUSTMENT","Adjustment / Waiver"]].map(([val,label]) => (
+                  {[["CASH","Cash"],["UPI","UPI"],["NEFT","NEFT"],["RTGS","RTGS"],["CHEQUE","Cheque"],["CREDIT_CARD","Credit Card"]].map(([val,label]) => (
                     <SelectItem key={val} value={val}>{label}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
-              {advMethod === "ADJUSTMENT" && (
-                <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1 mt-1">
-                  Bills will be generated and marked as waived — no payment email is sent.
-                </p>
-              )}
+            </div>
+            <div className="space-y-1">
+              <Label>Rebate / Waiver (₹) <span className="text-muted-foreground font-normal text-xs">(optional)</span></Label>
+              <Input
+                type="number" step="0.01" min="0"
+                value={advRebate}
+                onChange={(e) => setAdvRebate(e.target.value)}
+                placeholder="0.00"
+              />
+            </div>
+            <div className="space-y-1">
+              <Label>Reference / Notes <span className="text-muted-foreground font-normal text-xs">(optional)</span></Label>
+              <Input
+                value={advRef}
+                onChange={(e) => setAdvRef(e.target.value)}
+                placeholder="UTR, cheque no., rebate reason…"
+              />
             </div>
             <div className="space-y-1">
               <Label>Payment Date</Label>
@@ -895,14 +947,6 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
                 type="date"
                 value={advDate}
                 onChange={(e) => setAdvDate(e.target.value)}
-              />
-            </div>
-            <div className="space-y-1">
-              <Label>{advMethod === "ADJUSTMENT" ? "Reason (optional)" : "Reference / UTR (optional)"}</Label>
-              <Input
-                value={advRef}
-                onChange={(e) => setAdvRef(e.target.value)}
-                placeholder={advMethod === "ADJUSTMENT" ? "e.g. Society waiver, festive discount…" : "UTR / cheque no."}
               />
             </div>
             <div className="flex gap-2 justify-end">

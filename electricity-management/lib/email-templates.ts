@@ -142,8 +142,9 @@ export function paymentSuccessEmail(params: {
   paymentDate: string;
   razorpayPaymentId: string;
   receiptUrl: string;
+  rebateAmount?: string;
 }): string {
-  const { residentName, flatNo, receiptNumber, amount, paymentDate, razorpayPaymentId, receiptUrl } = params;
+  const { residentName, flatNo, receiptNumber, amount, paymentDate, razorpayPaymentId, receiptUrl, rebateAmount } = params;
 
   const body = `
     <tr><td style="padding:32px 32px 0;">
@@ -181,7 +182,9 @@ export function paymentSuccessEmail(params: {
       <table width="100%" cellpadding="0" cellspacing="0">
         ${row("Receipt Number", receiptNumber)}
         ${row("Flat No", flatNo)}
-        ${row("Amount Paid", "Rs. " + amount, true)}
+        ${rebateAmount ? row("Amount Paid (Cash)", "Rs. " + amount) : row("Amount Paid", "Rs. " + amount, true)}
+        ${rebateAmount ? row("Rebate / Waiver", "Rs. " + rebateAmount) : ""}
+        ${rebateAmount ? row("Total Settled", "Rs. " + (Number(amount) + Number(rebateAmount)).toFixed(2), true) : ""}
         ${row("Payment Date", paymentDate)}
         ${row("Transaction ID", razorpayPaymentId || "—")}
       </table>
