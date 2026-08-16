@@ -9,10 +9,10 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth();
-  const guard = await guardPermission(session as any, "maintenance", "canRead");
-  if (guard) return guard;
+  if (!session) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const { id } = await params;
+  const role = (session.user as any).role;
 
   const [bill, siteConfig] = await Promise.all([
     prisma.maintenanceBill.findUnique({
@@ -20,7 +20,7 @@ export async function GET(
       include: {
         connection: {
           include: {
-            resident: { include: { user: { select: { name: true } } } },
+            resident: { include: { user: { select: { name: true, id: true } } } },
           },
         },
       },
@@ -33,6 +33,16 @@ export async function GET(
   ]);
 
   if (!bill) return NextResponse.json({ error: "Bill not found" }, { status: 404 });
+
+  // Residents can only access their own bills; admins/managers pass through
+  if (role === "RESIDENT") {
+    if (bill.connection.resident.user.id !== session.user.id) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+  } else {
+    const guard = await guardPermission(session as any, "maintenance", "canRead");
+    if (guard) return guard;
+  }
 
   const pdfBuffer = await generateMaintenanceBillPdf({
     billNumber: bill.billNumber,
