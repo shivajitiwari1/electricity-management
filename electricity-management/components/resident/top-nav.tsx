@@ -8,20 +8,30 @@ import { Home, FileText, CreditCard, User, LogOut, Zap, Wrench } from "lucide-re
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 
-const navItems = [
+const baseNavItems = [
   { href: "/resident/dashboard", label: "Dashboard", icon: Home },
   { href: "/resident/bills", label: "Bills", icon: FileText },
   { href: "/resident/payments", label: "Payments", icon: CreditCard },
-  // { href: "/resident/maintenance", label: "Maintenance", icon: Wrench }, // hidden — re-enable when maintenance module is activated
   { href: "/resident/profile", label: "Profile", icon: User },
 ];
 
 interface Props {
   user: { name?: string | null; email?: string | null };
+  maintenanceEnabled?: boolean;
 }
 
-export default function ResidentNav({ user }: Props) {
+export default function ResidentNav({ user, maintenanceEnabled = false }: Props) {
   const pathname = usePathname();
+
+  const navItems = maintenanceEnabled
+    ? [
+        baseNavItems[0],
+        baseNavItems[1],
+        baseNavItems[2],
+        { href: "/resident/maintenance", label: "Maintenance", icon: Wrench },
+        baseNavItems[3],
+      ]
+    : baseNavItems;
 
   return (
     <header className="bg-card border-b border-border shadow-sm sticky top-0 z-10">

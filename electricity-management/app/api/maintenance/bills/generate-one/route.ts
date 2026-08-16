@@ -10,7 +10,12 @@ export async function POST(req: NextRequest) {
   const isAdmin = (session?.user as any)?.role === "ADMIN";
   if (!isAdmin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { connectionId, month } = await req.json();
+  const siteConfig = await prisma.siteConfig.findUnique({ where: { id: "singleton" } });
+  if (!siteConfig?.maintenanceBillingEnabled) {
+    return NextResponse.json({ error: "Maintenance billing is currently disabled" }, { status: 422 });
+  }
+
+  const { connectionId, month, previousDue } = await req.json();
 
   if (!connectionId || !month) {
     return NextResponse.json({ error: "connectionId and month required" }, { status: 400 });
@@ -70,6 +75,7 @@ export async function POST(req: NextRequest) {
       unitArea: Number(connection.unitArea),
       ratePerSqFt: Number(rate.ratePerSqFt),
       amount: Number(connection.unitArea) * Number(rate.ratePerSqFt),
+      previousDue: previousDue ? Number(previousDue) : 0,
       paidAmount: 0,
       interestCharge: 0,
       status: "PENDING",

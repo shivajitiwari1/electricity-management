@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { FileDown, FileSpreadsheet, Receipt, ChevronsUpDown, FilePlus2, Users } from "lucide-react";
+import { FileDown, FileSpreadsheet, Receipt, ChevronsUpDown, FilePlus2, Users, Trash2, Mail } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 
@@ -22,6 +22,7 @@ export interface MaintenanceBillRow {
   residentName: string;
   unitArea: number;
   amount: string;
+  previousDue: string;
   paidAmount: string;
   interestCharge: string;
   dueDate: string;
@@ -48,7 +49,7 @@ const fmtINR = (v: string | number) =>
 const fmtDate = (d: string) =>
   new Date(d).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
 
-export default function MaintenanceBillsTable({ initialData, canWrite }: { initialData: MaintenanceBillRow[]; canWrite: boolean }) {
+export default function MaintenanceBillsTable({ initialData, canWrite, canDelete }: { initialData: MaintenanceBillRow[]; canWrite: boolean; canDelete: boolean }) {
   const currentMonth = new Date().toISOString().slice(0, 7);
   const [bills, setBills] = useState(initialData);
   const [search, setSearch] = useState("");
@@ -66,11 +67,12 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
 
   // Generate Bills state
   const [genOpen, setGenOpen] = useState(false);
-  const [genMode, setGenMode] = useState<"all" | "individual">("all");
+  const [genMode, setGenMode] = useState<"all" | "individual">("individual");
   const [genMonth, setGenMonth] = useState(currentMonth);
   const [genConnId, setGenConnId] = useState("");
   const [genConnOpen, setGenConnOpen] = useState(false);
   const [genLoading, setGenLoading] = useState(false);
+  const [genPreviousDue, setGenPreviousDue] = useState("");
 
   // Advance Payment state
   const [advanceOpen, setAdvanceOpen] = useState(false);
@@ -106,7 +108,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
         flatNo: b.connection.flatNo, tower: b.connection.tower,
         residentName: b.connection.resident.user.name ?? "—",
         unitArea: b.connection.unitArea,
-        amount: b.amount, paidAmount: b.paidAmount, interestCharge: b.interestCharge,
+        amount: b.amount, previousDue: b.previousDue ?? "0", paidAmount: b.paidAmount, interestCharge: b.interestCharge,
         dueDate: b.dueDate, billDate: b.billDate,
         billingPeriodStart: b.billingPeriodStart, billingPeriodEnd: b.billingPeriodEnd,
         ratePerSqFt: b.ratePerSqFt, status: b.status,
@@ -135,6 +137,26 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
       setPayBill(null); setPayAmount(""); setPayMethod("CASH"); setPayDate(""); setPayRef("");
       await fetchBills();
     } finally { setPaying(false); }
+  };
+
+  const handleSendEmail = async (bill: MaintenanceBillRow) => {
+    try {
+      const res = await fetch(`/api/maintenance/bills/${bill.id}/email`, { method: "POST" });
+      const data = await res.json();
+      if (!res.ok) { toast.error(data.error ?? "Failed to send email"); return; }
+      toast.success(`Email sent to ${data.to ?? bill.flatNo}`);
+    } catch { toast.error("Network error"); }
+  };
+
+  const handleDeleteBill = async (bill: MaintenanceBillRow) => {
+    if (!confirm(`Delete bill ${bill.billNumber} for ${bill.flatNo}? This cannot be undone.`)) return;
+    try {
+      const res = await fetch(`/api/maintenance/bills/${bill.id}`, { method: "DELETE" });
+      const data = await res.json();
+      if (!res.ok) { toast.error(data.error ?? "Failed to delete bill"); return; }
+      toast.success(`Bill ${bill.billNumber} deleted`);
+      await fetchBills();
+    } catch { toast.error("Network error"); }
   };
 
   const q = search.trim().toLowerCase();
@@ -181,9 +203,10 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
 
   // Generate Bills helpers
   const openGenDialog = async () => {
-    setGenMode("all");
+    setGenMode("individual");
     setGenMonth(currentMonth);
     setGenConnId("");
+    setGenPreviousDue("");
     setGenOpen(true);
     await loadConnections();
   };
@@ -203,7 +226,11 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
         const res = await fetch("/api/maintenance/bills/generate-one", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ connectionId: genConnId, month: genMonth }),
+          body: JSON.stringify({
+            connectionId: genConnId,
+            month: genMonth,
+            previousDue: genPreviousDue ? parseFloat(genPreviousDue) : 0,
+          }),
         });
         const data = await res.json();
         if (!res.ok) { toast.error(data.error ?? "Failed to generate bill"); return; }
@@ -497,6 +524,15 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
                       >
                         <FileDown className="h-3.5 w-3.5" />
                       </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="h-7 w-7 p-0 text-blue-500 hover:text-blue-700 hover:bg-blue-50"
+                        title="Send Email"
+                        onClick={() => handleSendEmail(bill)}
+                      >
+                        <Mail className="h-3.5 w-3.5" />
+                      </Button>
                       {bill.status !== "PAID" && (
                         <Button size="sm" variant="outline" onClick={() => {
                           setPayBill(bill);
@@ -504,6 +540,17 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
                           setPayAmount(remaining.toFixed(2));
                         }}>
                           Record Payment
+                        </Button>
+                      )}
+                      {canDelete && bill.status === "PENDING" && Number(bill.paidAmount) === 0 && (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="h-7 w-7 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
+                          title="Delete Bill"
+                          onClick={() => handleDeleteBill(bill)}
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
                         </Button>
                       )}
                     </div>
@@ -665,6 +712,25 @@ export default function MaintenanceBillsTable({ initialData, canWrite }: { initi
               <Label>Month</Label>
               <Input type="month" value={genMonth} onChange={(e) => setGenMonth(e.target.value)} />
             </div>
+
+            {genMode === "individual" && (
+              <div className="space-y-1">
+                <Label>Previous Due (₹) <span className="text-muted-foreground font-normal text-xs">— outstanding from prior months</span></Label>
+                <Input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  placeholder="0.00"
+                  value={genPreviousDue}
+                  onChange={(e) => setGenPreviousDue(e.target.value)}
+                />
+                {genPreviousDue && Number(genPreviousDue) > 0 && (
+                  <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1">
+                    ₹{Number(genPreviousDue).toLocaleString("en-IN", { minimumFractionDigits: 2 })} will be added as previous due on this bill.
+                  </p>
+                )}
+              </div>
+            )}
 
             {genMode === "all" && (
               <p className="text-xs text-muted-foreground bg-muted rounded-md px-3 py-2">

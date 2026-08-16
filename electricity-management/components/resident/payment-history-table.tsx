@@ -143,9 +143,6 @@ export default function PaymentHistoryTable({ payments }: Props) {
                     Method
                   </th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">
-                    Transaction ID
-                  </th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
                     Actions
                   </th>
                 </tr>
@@ -154,7 +151,7 @@ export default function PaymentHistoryTable({ payments }: Props) {
                 {filtered.length === 0 ? (
                   <tr>
                     <td
-                      colSpan={7}
+                      colSpan={6}
                       className="text-center py-10 text-muted-foreground"
                     >
                       No payments found
@@ -183,9 +180,6 @@ export default function PaymentHistoryTable({ payments }: Props) {
                       </td>
                       <td className="px-4 py-3">
                         <MethodBadge method={payment.method} />
-                      </td>
-                      <td className="px-4 py-3 font-mono text-xs text-muted-foreground">
-                        {payment.razorpayPaymentId ?? "—"}
                       </td>
                       <td className="px-4 py-3">
                         <Button

@@ -30,10 +30,9 @@ const NAV_ITEMS = [
 ];
 
 const MAINTENANCE_SUB_ITEMS = [
-  { href: "/admin/maintenance",          label: "Bills",     icon: FileText  },
-  { href: "/admin/maintenance/rates",    label: "Rates",     icon: Settings  },
-  { href: "/admin/maintenance/generate", label: "Scheduler", icon: Calendar  },
-  { href: "/admin/maintenance/payments", label: "Payments",  icon: DollarSign },
+  { href: "/admin/maintenance",          label: "Bills",    icon: FileText   },
+  { href: "/admin/maintenance/rates",    label: "Rates",    icon: Settings   },
+  { href: "/admin/maintenance/payments", label: "Payments", icon: DollarSign },
 ];
 
 const ADMIN_ONLY_ITEMS = [
@@ -57,7 +56,7 @@ function NavLinks({ pathname, role, permissions, onNavigate }: {
   const isMaintActive = pathname.startsWith("/admin/maintenance");
   const [maintOpen, setMaintOpen] = useState(isMaintActive);
 
-  const showMaintenance = false; // hidden — re-enable when maintenance module is activated
+  const showMaintenance = isAdmin || permissions["maintenance"]?.canRead === true;
 
   const visibleItems = NAV_ITEMS.filter(({ pageId }) => {
     if (isAdmin) return true;

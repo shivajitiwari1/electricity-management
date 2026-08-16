@@ -106,6 +106,11 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const siteConfig = await prisma.siteConfig.findUnique({ where: { id: "singleton" } });
+  if (!siteConfig?.maintenanceBillingEnabled) {
+    return NextResponse.json({ error: "Maintenance billing is currently disabled" }, { status: 422 });
+  }
+
   const now = new Date();
 
   if (isValidCron && !isAdmin && !isLastDayOfMonth(now)) {
@@ -151,6 +156,11 @@ export async function POST(req: NextRequest) {
   const session = await auth();
   const isAdmin = (session?.user as any)?.role === "ADMIN";
   if (!isAdmin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const siteConfig = await prisma.siteConfig.findUnique({ where: { id: "singleton" } });
+  if (!siteConfig?.maintenanceBillingEnabled) {
+    return NextResponse.json({ error: "Maintenance billing is currently disabled" }, { status: 422 });
+  }
 
   const now = new Date();
 

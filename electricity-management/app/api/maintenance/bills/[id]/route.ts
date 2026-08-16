@@ -67,3 +67,26 @@ export async function PUT(
   });
   return NextResponse.json(bill);
 }
+
+export async function DELETE(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const session = await auth();
+  const role = (session?.user as any)?.role as string | undefined;
+  if (role !== "ADMIN") return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const { id } = await params;
+
+  const bill = await prisma.maintenanceBill.findUnique({
+    where: { id },
+    include: { payments: { select: { id: true }, take: 1 } },
+  });
+  if (!bill) return NextResponse.json({ error: "Bill not found" }, { status: 404 });
+  if (bill.payments.length > 0) {
+    return NextResponse.json({ error: "Cannot delete a bill that has payments recorded" }, { status: 422 });
+  }
+
+  await prisma.maintenanceBill.delete({ where: { id } });
+  return NextResponse.json({ deleted: true });
+}

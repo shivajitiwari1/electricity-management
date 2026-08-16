@@ -433,8 +433,11 @@ export interface MaintenanceBillPdfData {
   ratePerSqFt: number;
   amount: number;
   interestCharge: number;
+  previousDue: number;
   paidAmount: number;
   status: string;
+  cgstRate: number;
+  sgstRate: number;
 }
 
 export function generateMaintenanceBillPdf(data: MaintenanceBillPdfData): Promise<Buffer> {
@@ -517,28 +520,59 @@ export function generateMaintenanceBillPdf(data: MaintenanceBillPdfData): Promis
       .text("CHARGE BREAKDOWN", L, y, { width: CW });
 
     y += 16;
-    const chargeRows: [string, number, boolean][] = [
-      [`Maintenance Charge (${data.unitArea} sq ft x Rs.${Number(data.ratePerSqFt).toFixed(2)}/sq ft)`, data.amount, false],
+    const r2 = (n: number) => Math.round(n * 100) / 100;
+    const cgstPct         = data.cgstRate / 100;
+    const sgstPct         = data.sgstRate / 100;
+    const cgst            = r2(data.amount * cgstPct);
+    const sgst            = r2(data.amount * sgstPct);
+    const totalGst        = r2(cgst + sgst);
+    const currentMonthTotal = r2(data.amount + totalGst);
+
+    // [label, amount, isRed, isBold, isSummary, isDivider]
+    type ChargeRow = [string, number, boolean, boolean, boolean, boolean];
+    const chargeRows: ChargeRow[] = [
+      [`Maintenance Charge (${data.unitArea} sq ft x Rs.${Number(data.ratePerSqFt).toFixed(2)}/sq ft)`, data.amount, false, false, false, false],
+      [`CGST @ ${data.cgstRate}%`, cgst, false, false, false, false],
+      [`SGST @ ${data.sgstRate}%`, sgst, false, false, false, false],
+      [`Total GST (${data.cgstRate + data.sgstRate}%)`, totalGst, false, true, true, false],
+      [`Total Current Month Bill`, currentMonthTotal, false, true, false, true],
     ];
+    if (data.previousDue > 0) {
+      chargeRows.push([`Previous Due (Outstanding from prior months)`, data.previousDue, true, false, false, false]);
+    }
     if (data.interestCharge > 0) {
-      chargeRows.push([`Interest Charge (24% p.a. overdue)`, data.interestCharge, true]);
+      chargeRows.push([`Interest Charge (24% p.a. overdue)`, data.interestCharge, true, false, false, false]);
     }
     if (data.paidAmount > 0) {
-      chargeRows.push([`Amount Already Paid`, -data.paidAmount, false]);
+      chargeRows.push([`Amount Already Paid`, -data.paidAmount, false, false, false, false]);
     }
 
     for (let i = 0; i < chargeRows.length; i++) {
-      const [label, amount, isRed] = chargeRows[i];
-      if (i % 2 === 0) doc.rect(L, y - 4, CW, 22).fill("#f9fafb");
-      doc.fillColor(isRed ? "#dc2626" : "#6b7280").font("Helvetica").fontSize(8.5)
-        .text(label, L + 8, y, { width: 380, lineBreak: false });
-      doc.fillColor(isRed ? "#dc2626" : "#111827").font("Helvetica-Bold").fontSize(8.5)
-        .text(`Rs. ${formatCurrency(Math.abs(amount))}`, L + 390, y, { width: 125, align: "right", lineBreak: false });
+      const [label, amount, isRed, isBold, isSummary, isDivider] = chargeRows[i];
+      if (isDivider) {
+        // Divider row with top border and darker background
+        doc.moveTo(L, y - 4).lineTo(L + CW, y - 4).strokeColor("#d1d5db").lineWidth(0.6).stroke();
+        doc.rect(L, y - 4, CW, 22).fill("#f0f4ff");
+        doc.fillColor("#1e3a5f").font("Helvetica-Bold").fontSize(8.5)
+          .text(label, L + 8, y, { width: 380, lineBreak: false });
+        doc.fillColor("#1e3a5f").font("Helvetica-Bold").fontSize(8.5)
+          .text(`Rs. ${formatCurrency(Math.abs(amount))}`, L + 390, y, { width: 125, align: "right", lineBreak: false });
+        doc.moveTo(L, y + 18).lineTo(L + CW, y + 18).strokeColor("#d1d5db").lineWidth(0.6).stroke();
+      } else {
+        const bgColor = isSummary ? "#eff6ff" : (i % 2 === 0 ? "#f9fafb" : "#ffffff");
+        doc.rect(L, y - 4, CW, 22).fill(bgColor);
+        doc.fillColor(isRed ? "#dc2626" : (isSummary ? "#1e3a5f" : "#6b7280"))
+          .font(isBold ? "Helvetica-Bold" : "Helvetica").fontSize(8.5)
+          .text(label, L + 8, y, { width: 380, lineBreak: false });
+        doc.fillColor(isRed ? "#dc2626" : (isSummary ? "#1e3a5f" : "#111827"))
+          .font("Helvetica-Bold").fontSize(8.5)
+          .text(`Rs. ${formatCurrency(Math.abs(amount))}`, L + 390, y, { width: 125, align: "right", lineBreak: false });
+      }
       y += 22;
     }
 
     // ── Net payable box ──────────────────────────────────────
-    const netPayable = data.amount + data.interestCharge - data.paidAmount;
+    const netPayable = r2(currentMonthTotal + data.previousDue + data.interestCharge - data.paidAmount);
     y += 8;
     doc.rect(L, y, CW, 80).fill("#eef2ff");
     doc.fillColor("#4b5563").font("Helvetica").fontSize(8)
@@ -565,9 +599,11 @@ export function generateMaintenanceBillPdf(data: MaintenanceBillPdfData): Promis
     doc.fillColor("#6b7280").font("Helvetica").fontSize(7.5)
       .text(`1. Rate: Rs.${Number(data.ratePerSqFt).toFixed(2)}/sq ft  .  Area: ${data.unitArea} sq ft`, L, y, { width: CW });
     y += 12;
-    doc.text(`2. Payment due by ${formatDate(data.dueDate)}. Late payment attracts 24% p.a. interest.`, L, y, { width: CW });
+    doc.text(`2. GST: CGST ${data.cgstRate}% + SGST ${data.sgstRate}% = ${data.cgstRate + data.sgstRate}% applicable on maintenance charge.`, L, y, { width: CW });
     y += 12;
-    doc.text("3. This is a computer-generated bill and does not require a signature.", L, y, { width: CW });
+    doc.text(`3. Payment due by ${formatDate(data.dueDate)}. Late payment attracts 24% p.a. interest.`, L, y, { width: CW });
+    y += 12;
+    doc.text("4. This is a computer-generated bill and does not require a signature.", L, y, { width: CW });
 
     // ── Footer ────────────────────────────────────────────────
     y += 24;
