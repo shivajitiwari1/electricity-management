@@ -124,7 +124,7 @@ export async function POST(req: NextRequest) {
         amount: payAmount.toFixed(2),
         paymentDate: pDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
         razorpayPaymentId: referenceId ?? method,
-        receiptUrl: "",
+        receiptUrl: `${process.env.NEXTAUTH_URL}/api/maintenance/payments/${payment.id}/receipt`,
         rebateAmount: rebateAmount > 0 ? rebateAmount.toFixed(2) : undefined,
       });
       await sendEmail(resident.user.email, `Maintenance Payment Received — ${bill.billNumber}`, html);
