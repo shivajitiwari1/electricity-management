@@ -29,8 +29,8 @@ export default async function MaintenanceGeneratePage() {
     residentName: c.resident?.user?.name ?? "—",
     unitArea: c.unitArea,
     projectedAmount: latestRate
-      ? (Number(latestRate.ratePerSqFt) * c.unitArea).toFixed(2)
-      : "0.00",
+      ? String(Math.round(Number(latestRate.ratePerSqFt) * c.unitArea))
+      : "0",
   }));
 
   return (

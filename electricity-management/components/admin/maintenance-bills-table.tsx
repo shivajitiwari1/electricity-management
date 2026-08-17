@@ -44,7 +44,7 @@ function StatusBadge({ status }: { status: BillStatus }) {
 }
 
 const fmtINR = (v: string | number) =>
-  `₹${Number(v).toLocaleString("en-IN", { minimumFractionDigits: 2 })}`;
+  `₹${Math.round(Number(v)).toLocaleString("en-IN")}`;
 
 const fmtDate = (d: string) =>
   new Date(d).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
@@ -256,17 +256,17 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
     }
   };
 
-  const advBase = parseFloat(advAmount) || 0;
-  const advCgst = parseFloat((advBase * advCgstRate / 100).toFixed(2));
-  const advSgst = parseFloat((advBase * advSgstRate / 100).toFixed(2));
-  const advMonthlyWithGst = parseFloat((advBase + advCgst + advSgst).toFixed(2));
-  const advTotal = advMonthlyWithGst > 0 ? (advMonthlyWithGst * advMonths).toFixed(2) : "0.00";
+  const advBase = Math.round(parseFloat(advAmount) || 0);
+  const advCgst = Math.round(advBase * advCgstRate / 100);
+  const advSgst = Math.round(advBase * advSgstRate / 100);
+  const advMonthlyWithGst = advBase + advCgst + advSgst;
+  const advTotal = advMonthlyWithGst > 0 ? String(Math.round(advMonthlyWithGst * advMonths)) : "0";
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!advConnId) return;
     const conn = advConnections.find((c) => c.id === advConnId);
-    if (conn) setAdvAmount((conn.unitArea * conn.ratePerSqFt).toFixed(2));
+    if (conn) setAdvAmount(String(Math.round(conn.unitArea * conn.ratePerSqFt)));
   }, [advConnId, advConnections]);
 
   const handleAdvancePayment = async () => {
@@ -550,7 +550,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
                         <Button size="sm" variant="outline" onClick={() => {
                           setPayBill(bill);
                           const remaining = Number(bill.amount) + Number(bill.interestCharge) - Number(bill.paidAmount);
-                          setPayAmount(remaining.toFixed(2));
+                          setPayAmount(String(Math.round(remaining)));
                         }}>
                           Record Payment
                         </Button>
@@ -624,7 +624,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
                     if (payBill) {
                       const outstanding = Number(payBill.amount) + Number(payBill.interestCharge) - Number(payBill.paidAmount);
                       const rebate = parseFloat(e.target.value) || 0;
-                      setPayAmount((outstanding - rebate).toFixed(2));
+                      setPayAmount(String(Math.round(outstanding - rebate)));
                     }
                   }}
                   placeholder="0.00"
@@ -898,7 +898,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
               )}
               <div className="flex justify-between border-t border-gray-200 pt-1.5">
                 <span className="text-gray-500">Grand Total ({advMonths} months)</span>
-                <strong>₹{Number(advTotal).toLocaleString("en-IN", { minimumFractionDigits: 2 })}</strong>
+                <strong>₹{Math.round(Number(advTotal)).toLocaleString("en-IN")}</strong>
               </div>
               {advRebate && parseFloat(advRebate) > 0 && (
                 <>

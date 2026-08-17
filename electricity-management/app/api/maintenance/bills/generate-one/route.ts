@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
       billingPeriodEnd: periodEnd,
       unitArea: Number(connection.unitArea),
       ratePerSqFt: Number(rate.ratePerSqFt),
-      amount: Number(connection.unitArea) * Number(rate.ratePerSqFt),
+      amount: Math.round(Number(connection.unitArea) * Number(rate.ratePerSqFt)),
       previousDue: previousDue ? Number(previousDue) : 0,
       paidAmount: 0,
       interestCharge: 0,
@@ -84,13 +84,13 @@ export async function POST(req: NextRequest) {
 
   const cgstRate = Number(siteConfig.cgstRate ?? 0);
   const sgstRate = Number(siteConfig.sgstRate ?? 0);
-  const baseAmount = Number(connection.unitArea) * Number(rate.ratePerSqFt);
-  const cgst = parseFloat((baseAmount * cgstRate / 100).toFixed(2));
-  const sgst = parseFloat((baseAmount * sgstRate / 100).toFixed(2));
-  const currentMonthTotal = parseFloat((baseAmount + cgst + sgst).toFixed(2));
-  const prevDueNum = previousDue ? Number(previousDue) : 0;
-  const netPayable = parseFloat((currentMonthTotal + prevDueNum).toFixed(2));
-  const fmt = (n: number) => n.toFixed(2);
+  const baseAmount = Math.round(Number(connection.unitArea) * Number(rate.ratePerSqFt));
+  const cgst = Math.round(baseAmount * cgstRate / 100);
+  const sgst = Math.round(baseAmount * sgstRate / 100);
+  const currentMonthTotal = baseAmount + cgst + sgst;
+  const prevDueNum = previousDue ? Math.round(Number(previousDue)) : 0;
+  const netPayable = currentMonthTotal + prevDueNum;
+  const fmt = (n: number) => String(Math.round(n));
 
   const billingPeriodStr = `${periodStart.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })} – ${periodEnd.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}`;
   try {

@@ -538,7 +538,7 @@ export function generateMaintenanceBillPdf(data: MaintenanceBillPdfData): Promis
       .text("CHARGE BREAKDOWN", L, y, { width: CW });
 
     y += 16;
-    const r2 = (n: number) => Math.round(n * 100) / 100;
+    const r2 = (n: number) => Math.round(n);
     const cgstPct         = data.cgstRate / 100;
     const sgstPct         = data.sgstRate / 100;
     const cgst            = r2(data.amount * cgstPct);

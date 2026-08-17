@@ -51,7 +51,7 @@ async function createBillsBatch(
       billingPeriodEnd: periodEnd,
       unitArea: Number(c.unitArea),
       ratePerSqFt: Number(rate.ratePerSqFt),
-      amount: Number(c.unitArea) * Number(rate.ratePerSqFt),
+      amount: Math.round(Number(c.unitArea) * Number(rate.ratePerSqFt)),
       paidAmount: 0,
       interestCharge: 0,
       status: "PENDING" as const,
@@ -73,14 +73,14 @@ function sendBillEmails(
 ) {
   const billingPeriodStr = `${periodStart.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })} – ${periodEnd.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}`;
   const subject = `Maintenance Bill — ${periodStart.toLocaleString("en-IN", { month: "long", year: "numeric" })}`;
-  const fmt = (n: number) => n.toFixed(2);
+  const fmt = (n: number) => String(Math.round(n));
 
   return Promise.allSettled(
     toCreate.map(async (c) => {
-      const baseAmount = Number(c.unitArea) * Number(rate.ratePerSqFt);
-      const cgst = parseFloat((baseAmount * cgstRate / 100).toFixed(2));
-      const sgst = parseFloat((baseAmount * sgstRate / 100).toFixed(2));
-      const currentMonthTotal = parseFloat((baseAmount + cgst + sgst).toFixed(2));
+      const baseAmount = Math.round(Number(c.unitArea) * Number(rate.ratePerSqFt));
+      const cgst = Math.round(baseAmount * cgstRate / 100);
+      const sgst = Math.round(baseAmount * sgstRate / 100);
+      const currentMonthTotal = baseAmount + cgst + sgst;
       const billNumber = generateMaintenanceBillNumber(c.flatNo, periodStart);
       try {
         const html = maintenanceBillGeneratedEmail({

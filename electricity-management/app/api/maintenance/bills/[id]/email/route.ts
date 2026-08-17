@@ -35,16 +35,16 @@ export async function POST(
   const siteConfig = await prisma.siteConfig.findUnique({ where: { id: "singleton" } });
   const cgstRate = Number(siteConfig?.cgstRate ?? 0);
   const sgstRate = Number(siteConfig?.sgstRate ?? 0);
-  const amount = Number(bill.amount);
-  const cgst = parseFloat((amount * cgstRate / 100).toFixed(2));
-  const sgst = parseFloat((amount * sgstRate / 100).toFixed(2));
-  const currentMonthTotal = parseFloat((amount + cgst + sgst).toFixed(2));
-  const previousDue = Number(bill.previousDue);
-  const interestCharge = Number(bill.interestCharge);
-  const paidAmount = Number(bill.paidAmount);
-  const netPayable = parseFloat((currentMonthTotal + previousDue + interestCharge - paidAmount).toFixed(2));
+  const amount = Math.round(Number(bill.amount));
+  const cgst = Math.round(amount * cgstRate / 100);
+  const sgst = Math.round(amount * sgstRate / 100);
+  const currentMonthTotal = amount + cgst + sgst;
+  const previousDue = Math.round(Number(bill.previousDue));
+  const interestCharge = Math.round(Number(bill.interestCharge));
+  const paidAmount = Math.round(Number(bill.paidAmount));
+  const netPayable = currentMonthTotal + previousDue + interestCharge - paidAmount;
 
-  const fmt = (n: number) => n.toFixed(2);
+  const fmt = (n: number) => String(Math.round(n));
   const billingPeriodStr = `${bill.billingPeriodStart.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })} – ${bill.billingPeriodEnd.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}`;
 
   try {
