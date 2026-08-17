@@ -556,7 +556,18 @@ export function generateMaintenanceBillPdf(data: MaintenanceBillPdfData): Promis
       [`Total Current Month Bill`, currentMonthTotal, false, true, false, true],
     ];
     if (data.previousDue > 0) {
-      chargeRows.push([`Previous Due (Outstanding from prior months)`, data.previousDue, true, false, false, false]);
+      const totalGstRate = data.cgstRate + data.sgstRate;
+      if (totalGstRate > 0) {
+        const prevCgst = r2(data.previousDue * cgstPct / (1 + totalGstRate / 100));
+        const prevSgst = r2(data.previousDue * sgstPct / (1 + totalGstRate / 100));
+        const prevBase = data.previousDue - prevCgst - prevSgst;
+        chargeRows.push([`Previous Due — Maintenance Charge`, prevBase, true, false, false, false]);
+        chargeRows.push([`CGST @ ${data.cgstRate}% on Previous Due`, prevCgst, true, false, false, false]);
+        chargeRows.push([`SGST @ ${data.sgstRate}% on Previous Due`, prevSgst, true, false, false, false]);
+        chargeRows.push([`Total Previous Due (incl. GST)`, data.previousDue, true, true, false, false]);
+      } else {
+        chargeRows.push([`Previous Due (Outstanding from prior months)`, data.previousDue, true, false, false, false]);
+      }
     }
     if (data.interestCharge > 0) {
       chargeRows.push([`Interest Charge (24% p.a. overdue)`, data.interestCharge, true, false, false, false]);
