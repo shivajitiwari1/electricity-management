@@ -1,7 +1,6 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import type { PermissionsMap } from "@/lib/permissions";
 import MaintenanceRatesManager from "@/components/admin/maintenance-rates-manager";
 import GstRatesManager from "@/components/admin/gst-rates-manager";
 import MaintenanceBillingToggle from "@/components/admin/maintenance-billing-toggle";
@@ -12,9 +11,7 @@ export default async function MaintenanceRatesPage() {
   const session = await auth();
   if (!session) redirect("/login");
   const role = (session.user as any)?.role as string;
-  const permissions = (session.user as any)?.permissions as PermissionsMap ?? {};
-  if (role !== "ADMIN" && role !== "MANAGER") redirect("/login");
-  if (role === "MANAGER" && !permissions["maintenance"]?.canRead) redirect("/admin/dashboard");
+  if (role !== "ADMIN") redirect("/admin/dashboard");
 
   const [rates, siteConfig] = await Promise.all([
     prisma.maintenanceRate.findMany({ orderBy: { effectiveFrom: "desc" } }),

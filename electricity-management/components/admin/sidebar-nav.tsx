@@ -30,9 +30,9 @@ const NAV_ITEMS = [
 ];
 
 const MAINTENANCE_SUB_ITEMS = [
-  { href: "/admin/maintenance",          label: "Bills",    icon: FileText   },
-  { href: "/admin/maintenance/rates",    label: "Rates",    icon: Settings   },
-  { href: "/admin/maintenance/payments", label: "Payments", icon: DollarSign },
+  { href: "/admin/maintenance",          label: "Bills",    icon: FileText,   adminOnly: false },
+  { href: "/admin/maintenance/rates",    label: "Rates",    icon: Settings,   adminOnly: true  },
+  { href: "/admin/maintenance/payments", label: "Payments", icon: DollarSign, adminOnly: false },
 ];
 
 const ADMIN_ONLY_ITEMS = [
@@ -105,7 +105,7 @@ function NavLinks({ pathname, role, permissions, onNavigate }: {
           </button>
           {maintOpen && (
             <div className="ml-6 mt-0.5 space-y-0.5 border-l border-border pl-3">
-              {MAINTENANCE_SUB_ITEMS.map(({ href, label, icon: Icon }) => {
+              {MAINTENANCE_SUB_ITEMS.filter(({ adminOnly }) => !adminOnly || isAdmin).map(({ href, label, icon: Icon }) => {
                 const active = pathname === href || (href !== "/admin/maintenance" && pathname.startsWith(href + "/"));
                 return (
                   <Link
