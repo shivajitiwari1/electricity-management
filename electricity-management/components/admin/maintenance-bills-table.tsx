@@ -546,7 +546,17 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
                       >
                         <Mail className="h-3.5 w-3.5" />
                       </Button>
-                      {bill.status !== "PAID" && (
+                      {bill.status === "PAID" ? (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="text-green-700 border-green-300 hover:bg-green-50"
+                          onClick={() => window.open(`/api/maintenance/bills/${bill.id}/pdf`, "_blank")}
+                        >
+                          <FileDown className="h-3.5 w-3.5 mr-1" />
+                          Download Bill
+                        </Button>
+                      ) : (
                         <Button size="sm" variant="outline" onClick={() => {
                           setPayBill(bill);
                           const remaining = Number(bill.amount) + Number(bill.interestCharge) - Number(bill.paidAmount);
