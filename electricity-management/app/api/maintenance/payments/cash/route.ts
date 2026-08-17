@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
   if (!bill) return NextResponse.json({ error: "Bill not found" }, { status: 404 });
   if (bill.status === "PAID") return NextResponse.json({ error: "Bill already paid" }, { status: 409 });
 
-  const totalDue = Math.round(Number(bill.amount) + Number(bill.interestCharge));
+  const totalDue = Math.round(Number(bill.amount) + Number(bill.previousDue) + Number(bill.interestCharge));
   const alreadyPaid = Math.round(Number(bill.paidAmount));
   const remaining = totalDue - alreadyPaid;
 

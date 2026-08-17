@@ -559,7 +559,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
                       ) : (
                         <Button size="sm" variant="outline" onClick={() => {
                           setPayBill(bill);
-                          const remaining = Number(bill.amount) + Number(bill.interestCharge) - Number(bill.paidAmount);
+                          const remaining = Number(bill.amount) + Number(bill.previousDue) + Number(bill.interestCharge) - Number(bill.paidAmount);
                           setPayAmount(String(Math.round(remaining)));
                         }}>
                           Record Payment
@@ -602,11 +602,14 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
                 <p><span className="text-gray-500">Bill:</span> <strong>{payBill.billNumber}</strong></p>
                 <p><span className="text-gray-500">Flat:</span> {payBill.flatNo} — {payBill.residentName}</p>
                 <p><span className="text-gray-500">Maintenance:</span> {fmtINR(payBill.amount)}</p>
+                {Number(payBill.previousDue) > 0 && (
+                  <p><span className="text-gray-500">Previous Due:</span> <span className="text-red-600">{fmtINR(payBill.previousDue)}</span></p>
+                )}
                 {Number(payBill.interestCharge) > 0 && (
                   <p><span className="text-gray-500">Interest (24% p.a.):</span> <span className="text-red-600">{fmtINR(payBill.interestCharge)}</span></p>
                 )}
                 <p><span className="text-gray-500">Outstanding:</span> <strong>
-                  {fmtINR(Number(payBill.amount) + Number(payBill.interestCharge) - Number(payBill.paidAmount))}
+                  {fmtINR(Number(payBill.amount) + Number(payBill.previousDue) + Number(payBill.interestCharge) - Number(payBill.paidAmount))}
                 </strong></p>
               </div>
               <div className="space-y-1">
@@ -632,7 +635,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
                   onChange={(e) => {
                     setPayRebate(e.target.value);
                     if (payBill) {
-                      const outstanding = Number(payBill.amount) + Number(payBill.interestCharge) - Number(payBill.paidAmount);
+                      const outstanding = Number(payBill.amount) + Number(payBill.previousDue) + Number(payBill.interestCharge) - Number(payBill.paidAmount);
                       const rebate = parseFloat(e.target.value) || 0;
                       setPayAmount(String(Math.round(outstanding - rebate)));
                     }
@@ -640,7 +643,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
                   placeholder="0.00"
                 />
                 {payRebate && parseFloat(payRebate) > 0 && payBill && (() => {
-                  const outstanding = Number(payBill.amount) + Number(payBill.interestCharge) - Number(payBill.paidAmount);
+                  const outstanding = Number(payBill.amount) + Number(payBill.previousDue) + Number(payBill.interestCharge) - Number(payBill.paidAmount);
                   const rebate = parseFloat(payRebate) || 0;
                   const net = outstanding - rebate;
                   return (
