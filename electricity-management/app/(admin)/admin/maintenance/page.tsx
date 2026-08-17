@@ -1,7 +1,6 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import type { PermissionsMap } from "@/lib/permissions";
 import MaintenanceBillsTable from "@/components/admin/maintenance-bills-table";
 import type { MaintenanceBillRow } from "@/components/admin/maintenance-bills-table";
 
@@ -11,12 +10,10 @@ export default async function MaintenanceBillsPage() {
   const session = await auth();
   if (!session) redirect("/login");
   const role = (session.user as any)?.role as string;
-  const permissions = (session.user as any)?.permissions as PermissionsMap ?? {};
-  if (role !== "ADMIN" && role !== "MANAGER") redirect("/login");
-  if (role === "MANAGER" && !permissions["maintenance"]?.canRead) redirect("/admin/dashboard");
+  if (role !== "ADMIN") redirect("/admin/dashboard");
 
-  const canWrite = role === "ADMIN" || permissions["maintenance"]?.canWrite === true;
-  const canDelete = role === "ADMIN" || permissions["maintenance"]?.canDelete === true;
+  const canWrite = true;
+  const canDelete = true;
 
   const currentMonth = new Date().toISOString().slice(0, 7);
   const [year, mon] = currentMonth.split("-").map(Number);
