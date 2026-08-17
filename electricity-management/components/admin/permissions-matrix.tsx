@@ -16,6 +16,7 @@ const PAGES = [
   { id: "reports",        label: "Reports",        hasWrite: false, hasDelete: false },
   { id: "rates",          label: "Rates",          hasWrite: true,  hasDelete: true },
   { id: "flat-info",      label: "Flat Info",      hasWrite: true,  hasDelete: true },
+  { id: "maintenance",    label: "Maintenance",    hasWrite: true,  hasDelete: true },
 ];
 
 type PermRow = { page: string; canRead: boolean; canWrite: boolean; canDelete: boolean };

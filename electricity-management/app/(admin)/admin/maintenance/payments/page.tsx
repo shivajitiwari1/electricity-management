@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import MaintenancePaymentsTable from "@/components/admin/maintenance-payments-table";
 import type { MaintenancePaymentRow } from "@/components/admin/maintenance-payments-table";
+import type { PermissionsMap } from "@/lib/permissions";
 
 export const dynamic = "force-dynamic";
 
@@ -10,7 +11,8 @@ export default async function MaintenancePaymentsPage() {
   const session = await auth();
   if (!session) redirect("/login");
   const role = (session.user as any)?.role as string;
-  if (role !== "ADMIN") redirect("/admin/dashboard");
+  const permissions = (session.user as any)?.permissions as PermissionsMap ?? {};
+  if (role !== "ADMIN" && !permissions["maintenance"]?.canRead) redirect("/admin/dashboard");
 
   const currentMonth = new Date().toISOString().slice(0, 7);
   const [year, mon] = currentMonth.split("-").map(Number);
@@ -50,7 +52,7 @@ export default async function MaintenancePaymentsPage() {
         <h1 className="text-2xl font-bold">Maintenance Payments</h1>
         <p className="text-muted-foreground">Payments received for maintenance charges</p>
       </div>
-      <MaintenancePaymentsTable initialData={initialData} canDelete={role === "ADMIN" || !!permissions["maintenance"]?.canDelete} />
+      <MaintenancePaymentsTable initialData={initialData} canDelete={role === "ADMIN" || permissions["maintenance"]?.canDelete === true} />
     </main>
   );
 }

@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import MaintenanceBillsTable from "@/components/admin/maintenance-bills-table";
 import type { MaintenanceBillRow } from "@/components/admin/maintenance-bills-table";
+import type { PermissionsMap } from "@/lib/permissions";
 
 export const dynamic = "force-dynamic";
 
@@ -10,10 +11,11 @@ export default async function MaintenanceBillsPage() {
   const session = await auth();
   if (!session) redirect("/login");
   const role = (session.user as any)?.role as string;
-  if (role !== "ADMIN") redirect("/admin/dashboard");
+  const permissions = (session.user as any)?.permissions as PermissionsMap ?? {};
+  if (role !== "ADMIN" && !permissions["maintenance"]?.canRead) redirect("/admin/dashboard");
 
-  const canWrite = true;
-  const canDelete = true;
+  const canWrite = role === "ADMIN" || permissions["maintenance"]?.canWrite === true;
+  const canDelete = role === "ADMIN" || permissions["maintenance"]?.canDelete === true;
 
   const currentMonth = new Date().toISOString().slice(0, 7);
   const [year, mon] = currentMonth.split("-").map(Number);

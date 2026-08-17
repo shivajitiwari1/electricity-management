@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import MaintenanceGenerator from "@/components/admin/maintenance-generator";
+import type { PermissionsMap } from "@/lib/permissions";
 
 export const dynamic = "force-dynamic";
 
@@ -9,7 +10,8 @@ export default async function MaintenanceGeneratePage() {
   const session = await auth();
   if (!session) redirect("/login");
   const role = (session.user as any)?.role as string;
-  if (role !== "ADMIN") redirect("/admin/dashboard");
+  const permissions = (session.user as any)?.permissions as PermissionsMap ?? {};
+  if (role !== "ADMIN" && !permissions["maintenance"]?.canWrite) redirect("/admin/dashboard");
 
   const [latestRate, connections] = await Promise.all([
     prisma.maintenanceRate.findFirst({ orderBy: { effectiveFrom: "desc" } }),
