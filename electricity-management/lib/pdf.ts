@@ -601,7 +601,7 @@ export function generateMaintenanceBillPdf(data: MaintenanceBillPdfData): Promis
     doc.fillColor("#1e3a5f").font("Helvetica-Bold").fontSize(28)
       .text(`Rs. ${formatCurrency(netPayable > 0 ? netPayable : 0)}`, L, y + 28, { width: CW, align: "center" });
 
-    if (data.status === "PAID") {
+    if (netPayable <= 0) {
       y += 96;
       doc.rect(L, y, CW, 44).fill("#f0fdf4");
       doc.rect(L, y, CW, 44).strokeColor("#86efac").lineWidth(1).stroke();
