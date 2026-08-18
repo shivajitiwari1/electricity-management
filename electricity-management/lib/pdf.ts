@@ -632,7 +632,7 @@ export function generateMaintenanceBillPdf(data: MaintenanceBillPdfData): Promis
     doc.moveTo(L, y - 4).lineTo(L + CW, y - 4).strokeColor("#d1d5db").lineWidth(0.6).stroke();
     doc.rect(L, y - 4, CW, 22).fill(netPayable > 0 ? "#fff7ed" : "#f0fdf4");
     doc.fillColor(netPayable > 0 ? "#92400e" : "#166534").font("Helvetica-Bold").fontSize(8.5)
-      .text("Net Payable", L + 8, y, { width: 380, lineBreak: false });
+      .text("Net Payable (Due Amount)", L + 8, y, { width: 380, lineBreak: false });
     doc.fillColor(netPayable > 0 ? "#92400e" : "#166534").font("Helvetica-Bold").fontSize(8.5)
       .text(`Rs. ${formatCurrency(netPayable)}`, L + 390, y, { width: 125, align: "right", lineBreak: false });
     y += 22;
