@@ -1,10 +1,9 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { FileDown, CreditCard, CheckCircle2, AlertCircle, Clock } from "lucide-react";
+import { FileDown, CheckCircle2, AlertCircle, Clock } from "lucide-react";
 
 type MaintenanceBill = {
   id: string;
@@ -48,8 +47,6 @@ function period(start: string, end: string) {
 interface Props { bills: MaintenanceBill[]; }
 
 export default function ResidentMaintenanceBillsList({ bills }: Props) {
-  const router = useRouter();
-
   if (bills.length === 0) {
     return (
       <Card>
@@ -97,15 +94,6 @@ export default function ResidentMaintenanceBillsList({ bills }: Props) {
                   <FileDown className="h-3.5 w-3.5 mr-1" />
                   Download PDF
                 </Button>
-                {bill.status !== "PAID" && (
-                  <Button
-                    size="sm"
-                    onClick={() => router.push(`/resident/maintenance/${bill.id}/pay`)}
-                  >
-                    <CreditCard className="h-3.5 w-3.5 mr-1" />
-                    Pay Now
-                  </Button>
-                )}
               </div>
             </CardContent>
           </Card>
