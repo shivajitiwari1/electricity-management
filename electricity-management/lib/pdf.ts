@@ -481,9 +481,9 @@ export function generateMaintenanceBillPdf(data: MaintenanceBillPdfData): Promis
     doc.fillColor("#93b8d4").fontSize(8.5)
       .text("Phone: 9355011978", L, 56, { width: CW, align: "center" });
 
-    doc.rect(PW / 2 - 75, 74, 150, 22).fill("#2563eb");
-    doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(10)
-      .text("MAINTENANCE BILL", L, 79, { width: CW, align: "center" });
+    doc.rect(PW / 2 - 130, 74, 260, 22).fill("#2563eb");
+    doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(8)
+      .text("MAINTENANCE CHARGES PROVISIONAL INVOICE", L, 81, { width: CW, align: "center" });
 
     // ── Bill No and Date ─────────────────────────────────────
     let y = 126;
@@ -539,17 +539,21 @@ export function generateMaintenanceBillPdf(data: MaintenanceBillPdfData): Promis
 
     y += 16;
     const r2 = (n: number) => Math.round(n);
-    const cgstPct         = data.cgstRate / 100;
-    const sgstPct         = data.sgstRate / 100;
-    const cgst            = r2(data.amount * cgstPct);
-    const sgst            = r2(data.amount * sgstPct);
-    const totalGst        = r2(cgst + sgst);
-    const currentMonthTotal = r2(data.amount + totalGst);
+    const cgstPct    = data.cgstRate / 100;
+    const sgstPct    = data.sgstRate / 100;
+    const base       = Math.round(data.unitArea * data.ratePerSqFt);
+    const cgst       = r2(base * cgstPct);
+    const sgst       = r2(base * sgstPct);
+    const totalGst   = r2(cgst + sgst);
+    const currentMonthTotal = base + totalGst;
+    const grandTotal = r2(currentMonthTotal + data.previousDue + data.interestCharge);
+    const totalPaid  = r2(data.paidAmount + (data.rebateAmount ?? 0));
+    const netPayable = Math.max(0, grandTotal - totalPaid);
 
     // [label, amount, isRed, isBold, isSummary, isDivider]
     type ChargeRow = [string, number, boolean, boolean, boolean, boolean];
     const chargeRows: ChargeRow[] = [
-      [`Maintenance Charge (${data.unitArea} sq ft x Rs.${Number(data.ratePerSqFt).toFixed(2)}/sq ft)`, data.amount, false, false, false, false],
+      [`Maintenance Charge (${data.unitArea} sq ft x Rs.${Number(data.ratePerSqFt).toFixed(2)}/sq ft)`, base, false, false, false, false],
       [`CGST @ ${data.cgstRate}%`, cgst, false, false, false, false],
       [`SGST @ ${data.sgstRate}%`, sgst, false, false, false, false],
       [`Total GST (${data.cgstRate + data.sgstRate}%)`, totalGst, false, true, true, false],
@@ -603,8 +607,37 @@ export function generateMaintenanceBillPdf(data: MaintenanceBillPdfData): Promis
       y += 22;
     }
 
+    // ── Payment Summary ───────────────────────────────────────
+    y += 6;
+    doc.moveTo(L, y).lineTo(L + CW, y).strokeColor("#d1d5db").lineWidth(0.6).stroke();
+    y += 8;
+    doc.fillColor("#374151").font("Helvetica-Bold").fontSize(8.5)
+      .text("PAYMENT SUMMARY", L, y, { width: CW });
+    y += 14;
+
+    doc.rect(L, y - 4, CW, 22).fill("#f3f4f6");
+    doc.fillColor("#6b7280").font("Helvetica").fontSize(8.5)
+      .text("Grand Total", L + 8, y, { width: 380, lineBreak: false });
+    doc.fillColor("#111827").font("Helvetica-Bold").fontSize(8.5)
+      .text(`Rs. ${formatCurrency(grandTotal)}`, L + 390, y, { width: 125, align: "right", lineBreak: false });
+    y += 22;
+
+    doc.rect(L, y - 4, CW, 22).fill("#f0fdf4");
+    doc.fillColor("#6b7280").font("Helvetica").fontSize(8.5)
+      .text("Amount Paid", L + 8, y, { width: 380, lineBreak: false });
+    doc.fillColor("#16a34a").font("Helvetica-Bold").fontSize(8.5)
+      .text(`Rs. ${formatCurrency(totalPaid)}`, L + 390, y, { width: 125, align: "right", lineBreak: false });
+    y += 22;
+
+    doc.moveTo(L, y - 4).lineTo(L + CW, y - 4).strokeColor("#d1d5db").lineWidth(0.6).stroke();
+    doc.rect(L, y - 4, CW, 22).fill(netPayable > 0 ? "#fff7ed" : "#f0fdf4");
+    doc.fillColor(netPayable > 0 ? "#92400e" : "#166534").font("Helvetica-Bold").fontSize(8.5)
+      .text("Net Payable", L + 8, y, { width: 380, lineBreak: false });
+    doc.fillColor(netPayable > 0 ? "#92400e" : "#166534").font("Helvetica-Bold").fontSize(8.5)
+      .text(`Rs. ${formatCurrency(netPayable)}`, L + 390, y, { width: 125, align: "right", lineBreak: false });
+    y += 22;
+
     // ── Net payable box ──────────────────────────────────────
-    const netPayable = r2(currentMonthTotal + data.previousDue + data.interestCharge - data.paidAmount - (data.rebateAmount ?? 0));
     y += 8;
     doc.rect(L, y, CW, 80).fill("#eef2ff");
     doc.fillColor("#4b5563").font("Helvetica").fontSize(8)

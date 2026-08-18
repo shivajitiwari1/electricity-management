@@ -59,6 +59,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "No maintenance rate configured" }, { status: 422 });
   }
 
+  const cgstRate = Number(siteConfig.cgstRate ?? 0);
+  const sgstRate = Number(siteConfig.sgstRate ?? 0);
+  const baseAmount = Math.round(Number(connection.unitArea) * Number(rate.ratePerSqFt));
+  const cgst = Math.round(baseAmount * cgstRate / 100);
+  const sgst = Math.round(baseAmount * sgstRate / 100);
+  const totalAmount = baseAmount + cgst + sgst;
+
   const now = new Date();
   const dueDate = new Date(now);
   dueDate.setDate(dueDate.getDate() + 15);
@@ -74,7 +81,7 @@ export async function POST(req: NextRequest) {
       billingPeriodEnd: periodEnd,
       unitArea: Number(connection.unitArea),
       ratePerSqFt: Number(rate.ratePerSqFt),
-      amount: Math.round(Number(connection.unitArea) * Number(rate.ratePerSqFt)),
+      amount: totalAmount,
       previousDue: previousDue ? Number(previousDue) : 0,
       paidAmount: 0,
       interestCharge: 0,
@@ -82,14 +89,8 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  const cgstRate = Number(siteConfig.cgstRate ?? 0);
-  const sgstRate = Number(siteConfig.sgstRate ?? 0);
-  const baseAmount = Math.round(Number(connection.unitArea) * Number(rate.ratePerSqFt));
-  const cgst = Math.round(baseAmount * cgstRate / 100);
-  const sgst = Math.round(baseAmount * sgstRate / 100);
-  const currentMonthTotal = baseAmount + cgst + sgst;
   const prevDueNum = previousDue ? Math.round(Number(previousDue)) : 0;
-  const netPayable = currentMonthTotal + prevDueNum;
+  const netPayable = totalAmount + prevDueNum;
   const fmt = (n: number) => String(Math.round(n));
 
   const billingPeriodStr = `${periodStart.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })} – ${periodEnd.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}`;
@@ -109,7 +110,7 @@ export async function POST(req: NextRequest) {
         sgstRate: fmt(sgstRate),
         cgst: fmt(cgst),
         sgst: fmt(sgst),
-        currentMonthTotal: fmt(currentMonthTotal),
+        currentMonthTotal: fmt(totalAmount),
         previousDue: fmt(prevDueNum),
         interestCharge: "0.00",
         netPayable: fmt(netPayable),
