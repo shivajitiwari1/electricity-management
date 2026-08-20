@@ -64,10 +64,8 @@ export default function MaintenancePaymentsTable({ initialData, canDelete = fals
       const data = await res.json();
       setPayments(data.map((p: any) => {
         const billAmount = Number(p.bill?.amount ?? 0);
-        const prevDue = Number(p.bill?.previousDue ?? 0);
-        const interest = Number(p.bill?.interestCharge ?? 0);
         const billPaid = Number(p.bill?.paidAmount ?? 0);
-        const billDue = Math.max(0, billAmount + prevDue + interest - billPaid);
+        const billDue = Math.max(0, billAmount - billPaid);
         return {
           id: p.id,
           receiptNumber: p.receiptNumber,

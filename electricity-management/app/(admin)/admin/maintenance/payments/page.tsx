@@ -34,10 +34,8 @@ export default async function MaintenancePaymentsPage() {
 
   const initialData: MaintenancePaymentRow[] = payments.map((p) => {
     const billAmount = Number(p.bill.amount);
-    const prevDue = Number(p.bill.previousDue);
-    const interest = Number(p.bill.interestCharge);
     const billPaid = Number(p.bill.paidAmount);
-    const billDue = Math.max(0, billAmount + prevDue + interest - billPaid);
+    const billDue = Math.max(0, billAmount - billPaid);
     return {
       id: p.id,
       receiptNumber: p.receiptNumber,
