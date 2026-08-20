@@ -10,20 +10,26 @@ export async function GET(req: NextRequest) {
 
   const { searchParams } = req.nextUrl;
   const tower = searchParams.get("tower");
-  const month = searchParams.get("month"); // YYYY-MM
+  const month = searchParams.get("month"); // YYYY-MM — filters by bill billing period start
   const method = searchParams.get("method");
 
-  let dateFilter: { gte?: Date; lt?: Date } | undefined;
+  let billDateFilter: { gte?: Date; lt?: Date } | undefined;
   if (month) {
     const [year, mon] = month.split("-").map(Number);
-    dateFilter = { gte: new Date(year, mon - 1, 1), lt: new Date(year, mon, 1) };
+    billDateFilter = { gte: new Date(year, mon - 1, 1), lt: new Date(year, mon, 1) };
   }
 
   const payments = await prisma.maintenancePayment.findMany({
     where: {
       ...(method ? { method: method as any } : {}),
-      ...(dateFilter ? { paymentDate: dateFilter } : {}),
-      ...(tower ? { bill: { connection: { tower } } } : {}),
+      ...(tower || billDateFilter
+        ? {
+            bill: {
+              ...(billDateFilter ? { billingPeriodStart: billDateFilter } : {}),
+              ...(tower ? { connection: { tower } } : {}),
+            },
+          }
+        : {}),
     },
     include: {
       bill: {

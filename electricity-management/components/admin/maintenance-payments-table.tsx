@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Trash2 } from "lucide-react";
+import { Trash2, FileDown } from "lucide-react";
 
 export interface MaintenancePaymentRow {
   id: string;
@@ -21,6 +21,10 @@ export interface MaintenancePaymentRow {
   referenceId: string | null;
   paymentDate: string;
   status: string;
+  billStatus: string;
+  billAmount: string;
+  billPaidAmount: string;
+  billDue: string;
 }
 
 const fmtINR = (v: string | number) =>
@@ -28,6 +32,16 @@ const fmtINR = (v: string | number) =>
 
 const fmtDate = (d: string) =>
   new Date(d).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+
+function BillStatusBadge({ status }: { status: string }) {
+  if (status === "PAID")
+    return <Badge className="bg-green-100 text-green-800 hover:bg-green-100 text-xs">PAID</Badge>;
+  if (status === "PARTIAL")
+    return <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100 text-xs">PARTIAL</Badge>;
+  if (status === "OVERDUE")
+    return <Badge className="bg-red-100 text-red-800 hover:bg-red-100 text-xs">OVERDUE</Badge>;
+  return <Badge className="bg-orange-100 text-orange-800 hover:bg-orange-100 text-xs">PENDING</Badge>;
+}
 
 export default function MaintenancePaymentsTable({ initialData, canDelete = false }: { initialData: MaintenancePaymentRow[]; canDelete?: boolean }) {
   const currentMonth = new Date().toISOString().slice(0, 7);
@@ -48,19 +62,30 @@ export default function MaintenancePaymentsTable({ initialData, canDelete = fals
       const res = await fetch(`/api/maintenance/payments?${p}`);
       if (!res.ok) { toast.error("Failed to load payments"); return; }
       const data = await res.json();
-      setPayments(data.map((p: any) => ({
-        id: p.id,
-        receiptNumber: p.receiptNumber,
-        flatNo: p.bill?.connection?.flatNo ?? "—",
-        tower: p.bill?.connection?.tower ?? "—",
-        residentName: p.bill?.connection?.resident?.user?.name ?? "—",
-        billNumber: p.bill?.billNumber ?? "—",
-        amount: p.amount,
-        method: p.method,
-        referenceId: p.razorpayPaymentId && p.razorpayPaymentId !== "CASH" ? p.razorpayPaymentId : null,
-        paymentDate: p.paymentDate,
-        status: p.status,
-      })));
+      setPayments(data.map((p: any) => {
+        const billAmount = Number(p.bill?.amount ?? 0);
+        const prevDue = Number(p.bill?.previousDue ?? 0);
+        const interest = Number(p.bill?.interestCharge ?? 0);
+        const billPaid = Number(p.bill?.paidAmount ?? 0);
+        const billDue = Math.max(0, billAmount + prevDue + interest - billPaid);
+        return {
+          id: p.id,
+          receiptNumber: p.receiptNumber,
+          flatNo: p.bill?.connection?.flatNo ?? "—",
+          tower: p.bill?.connection?.tower ?? "—",
+          residentName: p.bill?.connection?.resident?.user?.name ?? "—",
+          billNumber: p.bill?.billNumber ?? "—",
+          amount: p.amount,
+          method: p.method,
+          referenceId: p.razorpayPaymentId && p.razorpayPaymentId !== "CASH" ? p.razorpayPaymentId : null,
+          paymentDate: p.paymentDate,
+          status: p.status,
+          billStatus: p.bill?.status ?? "—",
+          billAmount: billAmount.toString(),
+          billPaidAmount: billPaid.toString(),
+          billDue: billDue.toString(),
+        };
+      }));
     } finally { setLoading(false); }
   };
 
@@ -84,6 +109,8 @@ export default function MaintenancePaymentsTable({ initialData, canDelete = fals
     } catch { toast.error("Network error"); }
   };
 
+  const colSpan = canDelete ? 12 : 11;
+
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap gap-3 items-end">
@@ -99,7 +126,7 @@ export default function MaintenancePaymentsTable({ initialData, canDelete = fals
           </Select>
         </div>
         <div className="space-y-1">
-          <Label className="text-xs">Month</Label>
+          <Label className="text-xs">Bill Month</Label>
           <Input type="month" value={month} onChange={(e) => setMonth(e.target.value)} className="w-40" />
         </div>
         <div className="space-y-1">
@@ -139,11 +166,14 @@ export default function MaintenancePaymentsTable({ initialData, canDelete = fals
               <th className="px-4 py-3 text-left font-medium text-gray-600">Receipt No</th>
               <th className="px-4 py-3 text-left font-medium text-gray-600">Flat / Resident</th>
               <th className="px-4 py-3 text-left font-medium text-gray-600">Bill No</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Amount</th>
+              <th className="px-4 py-3 text-left font-medium text-gray-600">Bill Status</th>
+              <th className="px-4 py-3 text-left font-medium text-gray-600">Bill Total</th>
+              <th className="px-4 py-3 text-left font-medium text-gray-600">Paid Amount</th>
+              <th className="px-4 py-3 text-left font-medium text-gray-600">Outstanding</th>
               <th className="px-4 py-3 text-left font-medium text-gray-600">Method</th>
               <th className="px-4 py-3 text-left font-medium text-gray-600">Reference</th>
               <th className="px-4 py-3 text-left font-medium text-gray-600">Date</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Status</th>
+              <th className="px-4 py-3 text-left font-medium text-gray-600">Receipt</th>
               {canDelete && <th className="px-4 py-3" />}
             </tr>
           </thead>
@@ -156,14 +186,30 @@ export default function MaintenancePaymentsTable({ initialData, canDelete = fals
                   <p className="text-xs text-gray-500">{p.residentName}</p>
                 </td>
                 <td className="px-4 py-3 font-mono text-xs">{p.billNumber}</td>
-                <td className="px-4 py-3 font-medium text-green-700">{fmtINR(p.amount)}</td>
+                <td className="px-4 py-3"><BillStatusBadge status={p.billStatus} /></td>
+                <td className="px-4 py-3 font-medium">{fmtINR(p.billAmount)}</td>
+                <td className="px-4 py-3 font-medium text-green-700">{fmtINR(p.billPaidAmount)}</td>
+                <td className="px-4 py-3">
+                  {Number(p.billDue) > 0
+                    ? <span className="font-medium text-red-600">{fmtINR(p.billDue)}</span>
+                    : <span className="text-gray-400 text-xs">—</span>}
+                </td>
                 <td className="px-4 py-3">
                   <Badge variant="outline" className="text-xs">{p.method}</Badge>
                 </td>
                 <td className="px-4 py-3 text-xs text-gray-500">{p.referenceId ?? "—"}</td>
                 <td className="px-4 py-3 text-gray-600">{fmtDate(p.paymentDate)}</td>
                 <td className="px-4 py-3">
-                  <Badge className="bg-green-100 text-green-800 hover:bg-green-100 text-xs">{p.status}</Badge>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-7 px-2 text-xs"
+                    title="Download Receipt"
+                    onClick={() => window.open(`/api/maintenance/payments/${p.id}/receipt`, "_blank")}
+                  >
+                    <FileDown className="h-3.5 w-3.5 mr-1" />
+                    Receipt
+                  </Button>
                 </td>
                 {canDelete && (
                   <td className="px-4 py-3">
@@ -182,7 +228,7 @@ export default function MaintenancePaymentsTable({ initialData, canDelete = fals
             ))}
             {filteredPayments.length === 0 && (
               <tr>
-                <td colSpan={canDelete ? 9 : 8} className="px-4 py-12 text-center text-gray-400">
+                <td colSpan={colSpan} className="px-4 py-12 text-center text-gray-400">
                   {q ? `No payments match "${search}"` : "No payments found"}
                 </td>
               </tr>

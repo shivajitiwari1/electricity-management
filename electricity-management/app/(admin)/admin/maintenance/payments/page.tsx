@@ -16,10 +16,10 @@ export default async function MaintenancePaymentsPage() {
 
   const currentMonth = new Date().toISOString().slice(0, 7);
   const [year, mon] = currentMonth.split("-").map(Number);
-  const dateFilter = { gte: new Date(year, mon - 1, 1), lt: new Date(year, mon, 1) };
+  const billDateFilter = { gte: new Date(year, mon - 1, 1), lt: new Date(year, mon, 1) };
 
   const payments = await prisma.maintenancePayment.findMany({
-    where: { paymentDate: dateFilter },
+    where: { bill: { billingPeriodStart: billDateFilter } },
     include: {
       bill: {
         include: {
@@ -32,19 +32,30 @@ export default async function MaintenancePaymentsPage() {
     orderBy: { createdAt: "desc" },
   });
 
-  const initialData: MaintenancePaymentRow[] = payments.map((p) => ({
-    id: p.id,
-    receiptNumber: p.receiptNumber,
-    flatNo: p.bill.connection.flatNo,
-    tower: p.bill.connection.tower,
-    residentName: p.bill.connection.resident?.user?.name ?? "—",
-    billNumber: p.bill.billNumber,
-    amount: p.amount.toString(),
-    method: p.method,
-    referenceId: p.razorpayPaymentId ?? null,
-    paymentDate: p.paymentDate.toISOString(),
-    status: p.status,
-  }));
+  const initialData: MaintenancePaymentRow[] = payments.map((p) => {
+    const billAmount = Number(p.bill.amount);
+    const prevDue = Number(p.bill.previousDue);
+    const interest = Number(p.bill.interestCharge);
+    const billPaid = Number(p.bill.paidAmount);
+    const billDue = Math.max(0, billAmount + prevDue + interest - billPaid);
+    return {
+      id: p.id,
+      receiptNumber: p.receiptNumber,
+      flatNo: p.bill.connection.flatNo,
+      tower: p.bill.connection.tower,
+      residentName: p.bill.connection.resident?.user?.name ?? "—",
+      billNumber: p.bill.billNumber,
+      amount: p.amount.toString(),
+      method: p.method,
+      referenceId: p.razorpayPaymentId ?? null,
+      paymentDate: p.paymentDate.toISOString(),
+      status: p.status,
+      billStatus: p.bill.status,
+      billAmount: billAmount.toString(),
+      billPaidAmount: billPaid.toString(),
+      billDue: billDue.toString(),
+    };
+  });
 
   return (
     <main className="p-6 space-y-6">
