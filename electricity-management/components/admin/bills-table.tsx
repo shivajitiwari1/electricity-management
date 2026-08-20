@@ -336,70 +336,59 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
                         <StatusBadge status={bill.status} dueDate={bill.dueDate} />
                       </td>
                       <td className="px-4 py-3">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1">
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() =>
-                              window.open(`/api/pdf/bill/${bill.id}`)
-                            }
+                            className="h-8 w-8 p-0"
+                            title="Download PDF"
+                            onClick={() => window.open(`/api/pdf/bill/${bill.id}`)}
                           >
-                            <Download className="h-3 w-3 mr-1" />
-                            PDF
+                            <Download className="h-3.5 w-3.5" />
                           </Button>
                           <Button
                             variant="outline"
                             size="sm"
+                            className="h-8 w-8 p-0"
+                            title="View Details"
                             onClick={() => setViewBill(bill)}
                           >
-                            <Eye className="h-3 w-3 mr-1" />
-                            Details
+                            <Eye className="h-3.5 w-3.5" />
                           </Button>
                           {canWrite && (
                             <Button
                               variant="outline"
                               size="sm"
-                              className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 border-blue-200"
+                              className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700 hover:bg-blue-50 border-blue-200"
+                              title="Resend Email"
                               disabled={resendingBill === bill.id}
                               onClick={() => handleResend(bill)}
                             >
-                              <Mail className="h-3 w-3 mr-1" />
-                              {resendingBill === bill.id ? "Sending…" : "Resend"}
-                            </Button>
-                          )}
-                          {bill.status === "PARTIAL" && (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="text-amber-600 hover:text-amber-700 hover:bg-amber-50 border-amber-200"
-                              onClick={() => window.open(`/api/pdf/bill/${bill.id}`)}
-                            >
-                              <Download className="h-3 w-3 mr-1" />
-                              Balance Due
+                              <Mail className="h-3.5 w-3.5" />
                             </Button>
                           )}
                           {canWrite && bill.status === "PENDING" && (
                             <Button
                               variant="outline"
                               size="sm"
-                              className="text-green-700 hover:text-green-800 hover:bg-green-50 border-green-200"
+                              className="h-8 w-8 p-0 text-green-700 hover:text-green-800 hover:bg-green-50 border-green-200"
+                              title="Mark as Paid"
                               disabled={markingPaid === bill.id}
                               onClick={() => handleMarkPaid(bill)}
                             >
-                              <CheckCircle className="h-3 w-3 mr-1" />
-                              {markingPaid === bill.id ? "..." : "Mark Paid"}
+                              <CheckCircle className="h-3.5 w-3.5" />
                             </Button>
                           )}
                           {canDelete && (
                             <Button
                               variant="outline"
                               size="sm"
-                              className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+                              className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+                              title="Delete Bill"
                               disabled={deletingBill === bill.id}
                               onClick={() => handleDeleteBill(bill)}
                             >
-                              <Trash2 className="h-3 w-3 mr-1" />
-                              {deletingBill === bill.id ? "..." : "Delete"}
+                              <Trash2 className="h-3.5 w-3.5" />
                             </Button>
                           )}
                         </div>
