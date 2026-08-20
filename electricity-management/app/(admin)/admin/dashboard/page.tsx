@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { StatCardsSkeleton, TableSkeleton } from "@/components/ui/page-skeleton";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Users, Plug, FileText, IndianRupee, AlertCircle, Download } from "lucide-react";
+import { Users, Plug, FileText, IndianRupee, AlertCircle, Download, Clock } from "lucide-react";
 import { getCachedDashboardStats, getCachedRecentBills } from "@/lib/server-cache";
 import { auth } from "@/auth";
 import { MaintenanceToggle } from "@/components/admin/maintenance-toggle";
@@ -24,7 +24,7 @@ function getBadgeClass(status: string) {
 }
 
 async function DashboardStats() {
-  const { totalResidents, activeConnections, billsThisMonth, revenueThisMonth, overdueBills } =
+  const { totalResidents, activeConnections, billsThisMonth, revenueThisMonth, overdueBills, partialBillsCount, partialBalanceDue } =
     await getCachedDashboardStats();
 
   const revenue = revenueThisMonth._sum.amount ?? 0;
@@ -38,24 +38,45 @@ async function DashboardStats() {
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
-      {statCards.map(({ title, value, icon: Icon, color, bg, href }) => (
-        <Link key={title} href={href}>
-          <Card className="hover:shadow-md transition-shadow cursor-pointer">
-            <CardContent className="p-5">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{title}</p>
-                  <p className="text-2xl font-bold text-foreground mt-1">{value}</p>
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
+        {statCards.map(({ title, value, icon: Icon, color, bg, href }) => (
+          <Link key={title} href={href}>
+            <Card className="hover:shadow-md transition-shadow cursor-pointer">
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{title}</p>
+                    <p className="text-2xl font-bold text-foreground mt-1">{value}</p>
+                  </div>
+                  <div className={`p-3 rounded-full ${bg} dark:opacity-80`}>
+                    <Icon className={`h-5 w-5 ${color}`} />
+                  </div>
                 </div>
-                <div className={`p-3 rounded-full ${bg} dark:opacity-80`}>
-                  <Icon className={`h-5 w-5 ${color}`} />
-                </div>
+              </CardContent>
+            </Card>
+          </Link>
+        ))}
+      </div>
+
+      <Link href="/admin/bills?status=PARTIAL">
+        <Card className="hover:shadow-md transition-shadow cursor-pointer border-yellow-200 bg-yellow-50/40">
+          <CardContent className="p-5">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs font-medium text-yellow-700 uppercase tracking-wide">Partial Payments</p>
+                <p className="text-2xl font-bold text-yellow-800 mt-1">{partialBillsCount} bills</p>
+                <p className="text-sm text-yellow-700 mt-0.5">
+                  Balance Due: <span className="font-semibold">₹{Math.round(partialBalanceDue).toLocaleString("en-IN")}</span>
+                </p>
               </div>
-            </CardContent>
-          </Card>
-        </Link>
-      ))}
+              <div className="p-3 rounded-full bg-yellow-100">
+                <Clock className="h-5 w-5 text-yellow-600" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </Link>
     </div>
   );
 }

@@ -6,17 +6,21 @@ export const getCachedDashboardStats = unstable_cache(
   async () => {
     const now = new Date();
     const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-    const [totalResidents, activeConnections, billsThisMonth, revenueThisMonth, overdueBills] =
+    const [totalResidents, activeConnections, billsThisMonth, revenueThisMonth, overdueBills, partialBillsCount, partialTotalAmount, partialPaidAmount] =
       await Promise.all([
         prisma.resident.count(),
         prisma.connection.count({ where: { status: "ACTIVE" } }),
         prisma.bill.count({ where: { dueDate: { gte: monthStart } } }),
         prisma.payment.aggregate({ where: { status: "SUCCESS", paymentDate: { gte: monthStart } }, _sum: { amount: true } }),
         prisma.bill.count({ where: { status: { in: ["PENDING", "OVERDUE"] }, dueDate: { lt: now } } }),
+        prisma.bill.count({ where: { status: "PARTIAL" } }),
+        prisma.bill.aggregate({ where: { status: "PARTIAL" }, _sum: { totalAmount: true } }),
+        prisma.bill.aggregate({ where: { status: "PARTIAL" }, _sum: { paidAmount: true } }),
       ]);
-    return { totalResidents, activeConnections, billsThisMonth, revenueThisMonth, overdueBills };
+    const partialBalanceDue = Number(partialTotalAmount._sum.totalAmount ?? 0) - Number(partialPaidAmount._sum.paidAmount ?? 0);
+    return { totalResidents, activeConnections, billsThisMonth, revenueThisMonth, overdueBills, partialBillsCount, partialBalanceDue };
   },
-  ["admin-dashboard-stats-v2"],
+  ["admin-dashboard-stats-v3"],
   { revalidate: 60, tags: ["dashboard"] }
 );
 
