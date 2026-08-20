@@ -44,7 +44,7 @@ export async function GET(
     residentName: payment.bill.connection.resident?.user?.name ?? "Resident",
     flatNo: payment.bill.connection.flatNo,
     billNumber: payment.bill.billNumber,
-    amount: Number(payment.amount),
+    amount: Math.round(Number(payment.amount)),
     paymentDate: payment.paymentDate,
     razorpayPaymentId: payment.razorpayPaymentId ?? undefined,
     method: payment.method,
