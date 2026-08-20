@@ -233,6 +233,7 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
               <SelectItem value="all">All</SelectItem>
               <SelectItem value="PENDING">PENDING</SelectItem>
               <SelectItem value="PAID">PAID</SelectItem>
+              <SelectItem value="PARTIAL">PARTIAL</SelectItem>
               <SelectItem value="OVERDUE">OVERDUE</SelectItem>
             </SelectContent>
           </Select>
@@ -318,11 +319,15 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
                       <td className="px-4 py-3 text-muted-foreground text-xs">
                         {formatPeriod(bill.billingPeriodStart, bill.billingPeriodEnd)}
                       </td>
-                      <td className="px-4 py-3 text-right font-semibold">
-                        {parseFloat(bill.totalAmount).toLocaleString("en-IN", {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
+                      <td className="px-4 py-3 text-right">
+                        <div className="font-semibold">
+                          {parseFloat(bill.totalAmount).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        </div>
+                        {bill.status === "PARTIAL" && (
+                          <div className="text-xs text-amber-600 font-medium mt-0.5">
+                            Bal: ₹{Math.round(parseFloat(bill.totalAmount) - parseFloat(bill.paidAmount)).toLocaleString("en-IN")}
+                          </div>
+                        )}
                       </td>
                       <td className="px-4 py-3 text-muted-foreground text-xs">
                         {formatDate(bill.dueDate)}
