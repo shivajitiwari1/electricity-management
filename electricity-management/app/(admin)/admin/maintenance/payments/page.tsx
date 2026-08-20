@@ -33,9 +33,13 @@ export default async function MaintenancePaymentsPage() {
   });
 
   const initialData: MaintenancePaymentRow[] = payments.map((p) => {
-    const billAmount = Number(p.bill.amount);
-    const billPaid = Number(p.bill.paidAmount);
-    const billDue = Math.max(0, billAmount - billPaid);
+    const billAmount = Math.round(Number(p.bill.amount));
+    const prevDue = Math.round(Number(p.bill.previousDue));
+    const interest = Math.round(Number(p.bill.interestCharge));
+    const grandTotal = billAmount + prevDue + interest;
+    const billPaid = Math.round(Number(p.bill.paidAmount));
+    const billDue = Math.max(0, grandTotal - billPaid);
+    const effectiveStatus = billDue === 0 ? "PAID" : billPaid > 0 ? "PARTIAL" : "PENDING";
     return {
       id: p.id,
       receiptNumber: p.receiptNumber,
@@ -48,8 +52,8 @@ export default async function MaintenancePaymentsPage() {
       referenceId: p.razorpayPaymentId ?? null,
       paymentDate: p.paymentDate.toISOString(),
       status: p.status,
-      billStatus: p.bill.status,
-      billAmount: billAmount.toString(),
+      billStatus: effectiveStatus,
+      billAmount: grandTotal.toString(),
       billPaidAmount: billPaid.toString(),
       billDue: billDue.toString(),
     };

@@ -63,9 +63,13 @@ export default function MaintenancePaymentsTable({ initialData, canDelete = fals
       if (!res.ok) { toast.error("Failed to load payments"); return; }
       const data = await res.json();
       setPayments(data.map((p: any) => {
-        const billAmount = Number(p.bill?.amount ?? 0);
-        const billPaid = Number(p.bill?.paidAmount ?? 0);
-        const billDue = Math.max(0, billAmount - billPaid);
+        const billAmount = Math.round(Number(p.bill?.amount ?? 0));
+        const prevDue = Math.round(Number(p.bill?.previousDue ?? 0));
+        const interest = Math.round(Number(p.bill?.interestCharge ?? 0));
+        const grandTotal = billAmount + prevDue + interest;
+        const billPaid = Math.round(Number(p.bill?.paidAmount ?? 0));
+        const billDue = Math.max(0, grandTotal - billPaid);
+        const effectiveStatus = billDue === 0 ? "PAID" : billPaid > 0 ? "PARTIAL" : "PENDING";
         return {
           id: p.id,
           receiptNumber: p.receiptNumber,
@@ -78,8 +82,8 @@ export default function MaintenancePaymentsTable({ initialData, canDelete = fals
           referenceId: p.razorpayPaymentId && p.razorpayPaymentId !== "CASH" ? p.razorpayPaymentId : null,
           paymentDate: p.paymentDate,
           status: p.status,
-          billStatus: p.bill?.status ?? "—",
-          billAmount: billAmount.toString(),
+          billStatus: effectiveStatus,
+          billAmount: grandTotal.toString(),
           billPaidAmount: billPaid.toString(),
           billDue: billDue.toString(),
         };
