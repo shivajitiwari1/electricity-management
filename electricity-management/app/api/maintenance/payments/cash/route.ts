@@ -79,6 +79,7 @@ export async function POST(req: NextRequest) {
   const isFullyPaid = newPaidAmount >= totalDue - 0.01;
   const newStatus = isFullyPaid ? "PAID" : "PARTIAL";
   const receiptNumber = await nextMaintenanceReceiptNumber();
+  const rebateReceipt = rebateAmount > 0 ? await nextMaintenanceReceiptNumber([receiptNumber]) : "";
   const pDate = paymentDateParam ? new Date(paymentDateParam) : new Date();
 
   const payment = await prisma.$transaction(async (tx) => {
@@ -94,7 +95,6 @@ export async function POST(req: NextRequest) {
       },
     });
     if (rebateAmount > 0) {
-      const rebateReceipt = await nextMaintenanceReceiptNumber();
       await tx.maintenancePayment.create({
         data: {
           maintenanceBillId,
@@ -126,6 +126,8 @@ export async function POST(req: NextRequest) {
         razorpayPaymentId: referenceId ?? method,
         receiptUrl: `${process.env.NEXTAUTH_URL}/api/maintenance/payments/${payment.id}/receipt`,
         rebateAmount: rebateAmount > 0 ? rebateAmount.toFixed(2) : undefined,
+        billTotal: totalDue.toFixed(2),
+        balanceDue: Math.max(0, totalDue - newPaidAmount).toFixed(2),
       });
       await sendEmail(resident.user.email, `Maintenance Payment Received — ${bill.billNumber}`, html);
     } catch (err) {

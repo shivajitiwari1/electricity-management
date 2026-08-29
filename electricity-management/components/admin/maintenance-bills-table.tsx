@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { FileDown, FileSpreadsheet, Receipt, ChevronsUpDown, FilePlus2, Users, Trash2, Mail } from "lucide-react";
+import { FileDown, FileSpreadsheet, Receipt, ChevronsUpDown, FilePlus2, Users, Trash2, Mail, ArrowUp, ArrowDown, ArrowUpDown, FileWarning } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 
@@ -65,6 +65,36 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
   const [payRebate, setPayRebate] = useState("");
   const [paying, setPaying] = useState(false);
   const [detailBill, setDetailBill] = useState<MaintenanceBillRow | null>(null);
+  const [sortKey, setSortKey] = useState<string>("");
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
+
+  function handleSort(key: string) {
+    if (sortKey === key) setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    else { setSortKey(key); setSortDir("asc"); }
+  }
+  function SortIcon({ col }: { col: string }) {
+    if (sortKey !== col) return <ArrowUpDown className="inline ml-1 h-3 w-3 opacity-40" />;
+    return sortDir === "asc" ? <ArrowUp className="inline ml-1 h-3 w-3" /> : <ArrowDown className="inline ml-1 h-3 w-3" />;
+  }
+  function sortBills(rows: MaintenanceBillRow[]) {
+    if (!sortKey) return rows;
+    return [...rows].sort((a, b) => {
+      let aVal: string | number = "", bVal: string | number = "";
+      switch (sortKey) {
+        case "billNumber": aVal = a.billNumber; bVal = b.billNumber; break;
+        case "flatNo": aVal = a.flatNo; bVal = b.flatNo; break;
+        case "residentName": aVal = a.residentName.toLowerCase(); bVal = b.residentName.toLowerCase(); break;
+        case "amount": aVal = Number(a.amount); bVal = Number(b.amount); break;
+        case "paidAmount": aVal = Number(a.paidAmount); bVal = Number(b.paidAmount); break;
+        case "dueAmount": aVal = Number(a.amount) + Number(a.interestCharge) - Number(a.paidAmount); bVal = Number(b.amount) + Number(b.interestCharge) - Number(b.paidAmount); break;
+        case "dueDate": aVal = a.dueDate; bVal = b.dueDate; break;
+        case "status": aVal = a.status; bVal = b.status; break;
+      }
+      if (aVal < bVal) return sortDir === "asc" ? -1 : 1;
+      if (aVal > bVal) return sortDir === "asc" ? 1 : -1;
+      return 0;
+    });
+  }
 
   // Generate Bills state
   const [genOpen, setGenOpen] = useState(false);
@@ -154,24 +184,26 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
   };
 
   const handleDeleteBill = async (bill: MaintenanceBillRow) => {
-    if (!confirm(`Delete bill ${bill.billNumber} for ${bill.flatNo}? This cannot be undone.`)) return;
+    const hasPaid = Number(bill.paidAmount) > 0;
+    const msg = hasPaid
+      ? `Delete bill ${bill.billNumber} for ${bill.flatNo}?\n\nThis will also delete all payments recorded against this bill. This cannot be undone.`
+      : `Delete bill ${bill.billNumber} for ${bill.flatNo}? This cannot be undone.`;
+    if (!confirm(msg)) return;
     try {
       const res = await fetch(`/api/maintenance/bills/${bill.id}`, { method: "DELETE" });
       const data = await res.json();
       if (!res.ok) { toast.error(data.error ?? "Failed to delete bill"); return; }
-      toast.success(`Bill ${bill.billNumber} deleted`);
+      toast.success(`Bill ${bill.billNumber} deleted${data.paymentsDeleted > 0 ? ` (${data.paymentsDeleted} payment(s) also removed)` : ""}`);
       await fetchBills();
     } catch { toast.error("Network error"); }
   };
 
   const q = search.trim().toLowerCase();
-  const filteredBills = q
-    ? bills.filter((b) =>
-        b.flatNo.toLowerCase().includes(q) || b.residentName.toLowerCase().includes(q)
-      )
-    : bills;
+  const filteredBills = sortBills(
+    q ? bills.filter((b) => b.flatNo.toLowerCase().includes(q) || b.residentName.toLowerCase().includes(q)) : bills
+  );
 
-  const totalAmt = filteredBills.reduce((s, b) => s + Number(b.amount) + Number(b.interestCharge), 0);
+  const totalAmt = filteredBills.reduce((s, b) => s + Number(b.amount) + Number(b.interestCharge) + Number(b.previousDue), 0);
   const totalCollected = filteredBills.reduce((s, b) => s + Number(b.paidAmount), 0);
 
   // Shared connection loader (used by both Advance Pay and Generate Bills)
@@ -476,14 +508,24 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b bg-gray-50">
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Bill No</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Flat / Resident</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Area</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Amount</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Interest</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Due Amount</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Due Date</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Status</th>
+              {[
+                ["billNumber", "Bill No"],
+                ["flatNo", "Flat / Resident"],
+                [null, "Area"],
+                ["amount", "Amount"],
+                [null, "Interest"],
+                ["dueAmount", "Due Amount"],
+                ["dueDate", "Due Date"],
+                ["status", "Status"],
+              ].map(([key, label]) => (
+                <th key={label as string} className="px-4 py-3 text-left font-medium text-gray-600">
+                  {key ? (
+                    <button onClick={() => handleSort(key as string)} className="flex items-center gap-0 hover:text-gray-900 whitespace-nowrap">
+                      {label}<SortIcon col={key as string} />
+                    </button>
+                  ) : label}
+                </th>
+              ))}
               {canWrite && <th className="px-4 py-3 text-left font-medium text-gray-600">Actions</th>}
             </tr>
           </thead>
@@ -546,6 +588,17 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
                       >
                         <Mail className="h-3.5 w-3.5" />
                       </Button>
+                      {bill.status !== "PAID" && (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="h-7 w-7 p-0 text-red-600 hover:text-red-800 hover:bg-red-50"
+                          title="Download Demand Letter"
+                          onClick={() => window.open(`/api/maintenance/bills/${bill.id}/demand-letter`, "_blank")}
+                        >
+                          <FileWarning className="h-3.5 w-3.5" />
+                        </Button>
+                      )}
                       {bill.status === "PAID" ? (
                         <Button
                           size="sm"
@@ -606,7 +659,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
                   <p><span className="text-gray-500">Previous Due:</span> <span className="text-red-600">{fmtINR(payBill.previousDue)}</span></p>
                 )}
                 {Number(payBill.interestCharge) > 0 && (
-                  <p><span className="text-gray-500">Interest (24% p.a.):</span> <span className="text-red-600">{fmtINR(payBill.interestCharge)}</span></p>
+                  <p><span className="text-gray-500">Interest (12% p.a.):</span> <span className="text-red-600">{fmtINR(payBill.interestCharge)}</span></p>
                 )}
                 <p><span className="text-gray-500">Outstanding:</span> <strong>
                   {fmtINR(Number(payBill.amount) + Number(payBill.previousDue) + Number(payBill.interestCharge) - Number(payBill.paidAmount))}
@@ -642,15 +695,40 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
                   }}
                   placeholder="0.00"
                 />
-                {payRebate && parseFloat(payRebate) > 0 && payBill && (() => {
-                  const outstanding = Number(payBill.amount) + Number(payBill.previousDue) + Number(payBill.interestCharge) - Number(payBill.paidAmount);
+                {/* Live settlement preview. Mirrors the rounding and PAID/PARTIAL rule in
+                    /api/maintenance/payments/cash so this can never disagree with what is saved. */}
+                {(() => {
+                  const totalDue = Math.round(Number(payBill.amount) + Number(payBill.previousDue) + Number(payBill.interestCharge));
+                  const outstanding = totalDue - Math.round(Number(payBill.paidAmount));
                   const rebate = parseFloat(payRebate) || 0;
-                  const net = outstanding - rebate;
+                  const entered = parseFloat(payAmount) || 0;
+                  const applied = entered + rebate;
+                  const settled = applied >= outstanding - 0.01;
+                  const balanceAfter = Math.max(0, outstanding - applied);
+                  const exceeds = applied > outstanding + 0.01;
+                  const tone = exceeds
+                    ? { bg: "bg-red-50 border-red-200", line: "border-red-200", text: "text-red-800", note: "text-red-700" }
+                    : settled
+                      ? { bg: "bg-green-50 border-green-200", line: "border-green-200", text: "text-green-800", note: "text-green-700" }
+                      : { bg: "bg-amber-50 border-amber-200", line: "border-amber-200", text: "text-amber-800", note: "text-amber-700" };
                   return (
-                    <div className="text-xs bg-blue-50 border border-blue-200 rounded px-2 py-1.5 space-y-0.5 mt-1">
+                    <div className={`text-xs border rounded px-2 py-1.5 space-y-0.5 mt-1 ${tone.bg}`}>
                       <div className="flex justify-between text-gray-500"><span>Outstanding</span><span>{fmtINR(outstanding)}</span></div>
-                      <div className="flex justify-between text-green-700"><span>Rebate / Waiver</span><span>− {fmtINR(rebate)}</span></div>
-                      <div className="flex justify-between font-semibold text-blue-800 border-t border-blue-200 pt-1"><span>Net Payable</span><span>{fmtINR(net > 0 ? net : 0)}</span></div>
+                      <div className="flex justify-between text-gray-700"><span>This Payment</span><span>− {fmtINR(entered)}</span></div>
+                      {rebate > 0 && (
+                        <div className="flex justify-between text-green-700"><span>Rebate / Waiver</span><span>− {fmtINR(rebate)}</span></div>
+                      )}
+                      <div className={`flex justify-between font-semibold border-t pt-1 ${tone.line} ${tone.text}`}>
+                        <span>Balance Due After Payment</span>
+                        <span>{fmtINR(balanceAfter)}</span>
+                      </div>
+                      <p className={tone.note}>
+                        {exceeds
+                          ? `Payment + rebate exceeds outstanding by ${fmtINR(applied - outstanding)}.`
+                          : settled
+                            ? "Bill will be marked PAID."
+                            : "Bill will be marked PARTIAL."}
+                      </p>
                     </div>
                   );
                 })()}
@@ -688,6 +766,28 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
               <span className="text-gray-500">Maintenance</span><span className="font-bold">{fmtINR(detailBill.amount)}</span>
               <span className="text-gray-500">Interest</span><span className={Number(detailBill.interestCharge) > 0 ? "text-red-600" : ""}>{fmtINR(detailBill.interestCharge)}</span>
               <span className="text-gray-500">Paid</span><span className="text-green-700">{fmtINR(detailBill.paidAmount)}</span>
+              {Number(detailBill.previousDue) > 0 && (
+                <>
+                  <span className="text-gray-500">Previous Due</span>
+                  <span className="text-red-600">{fmtINR(detailBill.previousDue)}</span>
+                </>
+              )}
+              {/* Same figure the invoice PDF and receipt show, using the API's rounding. */}
+              {(() => {
+                const balance = Math.max(
+                  0,
+                  Math.round(Number(detailBill.amount) + Number(detailBill.previousDue) + Number(detailBill.interestCharge)) -
+                    Math.round(Number(detailBill.paidAmount))
+                );
+                return (
+                  <>
+                    <span className="text-gray-500 font-medium">Balance Due</span>
+                    <span className={balance > 0 ? "font-bold text-amber-700" : "font-bold text-green-700"}>
+                      {fmtINR(balance)}
+                    </span>
+                  </>
+                );
+              })()}
               <span className="text-gray-500">Due Date</span><span>{fmtDate(detailBill.dueDate)}</span>
               <span className="text-gray-500">Status</span><span><StatusBadge status={detailBill.status} /></span>
             </div>

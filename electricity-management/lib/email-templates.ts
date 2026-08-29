@@ -143,26 +143,33 @@ export function paymentSuccessEmail(params: {
   razorpayPaymentId: string;
   receiptUrl: string;
   rebateAmount?: string;
+  /** Total payable on the bill. Shown only when a balance remains. */
+  billTotal?: string;
+  /** Outstanding after this payment. > 0 switches the email to part-payment wording. */
+  balanceDue?: string;
 }): string {
-  const { residentName, flatNo, receiptNumber, amount, paymentDate, razorpayPaymentId, receiptUrl, rebateAmount } = params;
+  const { residentName, flatNo, receiptNumber, amount, paymentDate, razorpayPaymentId, receiptUrl, rebateAmount, billTotal, balanceDue } = params;
+  const isPartial = balanceDue != null && Number(balanceDue) > 0;
 
   const body = `
     <tr><td style="padding:32px 32px 0;">
-      <!-- Green success bar -->
-      <table width="100%" cellpadding="0" cellspacing="0" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:16px 20px;margin-bottom:20px;">
+      <!-- Status bar: green when settled, amber when a balance remains -->
+      <table width="100%" cellpadding="0" cellspacing="0" style="background:${isPartial ? "#fffbeb" : "#f0fdf4"};border:1px solid ${isPartial ? "#fcd34d" : "#86efac"};border-radius:6px;padding:16px 20px;margin-bottom:20px;">
         <tr>
           <td width="36">
-            <div style="width:32px;height:32px;background:#16a34a;border-radius:50%;text-align:center;line-height:32px;font-size:18px;color:#fff;">&#10003;</div>
+            <div style="width:32px;height:32px;background:${isPartial ? "#d97706" : "#16a34a"};border-radius:50%;text-align:center;line-height:32px;font-size:18px;color:#fff;">${isPartial ? "!" : "&#10003;"}</div>
           </td>
           <td style="padding-left:12px;">
-            <p style="margin:0;font-size:14px;font-weight:bold;color:#15803d;">Payment Confirmed</p>
-            <p style="margin:2px 0 0;font-size:12px;color:#16a34a;">Your payment has been received successfully.</p>
+            <p style="margin:0;font-size:14px;font-weight:bold;color:${isPartial ? "#92400e" : "#15803d"};">${isPartial ? "Part Payment Received" : "Payment Confirmed"}</p>
+            <p style="margin:2px 0 0;font-size:12px;color:${isPartial ? "#b45309" : "#16a34a"};">${isPartial ? "A balance is still outstanding on this bill." : "Your payment has been received successfully."}</p>
           </td>
         </tr>
       </table>
       <p style="margin:0;font-size:15px;color:#374151;">Dear <strong>${residentName}</strong>,</p>
       <p style="margin:12px 0 0;font-size:14px;color:#4b5563;line-height:1.6;">
-        Thank you for your payment for <strong>Flat ${flatNo}</strong>. Your account is now up to date.
+        ${isPartial
+          ? `Thank you for your payment for <strong>Flat ${flatNo}</strong>. This was a part payment &mdash; <strong>Rs. ${balanceDue}</strong> is still outstanding on this bill. Please clear the balance at the earliest to avoid interest.`
+          : `Thank you for your payment for <strong>Flat ${flatNo}</strong>. Your account is now up to date.`}
       </p>
     </td></tr>
 
@@ -174,7 +181,17 @@ export function paymentSuccessEmail(params: {
           <p style="margin:6px 0 0;font-size:36px;font-weight:bold;color:#14532d;">Rs. ${amount}</p>
         </td></tr>
       </table>
-    </td></tr>
+    </td></tr>${isPartial ? `
+
+    <!-- Balance Due Banner -->
+    <tr><td style="padding:12px 32px 0;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background:#fffbeb;border:1px solid #fcd34d;border-radius:6px;padding:16px;">
+        <tr><td align="center">
+          <p style="margin:0;font-size:12px;font-weight:600;color:#92400e;text-transform:uppercase;letter-spacing:1px;">Balance Due</p>
+          <p style="margin:6px 0 0;font-size:28px;font-weight:bold;color:#b45309;">Rs. ${balanceDue}</p>
+        </td></tr>
+      </table>
+    </td></tr>` : ""}
 
     <!-- Payment Details -->
     <tr><td style="padding:24px 32px 0;">
@@ -186,7 +203,9 @@ export function paymentSuccessEmail(params: {
         ${rebateAmount ? row("Rebate / Waiver", "Rs. " + rebateAmount) : ""}
         ${rebateAmount ? row("Total Settled", "Rs. " + (Number(amount) + Number(rebateAmount)).toFixed(2), true) : ""}
         ${row("Payment Date", paymentDate)}
-        ${row("Transaction ID", razorpayPaymentId || "—")}
+        ${row("Transaction ID", razorpayPaymentId || "—")}${isPartial ? `
+        ${billTotal ? row("Bill Total", "Rs. " + billTotal) : ""}
+        ${row("Balance Due", "Rs. " + balanceDue, true)}` : ""}
       </table>
     </td></tr>
 
@@ -253,7 +272,7 @@ export function overdueNoticeEmail(params: {
         ${row("Due Date", dueDate)}
       </table>
       <p style="margin:16px 0 0;font-size:12px;color:#6b7280;background:#fef9c3;padding:10px 14px;border-radius:4px;border-left:3px solid #eab308;">
-        <strong>Note:</strong> Disconnection may occur without further notice. Reconnection fee: Rs. 500 + 24% p.a. interest on outstanding amount.
+        <strong>Note:</strong> Disconnection may occur without further notice. Reconnection fee: Rs. 500 + 12% p.a. interest on outstanding amount.
       </p>
     </td></tr>
 
@@ -402,11 +421,11 @@ export function maintenanceOverdueEmail(params: {
         ${row("Flat No", flatNo)}
         ${row("Billing Period", billingPeriod)}
         ${row("Original Amount", "Rs. " + originalAmount)}
-        ${row("Late Interest (24% p.a.)", "Rs. " + interestCharge)}
+        ${row("Late Interest (12% p.a.)", "Rs. " + interestCharge)}
         ${row("Total Due Now", "Rs. " + totalDue, true)}
       </table>
       <p style="margin:16px 0 0;font-size:12px;color:#6b7280;background:#fef9c3;padding:10px 14px;border-radius:4px;border-left:3px solid #eab308;">
-        <strong>Note:</strong> Interest @ 24% per annum continues to accrue daily on the outstanding amount until the bill is paid in full.
+        <strong>Note:</strong> Interest @ 12% per annum continues to accrue daily on the outstanding amount until the bill is paid in full.
       </p>
     </td></tr>
 
@@ -481,7 +500,7 @@ export function maintenanceBillGeneratedEmail(params: {
         ${hasInterest ? `<tr><td style="padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:13px;color:#dc2626;">Interest Charge</td><td style="padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:13px;color:#dc2626;text-align:right;">Rs. ${interestCharge}</td></tr>` : ""}
         ${row("Net Payable", "Rs. " + netPayable, true)}
       </table>
-      <p style="margin:16px 0 0;font-size:12px;color:#6b7280;">Log in to the resident portal to pay online. Interest @ 24% p.a. applies after the due date.</p>
+      <p style="margin:16px 0 0;font-size:12px;color:#6b7280;">Log in to the resident portal to pay online. Interest @ 12% p.a. applies after the due date.</p>
     </td></tr>
   `;
 

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Trash2, FileDown } from "lucide-react";
+import { Trash2, FileDown, ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
 
 export interface MaintenancePaymentRow {
   id: string;
@@ -30,6 +30,12 @@ export interface MaintenancePaymentRow {
 const fmtINR = (v: string | number) =>
   `₹${Number(v).toLocaleString("en-IN", { minimumFractionDigits: 2 })}`;
 
+const METHOD_LABELS: Record<string, string> = {
+  CASH: "Cash", UPI: "UPI", NEFT: "NEFT", RTGS: "RTGS",
+  CHEQUE: "Cheque", CREDIT_CARD: "Credit Card", ADJUSTMENT: "Adjustment",
+};
+const fmtMethod = (m: string) => METHOD_LABELS[m] ?? m;
+
 const fmtDate = (d: string) =>
   new Date(d).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
 
@@ -51,6 +57,38 @@ export default function MaintenancePaymentsTable({ initialData, canDelete = fals
   const [method, setMethod] = useState("all");
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
+  const [sortKey, setSortKey] = useState<string>("");
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
+
+  function handleSort(key: string) {
+    if (sortKey === key) setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    else { setSortKey(key); setSortDir("asc"); }
+  }
+  function SortIcon({ col }: { col: string }) {
+    if (sortKey !== col) return <ArrowUpDown className="inline ml-1 h-3 w-3 opacity-40" />;
+    return sortDir === "asc" ? <ArrowUp className="inline ml-1 h-3 w-3" /> : <ArrowDown className="inline ml-1 h-3 w-3" />;
+  }
+  function sortPayments(rows: MaintenancePaymentRow[]) {
+    if (!sortKey) return rows;
+    return [...rows].sort((a, b) => {
+      let aVal: string | number = "", bVal: string | number = "";
+      switch (sortKey) {
+        case "receiptNumber": aVal = a.receiptNumber; bVal = b.receiptNumber; break;
+        case "flatNo": aVal = a.flatNo; bVal = b.flatNo; break;
+        case "residentName": aVal = a.residentName.toLowerCase(); bVal = b.residentName.toLowerCase(); break;
+        case "billNumber": aVal = a.billNumber; bVal = b.billNumber; break;
+        case "billStatus": aVal = a.billStatus; bVal = b.billStatus; break;
+        case "billAmount": aVal = Number(a.billAmount); bVal = Number(b.billAmount); break;
+        case "amount": aVal = Number(a.amount); bVal = Number(b.amount); break;
+        case "billDue": aVal = Number(a.billDue); bVal = Number(b.billDue); break;
+        case "method": aVal = a.method; bVal = b.method; break;
+        case "paymentDate": aVal = a.paymentDate; bVal = b.paymentDate; break;
+      }
+      if (aVal < bVal) return sortDir === "asc" ? -1 : 1;
+      if (aVal > bVal) return sortDir === "asc" ? 1 : -1;
+      return 0;
+    });
+  }
 
   const fetchPayments = async () => {
     setLoading(true);
@@ -92,11 +130,9 @@ export default function MaintenancePaymentsTable({ initialData, canDelete = fals
   };
 
   const q = search.trim().toLowerCase();
-  const filteredPayments = q
-    ? payments.filter((p) =>
-        p.flatNo.toLowerCase().includes(q) || p.residentName.toLowerCase().includes(q)
-      )
-    : payments;
+  const filteredPayments = sortPayments(
+    q ? payments.filter((p) => p.flatNo.toLowerCase().includes(q) || p.residentName.toLowerCase().includes(q)) : payments
+  );
 
   const total = filteredPayments.reduce((s, p) => s + Number(p.amount), 0);
 
@@ -165,17 +201,27 @@ export default function MaintenancePaymentsTable({ initialData, canDelete = fals
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b bg-gray-50">
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Receipt No</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Flat / Resident</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Bill No</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Bill Status</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Bill Total</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Paid Amount</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Outstanding</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Method</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Reference</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Date</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Receipt</th>
+              {[
+                ["receiptNumber", "Receipt No"],
+                ["flatNo", "Flat / Resident"],
+                ["billNumber", "Bill No"],
+                ["billStatus", "Bill Status"],
+                ["billAmount", "Bill Total"],
+                ["amount", "Paid Amount"],
+                ["billDue", "Outstanding"],
+                ["method", "Method"],
+                [null, "Reference"],
+                ["paymentDate", "Date"],
+                [null, "Receipt"],
+              ].map(([key, label]) => (
+                <th key={label as string} className="px-4 py-3 text-left font-medium text-gray-600">
+                  {key ? (
+                    <button onClick={() => handleSort(key as string)} className="flex items-center gap-0 hover:text-gray-900 whitespace-nowrap">
+                      {label}<SortIcon col={key as string} />
+                    </button>
+                  ) : label}
+                </th>
+              ))}
               {canDelete && <th className="px-4 py-3" />}
             </tr>
           </thead>
@@ -190,28 +236,36 @@ export default function MaintenancePaymentsTable({ initialData, canDelete = fals
                 <td className="px-4 py-3 font-mono text-xs">{p.billNumber}</td>
                 <td className="px-4 py-3"><BillStatusBadge status={p.billStatus} /></td>
                 <td className="px-4 py-3 font-medium">{fmtINR(p.billAmount)}</td>
-                <td className="px-4 py-3 font-medium text-green-700">{fmtINR(p.billPaidAmount)}</td>
+                <td className="px-4 py-3 font-medium text-green-700">{fmtINR(p.amount)}</td>
                 <td className="px-4 py-3">
                   {Number(p.billDue) > 0
                     ? <span className="font-medium text-red-600">{fmtINR(p.billDue)}</span>
                     : <span className="text-gray-400 text-xs">—</span>}
                 </td>
                 <td className="px-4 py-3">
-                  <Badge variant="outline" className="text-xs">{p.method}</Badge>
+                  <Badge variant="outline" className="text-xs">{fmtMethod(p.method)}</Badge>
                 </td>
                 <td className="px-4 py-3 text-xs text-gray-500">{p.referenceId ?? "—"}</td>
                 <td className="px-4 py-3 text-gray-600">{fmtDate(p.paymentDate)}</td>
                 <td className="px-4 py-3">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="h-7 px-2 text-xs"
-                    title="Download Receipt"
-                    onClick={() => window.open(`/api/maintenance/payments/${p.id}/receipt`, "_blank")}
-                  >
-                    <FileDown className="h-3.5 w-3.5 mr-1" />
-                    Receipt
-                  </Button>
+                  {p.method === "ADJUSTMENT" ? (
+                    // A rebate / waiver is not money received - no receipt is issued for it.
+                    // It appears as a deduction on the receipt of the payment it went with.
+                    <span className="text-xs text-gray-400" title="No receipt is issued for a rebate / waiver">
+                      &mdash;
+                    </span>
+                  ) : (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="h-7 px-2 text-xs"
+                      title="Download Receipt"
+                      onClick={() => window.open(`/api/maintenance/payments/${p.id}/receipt`, "_blank")}
+                    >
+                      <FileDown className="h-3.5 w-3.5 mr-1" />
+                      Receipt
+                    </Button>
+                  )}
                 </td>
                 {canDelete && (
                   <td className="px-4 py-3">

@@ -37,11 +37,28 @@ export interface ReceiptData {
   razorpayPaymentId?: string;
   method: string;
   rebateAmount?: number;
+  /** Total payable on the bill (amount + previousDue + interest). */
+  billTotal?: number;
+  /** Outstanding on the bill as of this payment. > 0 renders the part-payment box. */
+  balanceDue?: number;
 }
 
 function formatDate(date: Date): string {
   const d = new Date(date);
   return `${String(d.getDate()).padStart(2, "0")}-${String(d.getMonth() + 1).padStart(2, "0")}-${d.getFullYear()}`;
+}
+
+function formatMethod(method: string): string {
+  const map: Record<string, string> = {
+    CASH: "Cash",
+    UPI: "UPI",
+    NEFT: "NEFT",
+    RTGS: "RTGS",
+    CHEQUE: "Cheque",
+    CREDIT_CARD: "Credit Card",
+    ADJUSTMENT: "Adjustment / Rebate",
+  };
+  return map[method] ?? method;
 }
 
 function formatCurrency(amount: number): string {
@@ -248,7 +265,7 @@ export async function generateBillPdf(data: BillData): Promise<Buffer> {
     doc.font("Helvetica").fontSize(8);
     doc.text("1. NPCL Rate: Rs.7.00/unit | DG Rate: Rs.16.00/unit", 40, doc.y, { width: 515 });
     doc.text("2. Electricity will be disconnected after due date without further notice.", 40, doc.y, { width: 515 });
-    doc.text("3. Reconnection fee: Rs.500 + 24% p.a. interest on outstanding amount.", 40, doc.y, { width: 515 });
+    doc.text("3. Reconnection fee: Rs.500 + 12% p.a. interest on outstanding amount.", 40, doc.y, { width: 515 });
 
     doc.moveDown(0.6);
     doc.moveTo(40, doc.y).lineTo(555, doc.y).stroke();
@@ -363,7 +380,7 @@ export function generateReceiptPdf(data: ReceiptData): Promise<Buffer> {
     y += 16;
     const detailRows: [string, string][] = [
       ["Bill Number", data.billNumber],
-      ["Payment Method", data.method],
+      ["Payment Method", formatMethod(data.method)],
       ["Payment Date", formatDate(data.paymentDate)],
     ];
     if (data.razorpayPaymentId) {
@@ -408,24 +425,71 @@ export function generateReceiptPdf(data: ReceiptData): Promise<Buffer> {
 
     // ── Confirmation box ──────────────────────────────────────────────────
     y += 96;
-    doc.rect(L, y, CW, 62).fill("#f0fdf4");
-    doc.rect(L, y, CW, 62).strokeColor("#86efac").lineWidth(1).stroke();
+    const balanceDue = data.balanceDue ?? 0;
 
-    // Checkmark circle
-    const cx = L + 30, cy = y + 31;
-    doc.circle(cx, cy, 11).fill("#16a34a");
-    doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(14)
-      .text("✓", cx - 5, cy - 9, { width: 12, lineBreak: false });
+    if (balanceDue > 0) {
+      // Partial payment - the bill is not settled, so state the outstanding amount.
+      const BOXH = 112;
+      doc.rect(L, y, CW, BOXH).fill("#fffbeb");
+      doc.rect(L, y, CW, BOXH).strokeColor("#fcd34d").lineWidth(1).stroke();
 
-    doc.fillColor("#166534").font("Helvetica-Bold").fontSize(13)
-      .text("PAYMENT CONFIRMED", L + 52, y + 14, { width: CW - 60 });
-    doc.fillColor("#4b7a5a").font("Helvetica").fontSize(8)
-      .text("This is a computer-generated receipt and does not require a signature.", L + 52, y + 33, { width: CW - 60 });
-    doc.fillColor("#6b7280").font("Helvetica-Oblique").fontSize(7.5)
-      .text("Note: Payment is subject to realization.", L + 52, y + 47, { width: CW - 60 });
+      const cx = L + 30, cy = y + 24;
+      doc.circle(cx, cy, 11).fill("#d97706");
+      doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(14)
+        .text("!", cx - 6, cy - 8, { width: 12, align: "center", lineBreak: false });
 
-    // ── Footer ────────────────────────────────────────────────────────────
-    y += 78;
+      doc.fillColor("#92400e").font("Helvetica-Bold").fontSize(13)
+        .text("PART PAYMENT RECEIVED", L + 52, y + 16, { width: CW - 60 });
+
+      const billTotal = data.billTotal ?? 0;
+      const paidSoFar = billTotal > 0 ? billTotal - balanceDue : data.amount + (data.rebateAmount ?? 0);
+      const summaryRows: [string, string][] = [];
+      if (billTotal > 0) summaryRows.push(["Bill Total", `Rs. ${formatCurrency(billTotal)}`]);
+      summaryRows.push(["Paid so far (including this payment)", `Rs. ${formatCurrency(paidSoFar)}`]);
+
+      let by = y + 40;
+      for (const [label, value] of summaryRows) {
+        doc.fillColor("#6b7280").font("Helvetica").fontSize(8.5)
+          .text(label, L + 52, by, { width: 280, lineBreak: false });
+        doc.fillColor("#374151").font("Helvetica-Bold").fontSize(8.5)
+          .text(value, L + 340, by, { width: CW - 356, align: "right", lineBreak: false });
+        by += 15;
+      }
+
+      doc.moveTo(L + 52, by + 2).lineTo(L + CW - 16, by + 2).strokeColor("#fcd34d").lineWidth(0.8).stroke();
+      by += 8;
+      doc.fillColor("#92400e").font("Helvetica-Bold").fontSize(11)
+        .text("BALANCE DUE", L + 52, by, { width: 280, lineBreak: false });
+      doc.fillColor("#b45309").font("Helvetica-Bold").fontSize(13)
+        .text(`Rs. ${formatCurrency(balanceDue)}`, L + 300, by - 2, { width: CW - 316, align: "right", lineBreak: false });
+
+      doc.fillColor("#6b7280").font("Helvetica-Oblique").fontSize(7.5)
+        .text(
+          "This is a computer-generated receipt and does not require a signature. Payment is subject to realization.",
+          L + 52, y + BOXH - 15, { width: CW - 68 }
+        );
+      y += BOXH + 16;
+    } else {
+      doc.rect(L, y, CW, 62).fill("#f0fdf4");
+      doc.rect(L, y, CW, 62).strokeColor("#86efac").lineWidth(1).stroke();
+
+      // Checkmark circle
+      const cx = L + 30, cy = y + 31;
+      doc.circle(cx, cy, 11).fill("#16a34a");
+      doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(14)
+        .text("✓", cx - 5, cy - 9, { width: 12, lineBreak: false });
+
+      doc.fillColor("#166534").font("Helvetica-Bold").fontSize(13)
+        .text("PAYMENT CONFIRMED", L + 52, y + 14, { width: CW - 60 });
+      doc.fillColor("#4b7a5a").font("Helvetica").fontSize(8)
+        .text("This is a computer-generated receipt and does not require a signature.", L + 52, y + 33, { width: CW - 60 });
+      doc.fillColor("#6b7280").font("Helvetica-Oblique").fontSize(7.5)
+        .text("Note: Payment is subject to realization.", L + 52, y + 47, { width: CW - 60 });
+
+      y += 78;
+    }
+
+    // ── Footer ───────────────────────────────────────────────────
     doc.moveTo(L, y).lineTo(L + CW, y).strokeColor("#e5e7eb").lineWidth(0.5).stroke();
     y += 8;
     doc.fillColor("#9ca3af").font("Helvetica").fontSize(7)
@@ -433,6 +497,198 @@ export function generateReceiptPdf(data: ReceiptData): Promise<Buffer> {
         "Oasis Buildmart India Pvt. Ltd.  |  Oasis Venetia Heights, Greater Noida - 201306 (UP)  |  Phone: 9355011978",
         L, y, { width: CW, align: "center" }
       );
+
+    doc.end();
+  });
+}
+
+export interface MaintenanceDemandLetterData {
+  billNumber: string;
+  flatNo: string;
+  residentName: string;
+  letterDate: Date;
+  billingPeriodStart: Date;
+  billingPeriodEnd: Date;
+  dueDate: Date;
+  unitArea: number;
+  ratePerSqFt: number;
+  amount: number;
+  previousDue: number;
+  interestCharge: number;
+  paidAmount: number;
+  cgstRate: number;
+  sgstRate: number;
+}
+
+export function generateMaintenanceDemandLetterPdf(data: MaintenanceDemandLetterData): Promise<Buffer> {
+  return new Promise((resolve, reject) => {
+    const chunks: Buffer[] = [];
+    const doc = new PDFDocument({ margin: 0, size: "A4" });
+    doc.on("data", (c) => chunks.push(Buffer.from(c)));
+    doc.on("end", () => resolve(Buffer.concat(chunks)));
+    doc.on("error", reject);
+
+    const PW = 595, L = 50, CW = 495;
+    const r2 = (n: number) => Math.round(n);
+    const fmtAmt = (n: number) => `Rs. ${formatCurrency(Math.abs(n))}`;
+
+    const totalOutstanding = Math.max(
+      0,
+      r2(data.amount + data.previousDue + data.interestCharge) - r2(data.paidAmount)
+    );
+
+    // extract sequence from bill number e.g. OV-A-404-202608 → last 4 of year+month
+    const billSeq = data.billNumber.replace(/[^0-9]/g, "").slice(-4) || "0001";
+    const letterNo = `OBIPL/OVH/MAINT/${billSeq}/${data.letterDate.getFullYear()}`;
+
+    // ── Page border ───────────────────────────────────────────
+    doc.rect(20, 20, PW - 40, 802).stroke("#000000");
+
+    // ── Header ────────────────────────────────────────────────
+    let y = 36;
+    doc.rect(20, 20, PW - 40, 60).fill("#d9d9d9");
+    doc.fillColor("#000000").font("Helvetica-Bold").fontSize(14)
+      .text("OASIS BUILDMART (INDIA) PVT. LTD.", L, y, { width: CW, align: "center" });
+    y += 20;
+    doc.fontSize(11)
+      .text("OASIS VENETIA HEIGHTS", L, y, { width: CW, align: "center" });
+
+    // ── Title box ─────────────────────────────────────────────
+    y += 24;
+    doc.rect(20, y, PW - 40, 36).fill("#bfbfbf").stroke("#000000");
+    doc.fillColor("#000000").font("Helvetica-Bold").fontSize(10)
+      .text("PROVISIONAL DEMAND NOTICE – COMMON AREA / ESSENTIAL SERVICES & MAINTENANCE CONTRIBUTION",
+        L, y + 8, { width: CW, align: "center" });
+
+    // ── Info table ────────────────────────────────────────────
+    y += 44;
+    const tL = 20, tW = PW - 40, labelW = 200, valX = 20 + labelW, valW = tW - labelW;
+    const ROW_H = 28;
+
+    const infoRows: [string, string][] = [
+      ["Letter No.", letterNo],
+      ["Date", formatDate(data.letterDate)],
+      ["To", data.residentName],
+      ["Apartment", `Flat No. ${data.flatNo}, Tower ${data.flatNo.split("-")[0]}, Oasis Venetia Heights`],
+      ["Subject", "Provisional demand towards common area / essential services and maintenance-related operational expenses pending issuance of OC/CC"],
+    ];
+
+    for (let i = 0; i < infoRows.length; i++) {
+      const [label, val] = infoRows[i];
+      const rowY = y + i * ROW_H;
+      const isSubject = label === "Subject";
+      const rh = isSubject ? ROW_H * 2 : ROW_H;
+      // row border
+      doc.rect(tL, rowY, tW, rh).stroke("#000000");
+      // label cell fill
+      doc.rect(tL, rowY, labelW, rh).fill("#d9d9d9").stroke("#000000");
+      doc.fillColor("#000000").font("Helvetica-Bold").fontSize(9)
+        .text(label, tL + 6, rowY + (isSubject ? 14 : 9), { width: labelW - 10, lineBreak: false });
+      // value cell
+      doc.fillColor("#000000").font("Helvetica").fontSize(9)
+        .text(val, valX + 6, rowY + (isSubject ? 8 : 9), { width: valW - 10, lineBreak: isSubject });
+    }
+
+    y += ROW_H * 4 + ROW_H * 2 + 18; // 4 normal rows + 1 double-height subject row + gap
+
+    // ── Body text ─────────────────────────────────────────────
+    const bodyOpts = { width: CW, lineGap: 1, align: "justify" as const };
+
+    doc.fillColor("#000000").font("Helvetica-Bold").fontSize(9.5)
+      .text("Dear Sir/Madam,", L, y, { width: CW });
+    y += 14;
+
+    doc.font("Helvetica").fontSize(9)
+      .text(
+        `This is with reference to your allotment and possession/fit-out documentation in respect of the above apartment at Oasis Venetia Heights. The project/common areas and essential services require continuous operation and upkeep, including security, housekeeping, common-area electricity, water systems, lift operations, fire and life-safety systems, DG/power-backup related operations, project-level services, as applicable.`,
+        L, y, bodyOpts
+      );
+    y = doc.y + 8;
+
+    doc.text(
+      `Pending issuance of the Occupancy Certificate/Completion Certificate, the Company is presently incurring expenditure for keeping the project/common facilities and essential services operational and available for the benefit of the allottees/occupants and for facilitating fit-out and related activities.`,
+      L, y, bodyOpts
+    );
+    y = doc.y + 8;
+
+    doc.text(
+      `Accordingly, without prejudice to the terms of the Agreement for Sale/Builder Buyer Agreement, maintenance agreement and other documents executed with you, and subject to applicable law and the final maintenance commencement mechanism, you are requested to deposit the provisional amount mentioned below towards common-area / essential-services and maintenance-related operational expenses.`,
+      L, y, bodyOpts
+    );
+    y = doc.y + 12;
+
+    // ── Amount table ──────────────────────────────────────────
+    const amtRows: [string, string][] = [
+      ["Billing Period", `${formatDate(data.billingPeriodStart)} to ${formatDate(data.billingPeriodEnd)}`],
+      ["Maintenance Charge (incl. GST)", fmtAmt(data.amount)],
+    ];
+    if (data.previousDue > 0) amtRows.push(["Previous Outstanding Dues", fmtAmt(data.previousDue)]);
+    if (data.interestCharge > 0) amtRows.push(["Interest @ 12% p.a.", fmtAmt(data.interestCharge)]);
+    if (data.paidAmount > 0) amtRows.push(["Amount Already Paid", `(${fmtAmt(data.paidAmount)})`]);
+    amtRows.push(["TOTAL AMOUNT DUE", fmtAmt(totalOutstanding)]);
+
+    const aLabelW = 300, aValX = tL + aLabelW, aValW = tW - aLabelW;
+    for (let i = 0; i < amtRows.length; i++) {
+      const [label, val] = amtRows[i];
+      const isTotal = label === "TOTAL AMOUNT DUE";
+      const rh = 22;
+      const rowY = y;
+      doc.rect(tL, rowY, tW, rh).fill(isTotal ? "#d9d9d9" : (i % 2 === 0 ? "#f2f2f2" : "#ffffff")).stroke("#000000");
+      doc.rect(tL, rowY, aLabelW, rh).stroke("#000000");
+      doc.fillColor("#000000").font(isTotal ? "Helvetica-Bold" : "Helvetica").fontSize(9)
+        .text(label, tL + 6, rowY + 7, { width: aLabelW - 10, lineBreak: false });
+      doc.font(isTotal ? "Helvetica-Bold" : "Helvetica").fontSize(9)
+        .text(val, aValX + 6, rowY + 7, { width: aValW - 10, align: "right", lineBreak: false });
+      y += rh;
+    }
+
+    y += 10;
+
+    // ── Consequences ──────────────────────────────────────────
+    doc.font("Helvetica").fontSize(9)
+      .text(
+        `Non-payment of the above amount by the due date may result in suspension of essential services and common-area facilities including but not limited to parking, clubhouse, and other amenities. In addition, interest @ 12% per annum shall be levied on the outstanding amount from the due date.`,
+        L, y, bodyOpts
+      );
+    y = doc.y + 8;
+
+    doc.text(
+      `We request you to make the payment at the earliest and furnish the proof of payment to the management office. For any queries, please contact the Society Office.`,
+      L, y, bodyOpts
+    );
+    y = doc.y + 14;
+
+    // ── Payment info ──────────────────────────────────────────
+    doc.font("Helvetica-Bold").fontSize(9)
+      .text("Payment Details:", L, y);
+    y += 12;
+    const payRows: [string, string][] = [
+      ["Beneficiary Name", "OASIS BUILDMART INDIA PVT LTD"],
+      ["Bank", "Bank of Baroda, Greater Noida"],
+      ["Account No.", "88340200001343"],
+      ["IFSC Code", "BARB0DBGREA"],
+      ["UPI ID", "oasis88268343@barodampay"],
+    ];
+    for (const [label, val] of payRows) {
+      doc.font("Helvetica-Bold").fontSize(9).text(`${label}: `, L, y, { continued: true });
+      doc.font("Helvetica").fontSize(9).text(val);
+      y += 13;
+    }
+
+    y += 14;
+
+    // ── Signature ─────────────────────────────────────────────
+    doc.font("Helvetica").fontSize(9)
+      .text("Yours faithfully,", L, y);
+    y += 30;
+    doc.font("Helvetica-Bold").fontSize(9)
+      .text("For OASIS BUILDMART (INDIA) PVT. LTD.", L, y);
+    y += 13;
+    // doc.font("Helvetica").fontSize(9)
+    //   .text("Authorised Signatory", L, y);
+    // y += 10;
+    // doc.fillColor("#555555").font("Helvetica").fontSize(8.5)
+    //   .text("Oasis Venetia Heights, Greater Noida – 201306 (UP)", L, y);
 
     doc.end();
   });
@@ -574,7 +830,7 @@ export function generateMaintenanceBillPdf(data: MaintenanceBillPdfData): Promis
       }
     }
     if (data.interestCharge > 0) {
-      chargeRows.push([`Interest Charge (24% p.a. overdue)`, data.interestCharge, true, false, false, false]);
+      chargeRows.push([`Interest Charge (12% p.a. overdue)`, data.interestCharge, true, false, false, false]);
     }
     if (data.paidAmount > 0) {
       chargeRows.push([`Amount Paid (Cash)`, -data.paidAmount, false, false, false, false]);
@@ -666,7 +922,7 @@ export function generateMaintenanceBillPdf(data: MaintenanceBillPdfData): Promis
     y += 12;
     doc.text(`2. GST: CGST ${data.cgstRate}% + SGST ${data.sgstRate}% = ${data.cgstRate + data.sgstRate}% applicable on maintenance charge.`, L, y, { width: CW });
     y += 12;
-    doc.text(`3. Payment due by ${formatDate(data.dueDate)}. Late payment attracts 24% p.a. interest.`, L, y, { width: CW });
+    doc.text(`3. Payment due by ${formatDate(data.dueDate)}. Late payment attracts 12% p.a. interest.`, L, y, { width: CW });
     y += 12;
     doc.text("4. This is a computer-generated bill and does not require a signature.", L, y, { width: CW });
 

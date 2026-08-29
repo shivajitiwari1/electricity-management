@@ -3,7 +3,12 @@ import { PrismaClient } from "@prisma/client";
 
 function createPrismaAdapter() {
   const url = process.env.DATABASE_URL ?? "";
-  const parsed = new URL(url);
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    parsed = new URL("mysql://root@localhost:3306/electricity");
+  }
   const useSSL = process.env.DATABASE_SSL === "true" || parsed.hostname !== "localhost";
   return new PrismaMariaDb({
     host: parsed.hostname || "localhost",

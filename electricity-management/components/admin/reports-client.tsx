@@ -15,7 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { IndianRupee, FileText, Users, AlertCircle, FileSpreadsheet, FileDown } from "lucide-react";
+import { IndianRupee, FileText, Users, AlertCircle, FileSpreadsheet, FileDown, Printer } from "lucide-react";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -289,8 +289,17 @@ export default function ReportsClient({ paidBills, overdueBills, allBills, stats
 
   return (
     <div className="space-y-6">
+      <style>{`
+        @media print {
+          body > * { visibility: hidden; }
+          #reports-printable, #reports-printable * { visibility: visible; }
+          #reports-printable { position: absolute; inset: 0; padding: 24px; }
+          .print-hide { display: none !important; }
+        }
+      `}</style>
+
       {/* ── Controls ── */}
-      <Card>
+      <Card id="print-controls" className="print-hide">
         <CardContent className="p-4 space-y-3">
           {/* Quick period tabs */}
           <div className="flex items-center justify-between gap-4 flex-wrap">
@@ -323,6 +332,15 @@ export default function ReportsClient({ paidBills, overdueBills, allBills, stats
                 <FileDown className="h-4 w-4" />
                 Download PDF
               </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => window.print()}
+                className="gap-2"
+              >
+                <Printer className="h-4 w-4" />
+                Print
+              </Button>
             </div>
           </div>
 
@@ -353,6 +371,13 @@ export default function ReportsClient({ paidBills, overdueBills, allBills, stats
           </div>
         </CardContent>
       </Card>
+
+      <div id="reports-printable">
+      {/* ── Print header (only visible when printing) ── */}
+      <div className="hidden print:block mb-4 border-b pb-3">
+        <h1 className="text-xl font-bold">Oasis Venetia Heights — Reports</h1>
+        <p className="text-sm text-gray-500">{rangeLabelShort} &nbsp;·&nbsp; Printed on {new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}</p>
+      </div>
 
       {/* ── Summary Cards ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
@@ -513,6 +538,7 @@ export default function ReportsClient({ paidBills, overdueBills, allBills, stats
           </div>
         </CardContent>
       </Card>
+      </div>{/* end #reports-printable */}
     </div>
   );
 }

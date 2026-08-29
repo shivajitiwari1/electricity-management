@@ -76,8 +76,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid startMonth. Use YYYY-MM" }, { status: 400 });
   }
 
+  const siteConfig = await prisma.siteConfig.findUnique({ where: { id: "singleton" } });
+  const cgstRate = Number(siteConfig?.cgstRate ?? 0);
+  const sgstRate = Number(siteConfig?.sgstRate ?? 0);
+  const baseAmount = Math.round(Number(amountParam));
+  const cgst = Math.round(baseAmount * cgstRate / 100);
+  const sgst = Math.round(baseAmount * sgstRate / 100);
+  const totalAmount = baseAmount + cgst + sgst;
+
   const pDate = paymentDateParam ? new Date(paymentDateParam) : new Date();
-  const amountPerMonth = Number(amountParam);
   const receiptNumbers: string[] = [];
   let generated = 0;
   let skipped = 0;
@@ -116,8 +123,8 @@ export async function POST(req: NextRequest) {
           billingPeriodEnd: periodEnd,
           unitArea: Number(connection.unitArea),
           ratePerSqFt: Number(rate.ratePerSqFt),
-          amount: amountPerMonth,
-          paidAmount: amountPerMonth,
+          amount: totalAmount,
+          paidAmount: totalAmount,
           interestCharge: 0,
           status: "PAID",
         },
@@ -125,7 +132,7 @@ export async function POST(req: NextRequest) {
       await tx.maintenancePayment.create({
         data: {
           maintenanceBillId: bill.id,
-          amount: amountPerMonth,
+          amount: totalAmount,
           paymentDate: pDate,
           method,
           status: "SUCCESS",

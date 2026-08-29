@@ -7,7 +7,7 @@ import { sendEmail } from "@/lib/email";
 import { paymentSuccessEmail } from "@/lib/email-templates";
 import { revalidateTag } from "next/cache";
 
-const ALLOWED_METHODS = ["CASH", "UPI", "NEFT", "RTGS", "CHEQUE"] as const;
+const ALLOWED_METHODS = ["CASH", "UPI", "NEFT", "RTGS", "CHEQUE", "CREDIT_CARD"] as const;
 type ManualMethod = (typeof ALLOWED_METHODS)[number];
 
 export async function POST(req: NextRequest) {

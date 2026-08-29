@@ -80,13 +80,11 @@ export async function DELETE(
 
   const bill = await prisma.maintenanceBill.findUnique({
     where: { id },
-    include: { payments: { select: { id: true }, take: 1 } },
+    include: { payments: { select: { id: true } } },
   });
   if (!bill) return NextResponse.json({ error: "Bill not found" }, { status: 404 });
-  if (bill.payments.length > 0) {
-    return NextResponse.json({ error: "Cannot delete a bill that has payments recorded" }, { status: 422 });
-  }
 
+  // Cascade deletes all linked payments (onDelete: Cascade in schema)
   await prisma.maintenanceBill.delete({ where: { id } });
-  return NextResponse.json({ deleted: true });
+  return NextResponse.json({ deleted: true, paymentsDeleted: bill.payments.length });
 }

@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Download, Banknote, AlertTriangle, Trash2, CreditCard, Wifi, UserCheck } from "lucide-react";
+import { Download, Banknote, AlertTriangle, Trash2, CreditCard, Wifi, UserCheck, ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
 
 type SerializedPayment = {
   id: string;
@@ -89,9 +89,15 @@ function TypeBadge({ method }: { method: string }) {
   );
 }
 
+const METHOD_LABELS: Record<string, string> = {
+  ONLINE: "Online", CASH: "Cash", UPI: "UPI", NEFT: "NEFT",
+  RTGS: "RTGS", CHEQUE: "Cheque", CREDIT_CARD: "Credit Card", ADJUSTMENT: "Adjustment",
+};
+const fmtMethod = (m: string) => METHOD_LABELS[m] ?? m;
+
 function MethodBadge({ method }: { method: string }) {
   const cls = METHOD_STYLES[method] ?? "bg-gray-100 text-gray-700";
-  return <Badge className={`${cls} hover:${cls}`}>{method}</Badge>;
+  return <Badge className={`${cls} hover:${cls}`}>{fmtMethod(method)}</Badge>;
 }
 
 function StatusBadge({ status }: { status: string }) {
@@ -146,6 +152,30 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
   const [pendingSearch, setPendingSearch] = useState("");
   const [deletingPayment, setDeletingPayment] = useState<string | null>(null);
 
+  // Sorting for pending bills table
+  const [pendingSortKey, setPendingSortKey] = useState<string>("");
+  const [pendingSortDir, setPendingSortDir] = useState<"asc" | "desc">("asc");
+  function handlePendingSort(key: string) {
+    if (pendingSortKey === key) setPendingSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    else { setPendingSortKey(key); setPendingSortDir("asc"); }
+  }
+  function PendingSortIcon({ col }: { col: string }) {
+    if (pendingSortKey !== col) return <ArrowUpDown className="inline ml-1 h-3 w-3 opacity-40" />;
+    return pendingSortDir === "asc" ? <ArrowUp className="inline ml-1 h-3 w-3" /> : <ArrowDown className="inline ml-1 h-3 w-3" />;
+  }
+
+  // Sorting for payment history table
+  const [historySortKey, setHistorySortKey] = useState<string>("");
+  const [historySortDir, setHistorySortDir] = useState<"asc" | "desc">("asc");
+  function handleHistorySort(key: string) {
+    if (historySortKey === key) setHistorySortDir((d) => (d === "asc" ? "desc" : "asc"));
+    else { setHistorySortKey(key); setHistorySortDir("asc"); }
+  }
+  function HistorySortIcon({ col }: { col: string }) {
+    if (historySortKey !== col) return <ArrowUpDown className="inline ml-1 h-3 w-3 opacity-40" />;
+    return historySortDir === "asc" ? <ArrowUp className="inline ml-1 h-3 w-3" /> : <ArrowDown className="inline ml-1 h-3 w-3" />;
+  }
+
   async function handleDeletePayment(id: string, receiptNumber: string) {
     const confirmed = window.confirm(
       `Delete payment ${receiptNumber}?\n\nThe linked bill's balance will be restored. This cannot be undone.`
@@ -179,19 +209,35 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
 
   const filteredPending = useMemo(() => {
     const q = pendingSearch.trim().toLowerCase();
-    if (!q) return pendingBills;
-    return pendingBills.filter(
-      (b) =>
-        b.residentName.toLowerCase().includes(q) ||
-        b.flatNo.toLowerCase().includes(q) ||
-        b.email.toLowerCase().includes(q) ||
-        b.billNumber.toLowerCase().includes(q)
-    );
-  }, [pendingBills, pendingSearch]);
+    const base = q
+      ? pendingBills.filter(
+          (b) =>
+            b.residentName.toLowerCase().includes(q) ||
+            b.flatNo.toLowerCase().includes(q) ||
+            b.email.toLowerCase().includes(q) ||
+            b.billNumber.toLowerCase().includes(q)
+        )
+      : pendingBills;
+    if (!pendingSortKey) return base;
+    return [...base].sort((a, b) => {
+      let aVal: string | number = "", bVal: string | number = "";
+      switch (pendingSortKey) {
+        case "billNumber": aVal = a.billNumber; bVal = b.billNumber; break;
+        case "flatNo": aVal = a.flatNo; bVal = b.flatNo; break;
+        case "residentName": aVal = a.residentName.toLowerCase(); bVal = b.residentName.toLowerCase(); break;
+        case "balanceDue": aVal = parseFloat(a.totalAmount) - parseFloat(a.paidAmount ?? "0"); bVal = parseFloat(b.totalAmount) - parseFloat(b.paidAmount ?? "0"); break;
+        case "dueDate": aVal = a.dueDate; bVal = b.dueDate; break;
+        case "status": aVal = a.status; bVal = b.status; break;
+      }
+      if (aVal < bVal) return pendingSortDir === "asc" ? -1 : 1;
+      if (aVal > bVal) return pendingSortDir === "asc" ? 1 : -1;
+      return 0;
+    });
+  }, [pendingBills, pendingSearch, pendingSortKey, pendingSortDir]);
 
   const filtered = useMemo(() => {
     const q = filterName.trim().toLowerCase();
-    return initialData.filter((p) => {
+    const base = initialData.filter((p) => {
       if (filterMethod === "MANUAL") {
         if (!MANUAL_METHODS.has(p.method)) return false;
       } else if (filterMethod !== "all" && p.method !== filterMethod) {
@@ -201,7 +247,24 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
       if (q && !p.residentName.toLowerCase().includes(q) && !p.flatNo.toLowerCase().includes(q) && !p.email.toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [initialData, filterMethod, filterStatus, filterName]);
+    if (!historySortKey) return base;
+    return [...base].sort((a, b) => {
+      let aVal: string | number = "", bVal: string | number = "";
+      switch (historySortKey) {
+        case "receiptNumber": aVal = a.receiptNumber; bVal = b.receiptNumber; break;
+        case "flatNo": aVal = a.flatNo; bVal = b.flatNo; break;
+        case "residentName": aVal = a.residentName.toLowerCase(); bVal = b.residentName.toLowerCase(); break;
+        case "billNumber": aVal = a.billNumber; bVal = b.billNumber; break;
+        case "amount": aVal = parseFloat(a.amount); bVal = parseFloat(b.amount); break;
+        case "paymentDate": aVal = a.paymentDate; bVal = b.paymentDate; break;
+        case "method": aVal = a.method; bVal = b.method; break;
+        case "status": aVal = a.status; bVal = b.status; break;
+      }
+      if (aVal < bVal) return historySortDir === "asc" ? -1 : 1;
+      if (aVal > bVal) return historySortDir === "asc" ? 1 : -1;
+      return 0;
+    });
+  }, [initialData, filterMethod, filterStatus, filterName, historySortKey, historySortDir]);
 
 
   function openCashDialog(bill: PendingBill) {
@@ -293,14 +356,11 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b bg-muted/50">
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Bill #</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Flat No</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Resident</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Email</th>
-                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">Balance Due</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Due Date</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Actions</th>
+                  {([["billNumber","Bill #"],["flatNo","Flat No"],["residentName","Resident"],[null,"Email"],["balanceDue","Balance Due"],["dueDate","Due Date"],["status","Status"],[null,"Actions"]] as [string|null,string][]).map(([key,label]) => (
+                    <th key={label} className={`px-4 py-3 font-medium text-muted-foreground ${key === "balanceDue" ? "text-right" : "text-left"}`}>
+                      {key ? <button onClick={() => handlePendingSort(key)} className="flex items-center gap-0 hover:text-foreground whitespace-nowrap">{label}<PendingSortIcon col={key} /></button> : label}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
@@ -429,17 +489,11 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b bg-muted/50">
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Receipt #</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Flat No</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Resident</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Bill #</th>
-                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">Amount (₹)</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Date</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Type</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Method</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Reference / Txn ID</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Actions</th>
+                  {([["receiptNumber","Receipt #"],["flatNo","Flat No"],["residentName","Resident"],["billNumber","Bill #"],["amount","Amount (₹)"],["paymentDate","Date"],[null,"Type"],["method","Method"],[null,"Reference / Txn ID"],["status","Status"],[null,"Actions"]] as [string|null,string][]).map(([key,label]) => (
+                    <th key={label} className={`px-4 py-3 font-medium text-muted-foreground ${key === "amount" ? "text-right" : "text-left"}`}>
+                      {key ? <button onClick={() => handleHistorySort(key)} className="flex items-center gap-0 hover:text-foreground whitespace-nowrap">{label}<HistorySortIcon col={key} /></button> : label}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>

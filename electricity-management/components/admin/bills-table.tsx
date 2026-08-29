@@ -25,7 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Download, Eye, CheckCircle, Trash2, Mail } from "lucide-react";
+import { Download, Eye, CheckCircle, Trash2, Mail, ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
 
 type SerializedBill = {
   id: string;
@@ -97,6 +97,45 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
   const [deletingBill, setDeletingBill] = useState<string | null>(null);
   const [resendingBill, setResendingBill] = useState<string | null>(null);
   const [nameSearch, setNameSearch] = useState("");
+  const [sortKey, setSortKey] = useState<string>("");
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
+
+  function handleSort(key: string) {
+    if (sortKey === key) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortKey(key);
+      setSortDir("asc");
+    }
+  }
+
+  function SortIcon({ col }: { col: string }) {
+    if (sortKey !== col) return <ArrowUpDown className="inline ml-1 h-3.5 w-3.5 opacity-40" />;
+    return sortDir === "asc"
+      ? <ArrowUp className="inline ml-1 h-3.5 w-3.5" />
+      : <ArrowDown className="inline ml-1 h-3.5 w-3.5" />;
+  }
+
+  function sortRows(rows: SerializedBill[]) {
+    if (!sortKey) return rows;
+    return [...rows].sort((a, b) => {
+      let aVal: string | number = "";
+      let bVal: string | number = "";
+      switch (sortKey) {
+        case "billNumber": aVal = a.billNumber; bVal = b.billNumber; break;
+        case "flatNo": aVal = a.flatNo; bVal = b.flatNo; break;
+        case "tower": aVal = a.tower; bVal = b.tower; break;
+        case "residentName": aVal = a.residentName.toLowerCase(); bVal = b.residentName.toLowerCase(); break;
+        case "period": aVal = a.billingPeriodStart; bVal = b.billingPeriodStart; break;
+        case "totalAmount": aVal = parseFloat(a.totalAmount); bVal = parseFloat(b.totalAmount); break;
+        case "dueDate": aVal = a.dueDate; bVal = b.dueDate; break;
+        case "status": aVal = a.status; bVal = b.status; break;
+      }
+      if (aVal < bVal) return sortDir === "asc" ? -1 : 1;
+      if (aVal > bVal) return sortDir === "asc" ? 1 : -1;
+      return 0;
+    });
+  }
 
   // Current filter values from URL
   const currentTower = searchParams.get("tower") ?? "";
@@ -269,8 +308,10 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
               const count = q
                 ? initialData.filter(b => b.residentName.toLowerCase().includes(q) || b.flatNo.toLowerCase().includes(q)).length
                 : initialData.length;
+              const colLabel: Record<string, string> = { billNumber: "Bill #", flatNo: "Flat No", tower: "Tower", residentName: "Resident", period: "Period", totalAmount: "Amount", dueDate: "Due Date", status: "Status" };
+              const sortLabel = sortKey ? ` · sorted by ${colLabel[sortKey] ?? sortKey} (${sortDir === "asc" ? "↑" : "↓"})` : "";
               return count > 0
-                ? `${count} Bill${count !== 1 ? "s" : ""}${q ? ` matching "${nameSearch}"` : ""}`
+                ? `${count} Bill${count !== 1 ? "s" : ""}${q ? ` matching "${nameSearch}"` : ""}${sortLabel}`
                 : "0 Bills";
             })()}
           </CardTitle>
@@ -280,23 +321,34 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b bg-muted/50">
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Bill #</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Flat No</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Tower</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Resident</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Period</th>
-                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">Amount (₹)</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Due Date</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
+                  {[
+                    { label: "Bill #", col: "billNumber", align: "left" },
+                    { label: "Flat No", col: "flatNo", align: "left" },
+                    { label: "Tower", col: "tower", align: "left" },
+                    { label: "Resident", col: "residentName", align: "left" },
+                    { label: "Period", col: "period", align: "left" },
+                    { label: "Amount (₹)", col: "totalAmount", align: "right" },
+                    { label: "Due Date", col: "dueDate", align: "left" },
+                    { label: "Status", col: "status", align: "left" },
+                  ].map(({ label, col, align }) => (
+                    <th
+                      key={col}
+                      className={`px-4 py-3 font-medium text-muted-foreground cursor-pointer select-none hover:text-foreground whitespace-nowrap ${align === "right" ? "text-right" : "text-left"}`}
+                      onClick={() => handleSort(col)}
+                    >
+                      {label}<SortIcon col={col} />
+                    </th>
+                  ))}
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {(() => {
                   const q = nameSearch.trim().toLowerCase();
-                  const rows = q
+                  const filtered = q
                     ? initialData.filter(b => b.residentName.toLowerCase().includes(q) || b.flatNo.toLowerCase().includes(q))
                     : initialData;
+                  const rows = sortRows(filtered);
                   if (rows.length === 0) return (
                     <tr>
                       <td colSpan={9} className="text-center py-10 text-muted-foreground">

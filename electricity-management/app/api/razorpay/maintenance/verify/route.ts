@@ -97,6 +97,10 @@ export async function POST(req: NextRequest) {
       paymentDate: payment.paymentDate.toDateString(),
       razorpayPaymentId,
       receiptUrl: "",
+      // Kept consistent with the isPaid check above so the email never claims a
+      // balance on a bill this route has just marked PAID.
+      billTotal: totalDue.toFixed(2),
+      balanceDue: Math.max(0, totalDue - newPaidAmount).toFixed(2),
     });
     await sendEmail(resident.user.email, `Maintenance Payment Successful — ${bill.billNumber}`, html);
   } catch (emailErr) {
