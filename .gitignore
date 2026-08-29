@@ -1,1 +1,4 @@
 .worktrees/
+
+.vercel
+.env*.local

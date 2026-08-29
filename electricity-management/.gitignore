@@ -46,3 +46,6 @@ next-env.d.ts
 # testing screenshots/videos
 ../testing/
 ../*.png
+
+.vercel
+.env*.local
