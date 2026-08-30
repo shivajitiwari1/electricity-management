@@ -40,7 +40,7 @@ const BANK = {
   branch: "Greater Noida",
 };
 
-const WHATSAPP = "919355011978";
+const WHATSAPP = "918588805052";
 
 function fmt(iso: string) {
   return new Date(iso).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });

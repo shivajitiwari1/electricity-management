@@ -97,7 +97,7 @@ function apologyHtml(name: string) {
             <td style="background:#f9fafb;padding:20px 40px;border-top:1px solid #e5e7eb;text-align:center;">
               <p style="margin:0;font-size:12px;color:#9ca3af;">
                 Oasis Venetia Heights Management &nbsp;|&nbsp; Greater Noida – 201306 (UP)<br />
-                Phone: 9355011978
+                Phone: 8588805052
               </p>
             </td>
           </tr>

@@ -146,7 +146,7 @@ export async function GET(req: NextRequest) {
       doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(14)
         .text("OASIS BUILDMART INDIA PVT. LTD.", L, 16, { width: CW, align: "center" });
       doc.fillColor("#93b8d4").font("Helvetica").fontSize(8)
-        .text("Oasis Venetia Heights, Plot No-HRA 12A, Site-C, Greater Noida – 201306 (UP)  |  Phone: 9355011978", L, 34, { width: CW, align: "center" });
+        .text("Oasis Venetia Heights, Plot No-HRA 12A, Site-C, Greater Noida – 201306 (UP)  |  Phone: 8588805052", L, 34, { width: CW, align: "center" });
       doc.rect(PW / 2 - 85, 48, 170, 22).fill("#2563eb");
       doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(10)
         .text("FINANCIAL REPORT", L, 53, { width: CW, align: "center" });

@@ -39,7 +39,7 @@ const BANK = {
   branch: "Greater Noida",
 };
 
-const WHATSAPP = "919355011978";
+const WHATSAPP = "918588805052";
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-IN", {
@@ -213,7 +213,7 @@ export default function PublicPaymentForm({ bill, qrCodeDataUrl, token }: Props)
           Share Payment Details on WhatsApp
         </a>
         <p className="text-xs text-center text-blue-700">
-          WhatsApp: <strong>+91 93550 11978</strong>
+          WhatsApp: <strong>+91 85888 05052</strong>
         </p>
       </div>
 

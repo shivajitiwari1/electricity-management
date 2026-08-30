@@ -136,7 +136,7 @@ export async function GET(req: NextRequest) {
   // ── Header ──────────────────────────────────────────────────────────────────
   mergedRow(ws, 1, "OASIS BUILDMART INDIA PVT. LTD.", C.NAVY, C.WHITE, 14, true, 30);
   mergedRow(ws, 2,
-    "Oasis Venetia Heights, Plot No-HRA 12A, Site-C, Greater Noida – 201306 (UP)  |  Phone: 9355011978",
+    "Oasis Venetia Heights, Plot No-HRA 12A, Site-C, Greater Noida – 201306 (UP)  |  Phone: 8588805052",
     C.NAVY, C.ADDR_BLUE, 8.5, false, 16);
   mergedRow(ws, 3, "ELECTRICITY BILL REPORT", C.BLUE, C.WHITE, 11, true, 22);
   mergedRow(ws, 4, `Period: ${label}   |   Generated: ${fmt(now)}`, C.HDR_BG, C.GRAY_TEXT, 8.5, false, 15);

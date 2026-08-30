@@ -109,7 +109,7 @@ export async function generateBillPdf(data: BillData): Promise<Buffer> {
       .text("OASIS BUILDMART INDIA PVT. LTD.", 40, doc.y, { width: 515, align: "center" });
     doc.fontSize(9).font("Helvetica")
       .text("Oasis Venetia Heights, Plot No-HRA, 12, A, Site-C, Greater Noida - 201306 (UP)", 40, doc.y, { width: 515, align: "center" });
-    doc.text("Phone: 9355011978", 40, doc.y, { width: 515, align: "center" });
+    doc.text("Phone: 8588805052", 40, doc.y, { width: 515, align: "center" });
     doc.fontSize(12).font("Helvetica-Bold")
       .text("ELECTRICITY BILL", 40, doc.y, { width: 515, align: "center" });
     doc.moveDown(0.6);
@@ -333,7 +333,7 @@ export function generateReceiptPdf(data: ReceiptData): Promise<Buffer> {
     doc.fillColor("#93b8d4").font("Helvetica").fontSize(8.5)
       .text("Oasis Venetia Heights, Plot No-HRA, 12, A, Site-C, Greater Noida - 201306 (UP)", L, 42, { width: CW, align: "center" });
     doc.fillColor("#93b8d4").fontSize(8.5)
-      .text("Phone: 9355011978", L, 56, { width: CW, align: "center" });
+      .text("Phone: 8588805052", L, 56, { width: CW, align: "center" });
 
     // "PAYMENT RECEIPT" badge on header
     doc.rect(PW / 2 - 75, 74, 150, 22).fill("#2563eb");
@@ -494,7 +494,7 @@ export function generateReceiptPdf(data: ReceiptData): Promise<Buffer> {
     y += 8;
     doc.fillColor("#9ca3af").font("Helvetica").fontSize(7)
       .text(
-        "Oasis Buildmart India Pvt. Ltd.  |  Oasis Venetia Heights, Greater Noida - 201306 (UP)  |  Phone: 9355011978",
+        "Oasis Buildmart India Pvt. Ltd.  |  Oasis Venetia Heights, Greater Noida - 201306 (UP)  |  Phone: 8588805052",
         L, y, { width: CW, align: "center" }
       );
 
@@ -735,7 +735,7 @@ export function generateMaintenanceBillPdf(data: MaintenanceBillPdfData): Promis
     doc.fillColor("#93b8d4").font("Helvetica").fontSize(8.5)
       .text("Oasis Venetia Heights, Plot No-HRA, 12, A, Site-C, Greater Noida - 201306 (UP)", L, 42, { width: CW, align: "center" });
     doc.fillColor("#93b8d4").fontSize(8.5)
-      .text("Phone: 9355011978", L, 56, { width: CW, align: "center" });
+      .text("Phone: 8588805052", L, 56, { width: CW, align: "center" });
 
     doc.rect(PW / 2 - 130, 74, 260, 22).fill("#2563eb");
     doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(8)
@@ -932,7 +932,7 @@ export function generateMaintenanceBillPdf(data: MaintenanceBillPdfData): Promis
     y += 8;
     doc.fillColor("#9ca3af").font("Helvetica").fontSize(7)
       .text(
-        "Oasis Buildmart India Pvt. Ltd.  |  Oasis Venetia Heights, Greater Noida - 201306 (UP)  |  Phone: 9355011978",
+        "Oasis Buildmart India Pvt. Ltd.  |  Oasis Venetia Heights, Greater Noida - 201306 (UP)  |  Phone: 8588805052",
         L, y, { width: CW, align: "center" }
       );
 
