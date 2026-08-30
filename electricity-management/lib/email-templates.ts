@@ -3,13 +3,11 @@ const ACCENT_COLOR = "#2563eb";
 const COMPANY = "Oasis Venetia Heights";
 const ADDRESS = "Oasis Buildmart India Pvt. Ltd., Plot No-HRA, 12, A, Site-C, Greater Noida - 201306";
 
-const PORTAL = "Electricity Management Portal";
-/** Maintenance emails carry their own portal label. */
-const MAINTENANCE_PORTAL = "Maintenance Portal";
+const PORTAL = "Maintenance Portal";
 
-function shell(content: string, companyOverride?: string, portalOverride?: string): string {
-  const heading = companyOverride ?? COMPANY;
-  const portal = portalOverride ?? PORTAL;
+function shell(content: string): string {
+  const heading = COMPANY;
+  const portal = PORTAL;
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -152,11 +150,8 @@ export function paymentSuccessEmail(params: {
   billTotal?: string;
   /** Outstanding after this payment. > 0 switches the email to part-payment wording. */
   balanceDue?: string;
-  /** Set by the maintenance routes so the header reads Maintenance Portal.
-      Electricity and public-pay callers omit it and are unaffected. */
-  isMaintenance?: boolean;
 }): string {
-  const { residentName, flatNo, receiptNumber, amount, paymentDate, razorpayPaymentId, receiptUrl, rebateAmount, billTotal, balanceDue, isMaintenance } = params;
+  const { residentName, flatNo, receiptNumber, amount, paymentDate, razorpayPaymentId, receiptUrl, rebateAmount, billTotal, balanceDue } = params;
   const isPartial = balanceDue != null && Number(balanceDue) > 0;
 
   const body = `
@@ -230,7 +225,7 @@ export function paymentSuccessEmail(params: {
     </td></tr>
   `;
 
-  return shell(body, undefined, isMaintenance ? MAINTENANCE_PORTAL : undefined);
+  return shell(body);
 }
 
 export function overdueNoticeEmail(params: {
@@ -307,7 +302,7 @@ export function welcomeEmail(params: {
     <tr><td style="padding:32px 32px 0;">
       <p style="margin:0;font-size:15px;color:#374151;">Dear <strong>${residentName}</strong>,</p>
       <p style="margin:12px 0 0;font-size:14px;color:#4b5563;line-height:1.6;">
-        Welcome to <strong>Oasis Venetia Heights</strong> Electricity Management Portal. Your resident account has been created for Flat <strong>${flatNo}</strong>.
+        Welcome to the <strong>Oasis Venetia Heights</strong> Maintenance Portal. Your resident account has been created for Flat <strong>${flatNo}</strong>.
       </p>
     </td></tr>
 
@@ -444,7 +439,7 @@ export function maintenanceOverdueEmail(params: {
     </td></tr>
   `;
 
-  return shell(body, undefined, MAINTENANCE_PORTAL);
+  return shell(body);
 }
 
 export function maintenanceBillGeneratedEmail(params: {
@@ -552,7 +547,7 @@ export function maintenanceBillGeneratedEmail(params: {
     <tr><td style="padding:0 32px 32px;"></td></tr>`}
   `;
 
-  return shell(body, undefined, MAINTENANCE_PORTAL);
+  return shell(body);
 }
 
 export function balanceDueEmail(params: {

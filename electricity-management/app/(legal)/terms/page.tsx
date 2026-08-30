@@ -27,7 +27,7 @@ export default function TermsPage() {
 
       <Section title="1. Introduction">
         <p>
-          These terms govern use of the Oasis Venetia Heights Electricity Management Portal
+          These terms govern use of the Oasis Venetia Heights Maintenance Portal
           accessible at{" "}
           <a href="https://oasisvenetia.in" className="text-blue-600 hover:underline">
             https://oasisvenetia.in

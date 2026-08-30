@@ -9,7 +9,7 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
             <Link href="/login" className="font-semibold text-gray-900 text-lg hover:text-gray-600 transition-colors">
               Oasis Venetia Heights
             </Link>
-            <p className="text-xs text-gray-500">Electricity Management Portal</p>
+            <p className="text-xs text-gray-500">Maintenance Portal</p>
           </div>
           <nav className="flex gap-6 text-sm">
             <Link href="/login" className="text-gray-600 hover:text-gray-900 transition-colors">

@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Oasis Venetia Heights – Electricity Management",
-  description: "Electricity bill management system for Oasis Venetia Heights",
+  title: "Oasis Venetia Heights – Maintenance Portal",
+  description: "Maintenance and electricity bill portal for Oasis Venetia Heights",
 };
 
 export default function RootLayout({

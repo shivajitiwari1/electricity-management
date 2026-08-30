@@ -4,7 +4,7 @@ export const dynamic = "force-static";
 
 export const metadata: Metadata = {
   title: "About Us – Oasis Venetia Heights",
-  description: "About Oasis Venetia Heights and the electricity management portal",
+  description: "About Oasis Venetia Heights and the maintenance portal",
 };
 
 export default function AboutPage() {
@@ -43,7 +43,7 @@ export default function AboutPage() {
       <section>
         <h2 className="text-xl font-semibold text-gray-900 mb-3">About This Portal</h2>
         <p className="text-gray-700 leading-relaxed mb-3">
-          The Oasis Venetia Heights Electricity Management Portal enables residents to:
+          The Oasis Venetia Heights Maintenance Portal enables residents to:
         </p>
         <ul className="list-disc pl-6 space-y-1 text-gray-700">
           <li>View their monthly electricity bills</li>

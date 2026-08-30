@@ -62,7 +62,7 @@ export default function ResetPasswordPage() {
           </div>
           <div className="text-center">
             <h1 className="text-xl font-bold text-foreground">Oasis Venetia Heights</h1>
-            <p className="text-sm text-muted-foreground">Electricity Bill Management</p>
+            <p className="text-sm text-muted-foreground">Maintenance Portal</p>
           </div>
         </div>
 
