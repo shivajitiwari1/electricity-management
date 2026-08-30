@@ -3,8 +3,13 @@ const ACCENT_COLOR = "#2563eb";
 const COMPANY = "Oasis Venetia Heights";
 const ADDRESS = "Oasis Buildmart India Pvt. Ltd., Plot No-HRA, 12, A, Site-C, Greater Noida - 201306";
 
-function shell(content: string, companyOverride?: string): string {
+const PORTAL = "Electricity Management Portal";
+/** Maintenance emails carry their own portal label. */
+const MAINTENANCE_PORTAL = "Maintenance Portal";
+
+function shell(content: string, companyOverride?: string, portalOverride?: string): string {
   const heading = companyOverride ?? COMPANY;
+  const portal = portalOverride ?? PORTAL;
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +28,7 @@ function shell(content: string, companyOverride?: string): string {
               <tr>
                 <td>
                   <p style="margin:0;font-size:20px;font-weight:bold;color:#ffffff;letter-spacing:0.3px;">${heading}</p>
-                  <p style="margin:4px 0 0;font-size:12px;color:#93c5fd;">Electricity Management Portal</p>
+                  <p style="margin:4px 0 0;font-size:12px;color:#93c5fd;">${portal}</p>
                 </td>
               </tr>
             </table>
@@ -436,7 +441,7 @@ export function maintenanceOverdueEmail(params: {
     </td></tr>
   `;
 
-  return shell(body);
+  return shell(body, undefined, MAINTENANCE_PORTAL);
 }
 
 export function maintenanceBillGeneratedEmail(params: {
@@ -544,7 +549,7 @@ export function maintenanceBillGeneratedEmail(params: {
     <tr><td style="padding:0 32px 32px;"></td></tr>`}
   `;
 
-  return shell(body, "Oasis Venetia Heights AOA");
+  return shell(body, undefined, MAINTENANCE_PORTAL);
 }
 
 export function balanceDueEmail(params: {
