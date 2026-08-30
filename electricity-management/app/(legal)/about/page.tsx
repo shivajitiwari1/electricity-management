@@ -47,7 +47,7 @@ export default function AboutPage() {
         </p>
         <ul className="list-disc pl-6 space-y-1 text-gray-700">
           <li>View their monthly electricity bills</li>
-          <li>Make secure online payments via Razorpay</li>
+          <li>Make secure online payments via Bank of Baroda</li>
           <li>Track payment history</li>
         </ul>
         <p className="text-gray-700 mt-3">
@@ -98,7 +98,7 @@ export default function AboutPage() {
       <section className="bg-gray-50 rounded-lg p-4 border">
         <p className="text-gray-700 text-sm">
           Online payments on this portal are processed securely by{" "}
-          <strong>Razorpay Payment Gateway</strong>.
+          <strong>Bank of Baroda</strong>.
         </p>
       </section>
     </div>
