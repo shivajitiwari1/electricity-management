@@ -46,6 +46,13 @@ function StatusBadge({ status }: { status: BillStatus }) {
 const fmtINR = (v: string | number) =>
   `₹${Math.round(Number(v)).toLocaleString("en-IN")}`;
 
+/** Today as yyyy-MM-dd for <input type="date">, in local time. Using
+    toISOString() here would show yesterday for IST times before 05:30. */
+const todayLocal = () => {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+};
+
 const fmtDate = (d: string) =>
   new Date(d).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
 
@@ -60,7 +67,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
   const [payBill, setPayBill] = useState<MaintenanceBillRow | null>(null);
   const [payAmount, setPayAmount] = useState("");
   const [payMethod, setPayMethod] = useState("CASH");
-  const [payDate, setPayDate] = useState("");
+  const [payDate, setPayDate] = useState(todayLocal);
   const [payRef, setPayRef] = useState("");
   const [payRebate, setPayRebate] = useState("");
   const [paying, setPaying] = useState(false);
@@ -169,7 +176,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
       const data = await res.json();
       if (!res.ok) { toast.error(data.error ?? "Payment failed"); return; }
       toast.success(`Recorded. Receipt: ${data.receiptNumber}`);
-      setPayBill(null); setPayAmount(""); setPayMethod("CASH"); setPayDate(""); setPayRef(""); setPayRebate("");
+      setPayBill(null); setPayAmount(""); setPayMethod("CASH"); setPayDate(todayLocal()); setPayRef(""); setPayRebate("");
       await fetchBills();
     } finally { setPaying(false); }
   };
@@ -614,6 +621,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
                           setPayBill(bill);
                           const remaining = Number(bill.amount) + Number(bill.previousDue) + Number(bill.interestCharge) - Number(bill.paidAmount);
                           setPayAmount(String(Math.round(remaining)));
+                          setPayDate(todayLocal());
                         }}>
                           Record Payment
                         </Button>
