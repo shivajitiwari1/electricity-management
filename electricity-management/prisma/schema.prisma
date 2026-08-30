@@ -59,6 +59,8 @@ model Resident {
   user           User         @relation(fields: [userId], references: [id])
   residentNumber String       @unique
   phone          String?
+  tenantName     String?
+  tenantPhone    String?
   createdAt      DateTime     @default(now())
   connections    Connection[]
 }

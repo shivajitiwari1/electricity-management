@@ -8,6 +8,8 @@ import { guardPermission } from "@/lib/permissions";
 const updateResidentSchema = z.object({
   name: z.string().min(1).optional(),
   phone: z.string().optional(),
+  tenantName: z.string().optional(),
+  tenantPhone: z.string().optional(),
   email: z.email().optional(),
   // connection fields
   connectionId: z.string().optional(),
@@ -78,7 +80,7 @@ export async function PUT(
     );
   }
 
-  const { name, phone, email, connectionId, tower, floor, flatNo, unitType, unitArea, sanctionedLoad, meterNo } = parsed.data;
+  const { name, phone, tenantName, tenantPhone, email, connectionId, tower, floor, flatNo, unitType, unitArea, sanctionedLoad, meterNo } = parsed.data;
 
   const resident = await prisma.resident.findUnique({
     where: { id },
@@ -117,8 +119,16 @@ export async function PUT(
       });
     }
 
-    if (phone !== undefined) {
-      await tx.resident.update({ where: { id }, data: { phone } });
+    if (phone !== undefined || tenantName !== undefined || tenantPhone !== undefined) {
+      await tx.resident.update({
+        where: { id },
+        data: {
+          ...(phone !== undefined ? { phone } : {}),
+          // An empty string means the admin cleared the field, so store NULL.
+          ...(tenantName !== undefined ? { tenantName: tenantName || null } : {}),
+          ...(tenantPhone !== undefined ? { tenantPhone: tenantPhone || null } : {}),
+        },
+      });
     }
 
     // Update connection fields if any provided
@@ -148,7 +158,7 @@ export async function PUT(
         action: "UPDATE",
         entity: "Resident",
         entityId: id,
-        meta: { name, phone, email, tower, floor, flatNo, unitType, unitArea, sanctionedLoad, meterNo },
+        meta: { name, phone, tenantName, tenantPhone, email, tower, floor, flatNo, unitType, unitArea, sanctionedLoad, meterNo },
       },
     });
 

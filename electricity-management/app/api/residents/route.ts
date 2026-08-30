@@ -12,6 +12,9 @@ const createResidentSchema = z.object({
   name: z.string().min(1),
   email: z.email(),
   phone: z.string().optional(),
+  // Tenant details are optional: a flat may be owner-occupied.
+  tenantName: z.string().optional(),
+  tenantPhone: z.string().optional(),
   tower: z.string().min(1),
   floor: z.string().min(1),
   flatNo: z.string().min(1),
@@ -80,6 +83,8 @@ export async function POST(req: NextRequest) {
     name,
     email,
     phone,
+    tenantName,
+    tenantPhone,
     tower,
     floor,
     flatNo,
@@ -129,6 +134,8 @@ export async function POST(req: NextRequest) {
         userId: user.id,
         residentNumber,
         phone,
+        tenantName: tenantName || null,
+        tenantPhone: tenantPhone || null,
       },
     });
 

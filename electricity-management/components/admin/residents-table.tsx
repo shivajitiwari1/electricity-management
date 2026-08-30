@@ -61,6 +61,8 @@ type Resident = {
   id: string;
   residentNumber: string;
   phone: string | null;
+  tenantName: string | null;
+  tenantPhone: string | null;
   createdAt: Date | string;
   user: {
     id: string;
@@ -140,6 +142,8 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
     name: "",
     email: "",
     phone: "",
+    tenantName: "",
+    tenantPhone: "",
     tower: "",
     floor: "",
     flatNo: "",
@@ -154,6 +158,8 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
     name: "",
     email: "",
     phone: "",
+    tenantName: "",
+    tenantPhone: "",
     tower: "",
     floor: "",
     flatNo: "",
@@ -188,6 +194,8 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
       name: resident.user.name,
       email: resident.user.email,
       phone: resident.phone ?? "",
+      tenantName: resident.tenantName ?? "",
+      tenantPhone: resident.tenantPhone ?? "",
       tower: conn?.tower ?? "",
       floor: conn?.floor ?? "",
       flatNo: conn?.flatNo ?? "",
@@ -205,6 +213,8 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
       name: "",
       email: "",
       phone: "",
+      tenantName: "",
+      tenantPhone: "",
       tower: "",
       floor: "",
       flatNo: "",
@@ -230,6 +240,8 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
           name: addForm.name,
           email: addForm.email,
           phone: addForm.phone || undefined,
+          tenantName: addForm.tenantName || undefined,
+          tenantPhone: addForm.tenantPhone || undefined,
           tower: addForm.tower,
           floor: addForm.floor,
           flatNo: addForm.flatNo,
@@ -267,6 +279,8 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
           name: editForm.name,
           email: editForm.email,
           phone: editForm.phone || undefined,
+          tenantName: editForm.tenantName,
+          tenantPhone: editForm.tenantPhone,
           ...(conn ? {
             connectionId: conn.id,
             tower: editForm.tower || undefined,
@@ -503,13 +517,35 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
           <form onSubmit={handleAdd} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-2 space-y-1.5">
-                <Label htmlFor="add-name">Name *</Label>
+                <Label htmlFor="add-name">Owner Name *</Label>
                 <Input
                   id="add-name"
                   required
                   value={addForm.name}
                   onChange={(e) => setAddForm((p) => ({ ...p, name: e.target.value }))}
-                  placeholder="Full name"
+                  placeholder="Owner full name"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="add-tenant-name">
+                  Tenant Name <span className="text-muted-foreground font-normal text-xs">(optional)</span>
+                </Label>
+                <Input
+                  id="add-tenant-name"
+                  value={addForm.tenantName}
+                  onChange={(e) => setAddForm((p) => ({ ...p, tenantName: e.target.value }))}
+                  placeholder="Tenant full name"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="add-tenant-phone">
+                  Tenant Mobile Number <span className="text-muted-foreground font-normal text-xs">(optional)</span>
+                </Label>
+                <Input
+                  id="add-tenant-phone"
+                  value={addForm.tenantPhone}
+                  onChange={(e) => setAddForm((p) => ({ ...p, tenantPhone: e.target.value }))}
+                  placeholder="+91 98765 43210"
                 />
               </div>
               <div className="col-span-2 space-y-1.5">
@@ -524,7 +560,7 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
                 />
               </div>
               <div className="col-span-2 space-y-1.5">
-                <Label htmlFor="add-phone">Phone</Label>
+                <Label htmlFor="add-phone">Owner Phone</Label>
                 <Input
                   id="add-phone"
                   value={addForm.phone}
@@ -688,12 +724,34 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
               {/* Personal Info */}
               <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Personal Information</p>
               <div className="space-y-1.5">
-                <Label htmlFor="edit-name">Name *</Label>
+                <Label htmlFor="edit-name">Owner Name *</Label>
                 <Input
                   id="edit-name"
                   required
                   value={editForm.name}
                   onChange={(e) => setEditForm((p) => ({ ...p, name: e.target.value }))}
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="edit-tenant-name">
+                  Tenant Name <span className="text-muted-foreground font-normal text-xs">(optional)</span>
+                </Label>
+                <Input
+                  id="edit-tenant-name"
+                  value={editForm.tenantName}
+                  onChange={(e) => setEditForm((p) => ({ ...p, tenantName: e.target.value }))}
+                  placeholder="Tenant full name"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="edit-tenant-phone">
+                  Tenant Mobile Number <span className="text-muted-foreground font-normal text-xs">(optional)</span>
+                </Label>
+                <Input
+                  id="edit-tenant-phone"
+                  value={editForm.tenantPhone}
+                  onChange={(e) => setEditForm((p) => ({ ...p, tenantPhone: e.target.value }))}
+                  placeholder="+91 98765 43210"
                 />
               </div>
               <div className="space-y-1.5">
@@ -707,7 +765,7 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="edit-phone">Phone</Label>
+                <Label htmlFor="edit-phone">Owner Phone</Label>
                 <Input
                   id="edit-phone"
                   value={editForm.phone}
