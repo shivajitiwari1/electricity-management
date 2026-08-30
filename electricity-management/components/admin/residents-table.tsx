@@ -420,9 +420,11 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
                 <tr className="border-b bg-muted/50">
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Flat No</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Tower</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Name</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Owner Name</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Email</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Phone</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Owner Phone</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Tenant Name</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Tenant Mobile</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Actions</th>
                 </tr>
@@ -430,7 +432,7 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
               <tbody>
                 {filtered.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="text-center py-10 text-muted-foreground">
+                    <td colSpan={9} className="text-center py-10 text-muted-foreground">
                       No residents found
                     </td>
                   </tr>
@@ -449,6 +451,14 @@ export default function ResidentsTable({ initialData, flatData, canWrite, canDel
                         <td className="px-4 py-3 text-muted-foreground">{resident.user.email}</td>
                         <td className="px-4 py-3 text-muted-foreground">
                           {resident.phone ?? "—"}
+                        </td>
+                        <td className="px-4 py-3">
+                          {resident.tenantName
+                            ? resident.tenantName
+                            : <span className="text-muted-foreground">—</span>}
+                        </td>
+                        <td className="px-4 py-3 text-muted-foreground">
+                          {resident.tenantPhone ?? "—"}
                         </td>
                         <td className="px-4 py-3">
                           <StatusBadge status={isActive ? "ACTIVE" : "INACTIVE"} />
