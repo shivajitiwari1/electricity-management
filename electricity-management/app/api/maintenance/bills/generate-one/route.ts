@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { generateMaintenanceBillNumber } from "@/lib/maintenance-billing";
 import { sendEmail } from "@/lib/email";
 import { maintenanceBillGeneratedEmail } from "@/lib/email-templates";
+import { generateUpiQrDataUrl } from "@/lib/qr";
 
 export async function POST(req: NextRequest) {
   const session = await auth();
@@ -115,7 +116,20 @@ export async function POST(req: NextRequest) {
         interestCharge: "0.00",
         netPayable: fmt(netPayable),
         dueDate: dueDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
-      })
+        payUrl: `${process.env.NEXTAUTH_URL}/resident/maintenance/${bill.id}/pay`,
+        hasQrAttachment: true,
+      }),
+      [
+        {
+          filename: "qr.png",
+          content: Buffer.from(
+            (await generateUpiQrDataUrl(netPayable)).replace(/^data:image\/png;base64,/, ""),
+            "base64"
+          ),
+          contentType: "image/png",
+          cid: "upi-qr",
+        },
+      ]
     );
   } catch {
     // email failure must not fail bill creation

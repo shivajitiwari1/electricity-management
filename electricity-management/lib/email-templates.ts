@@ -456,11 +456,16 @@ export function maintenanceBillGeneratedEmail(params: {
   interestCharge: string;
   netPayable: string;
   dueDate: string;
+  /** Deep link to the resident maintenance pay page. Renders the Pay Now CTA. */
+  payUrl?: string;
+  /** Set only when the caller attaches a UPI QR PNG with cid "upi-qr", so the
+      image is never referenced when there is nothing to resolve it to. */
+  hasQrAttachment?: boolean;
 }): string {
   const {
     residentName, flatNo, billNumber, billingPeriod, unitArea, ratePerSqFt,
     amount, cgstRate, sgstRate, cgst, sgst, currentMonthTotal,
-    previousDue, interestCharge, netPayable, dueDate,
+    previousDue, interestCharge, netPayable, dueDate, payUrl, hasQrAttachment,
   } = params;
 
   const hasPrevDue = parseFloat(previousDue) > 0;
@@ -500,8 +505,43 @@ export function maintenanceBillGeneratedEmail(params: {
         ${hasInterest ? `<tr><td style="padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:13px;color:#dc2626;">Interest Charge</td><td style="padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:13px;color:#dc2626;text-align:right;">Rs. ${interestCharge}</td></tr>` : ""}
         ${row("Net Payable", "Rs. " + netPayable, true)}
       </table>
-      <p style="margin:16px 0 0;font-size:12px;color:#6b7280;">Log in to the resident portal to pay online. Interest @ 12% p.a. applies after the due date.</p>
+      <p style="margin:16px 0 0;font-size:12px;color:#6b7280;">Interest @ 12% p.a. applies after the due date.</p>
     </td></tr>
+
+    <!-- Payment Options -->
+    <tr><td style="padding:0 32px;">
+      <p style="margin:0 0 12px;font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:1px;">Payment Options</p>
+      <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e5e7eb;border-radius:6px;overflow:hidden;">
+        <tr>
+          <td style="padding:16px 20px;vertical-align:top;width:60%;">
+            <p style="margin:0 0 10px;font-size:12px;font-weight:600;color:#374151;">Bank Transfer / NEFT / RTGS</p>
+            <table cellpadding="0" cellspacing="0">
+              <tr><td style="font-size:12px;color:#6b7280;padding:3px 0;white-space:nowrap;padding-right:12px;">Beneficiary</td><td style="font-size:12px;color:#111827;font-weight:600;">OASIS BUILDMART INDIA PVT LTD</td></tr>
+              <tr><td style="font-size:12px;color:#6b7280;padding:3px 0;padding-right:12px;">Bank</td><td style="font-size:12px;color:#111827;">Bank of Baroda</td></tr>
+              <tr><td style="font-size:12px;color:#6b7280;padding:3px 0;padding-right:12px;">Account No.</td><td style="font-size:12px;color:#111827;font-weight:600;font-family:monospace;">88340200001343</td></tr>
+              <tr><td style="font-size:12px;color:#6b7280;padding:3px 0;padding-right:12px;">IFSC</td><td style="font-size:12px;color:#111827;font-family:monospace;">BARB0DBGREA</td></tr>
+              <tr><td style="font-size:12px;color:#6b7280;padding:3px 0;padding-right:12px;">Branch</td><td style="font-size:12px;color:#111827;">Greater Noida</td></tr>
+              <tr><td style="font-size:12px;color:#6b7280;padding:3px 0;padding-right:12px;">UPI ID</td><td style="font-size:12px;color:#111827;font-family:monospace;">oasis88268343@barodampay</td></tr>
+            </table>
+          </td>${hasQrAttachment ? `
+          <td style="padding:16px 20px;vertical-align:top;text-align:center;border-left:1px solid #e5e7eb;">
+            <p style="margin:0 0 8px;font-size:12px;font-weight:600;color:#374151;">Scan &amp; Pay via UPI</p>
+            <img src="cid:upi-qr" alt="UPI QR Code" width="140" height="140" style="display:block;margin:0 auto;border:1px solid #e5e7eb;border-radius:4px;" />
+            <p style="margin:6px 0 0;font-size:10px;color:#9ca3af;">PhonePe &middot; Google Pay &middot; Paytm &middot; BHIM</p>
+          </td>` : ""}
+        </tr>
+      </table>
+    </td></tr>${payUrl ? `
+
+    <!-- CTA -->
+    <tr><td style="padding:24px 32px 32px;" align="center">
+      <a href="${payUrl}" style="display:inline-block;background:${ACCENT_COLOR};color:#ffffff;font-size:15px;font-weight:bold;padding:14px 36px;border-radius:6px;text-decoration:none;letter-spacing:0.3px;">
+        Pay Maintenance Bill
+      </a>
+      <p style="margin:14px 0 0;font-size:12px;color:#9ca3af;">After paying by UPI or NEFT, share the transaction reference with us so your payment is recorded.</p>
+    </td></tr>` : `
+
+    <tr><td style="padding:0 32px 32px;"></td></tr>`}
   `;
 
   return shell(body, "Oasis Venetia Heights AOA");

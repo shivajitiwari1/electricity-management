@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { generateMaintenanceBillNumber, isLastDayOfMonth } from "@/lib/maintenance-billing";
 import { sendEmail } from "@/lib/email";
 import { maintenanceBillGeneratedEmail } from "@/lib/email-templates";
+import { generateUpiQrDataUrl } from "@/lib/qr";
 
 type ConnectionRow = Awaited<ReturnType<typeof fetchConnections>>[number];
 
@@ -34,7 +35,7 @@ async function createBillsBatch(
   const toCreate = valid.filter(c => !existingSet.has(generateMaintenanceBillNumber(c.flatNo, periodStart)));
   const skipped = connections.length - toCreate.length;
 
-  if (toCreate.length === 0) return { created: 0, skipped, toCreate: [] };
+  if (toCreate.length === 0) return { created: 0, skipped, toCreate: [], billIdByNumber: new Map<string, string>() };
 
   const dueDate = new Date(now);
   dueDate.setDate(dueDate.getDate() + 15);
@@ -58,7 +59,14 @@ async function createBillsBatch(
     })),
   });
 
-  return { created: toCreate.length, skipped, toCreate, dueDate };
+  // createMany returns no ids, so read them back to build a per-bill pay link.
+  const created = await prisma.maintenanceBill.findMany({
+    where: { billNumber: { in: toCreate.map(c => generateMaintenanceBillNumber(c.flatNo, periodStart)) } },
+    select: { id: true, billNumber: true },
+  });
+  const billIdByNumber = new Map(created.map(b => [b.billNumber, b.id]));
+
+  return { created: toCreate.length, skipped, toCreate, dueDate, billIdByNumber };
 }
 
 function sendBillEmails(
@@ -70,6 +78,7 @@ function sendBillEmails(
   logPrefix: string,
   cgstRate: number,
   sgstRate: number,
+  billIdByNumber: Map<string, string>,
 ) {
   const billingPeriodStr = `${periodStart.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })} – ${periodEnd.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}`;
   const subject = `Maintenance Bill — ${periodStart.toLocaleString("en-IN", { month: "long", year: "numeric" })}`;
@@ -82,6 +91,7 @@ function sendBillEmails(
       const sgst = Math.round(baseAmount * sgstRate / 100);
       const currentMonthTotal = baseAmount + cgst + sgst;
       const billNumber = generateMaintenanceBillNumber(c.flatNo, periodStart);
+      const billId = billIdByNumber.get(billNumber);
       try {
         const html = maintenanceBillGeneratedEmail({
           residentName: c.resident.user.name ?? "Resident",
@@ -100,8 +110,18 @@ function sendBillEmails(
           interestCharge: "0.00",
           netPayable: fmt(currentMonthTotal),
           dueDate: dueDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
+          payUrl: billId ? `${process.env.NEXTAUTH_URL}/resident/maintenance/${billId}/pay` : undefined,
+          hasQrAttachment: true,
         });
-        await sendEmail(c.resident.user.email, `${subject} — ${c.flatNo}`, html);
+        const qrDataUrl = await generateUpiQrDataUrl(currentMonthTotal);
+        await sendEmail(c.resident.user.email, `${subject} — ${c.flatNo}`, html, [
+          {
+            filename: "qr.png",
+            content: Buffer.from(qrDataUrl.replace(/^data:image\/png;base64,/, ""), "base64"),
+            contentType: "image/png",
+            cid: "upi-qr",
+          },
+        ]);
       } catch (err) {
         console.error(`[${logPrefix}] Email failed for ${c.flatNo}:`, err);
       }
@@ -160,7 +180,7 @@ export async function GET(req: NextRequest) {
   const result = await createBillsBatch(connections, rate, periodStart, periodEnd, now);
 
   if (result.toCreate.length > 0) {
-    await sendBillEmails(result.toCreate, rate, periodStart, periodEnd, result.dueDate!, "cron:maintenance", Number(siteConfig.cgstRate ?? 0), Number(siteConfig.sgstRate ?? 0));
+    await sendBillEmails(result.toCreate, rate, periodStart, periodEnd, result.dueDate!, "cron:maintenance", Number(siteConfig.cgstRate ?? 0), Number(siteConfig.sgstRate ?? 0), result.billIdByNumber);
   }
 
   return NextResponse.json({ success: true, created: result.created, skipped: result.skipped });
@@ -207,7 +227,7 @@ export async function POST(req: NextRequest) {
   const result = await createBillsBatch(connections, rate, periodStart, periodEnd, now);
 
   if (result.toCreate.length > 0) {
-    await sendBillEmails(result.toCreate, rate, periodStart, periodEnd, result.dueDate!, "admin:maintenance", Number(siteConfig.cgstRate ?? 0), Number(siteConfig.sgstRate ?? 0));
+    await sendBillEmails(result.toCreate, rate, periodStart, periodEnd, result.dueDate!, "admin:maintenance", Number(siteConfig.cgstRate ?? 0), Number(siteConfig.sgstRate ?? 0), result.billIdByNumber);
   }
 
   return NextResponse.json({ success: true, created: result.created, skipped: result.skipped });
