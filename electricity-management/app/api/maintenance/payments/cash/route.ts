@@ -128,6 +128,7 @@ export async function POST(req: NextRequest) {
         rebateAmount: rebateAmount > 0 ? rebateAmount.toFixed(2) : undefined,
         billTotal: totalDue.toFixed(2),
         balanceDue: Math.max(0, totalDue - newPaidAmount).toFixed(2),
+        isMaintenance: true,
       });
       await sendEmail(resident.user.email, `Maintenance Payment Received — ${bill.billNumber}`, html);
     } catch (err) {

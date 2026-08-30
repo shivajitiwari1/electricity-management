@@ -152,8 +152,11 @@ export function paymentSuccessEmail(params: {
   billTotal?: string;
   /** Outstanding after this payment. > 0 switches the email to part-payment wording. */
   balanceDue?: string;
+  /** Set by the maintenance routes so the header reads Maintenance Portal.
+      Electricity and public-pay callers omit it and are unaffected. */
+  isMaintenance?: boolean;
 }): string {
-  const { residentName, flatNo, receiptNumber, amount, paymentDate, razorpayPaymentId, receiptUrl, rebateAmount, billTotal, balanceDue } = params;
+  const { residentName, flatNo, receiptNumber, amount, paymentDate, razorpayPaymentId, receiptUrl, rebateAmount, billTotal, balanceDue, isMaintenance } = params;
   const isPartial = balanceDue != null && Number(balanceDue) > 0;
 
   const body = `
@@ -227,7 +230,7 @@ export function paymentSuccessEmail(params: {
     </td></tr>
   `;
 
-  return shell(body);
+  return shell(body, undefined, isMaintenance ? MAINTENANCE_PORTAL : undefined);
 }
 
 export function overdueNoticeEmail(params: {
