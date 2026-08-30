@@ -48,7 +48,7 @@ export default function TermsPage() {
 
       <Section title="3. Payment Terms">
         <ul className="list-disc pl-6 space-y-1">
-          <li>Payments are processed via Razorpay Payment Gateway.</li>
+          <li>Payments are made to our Bank of Baroda account.</li>
           <li>
             Accepted payment methods: UPI, credit cards, debit cards, net banking.
           </li>
@@ -57,7 +57,8 @@ export default function TermsPage() {
             applicable charges.
           </li>
           <li>
-            Payments are credited to your account upon successful confirmation from Razorpay.
+            Payments are credited to your account upon confirmation of receipt in our Bank of
+            Baroda account.
           </li>
         </ul>
       </Section>
@@ -95,8 +96,9 @@ export default function TermsPage() {
       <Section title="6. Privacy & Data">
         <ul className="list-disc pl-6 space-y-1">
           <li>
-            Payment card and UPI details are handled exclusively by Razorpay and are not stored
-            on our servers.
+            Payment is made from your own UPI or banking app, so your card and UPI credentials
+            are never received by, or stored on, our servers. Funds are transferred directly to
+            our Bank of Baroda account.
           </li>
           <li>
             Personal information (name, flat number, email) is used solely for billing and

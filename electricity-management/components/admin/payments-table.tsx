@@ -418,7 +418,7 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All</SelectItem>
-              <SelectItem value="ONLINE">🌐 Online (Razorpay)</SelectItem>
+              <SelectItem value="ONLINE">🌐 Online</SelectItem>
               <SelectItem value="MANUAL">✋ Manual (All)</SelectItem>
               <SelectItem value="CASH">— Cash</SelectItem>
               <SelectItem value="UPI">— UPI</SelectItem>

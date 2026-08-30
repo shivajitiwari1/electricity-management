@@ -73,7 +73,7 @@ export async function GET() {
     );
 
     const paymentsCSV = toCSV(
-      ["Receipt #", "Flat No", "Resident Name", "Bill #", "Amount", "Payment Date", "Method", "Status", "Razorpay / Ref ID"],
+      ["Receipt #", "Flat No", "Resident Name", "Bill #", "Amount", "Payment Date", "Method", "Status", "Transaction / Ref ID"],
       payments.map((p) => [
         p.receiptNumber, p.bill.connection.flatNo, p.bill.connection.resident.user.name,
         p.bill.billNumber, Number(p.amount), fmtDate(p.paymentDate),
