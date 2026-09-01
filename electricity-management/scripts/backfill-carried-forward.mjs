@@ -17,6 +17,7 @@ import { PrismaClient } from "@prisma/client";
 import { selectCarriedForwardBills } from "../lib/carry-forward.ts";
 
 const APPLY = process.argv.includes("--apply");
+const REVERT = process.argv.includes("--revert");
 
 const url = new URL(process.env.DATABASE_URL ?? "");
 const useSSL = process.env.DATABASE_SSL === "true" || url.hostname !== "localhost";
@@ -31,6 +32,31 @@ const prisma = new PrismaClient({
     connectTimeout: 30000,
   }),
 });
+
+if (REVERT) {
+  // Rollback: hand the dues back to the original bills. Needed if the running
+  // deployment ever predates the CARRIED_FORWARD enum value, since its Prisma
+  // client cannot read a bill carrying that status.
+  const carried = await prisma.bill.findMany({
+    where: { status: "CARRIED_FORWARD" },
+    select: { id: true, billNumber: true, dueDate: true },
+  });
+  console.log(`${carried.length} carried-forward bills to reopen.`);
+  if (!APPLY) {
+    console.log("Dry run. Re-run with --revert --apply to write these changes.");
+  } else {
+    const now = new Date();
+    for (const bill of carried) {
+      await prisma.bill.update({
+        where: { id: bill.id },
+        data: { status: bill.dueDate < now ? "OVERDUE" : "PENDING", carriedForwardToId: null },
+      });
+    }
+    console.log(`Reverted: ${carried.length} bills reopened.`);
+  }
+  await prisma.$disconnect();
+  process.exit(0);
+}
 
 const open = await prisma.bill.findMany({
   where: { status: { in: ["PENDING", "OVERDUE", "PARTIAL"] } },
