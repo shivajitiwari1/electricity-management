@@ -93,9 +93,21 @@ export async function PUT(
 
   const { status } = parsed.data;
 
-  const bill = await prisma.bill.findUnique({ where: { id } });
+  const bill = await prisma.bill.findUnique({
+    where: { id },
+    include: { carriedForwardTo: { select: { billNumber: true } } },
+  });
   if (!bill) {
     return NextResponse.json({ error: "Bill not found" }, { status: 404 });
+  }
+
+  if (bill.status === "CARRIED_FORWARD") {
+    return NextResponse.json(
+      {
+        error: `This bill's dues were carried forward into ${bill.carriedForwardTo?.billNumber ?? "a later bill"}. Update that bill instead.`,
+      },
+      { status: 409 }
+    );
   }
 
   const updated = await prisma.$transaction(async (tx) => {
@@ -153,13 +165,31 @@ export async function DELETE(
 
   const bill = await prisma.bill.findUnique({
     where: { id },
-    select: { id: true, billNumber: true },
+    select: {
+      id: true,
+      billNumber: true,
+      carriedForwardFrom: { select: { id: true, dueDate: true } },
+    },
   });
   if (!bill) {
     return NextResponse.json({ error: "Bill not found" }, { status: 404 });
   }
 
+  const now = new Date();
+
   await prisma.$transaction(async (tx) => {
+    // This bill carried older bills' dues. Deleting it must hand those dues
+    // back to the original bills, or the money simply disappears.
+    for (const absorbed of bill.carriedForwardFrom) {
+      await tx.bill.update({
+        where: { id: absorbed.id },
+        data: {
+          status: absorbed.dueDate < now ? "OVERDUE" : "PENDING",
+          carriedForwardToId: null,
+        },
+      });
+    }
+
     await tx.payment.deleteMany({ where: { billId: id } });
     await tx.bill.delete({ where: { id } });
     await tx.auditLog.create({
@@ -168,7 +198,10 @@ export async function DELETE(
         action: "DELETE",
         entity: "Bill",
         entityId: id,
-        meta: { billNumber: bill.billNumber },
+        meta: {
+          billNumber: bill.billNumber,
+          reopenedBillIds: bill.carriedForwardFrom.map((b) => b.id),
+        },
       },
     });
   });

@@ -69,6 +69,7 @@ function StatusBadge({ status, dueDate }: { status: string; dueDate?: string }) 
   const display = (status === "PENDING" && dueDate && new Date(dueDate) < new Date())
     ? "OVERDUE"
     : status;
+  if (display === "CARRIED_FORWARD") return <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">CARRIED FORWARD</Badge>;
   if (display === "PAID") return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">PAID</Badge>;
   if (display === "OVERDUE") return <Badge className="bg-red-100 text-red-800 hover:bg-red-100">OVERDUE</Badge>;
   if (display === "PARTIAL") return <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-100">PARTIAL</Badge>;
@@ -274,6 +275,7 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
               <SelectItem value="PAID">PAID</SelectItem>
               <SelectItem value="PARTIAL">PARTIAL</SelectItem>
               <SelectItem value="OVERDUE">OVERDUE</SelectItem>
+              <SelectItem value="CARRIED_FORWARD">CARRIED FORWARD</SelectItem>
             </SelectContent>
           </Select>
         </div>

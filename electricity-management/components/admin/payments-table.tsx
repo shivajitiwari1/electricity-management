@@ -124,6 +124,7 @@ function StatusBadge({ status }: { status: string }) {
 
 function BillStatusBadge({ status, dueDate }: { status: string; dueDate?: string }) {
   const display = (status === "PENDING" && dueDate && new Date(dueDate) < new Date()) ? "OVERDUE" : status;
+  if (display === "CARRIED_FORWARD") return <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">CARRIED FORWARD</Badge>;
   if (display === "OVERDUE") return <Badge className="bg-red-100 text-red-800 hover:bg-red-100">OVERDUE</Badge>;
   if (display === "PARTIAL") return <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-100">PARTIAL</Badge>;
   return <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">PENDING</Badge>;

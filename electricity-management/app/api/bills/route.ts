@@ -7,6 +7,7 @@ import { Decimal } from "@prisma/client/runtime/client";
 import { Prisma } from "@prisma/client";
 import { revalidateTag } from "next/cache";
 import { calculateBill, generateBillNumber } from "@/lib/billing";
+import { selectCarriedForwardBills } from "@/lib/carry-forward";
 import { sendEmail } from "@/lib/email";
 import { billGeneratedEmail } from "@/lib/email-templates";
 import { generatePaymentToken } from "@/lib/payment-token";
@@ -33,7 +34,7 @@ export async function GET(req: NextRequest) {
   const month = searchParams.get("month"); // YYYY-MM
   const status = searchParams.get("status");
 
-  const validStatuses = ["PENDING", "PAID", "OVERDUE", "PARTIAL"];
+  const validStatuses = ["PENDING", "PAID", "OVERDUE", "PARTIAL", "CARRIED_FORWARD"];
   if (status && !validStatuses.includes(status)) {
     return NextResponse.json({ error: "Invalid status filter" }, { status: 400 });
   }
@@ -52,7 +53,7 @@ export async function GET(req: NextRequest) {
 
   const bills = await prisma.bill.findMany({
     where: {
-      ...(status ? { status: status as "PENDING" | "PAID" | "OVERDUE" | "PARTIAL" } : {}),
+      ...(status ? { status: status as "PENDING" | "PAID" | "OVERDUE" | "PARTIAL" | "CARRIED_FORWARD" } : {}),
       ...(dateFilter ? { billDate: dateFilter } : {}),
       ...(flatNo || tower
         ? {
@@ -213,6 +214,38 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    // The carried-forward amount is now part of this bill's total, so the older
+    // bills it covers must stop being separately payable — otherwise the same
+    // dues are counted twice in every pending / overdue / outstanding figure.
+    let carriedForwardBillIds: string[] = [];
+    if (prevDues.greaterThan(0)) {
+      const openOlderBills = await tx.bill.findMany({
+        where: {
+          connectionId: meterReading.connectionId,
+          id: { not: newBill.id },
+          status: { in: ["PENDING", "OVERDUE", "PARTIAL"] },
+          billDate: { lt: billDateObj },
+        },
+        select: { id: true, totalAmount: true, paidAmount: true },
+        orderBy: { billDate: "asc" },
+      });
+
+      carriedForwardBillIds = selectCarriedForwardBills(
+        prevDues.toNumber(),
+        openOlderBills.map((b) => ({
+          id: b.id,
+          balance: b.totalAmount.minus(b.paidAmount).toNumber(),
+        }))
+      );
+
+      if (carriedForwardBillIds.length > 0) {
+        await tx.bill.updateMany({
+          where: { id: { in: carriedForwardBillIds } },
+          data: { status: "CARRIED_FORWARD", carriedForwardToId: newBill.id },
+        });
+      }
+    }
+
     await tx.auditLog.create({
       data: {
         userId: session!.user.id,
@@ -224,6 +257,8 @@ export async function POST(req: NextRequest) {
           connectionId: meterReading.connectionId,
           meterReadingId,
           totalAmount: calculation.totalAmount.toNumber(),
+          previousDues: prevDues.toNumber(),
+          carriedForwardBillIds,
         },
       },
     });

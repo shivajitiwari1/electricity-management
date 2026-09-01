@@ -22,6 +22,7 @@ enum BillStatus {
   PAID
   OVERDUE
   PARTIAL
+  CARRIED_FORWARD
 }
 
 enum PaymentMethod {
@@ -129,6 +130,14 @@ model Bill {
   status             BillStatus   @default(PENDING)
   createdAt          DateTime     @default(now())
   payments           Payment[]
+
+  // Set when this bill's unpaid balance was rolled into a later bill's previousDues.
+  // Such a bill is no longer separately payable — the later bill carries the amount.
+  carriedForwardToId String?
+  carriedForwardTo   Bill?        @relation("BillCarryForward", fields: [carriedForwardToId], references: [id], onDelete: SetNull)
+  carriedForwardFrom Bill[]       @relation("BillCarryForward")
+
+  @@index([carriedForwardToId])
 }
 
 model Payment {

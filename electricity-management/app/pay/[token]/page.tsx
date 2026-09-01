@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { verifyPaymentToken } from "@/lib/payment-token";
+import { verifyPaymentToken, generatePaymentToken } from "@/lib/payment-token";
 import PublicPaymentForm from "./public-payment-form";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, ArrowRight } from "lucide-react";
 import { generateUpiQrDataUrl } from "@/lib/qr";
 
 export const dynamic = "force-dynamic";
@@ -24,6 +24,7 @@ export default async function PublicPayPage({
   const bill = await prisma.bill.findUnique({
     where: { id: billId },
     include: {
+      carriedForwardTo: { select: { id: true, billNumber: true, status: true } },
       connection: {
         include: { resident: { include: { user: { select: { name: true } } } } },
       },
@@ -51,7 +52,9 @@ export default async function PublicPayPage({
   };
 
   const isPaid = bill.status === "PAID";
-  const qrCodeDataUrl = isPaid ? "" : await generateUpiQrDataUrl(serialized.totalAmount);
+  // These dues now sit inside a later bill — paying this one would double-charge.
+  const carriedForward = bill.status === "CARRIED_FORWARD" ? bill.carriedForwardTo : null;
+  const qrCodeDataUrl = isPaid || carriedForward ? "" : await generateUpiQrDataUrl(serialized.totalAmount);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -64,7 +67,28 @@ export default async function PublicPayPage({
       </header>
 
       <main className="flex-1 flex items-start justify-center px-4 py-8">
-        {isPaid ? (
+        {carriedForward ? (
+          <div className="max-w-lg w-full text-center space-y-4 mt-8">
+            <div className="flex justify-center">
+              <ArrowRight className="h-16 w-16 text-blue-500" />
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900">Included in a Newer Bill</h1>
+            <p className="text-gray-600">
+              The amount of bill <strong>{bill.billNumber}</strong> for Flat{" "}
+              <strong>{bill.connection.flatNo}</strong> has been carried forward into bill{" "}
+              <strong>{carriedForward.billNumber}</strong>. Please pay that bill instead — it
+              already includes these dues.
+            </p>
+            {carriedForward.status !== "PAID" && (
+              <a
+                href={`/pay/${generatePaymentToken(carriedForward.id)}`}
+                className="inline-block rounded-md bg-[#1e3a5f] px-5 py-2.5 text-sm font-medium text-white"
+              >
+                Pay bill {carriedForward.billNumber}
+              </a>
+            )}
+          </div>
+        ) : isPaid ? (
           <div className="max-w-lg w-full text-center space-y-4 mt-8">
             <div className="flex justify-center">
               <CheckCircle2 className="h-16 w-16 text-green-500" />

@@ -47,6 +47,7 @@ export async function POST(req: NextRequest) {
   const bill = await prisma.bill.findUnique({
     where: { id: billId },
     include: {
+      carriedForwardTo: { select: { billNumber: true } },
       connection: {
         include: {
           resident: {
@@ -61,6 +62,14 @@ export async function POST(req: NextRequest) {
   }
   if (bill.status === "PAID") {
     return NextResponse.json({ error: "Bill already paid" }, { status: 409 });
+  }
+  if (bill.status === "CARRIED_FORWARD") {
+    return NextResponse.json(
+      {
+        error: `These dues were carried forward into ${bill.carriedForwardTo?.billNumber ?? "a later bill"}. Record the payment against that bill.`,
+      },
+      { status: 409 }
+    );
   }
 
   const totalAmount = Number(bill.totalAmount);

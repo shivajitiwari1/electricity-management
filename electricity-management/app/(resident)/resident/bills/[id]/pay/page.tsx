@@ -32,6 +32,7 @@ export default async function PayPage({
         },
       },
       meterReading: true,
+      carriedForwardTo: { select: { id: true } },
     },
   });
 
@@ -39,6 +40,14 @@ export default async function PayPage({
   if (!bill || !connectionIds.includes(bill.connectionId))
     redirect("/resident/bills");
   if (bill.status === "PAID") redirect("/resident/payments");
+  // Dues already rolled into a later bill — send the resident to that bill.
+  if (bill.status === "CARRIED_FORWARD") {
+    redirect(
+      bill.carriedForwardTo
+        ? `/resident/bills/${bill.carriedForwardTo.id}/pay`
+        : "/resident/bills"
+    );
+  }
 
   const serializedBill = {
     id: bill.id,

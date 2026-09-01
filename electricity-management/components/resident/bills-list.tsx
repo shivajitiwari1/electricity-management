@@ -51,6 +51,13 @@ function StatusBadge({ status }: { status: string }) {
       </Badge>
     );
   }
+  if (status === "CARRIED_FORWARD") {
+    return (
+      <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100 flex items-center gap-1 w-fit">
+        CARRIED FORWARD
+      </Badge>
+    );
+  }
   if (status === "OVERDUE") {
     return (
       <Badge className="bg-red-100 text-red-800 hover:bg-red-100 flex items-center gap-1 w-fit">
