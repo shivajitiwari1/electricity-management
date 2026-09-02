@@ -145,8 +145,40 @@ function formatINR(amount: string) {
   })}`;
 }
 
+// Month key of a payment, taken from the date as displayed in the table (local
+// time) so a payment never lands in a different month than its Date column.
+function monthKey(iso: string) {
+  const d = new Date(iso);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+}
+
+function formatMonth(key: string) {
+  const [year, month] = key.split("-").map(Number);
+  return new Date(year, month - 1, 1).toLocaleDateString("en-IN", {
+    month: "short",
+    year: "numeric",
+  });
+}
+
 export default function PaymentsTable({ initialData, pendingBills, canWrite, canDelete }: Props) {
   const router = useRouter();
+
+  // Months that actually have payments, newest first.
+  const monthOptions = useMemo(() => {
+    const keys = new Set(initialData.map((p) => monthKey(p.paymentDate)));
+    return [...keys].sort().reverse();
+  }, [initialData]);
+
+  // Open on the current month; if nothing has been recorded in it yet (e.g. the
+  // 1st of the month), fall back to the newest month that has payments.
+  const defaultMonth = useMemo(() => {
+    const now = new Date();
+    const current = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+    if (monthOptions.includes(current)) return current;
+    return monthOptions[0] ?? "all";
+  }, [monthOptions]);
+
+  const [filterMonth, setFilterMonth] = useState(defaultMonth);
   const [filterMethod, setFilterMethod] = useState("all");
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterName, setFilterName] = useState("");
@@ -239,6 +271,7 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
   const filtered = useMemo(() => {
     const q = filterName.trim().toLowerCase();
     const base = initialData.filter((p) => {
+      if (filterMonth !== "all" && monthKey(p.paymentDate) !== filterMonth) return false;
       if (filterMethod === "MANUAL") {
         if (!MANUAL_METHODS.has(p.method)) return false;
       } else if (filterMethod !== "all" && p.method !== filterMethod) {
@@ -265,7 +298,7 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
       if (aVal > bVal) return historySortDir === "asc" ? 1 : -1;
       return 0;
     });
-  }, [initialData, filterMethod, filterStatus, filterName, historySortKey, historySortDir]);
+  }, [initialData, filterMonth, filterMethod, filterStatus, filterName, historySortKey, historySortDir]);
 
 
   function openCashDialog(bill: PendingBill) {
@@ -412,6 +445,21 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
       {/* Payment History */}
       <div className="flex flex-wrap items-end gap-4">
         <div className="flex flex-col gap-1">
+          <span className="text-xs font-medium text-muted-foreground">Month</span>
+          <Select value={filterMonth} onValueChange={(val) => setFilterMonth(val ?? "all")}>
+            <SelectTrigger className="w-40">
+              <SelectValue placeholder="All months" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All months</SelectItem>
+              {monthOptions.map((key) => (
+                <SelectItem key={key} value={key}>{formatMonth(key)}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="flex flex-col gap-1">
           <span className="text-xs font-medium text-muted-foreground">Method</span>
           <Select value={filterMethod} onValueChange={(val) => setFilterMethod(val ?? "all")}>
             <SelectTrigger className="w-36">
@@ -456,11 +504,12 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
           />
         </div>
 
-        {(filterMethod !== "all" || filterStatus !== "all" || filterName) && (
+        {(filterMonth !== defaultMonth || filterMethod !== "all" || filterStatus !== "all" || filterName) && (
           <Button
             variant="outline"
             size="sm"
             onClick={() => {
+              setFilterMonth(defaultMonth);
               setFilterMethod("all");
               setFilterStatus("all");
               setFilterName("");
@@ -474,9 +523,11 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
       <Card>
         <CardHeader className="pb-0">
           <CardTitle className="text-base font-semibold flex items-center gap-3">
-            {filtered.length > 0
-              ? `Payment History — ${filtered.length} record${filtered.length !== 1 ? "s" : ""}`
-              : "Payment History — 0 records"}
+            {`Payment History — ${filterMonth === "all" ? "All months" : formatMonth(filterMonth)} · ${
+              filtered.length === initialData.length
+                ? `${filtered.length}`
+                : `${filtered.length} of ${initialData.length}`
+            } record${initialData.length !== 1 ? "s" : ""}`}
             {filtered.length > 0 && (
               <span className="flex gap-2 text-xs font-normal">
                 <span className="inline-flex items-center gap-1 text-blue-700"><Wifi className="h-3 w-3" />{filtered.filter(p => p.method === "ONLINE").length} online</span>
