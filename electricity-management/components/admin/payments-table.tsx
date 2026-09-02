@@ -448,7 +448,10 @@ export default function PaymentsTable({ initialData, pendingBills, canWrite, can
           <span className="text-xs font-medium text-muted-foreground">Month</span>
           <Select value={filterMonth} onValueChange={(val) => setFilterMonth(val ?? "all")}>
             <SelectTrigger className="w-40">
-              <SelectValue placeholder="All months" />
+              {/* This Select renders the raw value by default, so format it here. */}
+              <SelectValue placeholder="All months">
+                {(value) => (value === "all" ? "All months" : formatMonth(String(value)))}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All months</SelectItem>
