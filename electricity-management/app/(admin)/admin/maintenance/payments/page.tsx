@@ -14,9 +14,12 @@ export default async function MaintenancePaymentsPage() {
   const permissions = (session.user as any)?.permissions as PermissionsMap ?? {};
   if (role !== "ADMIN" && !permissions["maintenance"]?.canRead) redirect("/admin/dashboard");
 
-  const currentMonth = new Date().toISOString().slice(0, 7);
-  const [year, mon] = currentMonth.split("-").map(Number);
-  const billDateFilter = { gte: new Date(year, mon - 1, 1), lt: new Date(year, mon, 1) };
+  // Matches the table's default filter: the month before the current one.
+  const now = new Date();
+  const billDateFilter = {
+    gte: new Date(now.getFullYear(), now.getMonth() - 1, 1),
+    lt: new Date(now.getFullYear(), now.getMonth(), 1),
+  };
 
   const payments = await prisma.maintenancePayment.findMany({
     where: { bill: { billingPeriodStart: billDateFilter } },

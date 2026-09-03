@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MonthSelect, monthRange } from "@/components/ui/month-select";
+import { MonthSelect, monthRange, monthKeyOf } from "@/components/ui/month-select";
 import { Trash2, FileDown, ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
 
 export interface MaintenancePaymentRow {
@@ -51,10 +51,12 @@ function BillStatusBadge({ status }: { status: string }) {
 }
 
 export default function MaintenancePaymentsTable({ initialData, canDelete = false }: { initialData: MaintenancePaymentRow[]; canDelete?: boolean }) {
-  const currentMonth = new Date().toISOString().slice(0, 7);
+  // Bills are raised for the month just ended, so payments land against last
+  // month's bills — open on that month, not the current one.
+  const previousMonth = monthKeyOf(new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1));
   const [payments, setPayments] = useState(initialData);
   const [tower, setTower] = useState("all");
-  const [month, setMonth] = useState(currentMonth);
+  const [month, setMonth] = useState(previousMonth);
   const [method, setMethod] = useState("all");
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
