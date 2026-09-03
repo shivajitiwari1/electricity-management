@@ -8,12 +8,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-/** "2026-09" → "Sept 2026". */
+/** "2026-09" → "September 2026". */
 export function formatMonthLabel(key: string) {
   const [year, month] = key.split("-").map(Number);
   if (!year || !month) return key;
   return new Date(year, month - 1, 1).toLocaleDateString("en-IN", {
-    month: "short",
+    month: "long",
     year: "numeric",
   });
 }
