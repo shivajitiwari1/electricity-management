@@ -46,10 +46,14 @@ export function calculateInterestCharge(amount: number, dueDate: Date, today: Da
   return Math.round(amount * 0.12 * (daysOverdue / 365) * 100) / 100;
 }
 
+/** Days allowed to pay, counted from the end of the month being billed. */
+const MAINTENANCE_DUE_DAYS = 15;
+
 /**
- * Due date for a maintenance bill: the last day of the month after the one it
- * bills. Derived from the billing period, never from the day the bill happened
- * to be raised — otherwise one cycle ends up with several different due dates.
+ * Due date for a maintenance bill: 15 days after the end of the month it
+ * bills, so August is due 15 September. Derived from the billing period, never
+ * from the day the bill happened to be raised — otherwise one cycle ends up
+ * with several different due dates.
  *
  * Built in UTC to match billingPeriodStart, and left at 00:00 so it renders as
  * that day in IST rather than rolling over to the next.
@@ -57,6 +61,6 @@ export function calculateInterestCharge(amount: number, dueDate: Date, today: Da
 export function maintenanceDueDate(billingPeriodStart: Date): Date {
   const year = billingPeriodStart.getUTCFullYear();
   const monthIndex = billingPeriodStart.getUTCMonth();
-  // Day 0 of month+2 is the last day of month+1.
-  return new Date(Date.UTC(year, monthIndex + 2, 0));
+  // Day 0 of month+1 is the last day of the billing month; add the grace days.
+  return new Date(Date.UTC(year, monthIndex + 1, MAINTENANCE_DUE_DAYS));
 }
