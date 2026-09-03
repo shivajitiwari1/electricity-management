@@ -41,6 +41,8 @@ export interface ReceiptData {
   billTotal?: number;
   /** Outstanding on the bill as of this payment. > 0 renders the part-payment box. */
   balanceDue?: number;
+  /** Header badge text. Defaults to "PAYMENT RECEIPT". */
+  title?: string;
 }
 
 function formatDate(date: Date): string {
@@ -335,10 +337,13 @@ export function generateReceiptPdf(data: ReceiptData): Promise<Buffer> {
     doc.fillColor("#93b8d4").fontSize(8.5)
       .text("Phone: 8588805052", L, 56, { width: CW, align: "center" });
 
-    // "PAYMENT RECEIPT" badge on header
-    doc.rect(PW / 2 - 75, 74, 150, 22).fill("#2563eb");
+    // Title badge on header, widened to fit longer titles
+    const title = data.title ?? "PAYMENT RECEIPT";
+    doc.font("Helvetica-Bold").fontSize(10);
+    const badgeW = Math.max(150, doc.widthOfString(title) + 28);
+    doc.rect(PW / 2 - badgeW / 2, 74, badgeW, 22).fill("#2563eb");
     doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(10)
-      .text("PAYMENT RECEIPT", L, 79, { width: CW, align: "center" });
+      .text(title, L, 79, { width: CW, align: "center" });
 
     // ── Receipt # and Date ────────────────────────────────────────────────
     let y = 126;

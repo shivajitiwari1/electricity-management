@@ -94,6 +94,7 @@ export async function GET(
     rebateAmount: rebateAmount > 0 ? Math.round(rebateAmount) : undefined,
     billTotal,
     balanceDue,
+    title: "MAINTENANCE PAYMENT RECEIPT",
   };
 
   const buffer = await generateReceiptPdf(receiptData);
