@@ -45,3 +45,18 @@ export function calculateInterestCharge(amount: number, dueDate: Date, today: Da
   const daysOverdue = Math.floor((today.getTime() - dueDate.getTime()) / msPerDay);
   return Math.round(amount * 0.12 * (daysOverdue / 365) * 100) / 100;
 }
+
+/**
+ * Due date for a maintenance bill: the last day of the month after the one it
+ * bills. Derived from the billing period, never from the day the bill happened
+ * to be raised — otherwise one cycle ends up with several different due dates.
+ *
+ * Built in UTC to match billingPeriodStart, and left at 00:00 so it renders as
+ * that day in IST rather than rolling over to the next.
+ */
+export function maintenanceDueDate(billingPeriodStart: Date): Date {
+  const year = billingPeriodStart.getUTCFullYear();
+  const monthIndex = billingPeriodStart.getUTCMonth();
+  // Day 0 of month+2 is the last day of month+1.
+  return new Date(Date.UTC(year, monthIndex + 2, 0));
+}

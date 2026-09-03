@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { generateMaintenanceBillNumber } from "@/lib/maintenance-billing";
+import { generateMaintenanceBillNumber, maintenanceDueDate } from "@/lib/maintenance-billing";
 import { sendEmail } from "@/lib/email";
 import { maintenanceBillGeneratedEmail } from "@/lib/email-templates";
 import { generateUpiQrDataUrl } from "@/lib/qr";
@@ -68,8 +68,7 @@ export async function POST(req: NextRequest) {
   const totalAmount = baseAmount + cgst + sgst;
 
   const now = new Date();
-  const dueDate = new Date(now);
-  dueDate.setDate(dueDate.getDate() + 15);
+  const dueDate = maintenanceDueDate(periodStart);
 
   const bill = await prisma.maintenanceBill.create({
     data: {

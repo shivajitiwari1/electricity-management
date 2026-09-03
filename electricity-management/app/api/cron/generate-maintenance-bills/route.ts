@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { generateMaintenanceBillNumber, isLastDayOfMonth } from "@/lib/maintenance-billing";
+import { generateMaintenanceBillNumber, isLastDayOfMonth, maintenanceDueDate } from "@/lib/maintenance-billing";
 import { sendEmail } from "@/lib/email";
 import { maintenanceBillGeneratedEmail } from "@/lib/email-templates";
 import { generateUpiQrDataUrl } from "@/lib/qr";
@@ -37,8 +37,7 @@ async function createBillsBatch(
 
   if (toCreate.length === 0) return { created: 0, skipped, toCreate: [], billIdByNumber: new Map<string, string>() };
 
-  const dueDate = new Date(now);
-  dueDate.setDate(dueDate.getDate() + 15);
+  const dueDate = maintenanceDueDate(periodStart);
 
   // Create all bills in ONE batch query
   await prisma.maintenanceBill.createMany({
