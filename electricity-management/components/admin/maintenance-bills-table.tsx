@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { MonthSelect, monthRange, currentMonthKey } from "@/components/ui/month-select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { FileDown, FileSpreadsheet, Receipt, ChevronsUpDown, FilePlus2, Users, Trash2, Mail, ArrowUp, ArrowDown, ArrowUpDown, FileWarning } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -131,8 +132,6 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
   const [advRef, setAdvRef] = useState("");
   const [advRebate, setAdvRebate] = useState("");
   const [advSubmitting, setAdvSubmitting] = useState(false);
-
-  useEffect(() => { fetchBills(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchBills = async () => {
     setLoading(true);
@@ -347,6 +346,10 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
     }
   };
 
+  // Server-side filters apply on change — no Apply button. Search is
+  // client-side, so it stays instant and does not refetch.
+  useEffect(() => { fetchBills(); }, [tower, status, month]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const downloadExcel = async () => {
     const { Workbook } = await import("exceljs");
     const wb = new Workbook();
@@ -459,7 +462,13 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
         </div>
         <div className="space-y-1">
           <Label className="text-xs">Month</Label>
-          <Input type="month" value={month} onChange={(e) => setMonth(e.target.value)} className="w-40" />
+          <MonthSelect
+            value={month || "all"}
+            onChange={(val) => setMonth(val === "all" ? "" : val)}
+            options={monthRange({ back: 24, forward: 1 })}
+            allowAll
+            className="w-40"
+          />
         </div>
         <div className="space-y-1">
           <Label className="text-xs">Status</Label>
@@ -481,9 +490,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
             className="w-48"
           />
         </div>
-        <Button onClick={fetchBills} disabled={loading} variant="outline">
-          {loading ? "Loading…" : "Apply Filter"}
-        </Button>
+        {loading && <span className="text-xs text-muted-foreground pb-2">Loading…</span>}
         <Button onClick={downloadExcel} variant="outline" size="sm" className="gap-1">
           <FileSpreadsheet className="h-4 w-4" />
           Download Excel
@@ -872,7 +879,12 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
 
             <div className="space-y-1">
               <Label>Month</Label>
-              <Input type="month" value={genMonth} onChange={(e) => setGenMonth(e.target.value)} />
+              <MonthSelect
+                value={genMonth || currentMonthKey()}
+                onChange={setGenMonth}
+                options={monthRange({ back: 12, forward: 3 })}
+                className="w-full"
+              />
             </div>
 
             {genMode === "individual" && (
@@ -983,7 +995,12 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
             </div>
             <div className="space-y-1">
               <Label>Start From</Label>
-              <Input type="month" value={advStart} onChange={(e) => setAdvStart(e.target.value)} />
+              <MonthSelect
+                value={advStart || currentMonthKey()}
+                onChange={setAdvStart}
+                options={monthRange({ back: 12, forward: 12 })}
+                className="w-full"
+              />
             </div>
             <div className="space-y-1">
               <Label>Amount / Month (₹)</Label>

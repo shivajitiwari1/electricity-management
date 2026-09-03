@@ -26,6 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Download, Eye, CheckCircle, Trash2, Mail, ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
+import { MonthSelect, monthRange } from "@/components/ui/month-select";
 
 type SerializedBill = {
   id: string;
@@ -244,17 +245,13 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
         </div>
 
         <div className="flex flex-col gap-1">
-          <span className="text-xs font-medium text-muted-foreground">Month (YYYY-MM)</span>
-          <Input
-            className="w-36"
-            placeholder="e.g. 2026-07"
-            defaultValue={currentMonth}
-            onBlur={(e) => pushFilters({ month: e.target.value.trim() })}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                pushFilters({ month: (e.target as HTMLInputElement).value.trim() });
-              }
-            }}
+          <span className="text-xs font-medium text-muted-foreground">Month</span>
+          <MonthSelect
+            value={currentMonth || "all"}
+            onChange={(val) => pushFilters({ month: val === "all" ? "" : val })}
+            options={monthRange({ back: 24, forward: 1 })}
+            allowAll
+            className="w-40"
           />
         </div>
 

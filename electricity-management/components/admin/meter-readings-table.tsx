@@ -41,6 +41,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Plus, Trash2, FileText, ChevronsUpDown, Check } from "lucide-react";
+import { MonthSelect, monthRange } from "@/components/ui/month-select";
 
 type SerializedConnection = {
   id: string;
@@ -78,18 +79,6 @@ const today = new Date().toISOString().split("T")[0];
 function currentMonthValue() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
-}
-
-function getMonthOptions() {
-  const options: { value: string; label: string }[] = [];
-  const now = new Date();
-  for (let i = 0; i < 12; i++) {
-    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-    const value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
-    const label = d.toLocaleDateString("en-IN", { month: "long", year: "numeric" });
-    options.push({ value, label });
-  }
-  return options;
 }
 
 export default function MeterReadingsTable({ connections, readings, dgFixed, canWrite, canDelete }: Props) {
@@ -314,17 +303,14 @@ export default function MeterReadingsTable({ connections, readings, dgFixed, can
             onChange={(e) => setTableSearch(e.target.value)}
             className="w-56"
           />
-          <Select value={monthFilter} onValueChange={(v) => v && setMonthFilter(v)}>
-            <SelectTrigger className="w-40">
-              <SelectValue placeholder="Month" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Months</SelectItem>
-              {getMonthOptions().map((o) => (
-                <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <MonthSelect
+            value={monthFilter}
+            onChange={setMonthFilter}
+            options={monthRange({ back: 12, forward: 0 })}
+            allowAll
+            allLabel="All Months"
+            className="w-40"
+          />
           <Select value={billFilter} onValueChange={(v) => setBillFilter(v as typeof billFilter)}>
             <SelectTrigger className="w-44">
               <SelectValue placeholder="Bill Status" />

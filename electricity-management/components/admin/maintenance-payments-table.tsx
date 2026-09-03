@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { MonthSelect, monthRange } from "@/components/ui/month-select";
 import { Trash2, FileDown, ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
 
 export interface MaintenancePaymentRow {
@@ -129,6 +130,15 @@ export default function MaintenancePaymentsTable({ initialData, canDelete = fals
     } finally { setLoading(false); }
   };
 
+  // Server-side filters apply on change — no Apply button. Search is
+  // client-side, so it stays instant and does not refetch. The first run is
+  // skipped because the page already server-rendered the current month.
+  const didMount = useRef(false);
+  useEffect(() => {
+    if (!didMount.current) { didMount.current = true; return; }
+    fetchPayments();
+  }, [tower, month, method]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const q = search.trim().toLowerCase();
   const filteredPayments = sortPayments(
     q ? payments.filter((p) => p.flatNo.toLowerCase().includes(q) || p.residentName.toLowerCase().includes(q)) : payments
@@ -165,7 +175,13 @@ export default function MaintenancePaymentsTable({ initialData, canDelete = fals
         </div>
         <div className="space-y-1">
           <Label className="text-xs">Bill Month</Label>
-          <Input type="month" value={month} onChange={(e) => setMonth(e.target.value)} className="w-40" />
+          <MonthSelect
+            value={month || "all"}
+            onChange={(val) => setMonth(val === "all" ? "" : val)}
+            options={monthRange({ back: 24, forward: 1 })}
+            allowAll
+            className="w-40"
+          />
         </div>
         <div className="space-y-1">
           <Label className="text-xs">Method</Label>
@@ -187,9 +203,7 @@ export default function MaintenancePaymentsTable({ initialData, canDelete = fals
             className="w-48"
           />
         </div>
-        <Button onClick={fetchPayments} disabled={loading} variant="outline">
-          {loading ? "Loading…" : "Apply Filter"}
-        </Button>
+        {loading && <span className="text-xs text-muted-foreground pb-2">Loading…</span>}
       </div>
 
       <div className="flex flex-wrap gap-6 text-sm bg-gray-50 rounded-lg p-3">

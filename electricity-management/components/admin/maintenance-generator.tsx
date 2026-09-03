@@ -4,10 +4,11 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Users, FilePlus2, ChevronsUpDown } from "lucide-react";
+import { MonthSelect, monthRange } from "@/components/ui/month-select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 
@@ -157,7 +158,12 @@ export default function MaintenanceGenerator({ currentRatePerSqFt, connections }
 
             <div className="space-y-1">
               <Label>Billing Month</Label>
-              <Input type="month" value={month} onChange={(e) => setMonth(e.target.value)} className="w-44" />
+              <MonthSelect
+                value={month}
+                onChange={setMonth}
+                options={monthRange({ back: 12, forward: 3 })}
+                className="w-44"
+              />
             </div>
 
             {mode === "all" ? (
