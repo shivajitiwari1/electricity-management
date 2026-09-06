@@ -26,7 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Download, Eye, CheckCircle, Trash2, Mail, ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
-import { MonthSelect, monthRange } from "@/components/ui/month-select";
+import { MonthSelect, monthRange, previousMonthKey } from "@/components/ui/month-select";
 
 type SerializedBill = {
   id: string;
@@ -141,14 +141,15 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
 
   // Current filter values from URL
   const currentTower = searchParams.get("tower") ?? "";
-  const currentMonth = searchParams.get("month") ?? "";
+  const defaultMonth = previousMonthKey();
+  const currentMonth = searchParams.get("month") || defaultMonth;
   const currentStatus = searchParams.get("status") ?? "";
 
   function pushFilters(overrides: Record<string, string>) {
     const params = new URLSearchParams();
     const merged = { tower: currentTower, month: currentMonth, status: currentStatus, ...overrides };
     if (merged.tower) params.set("tower", merged.tower);
-    if (merged.month) params.set("month", merged.month);
+    if (merged.month && merged.month !== defaultMonth) params.set("month", merged.month);
     if (merged.status) params.set("status", merged.status);
     router.push(`${pathname}?${params.toString()}`);
   }
@@ -247,8 +248,8 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
         <div className="flex flex-col gap-1">
           <span className="text-xs font-medium text-muted-foreground">Month</span>
           <MonthSelect
-            value={currentMonth || "all"}
-            onChange={(val) => pushFilters({ month: val === "all" ? "" : val })}
+            value={currentMonth}
+            onChange={(val) => pushFilters({ month: val })}
             options={monthRange({ back: 24, forward: 1 })}
             allowAll
             className="w-40"
@@ -287,7 +288,7 @@ export default function BillsTable({ initialData, canWrite, canDelete }: Props) 
           />
         </div>
 
-        {(currentTower || currentMonth || currentStatus) && (
+        {(currentTower || currentStatus || currentMonth !== defaultMonth || nameSearch) && (
           <Button
             variant="outline"
             size="sm"

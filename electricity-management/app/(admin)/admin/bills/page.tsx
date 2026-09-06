@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import type { PermissionsMap } from "@/lib/permissions";
 import { prisma } from "@/lib/prisma";
 import BillsTable from "@/components/admin/bills-table";
+import { previousMonthKey } from "@/lib/month";
 import { TableSkeleton } from "@/components/ui/page-skeleton";
 
 export const dynamic = "force-dynamic";
@@ -19,9 +20,13 @@ async function BillsData({ searchParams }: { searchParams: Promise<SearchParams>
   const params = await searchParams;
   const { tower, month, status } = params;
 
+  // Bills are raised for the month just ended, so that is the default view.
+  // "all" is the explicit opt-out; an absent param means the default.
+  const effectiveMonth = month || previousMonthKey();
+
   let dateFilter: { gte: Date; lt: Date } | undefined;
-  if (month) {
-    const [year, mon] = month.split("-").map(Number);
+  if (effectiveMonth && effectiveMonth !== "all") {
+    const [year, mon] = effectiveMonth.split("-").map(Number);
     dateFilter = { gte: new Date(year, mon - 1, 1), lt: new Date(year, mon, 1) };
   }
 
