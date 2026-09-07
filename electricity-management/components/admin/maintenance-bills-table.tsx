@@ -252,7 +252,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
   // Generate Bills helpers
   const openGenDialog = async () => {
     setGenMode("individual");
-    setGenMonth(currentMonth);
+    setGenMonth(previousMonthKey());
     setGenConnId("");
     setGenPreviousDue("");
     setGenOpen(true);
