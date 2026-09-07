@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Users, FilePlus2, ChevronsUpDown } from "lucide-react";
-import { MonthSelect, monthRange } from "@/components/ui/month-select";
+import { MonthSelect, monthRange, previousMonthKey } from "@/components/ui/month-select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 
@@ -27,8 +27,8 @@ interface Props {
 }
 
 export default function MaintenanceGenerator({ currentRatePerSqFt, connections }: Props) {
-  const now = new Date();
-  const defaultMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+  // Bills are raised for the month just ended, so default to that month.
+  const defaultMonth = previousMonthKey();
   const [month, setMonth] = useState(defaultMonth);
   const [generating, setGenerating] = useState(false);
   const [result, setResult] = useState<{ created: number; skipped: number; errors?: number } | null>(null);

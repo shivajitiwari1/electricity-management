@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MonthSelect, monthRange, currentMonthKey } from "@/components/ui/month-select";
+import { MonthSelect, monthRange, currentMonthKey, previousMonthKey } from "@/components/ui/month-select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { FileDown, FileSpreadsheet, Receipt, ChevronsUpDown, FilePlus2, Users, Trash2, Mail, ArrowUp, ArrowDown, ArrowUpDown, FileWarning } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -107,7 +107,8 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
   // Generate Bills state
   const [genOpen, setGenOpen] = useState(false);
   const [genMode, setGenMode] = useState<"all" | "individual">("individual");
-  const [genMonth, setGenMonth] = useState(currentMonth);
+  // Bills are raised for the month just ended, so default to that month.
+  const [genMonth, setGenMonth] = useState(previousMonthKey);
   const [genConnId, setGenConnId] = useState("");
   const [genConnOpen, setGenConnOpen] = useState(false);
   const [genLoading, setGenLoading] = useState(false);
@@ -880,7 +881,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
             <div className="space-y-1">
               <Label>Month</Label>
               <MonthSelect
-                value={genMonth || currentMonthKey()}
+                value={genMonth || previousMonthKey()}
                 onChange={setGenMonth}
                 options={monthRange({ back: 12, forward: 3 })}
                 className="w-full"
