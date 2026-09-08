@@ -80,3 +80,47 @@ export function maintenanceBillingPeriod(year: number, monthIndex: number) {
     periodEnd: new Date(Date.UTC(year, monthIndex + 1, 0)),
   };
 }
+
+/**
+ * Split a maintenance bill's stored amount into charge and GST.
+ *
+ * MaintenanceBill.amount is stored GST-INCLUSIVE — generation computes
+ * base = round(unitArea x ratePerSqFt), adds CGST and SGST on that base, and
+ * stores the total. Adding GST to `amount` again inflates the bill, which is
+ * what the resident payment page and the bill email used to do.
+ *
+ * The charge is rebuilt from area x rate, the way generation did it. If that
+ * does not reconcile with the stored total (an Advance Pay bill priced by hand,
+ * or a rate changed since), the stored total is authoritative and gets split
+ * back out of the inclusive figure instead.
+ */
+export function splitMaintenanceAmount(
+  bill: {
+    amount: number | string | { toString(): string };
+    unitArea: number | string | { toString(): string };
+    ratePerSqFt: number | string | { toString(): string };
+  },
+  cgstRate: number,
+  sgstRate: number,
+) {
+  const total = Math.round(Number(bill.amount));
+  const fromAreaBase = Math.round(Number(bill.unitArea) * Number(bill.ratePerSqFt));
+  const cgstFromArea = Math.round(fromAreaBase * cgstRate / 100);
+  const sgstFromArea = Math.round(fromAreaBase * sgstRate / 100);
+
+  if (fromAreaBase + cgstFromArea + sgstFromArea === total) {
+    return {
+      base: fromAreaBase,
+      cgst: cgstFromArea,
+      sgst: sgstFromArea,
+      totalGst: cgstFromArea + sgstFromArea,
+      currentMonthTotal: total,
+    };
+  }
+
+  // Back out the tax from a GST-inclusive figure.
+  const combined = cgstRate + sgstRate;
+  const cgst = combined > 0 ? Math.round(total * cgstRate / (100 + combined)) : 0;
+  const sgst = combined > 0 ? Math.round(total * sgstRate / (100 + combined)) : 0;
+  return { base: total - cgst - sgst, cgst, sgst, totalGst: cgst + sgst, currentMonthTotal: total };
+}

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { splitMaintenanceAmount } from "@/lib/maintenance-billing";
 import { guardPermission } from "@/lib/permissions";
 import { sendEmail } from "@/lib/email";
 import { maintenanceBillGeneratedEmail } from "@/lib/email-templates";
@@ -36,10 +37,8 @@ export async function POST(
   const siteConfig = await prisma.siteConfig.findUnique({ where: { id: "singleton" } });
   const cgstRate = Number(siteConfig?.cgstRate ?? 0);
   const sgstRate = Number(siteConfig?.sgstRate ?? 0);
-  const amount = Math.round(Number(bill.amount));
-  const cgst = Math.round(amount * cgstRate / 100);
-  const sgst = Math.round(amount * sgstRate / 100);
-  const currentMonthTotal = amount + cgst + sgst;
+  // bill.amount already includes GST — split it, never add tax on top.
+  const { base: amount, cgst, sgst, currentMonthTotal } = splitMaintenanceAmount(bill, cgstRate, sgstRate);
   const previousDue = Math.round(Number(bill.previousDue));
   const interestCharge = Math.round(Number(bill.interestCharge));
   const paidAmount = Math.round(Number(bill.paidAmount));

@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { splitMaintenanceAmount } from "@/lib/maintenance-billing";
 import { redirect } from "next/navigation";
 import MaintenancePaymentInfo from "@/components/resident/maintenance-payment-info";
 import { generateUpiQrDataUrl } from "@/lib/qr";
@@ -41,10 +42,12 @@ export default async function MaintenancePayPage({
   const siteConfig = await prisma.siteConfig.findUnique({ where: { id: "singleton" } });
   const cgstRate = Number(siteConfig?.cgstRate ?? 9);
   const sgstRate = Number(siteConfig?.sgstRate ?? 9);
-  const cgst = Math.round(Number(bill.amount) * cgstRate) / 100;
-  const sgst = Math.round(Number(bill.amount) * sgstRate) / 100;
-  const currentMonthTotal = Math.round((Number(bill.amount) + cgst + sgst) * 100) / 100;
-  const netPayable = Math.round((currentMonthTotal + Number(bill.previousDue) + Number(bill.interestCharge) - Number(bill.paidAmount)) * 100) / 100;
+  // bill.amount already includes GST — split it, never add tax on top.
+  const { base, cgst, sgst, currentMonthTotal } = splitMaintenanceAmount(bill, cgstRate, sgstRate);
+  const netPayable = Math.max(
+    0,
+    currentMonthTotal + Math.round(Number(bill.previousDue)) + Math.round(Number(bill.interestCharge)) - Math.round(Number(bill.paidAmount)),
+  );
 
   const qrCodeDataUrl = await generateUpiQrDataUrl(netPayable);
 
@@ -59,7 +62,7 @@ export default async function MaintenancePayPage({
         billingPeriodEnd: bill.billingPeriodEnd.toISOString(),
         unitArea: Number(bill.unitArea),
         ratePerSqFt: Number(bill.ratePerSqFt),
-        amount: Number(bill.amount),
+        amount: base,
         cgstRate,
         sgstRate,
         cgst,
