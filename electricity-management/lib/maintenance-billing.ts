@@ -64,3 +64,19 @@ export function maintenanceDueDate(billingPeriodStart: Date): Date {
   // Day 0 of month+1 is the last day of the billing month; add the grace days.
   return new Date(Date.UTC(year, monthIndex + 1, MAINTENANCE_DUE_DAYS));
 }
+
+/**
+ * The month a maintenance bill covers, as a [start, end] pair.
+ *
+ * Both ends sit at 00:00 UTC. The end used to be 23:59:59.999 UTC, which is
+ * 05:29 the next morning in IST — so a bill for August rendered as
+ * "01 Aug 2026 – 01 Sept 2026" everywhere it was formatted in local time.
+ *
+ * @param monthIndex 0-based, as in Date.getMonth().
+ */
+export function maintenanceBillingPeriod(year: number, monthIndex: number) {
+  return {
+    periodStart: new Date(Date.UTC(year, monthIndex, 1)),
+    periodEnd: new Date(Date.UTC(year, monthIndex + 1, 0)),
+  };
+}

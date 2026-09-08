@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { generateMaintenanceBillNumber, isLastDayOfMonth, maintenanceDueDate } from "@/lib/maintenance-billing";
+import { generateMaintenanceBillNumber, isLastDayOfMonth, maintenanceDueDate, maintenanceBillingPeriod } from "@/lib/maintenance-billing";
 import { sendEmail } from "@/lib/email";
 import { maintenanceBillGeneratedEmail } from "@/lib/email-templates";
 import { generateUpiQrDataUrl } from "@/lib/qr";
@@ -161,11 +161,9 @@ export async function GET(req: NextRequest) {
     if (!year || !mon || mon < 1 || mon > 12) {
       return NextResponse.json({ error: "Invalid month format. Use YYYY-MM" }, { status: 400 });
     }
-    periodStart = new Date(Date.UTC(year, mon - 1, 1));
-    periodEnd = new Date(Date.UTC(year, mon, 0, 23, 59, 59, 999));
+    ({ periodStart, periodEnd } = maintenanceBillingPeriod(year, mon - 1));
   } else {
-    periodStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
-    periodEnd = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 0, 23, 59, 59, 999));
+    ({ periodStart, periodEnd } = maintenanceBillingPeriod(now.getUTCFullYear(), now.getUTCMonth()));
   }
 
   const rate = await prisma.maintenanceRate.findFirst({
@@ -208,11 +206,9 @@ export async function POST(req: NextRequest) {
     if (!year || !mon || mon < 1 || mon > 12) {
       return NextResponse.json({ error: "Invalid month format. Use YYYY-MM" }, { status: 400 });
     }
-    periodStart = new Date(Date.UTC(year, mon - 1, 1));
-    periodEnd = new Date(Date.UTC(year, mon, 0, 23, 59, 59, 999));
+    ({ periodStart, periodEnd } = maintenanceBillingPeriod(year, mon - 1));
   } else {
-    periodStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
-    periodEnd = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 0, 23, 59, 59, 999));
+    ({ periodStart, periodEnd } = maintenanceBillingPeriod(now.getUTCFullYear(), now.getUTCMonth()));
   }
 
   const rate = await prisma.maintenanceRate.findFirst({

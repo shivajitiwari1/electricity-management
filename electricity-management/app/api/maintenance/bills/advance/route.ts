@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { guardPermission } from "@/lib/permissions";
-import { generateMaintenanceBillNumber, nextMaintenanceReceiptNumber, maintenanceDueDate } from "@/lib/maintenance-billing";
+import { generateMaintenanceBillNumber, nextMaintenanceReceiptNumber, maintenanceDueDate, maintenanceBillingPeriod } from "@/lib/maintenance-billing";
 
 const ALLOWED_METHODS = ["CASH", "UPI", "NEFT", "RTGS", "CHEQUE", "CREDIT_CARD", "ADJUSTMENT"] as const;
 type ManualMethod = (typeof ALLOWED_METHODS)[number];
@@ -93,8 +93,7 @@ export async function POST(req: NextRequest) {
     const month = ((startMon - 1 + n) % 12) + 1;
     const year = startYear + Math.floor((startMon - 1 + n) / 12);
 
-    const periodStart = new Date(Date.UTC(year, month - 1, 1));
-    const periodEnd = new Date(Date.UTC(year, month, 0, 23, 59, 59, 999));
+    const { periodStart, periodEnd } = maintenanceBillingPeriod(year, month - 1);
     const dueDate = maintenanceDueDate(periodStart);
 
     const billNumber = generateMaintenanceBillNumber(connection.flatNo, periodStart);

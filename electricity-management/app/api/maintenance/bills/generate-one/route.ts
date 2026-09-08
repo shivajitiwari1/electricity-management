@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { generateMaintenanceBillNumber, maintenanceDueDate } from "@/lib/maintenance-billing";
+import { generateMaintenanceBillNumber, maintenanceDueDate, maintenanceBillingPeriod } from "@/lib/maintenance-billing";
 import { sendEmail } from "@/lib/email";
 import { maintenanceBillGeneratedEmail } from "@/lib/email-templates";
 import { generateUpiQrDataUrl } from "@/lib/qr";
@@ -27,8 +27,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid month format. Use YYYY-MM" }, { status: 400 });
   }
 
-  const periodStart = new Date(Date.UTC(year, mon - 1, 1));
-  const periodEnd = new Date(Date.UTC(year, mon, 0, 23, 59, 59, 999));
+  const { periodStart, periodEnd } = maintenanceBillingPeriod(year, mon - 1);
 
   const connection = await prisma.connection.findUnique({
     where: { id: connectionId },
