@@ -47,6 +47,18 @@ function StatusBadge({ status }: { status: BillStatus }) {
 const fmtINR = (v: string | number) =>
   `₹${Math.round(Number(v)).toLocaleString("en-IN")}`;
 
+/**
+ * What the flat still owes on a bill: this month's charge plus dues carried
+ * over from earlier months plus interest, less anything already paid. The
+ * carried-over part is easy to forget — the summary total includes it, so a row
+ * that leaves it out contradicts the header.
+ */
+function billOutstanding(b: {
+  amount: string; previousDue: string; interestCharge: string; paidAmount: string;
+}) {
+  return Number(b.amount) + Number(b.previousDue) + Number(b.interestCharge) - Number(b.paidAmount);
+}
+
 /** Today as yyyy-MM-dd for <input type="date">, in local time. Using
     toISOString() here would show yesterday for IST times before 05:30. */
 const todayLocal = () => {
@@ -94,7 +106,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
         case "residentName": aVal = a.residentName.toLowerCase(); bVal = b.residentName.toLowerCase(); break;
         case "amount": aVal = Number(a.amount); bVal = Number(b.amount); break;
         case "paidAmount": aVal = Number(a.paidAmount); bVal = Number(b.paidAmount); break;
-        case "dueAmount": aVal = Number(a.amount) + Number(a.interestCharge) - Number(a.paidAmount); bVal = Number(b.amount) + Number(b.interestCharge) - Number(b.paidAmount); break;
+        case "dueAmount": aVal = billOutstanding(a); bVal = billOutstanding(b); break;
         case "dueDate": aVal = a.dueDate; bVal = b.dueDate; break;
         case "status": aVal = a.status; bVal = b.status; break;
       }
@@ -405,7 +417,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
 
     // Data rows
     bills.forEach((b, idx) => {
-      const outstanding = Number(b.amount) + Number(b.interestCharge) - Number(b.paidAmount);
+      const outstanding = billOutstanding(b);
       const bg = idx % 2 === 0 ? "FFF0F4FA" : "FFFFFFFF";
       const row = ws.getRow(idx + 4);
       const vals = [
@@ -573,9 +585,18 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
                   {bill.status === "PAID"
                     ? <span className="text-green-600 text-xs font-medium">Nil</span>
                     : (() => {
-                        const due = Number(bill.amount) + Number(bill.interestCharge) - Number(bill.paidAmount);
+                        const due = billOutstanding(bill);
                         return due > 0
-                          ? <span className="font-semibold text-red-600">{fmtINR(due)}</span>
+                          ? (
+                            <div className="leading-tight">
+                              <span className="font-semibold text-red-600">{fmtINR(due)}</span>
+                              {Number(bill.previousDue) > 0 && (
+                                <span className="block text-[11px] text-muted-foreground">
+                                  incl. {fmtINR(bill.previousDue)} prior
+                                </span>
+                              )}
+                            </div>
+                          )
                           : <span className="text-green-600 text-xs font-medium">Nil</span>;
                       })()
                   }
@@ -627,7 +648,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
                       ) : (
                         <Button size="sm" variant="outline" onClick={() => {
                           setPayBill(bill);
-                          const remaining = Number(bill.amount) + Number(bill.previousDue) + Number(bill.interestCharge) - Number(bill.paidAmount);
+                          const remaining = billOutstanding(bill);
                           setPayAmount(String(Math.round(remaining)));
                           setPayDate(todayLocal());
                         }}>
@@ -678,7 +699,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
                   <p><span className="text-gray-500">Interest (12% p.a.):</span> <span className="text-red-600">{fmtINR(payBill.interestCharge)}</span></p>
                 )}
                 <p><span className="text-gray-500">Outstanding:</span> <strong>
-                  {fmtINR(Number(payBill.amount) + Number(payBill.previousDue) + Number(payBill.interestCharge) - Number(payBill.paidAmount))}
+                  {fmtINR(billOutstanding(payBill))}
                 </strong></p>
               </div>
               <div className="space-y-1">
@@ -704,7 +725,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
                   onChange={(e) => {
                     setPayRebate(e.target.value);
                     if (payBill) {
-                      const outstanding = Number(payBill.amount) + Number(payBill.previousDue) + Number(payBill.interestCharge) - Number(payBill.paidAmount);
+                      const outstanding = billOutstanding(payBill);
                       const rebate = parseFloat(e.target.value) || 0;
                       setPayAmount(String(Math.round(outstanding - rebate)));
                     }
