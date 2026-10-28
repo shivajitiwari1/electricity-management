@@ -728,21 +728,21 @@ export function generateMaintenanceBillPdf(data: MaintenanceBillPdfData): Promis
     const CW = 515;
 
     // ── Navy header ──────────────────────────────────────────
-    doc.rect(0, 0, PW, 108).fill("#1e3a5f");
+    doc.rect(0, 0, PW, 90).fill("#1e3a5f");
 
-    doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(15)
-      .text("OASIS BUILDMART INDIA PVT. LTD.", L, 22, { width: CW, align: "center" });
-    doc.fillColor("#93b8d4").font("Helvetica").fontSize(8.5)
-      .text("Oasis Venetia Heights, Plot No-HRA, 12, A, Site-C, Greater Noida - 201306 (UP)", L, 42, { width: CW, align: "center" });
-    doc.fillColor("#93b8d4").fontSize(8.5)
-      .text("Phone: 8588805052", L, 56, { width: CW, align: "center" });
+    doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(14)
+      .text("OASIS BUILDMART INDIA PVT. LTD.", L, 16, { width: CW, align: "center" });
+    doc.fillColor("#93b8d4").font("Helvetica").fontSize(8)
+      .text("Oasis Venetia Heights, Plot No-HRA, 12, A, Site-C, Greater Noida - 201306 (UP)", L, 34, { width: CW, align: "center" });
+    doc.fillColor("#93b8d4").fontSize(8)
+      .text("Phone: 8588805052", L, 46, { width: CW, align: "center" });
 
-    doc.rect(PW / 2 - 130, 74, 260, 22).fill("#2563eb");
-    doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(8)
-      .text("MAINTENANCE CHARGES PROVISIONAL INVOICE", L, 81, { width: CW, align: "center" });
+    doc.rect(PW / 2 - 120, 60, 240, 18).fill("#2563eb");
+    doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(7.5)
+      .text("MAINTENANCE CHARGES PROVISIONAL INVOICE", L, 65, { width: CW, align: "center" });
 
     // ── Bill No and Date ─────────────────────────────────────
-    let y = 126;
+    let y = 104;
     doc.fillColor("#6b7280").font("Helvetica").fontSize(7.5)
       .text("BILL NUMBER", L, y, { width: 240 });
     doc.text("BILL DATE", 310, y, { width: 245 });
@@ -754,46 +754,46 @@ export function generateMaintenanceBillPdf(data: MaintenanceBillPdfData): Promis
       .text(formatDate(data.billDate), 310, y, { width: 245 });
 
     // divider
-    y += 28;
+    y += 22;
     doc.moveTo(L, y).lineTo(L + CW, y).strokeColor("#e5e7eb").lineWidth(0.8).stroke();
 
     // ── Flat / Resident ──────────────────────────────────────
-    y += 14;
-    doc.fillColor("#6b7280").font("Helvetica").fontSize(7.5)
+    y += 10;
+    doc.fillColor("#6b7280").font("Helvetica").fontSize(7)
       .text("FLAT NO.", L, y, { width: 200 });
     doc.text("RESIDENT NAME", 280, y, { width: 275 });
 
-    y += 13;
-    doc.fillColor("#1e3a5f").font("Helvetica-Bold").fontSize(16)
+    y += 11;
+    doc.fillColor("#1e3a5f").font("Helvetica-Bold").fontSize(14)
       .text(data.flatNo, L, y - 2, { width: 200 });
-    doc.fillColor("#111827").font("Helvetica-Bold").fontSize(12)
+    doc.fillColor("#111827").font("Helvetica-Bold").fontSize(11)
       .text(data.residentName, 280, y, { width: 275 });
 
     // divider
-    y += 34;
-    doc.moveTo(L, y).lineTo(L + CW, y).strokeColor("#e5e7eb").lineWidth(0.8).stroke();
-
-    // ── Billing period + due date ────────────────────────────
-    y += 14;
-    doc.fillColor("#6b7280").font("Helvetica").fontSize(7.5)
-      .text("BILLING PERIOD", L, y, { width: 240 });
-    doc.text("DUE DATE", 310, y, { width: 245 });
-
-    y += 13;
-    doc.fillColor("#374151").font("Helvetica").fontSize(10)
-      .text(`${formatDate(data.billingPeriodStart)} – ${formatDate(data.billingPeriodEnd)}`, L, y, { width: 240 });
-    doc.fillColor("#374151").font("Helvetica").fontSize(10)
-      .text(formatDate(data.dueDate), 310, y, { width: 245 });
-
     y += 28;
     doc.moveTo(L, y).lineTo(L + CW, y).strokeColor("#e5e7eb").lineWidth(0.8).stroke();
 
+    // ── Billing period + due date ────────────────────────────
+    y += 10;
+    doc.fillColor("#6b7280").font("Helvetica").fontSize(7)
+      .text("BILLING PERIOD", L, y, { width: 240 });
+    doc.text("DUE DATE", 310, y, { width: 245 });
+
+    y += 11;
+    doc.fillColor("#374151").font("Helvetica").fontSize(9)
+      .text(`${formatDate(data.billingPeriodStart)} – ${formatDate(data.billingPeriodEnd)}`, L, y, { width: 240 });
+    doc.fillColor("#374151").font("Helvetica").fontSize(9)
+      .text(formatDate(data.dueDate), 310, y, { width: 245 });
+
+    y += 22;
+    doc.moveTo(L, y).lineTo(L + CW, y).strokeColor("#e5e7eb").lineWidth(0.8).stroke();
+
     // ── Charge breakdown ─────────────────────────────────────
-    y += 14;
-    doc.fillColor("#374151").font("Helvetica-Bold").fontSize(8.5)
+    y += 10;
+    doc.fillColor("#374151").font("Helvetica-Bold").fontSize(8)
       .text("CHARGE BREAKDOWN", L, y, { width: CW });
 
-    y += 16;
+    y += 12;
     const r2 = (n: number) => Math.round(n);
     const cgstPct    = data.cgstRate / 100;
     const sgstPct    = data.sgstRate / 100;
@@ -844,114 +844,114 @@ export function generateMaintenanceBillPdf(data: MaintenanceBillPdfData): Promis
       if (isDivider) {
         // Divider row with top border and darker background
         doc.moveTo(L, y - 4).lineTo(L + CW, y - 4).strokeColor("#d1d5db").lineWidth(0.6).stroke();
-        doc.rect(L, y - 4, CW, 22).fill("#f0f4ff");
-        doc.fillColor("#1e3a5f").font("Helvetica-Bold").fontSize(8.5)
+        doc.rect(L, y - 4, CW, 18).fill("#f0f4ff");
+        doc.fillColor("#1e3a5f").font("Helvetica-Bold").fontSize(8)
           .text(label, L + 8, y, { width: 380, lineBreak: false });
-        doc.fillColor("#1e3a5f").font("Helvetica-Bold").fontSize(8.5)
+        doc.fillColor("#1e3a5f").font("Helvetica-Bold").fontSize(8)
           .text(`Rs. ${formatCurrency(Math.abs(amount))}`, L + 390, y, { width: 125, align: "right", lineBreak: false });
-        doc.moveTo(L, y + 18).lineTo(L + CW, y + 18).strokeColor("#d1d5db").lineWidth(0.6).stroke();
+        doc.moveTo(L, y + 14).lineTo(L + CW, y + 14).strokeColor("#d1d5db").lineWidth(0.6).stroke();
       } else {
         const bgColor = isSummary ? "#eff6ff" : (i % 2 === 0 ? "#f9fafb" : "#ffffff");
-        doc.rect(L, y - 4, CW, 22).fill(bgColor);
+        doc.rect(L, y - 4, CW, 18).fill(bgColor);
         doc.fillColor(isRed ? "#dc2626" : (isSummary ? "#1e3a5f" : "#6b7280"))
-          .font(isBold ? "Helvetica-Bold" : "Helvetica").fontSize(8.5)
+          .font(isBold ? "Helvetica-Bold" : "Helvetica").fontSize(8)
           .text(label, L + 8, y, { width: 380, lineBreak: false });
         doc.fillColor(isRed ? "#dc2626" : (isSummary ? "#1e3a5f" : "#111827"))
-          .font("Helvetica-Bold").fontSize(8.5)
+          .font("Helvetica-Bold").fontSize(8)
           .text(`Rs. ${formatCurrency(Math.abs(amount))}`, L + 390, y, { width: 125, align: "right", lineBreak: false });
       }
-      y += 22;
+      y += 18;
     }
 
     // ── Payment Summary ───────────────────────────────────────
-    y += 6;
+    y += 4;
     doc.moveTo(L, y).lineTo(L + CW, y).strokeColor("#d1d5db").lineWidth(0.6).stroke();
-    y += 8;
-    doc.fillColor("#374151").font("Helvetica-Bold").fontSize(8.5)
+    y += 6;
+    doc.fillColor("#374151").font("Helvetica-Bold").fontSize(8)
       .text("PAYMENT SUMMARY", L, y, { width: CW });
-    y += 14;
+    y += 12;
 
-    doc.rect(L, y - 4, CW, 22).fill("#f3f4f6");
-    doc.fillColor("#6b7280").font("Helvetica").fontSize(8.5)
+    doc.rect(L, y - 4, CW, 18).fill("#f3f4f6");
+    doc.fillColor("#6b7280").font("Helvetica").fontSize(8)
       .text("Grand Total", L + 8, y, { width: 380, lineBreak: false });
-    doc.fillColor("#111827").font("Helvetica-Bold").fontSize(8.5)
+    doc.fillColor("#111827").font("Helvetica-Bold").fontSize(8)
       .text(`Rs. ${formatCurrency(grandTotal)}`, L + 390, y, { width: 125, align: "right", lineBreak: false });
-    y += 22;
+    y += 18;
 
-    doc.rect(L, y - 4, CW, 22).fill("#f0fdf4");
-    doc.fillColor("#6b7280").font("Helvetica").fontSize(8.5)
+    doc.rect(L, y - 4, CW, 18).fill("#f0fdf4");
+    doc.fillColor("#6b7280").font("Helvetica").fontSize(8)
       .text("Amount Paid", L + 8, y, { width: 380, lineBreak: false });
-    doc.fillColor("#16a34a").font("Helvetica-Bold").fontSize(8.5)
+    doc.fillColor("#16a34a").font("Helvetica-Bold").fontSize(8)
       .text(`Rs. ${formatCurrency(totalPaid)}`, L + 390, y, { width: 125, align: "right", lineBreak: false });
-    y += 22;
+    y += 18;
 
     doc.moveTo(L, y - 4).lineTo(L + CW, y - 4).strokeColor("#d1d5db").lineWidth(0.6).stroke();
-    doc.rect(L, y - 4, CW, 22).fill(netPayable > 0 ? "#fff7ed" : "#f0fdf4");
-    doc.fillColor(netPayable > 0 ? "#92400e" : "#166534").font("Helvetica-Bold").fontSize(8.5)
+    doc.rect(L, y - 4, CW, 18).fill(netPayable > 0 ? "#fff7ed" : "#f0fdf4");
+    doc.fillColor(netPayable > 0 ? "#92400e" : "#166534").font("Helvetica-Bold").fontSize(8)
       .text("Net Payable (Due Amount)", L + 8, y, { width: 380, lineBreak: false });
-    doc.fillColor(netPayable > 0 ? "#92400e" : "#166534").font("Helvetica-Bold").fontSize(8.5)
+    doc.fillColor(netPayable > 0 ? "#92400e" : "#166534").font("Helvetica-Bold").fontSize(8)
       .text(`Rs. ${formatCurrency(netPayable)}`, L + 390, y, { width: 125, align: "right", lineBreak: false });
-    y += 22;
+    y += 18;
 
     // ── Net payable box ──────────────────────────────────────
-    y += 8;
-    doc.rect(L, y, CW, 80).fill("#eef2ff");
-    doc.fillColor("#4b5563").font("Helvetica").fontSize(8)
-      .text("NET PAYABLE AMOUNT", L, y + 14, { width: CW, align: "center" });
-    doc.fillColor("#1e3a5f").font("Helvetica-Bold").fontSize(28)
-      .text(`Rs. ${formatCurrency(netPayable > 0 ? netPayable : 0)}`, L, y + 28, { width: CW, align: "center" });
+    y += 6;
+    doc.rect(L, y, CW, 64).fill("#eef2ff");
+    doc.fillColor("#4b5563").font("Helvetica").fontSize(7.5)
+      .text("NET PAYABLE AMOUNT", L, y + 10, { width: CW, align: "center" });
+    doc.fillColor("#1e3a5f").font("Helvetica-Bold").fontSize(24)
+      .text(`Rs. ${formatCurrency(netPayable > 0 ? netPayable : 0)}`, L, y + 24, { width: CW, align: "center" });
 
     if (netPayable <= 0) {
-      y += 96;
-      doc.rect(L, y, CW, 44).fill("#f0fdf4");
-      doc.rect(L, y, CW, 44).strokeColor("#86efac").lineWidth(1).stroke();
-      doc.fillColor("#166534").font("Helvetica-Bold").fontSize(13)
-        .text("FULLY PAID", L, y + 14, { width: CW, align: "center" });
-      y += 60;
+      y += 78;
+      doc.rect(L, y, CW, 36).fill("#f0fdf4");
+      doc.rect(L, y, CW, 36).strokeColor("#86efac").lineWidth(1).stroke();
+      doc.fillColor("#166534").font("Helvetica-Bold").fontSize(12)
+        .text("FULLY PAID", L, y + 12, { width: CW, align: "center" });
+      y += 48;
     } else {
-      y += 96;
+      y += 78;
     }
 
     // ── Payment details ──────────────────────────────────────
     doc.moveTo(L, y).lineTo(L + CW, y).strokeColor("#e5e7eb").lineWidth(0.5).stroke();
+    y += 6;
+    doc.fillColor("#374151").font("Helvetica-Bold").fontSize(7.5).text("PAYMENT DETAILS", L, y, { width: CW });
     y += 10;
-    doc.fillColor("#374151").font("Helvetica-Bold").fontSize(8).text("PAYMENT DETAILS", L, y, { width: CW });
-    y += 14;
     {
       // Two columns, so the block costs three lines instead of five.
       const colW = CW / 2;
-      const labelW = 82;
+      const labelW = 72;
       PAYMENT_DETAILS.forEach(([label, value], i) => {
         const col = i % 2;
         const x = L + col * colW;
-        const rowY = y + Math.floor(i / 2) * 12;
-        doc.fillColor("#6b7280").font("Helvetica").fontSize(7.5)
+        const rowY = y + Math.floor(i / 2) * 10;
+        doc.fillColor("#6b7280").font("Helvetica").fontSize(7)
           .text(label, x, rowY, { width: labelW, lineBreak: false });
-        doc.fillColor("#111827").font("Helvetica-Bold").fontSize(7.5)
-          .text(value, x + labelW, rowY, { width: colW - labelW - 8, lineBreak: false });
+        doc.fillColor("#111827").font("Helvetica-Bold").fontSize(7)
+          .text(value, x + labelW, rowY, { width: colW - labelW - 6, lineBreak: false });
       });
-      y += Math.ceil(PAYMENT_DETAILS.length / 2) * 12 + 6;
+      y += Math.ceil(PAYMENT_DETAILS.length / 2) * 10 + 4;
     }
 
     // ── Terms ────────────────────────────────────────────────
     doc.moveTo(L, y).lineTo(L + CW, y).strokeColor("#e5e7eb").lineWidth(0.5).stroke();
+    y += 6;
+    doc.fillColor("#374151").font("Helvetica-Bold").fontSize(7.5).text("TERMS & NOTES", L, y, { width: CW });
     y += 10;
-    doc.fillColor("#374151").font("Helvetica-Bold").fontSize(8).text("TERMS & NOTES", L, y, { width: CW });
-    y += 14;
-    doc.fillColor("#6b7280").font("Helvetica").fontSize(7.5)
+    doc.fillColor("#6b7280").font("Helvetica").fontSize(7)
       .text(`1. Rate: Rs.${Number(data.ratePerSqFt).toFixed(2)}/sq ft  .  Area: ${data.unitArea} sq ft`, L, y, { width: CW });
-    y += 12;
+    y += 9;
     doc.text(`2. GST: CGST ${data.cgstRate}% + SGST ${data.sgstRate}% = ${data.cgstRate + data.sgstRate}% applicable on maintenance charge.`, L, y, { width: CW });
-    y += 12;
+    y += 9;
     doc.text(`3. Payment due by ${formatDate(data.dueDate)}. Late payment attracts 12% p.a. interest.`, L, y, { width: CW });
-    y += 12;
+    y += 9;
     doc.text("4. This is a computer-generated bill and does not require a signature.", L, y, { width: CW });
 
     // ── Footer ────────────────────────────────────────────────
-    y += 24;
+    y += 16;
     doc.moveTo(L, y).lineTo(L + CW, y).strokeColor("#e5e7eb").lineWidth(0.5).stroke();
-    y += 8;
-    doc.fillColor("#9ca3af").font("Helvetica").fontSize(7)
+    y += 6;
+    doc.fillColor("#9ca3af").font("Helvetica").fontSize(6.5)
       .text(
         "Oasis Buildmart India Pvt. Ltd.  |  Oasis Venetia Heights, Greater Noida - 201306 (UP)  |  Phone: 8588805052",
         L, y, { width: CW, align: "center" }
