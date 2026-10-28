@@ -1,4 +1,5 @@
 import PDFDocument from "pdfkit";
+import { PAYMENT_DETAILS } from "@/lib/payment-details";
 import { generateUpiQrDataUrl } from "@/lib/qr";
 
 export interface BillData {
@@ -409,7 +410,7 @@ export function generateReceiptPdf(data: ReceiptData): Promise<Buffer> {
     if (data.rebateAmount && data.rebateAmount > 0) {
       doc.rect(L, y, CW, 110).fill("#eef2ff");
       doc.fillColor("#4b5563").font("Helvetica").fontSize(8)
-        .text("AMOUNT PAID (CASH)", L, y + 10, { width: CW, align: "center" });
+        .text("AMOUNT PAID", L, y + 10, { width: CW, align: "center" });
       doc.fillColor("#1e3a5f").font("Helvetica-Bold").fontSize(22)
         .text(`Rs. ${formatCurrency(data.amount)}`, L, y + 22, { width: CW, align: "center" });
       doc.fillColor("#4b5563").font("Helvetica").fontSize(8)
@@ -667,13 +668,7 @@ export function generateMaintenanceDemandLetterPdf(data: MaintenanceDemandLetter
     doc.font("Helvetica-Bold").fontSize(9)
       .text("Payment Details:", L, y);
     y += 12;
-    const payRows: [string, string][] = [
-      ["Beneficiary Name", "OASIS BUILDMART INDIA PVT LTD"],
-      ["Bank", "Bank of Baroda, Greater Noida"],
-      ["Account No.", "88340200001343"],
-      ["IFSC Code", "BARB0DBGREA"],
-      ["UPI ID", "oasis88268343@barodampay"],
-    ];
+    const payRows = PAYMENT_DETAILS;
     for (const [label, val] of payRows) {
       doc.font("Helvetica-Bold").fontSize(9).text(`${label}: `, L, y, { continued: true });
       doc.font("Helvetica").fontSize(9).text(val);
@@ -915,6 +910,27 @@ export function generateMaintenanceBillPdf(data: MaintenanceBillPdfData): Promis
       y += 60;
     } else {
       y += 96;
+    }
+
+    // ── Payment details ──────────────────────────────────────
+    doc.moveTo(L, y).lineTo(L + CW, y).strokeColor("#e5e7eb").lineWidth(0.5).stroke();
+    y += 10;
+    doc.fillColor("#374151").font("Helvetica-Bold").fontSize(8).text("PAYMENT DETAILS", L, y, { width: CW });
+    y += 14;
+    {
+      // Two columns, so the block costs three lines instead of five.
+      const colW = CW / 2;
+      const labelW = 82;
+      PAYMENT_DETAILS.forEach(([label, value], i) => {
+        const col = i % 2;
+        const x = L + col * colW;
+        const rowY = y + Math.floor(i / 2) * 12;
+        doc.fillColor("#6b7280").font("Helvetica").fontSize(7.5)
+          .text(label, x, rowY, { width: labelW, lineBreak: false });
+        doc.fillColor("#111827").font("Helvetica-Bold").fontSize(7.5)
+          .text(value, x + labelW, rowY, { width: colW - labelW - 8, lineBreak: false });
+      });
+      y += Math.ceil(PAYMENT_DETAILS.length / 2) * 12 + 6;
     }
 
     // ── Terms ────────────────────────────────────────────────

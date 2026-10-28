@@ -202,7 +202,7 @@ export function paymentSuccessEmail(params: {
       <table width="100%" cellpadding="0" cellspacing="0">
         ${row("Receipt Number", receiptNumber)}
         ${row("Flat No", flatNo)}
-        ${rebateAmount ? row("Amount Paid (Cash)", "Rs. " + amount) : row("Amount Paid", "Rs. " + amount, true)}
+        ${row("Amount Paid", "Rs. " + amount, rebateAmount ? false : true)}
         ${rebateAmount ? row("Rebate / Waiver", "Rs. " + rebateAmount) : ""}
         ${rebateAmount ? row("Total Settled", "Rs. " + (Number(amount) + Number(rebateAmount)).toFixed(2), true) : ""}
         ${row("Payment Date", paymentDate)}

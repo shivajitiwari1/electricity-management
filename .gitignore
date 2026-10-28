@@ -2,3 +2,12 @@
 
 .vercel
 .env*.local
+
+.playwright-mcp/
+
+docs/
+
+mnt-*.png
+*-dropdown*.png
+*-dropdown*.yml
+*-month-filter.yml
