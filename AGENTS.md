@@ -15,3 +15,9 @@ Critical rules:
 - Verify changes with `npm run build` and `npx tsc --noEmit` inside `electricity-management/`.
 - `npm run lint` has a known noisy baseline; do not assume existing failures were introduced by your change.
 - Do not add credentials, customer data, database dumps, or secrets to repository files.
+
+## Recent fixes / reminders
+
+- Maintenance receipt PDF/email: removed "(CASH)" when rebate/waiver present (`electricity-management/lib/pdf.ts`, `electricity-management/lib/email-templates.ts`).
+- Maintenance payments: ADJUSTMENT/rebate entries do not get a receipt button. API blocks generating receipts for `ADJUSTMENT` (`app/api/maintenance/payments/[id]/receipt/route.ts`, `components/admin/maintenance-payments-table.tsx`).
+- Deployment flow: commit/push from repo root (`git add .; git commit -m "..."; git push`), deploy from `electricity-management/` via `npx vercel --prod --yes`.

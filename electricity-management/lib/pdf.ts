@@ -833,7 +833,7 @@ export function generateMaintenanceBillPdf(data: MaintenanceBillPdfData): Promis
       chargeRows.push([`Interest Charge (12% p.a. overdue)`, data.interestCharge, true, false, false, false]);
     }
     if (data.paidAmount > 0) {
-      chargeRows.push([`Amount Paid (Cash)`, -data.paidAmount, false, false, false, false]);
+      chargeRows.push([`Amount Paid`, -data.paidAmount, false, false, false, false]);
     }
     if (data.rebateAmount && data.rebateAmount > 0) {
       chargeRows.push([`Rebate / Waiver`, -data.rebateAmount, false, false, false, false]);
