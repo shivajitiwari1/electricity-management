@@ -30,7 +30,7 @@ Critical rules:
 
 ### Maintenance dashboard/reports page
 
-**Status: COMPLETE — committed in `e069234` and deployed to production** (see work log at the end).
+**Status: COMPLETE — committed in `e069234`, with later fixes `fa3a396` (receipt rebate balance) and `787b681` (Reports visibility); deployed to production** (see work log at the end).
 
 Goal: add a dashboard-style reports page **under the Maintenance section** that mirrors the existing electricity `Reports` page, but is scoped to maintenance data only.
 
@@ -55,15 +55,16 @@ Maintenance-specific data rules (do not copy electricity logic blindly):
 - Include `previousDue`, `paidAmount`, `interestCharge`, and `status` (PENDING, PAID, OVERDUE, PARTIAL); revenue should be based on `MaintenancePayment.amount` (minus rebate/waiver), not the bill amount.
 - Exclude `ADJUSTMENT` rows from revenue/receipt-style totals the same way the payments table does.
 - Tower/flat breakdown comes via `connection` (`tower`, `flatNo`) and resident via `connection.resident.user.name`.
-- Show the menu/page only when maintenance billing is enabled in `SiteConfig`.
+- Do **not** gate the admin menu/page on `SiteConfig.maintenanceBillingEnabled`: production keeps that flag off while Bills/Payments remain in use, so gating only Reports hides it.
 
 #### Work log
 
 - Added `getCachedMaintenanceReportsData` to `lib/server-cache.ts` (5 min cache, `reports`/`maintenance` tags). It returns paid maintenance payments excluding `ADJUSTMENT`, overdue bills with computed outstanding, recent bills, all-time revenue (ex-`ADJUSTMENT`), bill count, and active flat count.
-- Added `app/(admin)/admin/maintenance/reports/page.tsx` and `components/admin/maintenance-reports-client.tsx` mirroring the electricity reports UI (stat cards, quick/custom date range, revenue chart, tower breakdown, overdue table, print, PDF/XLSX buttons). The page redirects to `/admin/maintenance` when `SiteConfig.maintenanceBillingEnabled` is false and requires the `maintenance` read permission for managers.
+- Added `app/(admin)/admin/maintenance/reports/page.tsx` and `components/admin/maintenance-reports-client.tsx` mirroring the electricity reports UI (stat cards, quick/custom date range, revenue chart, tower breakdown, overdue table, print, PDF/XLSX buttons). Requires the `maintenance` read permission for managers; no longer redirects when `maintenanceBillingEnabled` is false.
 - Added the `Reports` entry to `MAINTENANCE_SUB_ITEMS`. It is deliberately **not** gated on `SiteConfig.maintenanceBillingEnabled`: production has that flag off while admins still use Bills/Payments, so gating only Reports hid it there. Reports is available whenever the Maintenance group is.
 - Added `app/api/maintenance/reports/{xlsx,pdf}/route.ts`, guarded by `guardPermission(..., "maintenance", "canRead")`. Revenue excludes `ADJUSTMENT`; bill rows show GST-inclusive amount and computed outstanding (`amount + previousDue + interestCharge - paidAmount`).
 - Made the bottom padding consistent across all Maintenance Reports cards: the stat cards now use `px-5 pt-5` so their bottom spacing comes from the shared `Card` padding (1 rem), matching the chart and overdue-table cards.
 - Fixed the missing vertical gap between Maintenance Reports cards (visible from the "Revenue by Tower" card down): the outer `space-y-6` only spaced the controls card and `#maintenance-reports-printable`. Added `space-y-6` to `#maintenance-reports-printable` itself so the stat grid, revenue chart, tower chart, and overdue table all have consistent 1.5 rem gaps.
 - Applied the same card spacing treatment to the electricity `Reports` page (`components/admin/reports-client.tsx`): `#reports-printable` now uses `space-y-6`, and the stat cards use `px-5 pt-5` to match Maintenance Reports.
+- Deployment follow-up: the first production build had the reports routes but the menu entry vanished because production's `SiteConfig.maintenanceBillingEnabled` is `false`. Removed that gate from both the sidebar and the page and redeployed (`787b681`).
 - Verified with `npx tsc --noEmit` and `npm run build`; the new `/admin/maintenance/reports`, `/api/maintenance/reports/pdf`, and `/api/maintenance/reports/xlsx` routes compile successfully. The electricity Reports page spacing changes also build cleanly.
