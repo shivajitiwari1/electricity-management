@@ -23,6 +23,7 @@ Critical rules:
 - Deployment flow: commit/push from repo root (`git add .; git commit -m "..."; git push`), deploy from `electricity-management/` via `npx vercel --prod --yes`.
 - Reports spacing: both electricity and maintenance reports rely on `space-y-6` on their printable containers (`#reports-printable`, `#maintenance-reports-printable`), with stat cards using `px-5 pt-5`. Keep the two pages in sync when editing either.
 - Maintenance receipt balance: a rebate/waiver row is inserted microseconds after its payment, so balance-due calculations must count the payment and its paired `ADJUSTMENT` explicitly instead of relying on `createdAt <= payment.createdAt` (`app/api/maintenance/payments/[id]/receipt/route.ts`).
+- Maintenance Reports visibility: do not gate the sidebar entry or page on `maintenanceBillingEnabled`. Production keeps that flag off, and gating only Reports hid it while Bills/Payments stayed accessible.
 - Production: https://www.oasisvenetia.in (Vercel project `electricity-management`).
 
 ## Completed requests
@@ -60,7 +61,7 @@ Maintenance-specific data rules (do not copy electricity logic blindly):
 
 - Added `getCachedMaintenanceReportsData` to `lib/server-cache.ts` (5 min cache, `reports`/`maintenance` tags). It returns paid maintenance payments excluding `ADJUSTMENT`, overdue bills with computed outstanding, recent bills, all-time revenue (ex-`ADJUSTMENT`), bill count, and active flat count.
 - Added `app/(admin)/admin/maintenance/reports/page.tsx` and `components/admin/maintenance-reports-client.tsx` mirroring the electricity reports UI (stat cards, quick/custom date range, revenue chart, tower breakdown, overdue table, print, PDF/XLSX buttons). The page redirects to `/admin/maintenance` when `SiteConfig.maintenanceBillingEnabled` is false and requires the `maintenance` read permission for managers.
-- Added the `Reports` entry to `MAINTENANCE_SUB_ITEMS` behind a `requiresBilling` flag; `app/(admin)/layout.tsx` now passes `maintenanceBillingEnabled` from `getCachedSiteConfig()` into `SidebarNav`.
+- Added the `Reports` entry to `MAINTENANCE_SUB_ITEMS`. It is deliberately **not** gated on `SiteConfig.maintenanceBillingEnabled`: production has that flag off while admins still use Bills/Payments, so gating only Reports hid it there. Reports is available whenever the Maintenance group is.
 - Added `app/api/maintenance/reports/{xlsx,pdf}/route.ts`, guarded by `guardPermission(..., "maintenance", "canRead")`. Revenue excludes `ADJUSTMENT`; bill rows show GST-inclusive amount and computed outstanding (`amount + previousDue + interestCharge - paidAmount`).
 - Made the bottom padding consistent across all Maintenance Reports cards: the stat cards now use `px-5 pt-5` so their bottom spacing comes from the shared `Card` padding (1 rem), matching the chart and overdue-table cards.
 - Fixed the missing vertical gap between Maintenance Reports cards (visible from the "Revenue by Tower" card down): the outer `space-y-6` only spaced the controls card and `#maintenance-reports-printable`. Added `space-y-6` to `#maintenance-reports-printable` itself so the stat grid, revenue chart, tower chart, and overdue table all have consistent 1.5 rem gaps.

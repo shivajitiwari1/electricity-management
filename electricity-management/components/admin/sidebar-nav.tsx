@@ -30,10 +30,10 @@ const NAV_ITEMS = [
 ];
 
 const MAINTENANCE_SUB_ITEMS = [
-  { href: "/admin/maintenance",          label: "Bills",    icon: FileText,   adminOnly: false, requiresBilling: false },
-  { href: "/admin/maintenance/rates",    label: "Rates",    icon: Settings,   adminOnly: true,  requiresBilling: false },
-  { href: "/admin/maintenance/payments", label: "Payments", icon: DollarSign, adminOnly: false, requiresBilling: false },
-  { href: "/admin/maintenance/reports",  label: "Reports",  icon: BarChart3,  adminOnly: false, requiresBilling: true  },
+  { href: "/admin/maintenance",          label: "Bills",    icon: FileText,   adminOnly: false },
+  { href: "/admin/maintenance/rates",    label: "Rates",    icon: Settings,   adminOnly: true  },
+  { href: "/admin/maintenance/payments", label: "Payments", icon: DollarSign, adminOnly: false },
+  { href: "/admin/maintenance/reports",  label: "Reports",  icon: BarChart3,  adminOnly: false },
 ];
 
 const ADMIN_ONLY_ITEMS = [
@@ -45,14 +45,12 @@ interface Props {
   user: { name?: string | null; email?: string | null };
   role: string;
   permissions: PermissionsMap;
-  maintenanceBillingEnabled?: boolean;
 }
 
-function NavLinks({ pathname, role, permissions, maintenanceBillingEnabled = false, onNavigate }: {
+function NavLinks({ pathname, role, permissions, onNavigate }: {
   pathname: string;
   role: string;
   permissions: PermissionsMap;
-  maintenanceBillingEnabled?: boolean;
   onNavigate?: () => void;
 }) {
   const isAdmin = role === "ADMIN";
@@ -108,9 +106,7 @@ function NavLinks({ pathname, role, permissions, maintenanceBillingEnabled = fal
           </button>
           {maintOpen && (
             <div className="ml-6 mt-0.5 space-y-0.5 border-l border-border pl-3">
-              {MAINTENANCE_SUB_ITEMS.filter(({ adminOnly, requiresBilling }) =>
-                (!adminOnly || isAdmin) && (!requiresBilling || maintenanceBillingEnabled)
-              ).map(({ href, label, icon: Icon }) => {
+              {MAINTENANCE_SUB_ITEMS.filter(({ adminOnly }) => !adminOnly || isAdmin).map(({ href, label, icon: Icon }) => {
                 const active = pathname === href || (href !== "/admin/maintenance" && pathname.startsWith(href + "/"));
                 return (
                   <Link
@@ -158,7 +154,7 @@ function NavLinks({ pathname, role, permissions, maintenanceBillingEnabled = fal
   );
 }
 
-function SidebarContent({ user, role, permissions, maintenanceBillingEnabled = false, onNavigate }: Props & { onNavigate?: () => void }) {
+function SidebarContent({ user, role, permissions, onNavigate }: Props & { onNavigate?: () => void }) {
   const pathname = usePathname();
 
   return (
@@ -175,13 +171,7 @@ function SidebarContent({ user, role, permissions, maintenanceBillingEnabled = f
         </div>
       </div>
 
-      <NavLinks
-        pathname={pathname}
-        role={role}
-        permissions={permissions}
-        maintenanceBillingEnabled={maintenanceBillingEnabled}
-        onNavigate={onNavigate}
-      />
+      <NavLinks pathname={pathname} role={role} permissions={permissions} onNavigate={onNavigate} />
 
       <Separator />
 
@@ -207,7 +197,7 @@ function SidebarContent({ user, role, permissions, maintenanceBillingEnabled = f
   );
 }
 
-export default function SidebarNav({ user, role, permissions, maintenanceBillingEnabled = false }: Props) {
+export default function SidebarNav({ user, role, permissions }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -228,25 +218,14 @@ export default function SidebarNav({ user, role, permissions, maintenanceBilling
             </SheetTrigger>
             <SheetContent side="left" className="w-64 p-0 border-0">
               <SheetTitle className="sr-only">Navigation</SheetTitle>
-              <SidebarContent
-                user={user}
-                role={role}
-                permissions={permissions}
-                maintenanceBillingEnabled={maintenanceBillingEnabled}
-                onNavigate={() => setOpen(false)}
-              />
+              <SidebarContent user={user} role={role} permissions={permissions} onNavigate={() => setOpen(false)} />
             </SheetContent>
           </Sheet>
         </div>
       </div>
 
       <div className="hidden md:flex w-64 h-full shrink-0 flex-col">
-        <SidebarContent
-          user={user}
-          role={role}
-          permissions={permissions}
-          maintenanceBillingEnabled={maintenanceBillingEnabled}
-        />
+        <SidebarContent user={user} role={role} permissions={permissions} />
       </div>
     </>
   );

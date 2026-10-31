@@ -5,7 +5,7 @@ import MaintenanceReportsClient from "@/components/admin/maintenance-reports-cli
 import { StatCardsSkeleton } from "@/components/ui/page-skeleton";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getCachedMaintenanceReportsData, getCachedSiteConfig } from "@/lib/server-cache";
+import { getCachedMaintenanceReportsData } from "@/lib/server-cache";
 import type { PermissionsMap } from "@/lib/permissions";
 
 export const dynamic = "force-dynamic";
@@ -84,9 +84,6 @@ export default async function MaintenanceReportsPage() {
   const role = (session.user as any)?.role as string;
   const permissions = (session.user as any)?.permissions as PermissionsMap ?? {};
   if (role !== "ADMIN" && !permissions["maintenance"]?.canRead) redirect("/admin/dashboard");
-
-  const siteConfig = await getCachedSiteConfig();
-  if (!siteConfig.maintenanceBillingEnabled) redirect("/admin/maintenance");
 
   return (
     <main className="p-6 space-y-6">
