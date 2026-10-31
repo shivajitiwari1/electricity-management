@@ -193,6 +193,102 @@ export const getCachedReportsData = unstable_cache(
   { revalidate: 300, tags: ["reports"] }
 );
 
+// Maintenance reports data — refresh every 5 min (heavy query)
+export const getCachedMaintenanceReportsData = unstable_cache(
+  async () => {
+    const twelveMonthsAgo = new Date();
+    twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
+    const now = new Date();
+
+    const [paidPayments, overdueCandidates, allBills, totalRevenue, totalBills, totalResidents] =
+      await Promise.all([
+        // Actual money collected. ADJUSTMENT rows are rebates/waivers, not revenue.
+        prisma.maintenancePayment.findMany({
+          where: {
+            status: "SUCCESS",
+            method: { not: "ADJUSTMENT" },
+            paymentDate: { gte: twelveMonthsAgo },
+          },
+          select: {
+            paymentDate: true,
+            amount: true,
+            method: true,
+            bill: { select: { connection: { select: { tower: true, flatNo: true } } } },
+          },
+          orderBy: { paymentDate: "asc" },
+        }),
+        prisma.maintenanceBill.findMany({
+          where: {
+            dueDate: { lt: now },
+            status: { in: ["PENDING", "OVERDUE", "PARTIAL"] },
+          },
+          select: {
+            id: true,
+            billNumber: true,
+            dueDate: true,
+            amount: true,
+            previousDue: true,
+            paidAmount: true,
+            interestCharge: true,
+            status: true,
+            connection: {
+              select: {
+                flatNo: true,
+                tower: true,
+                resident: { select: { user: { select: { name: true } } } },
+              },
+            },
+          },
+          orderBy: { dueDate: "asc" },
+        }),
+        prisma.maintenanceBill.findMany({
+          select: {
+            id: true,
+            billNumber: true,
+            billDate: true,
+            dueDate: true,
+            amount: true,
+            previousDue: true,
+            paidAmount: true,
+            interestCharge: true,
+            status: true,
+            connection: {
+              select: {
+                flatNo: true,
+                tower: true,
+                resident: { select: { user: { select: { name: true } } } },
+              },
+            },
+          },
+          orderBy: { billDate: "desc" },
+          take: 1000,
+        }),
+        prisma.maintenancePayment.aggregate({
+          where: { status: "SUCCESS", method: { not: "ADJUSTMENT" } },
+          _sum: { amount: true },
+        }),
+        prisma.maintenanceBill.count(),
+        prisma.connection.count({ where: { status: "ACTIVE" } }),
+      ]);
+
+    const outstandingAmount = (b: (typeof overdueCandidates)[number]) =>
+      Math.max(
+        0,
+        Math.round(
+          Number(b.amount) + Number(b.previousDue) + Number(b.interestCharge) - Number(b.paidAmount)
+        )
+      );
+
+    const overdueBills = overdueCandidates
+      .map((b) => ({ ...b, outstandingAmount: outstandingAmount(b) }))
+      .filter((b) => b.outstandingAmount > 0);
+
+    return { paidPayments, overdueBills, allBills, totalRevenue, totalBills, totalResidents };
+  },
+  ["admin-maintenance-reports-v1"],
+  { revalidate: 300, tags: ["reports", "maintenance"] }
+);
+
 // Site config (maintenance mode) — refresh every 10 s
 export const getCachedSiteConfig = unstable_cache(
   async () => {

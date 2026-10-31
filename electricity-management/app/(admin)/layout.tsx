@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import SidebarNav from "@/components/admin/sidebar-nav";
 import IdleTimeout from "@/components/idle-timeout";
+import { getCachedSiteConfig } from "@/lib/server-cache";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -11,12 +12,15 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     redirect("/login");
   }
 
+  const siteConfig = await getCachedSiteConfig();
+
   return (
     <div className="flex h-screen bg-background">
       <SidebarNav
         user={session.user}
         role={role}
         permissions={(session.user as any).permissions ?? {}}
+        maintenanceBillingEnabled={siteConfig.maintenanceBillingEnabled}
       />
       <main className="flex-1 overflow-auto p-4 md:p-6 pt-[72px] md:pt-6">
         {children}

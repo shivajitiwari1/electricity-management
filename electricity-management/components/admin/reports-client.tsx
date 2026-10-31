@@ -372,7 +372,7 @@ export default function ReportsClient({ paidBills, overdueBills, allBills, stats
         </CardContent>
       </Card>
 
-      <div id="reports-printable">
+      <div id="reports-printable" className="space-y-6">
       {/* ── Print header (only visible when printing) ── */}
       <div className="hidden print:block mb-4 border-b pb-3">
         <h1 className="text-xl font-bold">Oasis Venetia Heights — Reports</h1>
@@ -383,7 +383,7 @@ export default function ReportsClient({ paidBills, overdueBills, allBills, stats
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         {summaryCards.map(({ title, value, sub, icon: Icon, color, bg }) => (
           <Card key={title}>
-            <CardContent className="p-5">
+            <CardContent className="px-5 pt-5">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{title}</p>
