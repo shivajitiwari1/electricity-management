@@ -56,6 +56,17 @@ export async function GET(
     select: { id: true, amount: true, paymentDate: true, createdAt: true, method: true },
   });
 
+  // The rebate row is written in the same transaction as its payment, so it
+  // shares a paymentDate and lands within the same second.
+  const rebatePayments = allPayments.filter(
+    (p) =>
+      p.method === "ADJUSTMENT" &&
+      p.id !== payment.id &&
+      Math.abs(p.createdAt.getTime() - payment.createdAt.getTime()) <= 5000
+  );
+  const rebateAmount = rebatePayments.reduce((sum, p) => sum + Number(p.amount), 0);
+  const rebateIds = new Set(rebatePayments.map((p) => p.id));
+
   const isUpToThisPayment = (p: (typeof allPayments)[number]) =>
     p.paymentDate.getTime() < payment.paymentDate.getTime() ||
     (p.paymentDate.getTime() === payment.paymentDate.getTime() &&
@@ -66,21 +77,17 @@ export async function GET(
       Number(payment.bill.previousDue) +
       Number(payment.bill.interestCharge)
   );
-  const paidSoFar = allPayments
-    .filter(isUpToThisPayment)
-    .reduce((sum, p) => sum + Number(p.amount), 0);
+  // This payment and its rebate are settled by this receipt, so count them
+  // explicitly. The rebate row is inserted microseconds after the payment,
+  // which is why a plain isUpToThisPayment filter drops it and makes the
+  // receipt claim the waived amount is still outstanding.
+  const paidSoFar =
+    allPayments
+      .filter((p) => p.id !== payment.id && !rebateIds.has(p.id) && isUpToThisPayment(p))
+      .reduce((sum, p) => sum + Number(p.amount), 0) +
+    Number(payment.amount) +
+    rebateAmount;
   const balanceDue = Math.max(0, Math.round(billTotal - paidSoFar));
-
-  // The rebate row is written in the same transaction as its payment, so it
-  // shares a paymentDate and lands within the same second.
-  const rebateAmount = allPayments
-    .filter(
-      (p) =>
-        p.method === "ADJUSTMENT" &&
-        p.id !== payment.id &&
-        Math.abs(p.createdAt.getTime() - payment.createdAt.getTime()) <= 5000
-    )
-    .reduce((sum, p) => sum + Number(p.amount), 0);
 
   const receiptData: ReceiptData = {
     receiptNumber: payment.receiptNumber,
