@@ -22,12 +22,14 @@ Critical rules:
 - Maintenance payments: ADJUSTMENT/rebate entries do not get a receipt button. API blocks generating receipts for `ADJUSTMENT` (`app/api/maintenance/payments/[id]/receipt/route.ts`, `components/admin/maintenance-payments-table.tsx`).
 - Deployment flow: commit/push from repo root (`git add .; git commit -m "..."; git push`), deploy from `electricity-management/` via `npx vercel --prod --yes`.
 - Reports spacing: both electricity and maintenance reports rely on `space-y-6` on their printable containers (`#reports-printable`, `#maintenance-reports-printable`), with stat cards using `px-5 pt-5`. Keep the two pages in sync when editing either.
+- Maintenance receipt balance: a rebate/waiver row is inserted microseconds after its payment, so balance-due calculations must count the payment and its paired `ADJUSTMENT` explicitly instead of relying on `createdAt <= payment.createdAt` (`app/api/maintenance/payments/[id]/receipt/route.ts`).
+- Production: https://www.oasisvenetia.in (Vercel project `electricity-management`).
 
-## Pending requests
+## Completed requests
 
 ### Maintenance dashboard/reports page
 
-**Status: COMPLETE** (see work log at the end).
+**Status: COMPLETE — committed in `e069234` and deployed to production** (see work log at the end).
 
 Goal: add a dashboard-style reports page **under the Maintenance section** that mirrors the existing electricity `Reports` page, but is scoped to maintenance data only.
 
