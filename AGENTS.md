@@ -71,7 +71,7 @@ Maintenance-specific data rules (do not copy electricity logic blindly):
 
 ### Maintenance advance payments page
 
-**Status: COMPLETE — not committed or deployed.**
+**Status: COMPLETE — committed in `983864b` and deployed to production.**
 
 Goal: a Maintenance section listing every advance payment with a receipt download per row.
 
