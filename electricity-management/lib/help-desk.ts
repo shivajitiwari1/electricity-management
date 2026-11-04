@@ -6,7 +6,7 @@ export { DEFAULT_HELP_DESK_CATEGORIES, formatTicketPriority, formatTicketStatus,
 export const HELP_DESK_PAGE_ID = "help-desk";
 
 export const ticketInclude = {
-  resident: { include: { user: { select: { id: true, name: true, email: true, phone: true } } } },
+  resident: { include: { user: { select: { id: true, name: true, email: true } } } },
   connection: { select: { id: true, flatNo: true, tower: true } },
   category: { select: { id: true, name: true } },
   subcategory: { select: { id: true, name: true } },
