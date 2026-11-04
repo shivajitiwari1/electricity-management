@@ -25,6 +25,13 @@ export default async function AdminHelpDeskPage() {
     select: { helpDeskEnabled: true },
   });
 
+  const userEmail = (session.user as any)?.email as string | undefined;
+  const isSuperAdmin = userEmail === "admin@oasis.local";
+
+  if (!siteConfig?.helpDeskEnabled && !isSuperAdmin) {
+    redirect("/admin/dashboard");
+  }
+
   return (
     <main className="space-y-6">
       <div>

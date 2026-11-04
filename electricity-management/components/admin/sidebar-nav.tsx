@@ -55,15 +55,19 @@ interface Props {
   user: { name?: string | null; email?: string | null };
   role: string;
   permissions: PermissionsMap;
+  helpDeskEnabled: boolean;
 }
 
-function NavLinks({ pathname, role, permissions, onNavigate }: {
+function NavLinks({ pathname, role, permissions, userEmail, helpDeskEnabled, onNavigate }: {
   pathname: string;
   role: string;
   permissions: PermissionsMap;
+  userEmail?: string | null;
+  helpDeskEnabled: boolean;
   onNavigate?: () => void;
 }) {
   const isAdmin = role === "ADMIN";
+  const isSuperAdmin = userEmail === "admin@oasis.local";
   const isMaintActive = pathname.startsWith("/admin/maintenance");
   const isHelpDeskActive = pathname.startsWith("/admin/help-desk");
   const [maintOpen, setMaintOpen] = useState(isMaintActive);
@@ -71,7 +75,9 @@ function NavLinks({ pathname, role, permissions, onNavigate }: {
   const [query, setQuery] = useState("");
 
   const showMaintenance = isAdmin || permissions["maintenance"]?.canRead === true;
-  const showHelpDesk = isAdmin || permissions["help-desk"]?.canRead === true;
+  const showHelpDesk = helpDeskEnabled
+    ? (isAdmin || permissions["help-desk"]?.canRead === true)
+    : isSuperAdmin;
 
   const search = query.trim().toLowerCase();
   const isSearching = search.length > 0;
@@ -290,7 +296,7 @@ function NavLinks({ pathname, role, permissions, onNavigate }: {
   );
 }
 
-function SidebarContent({ user, role, permissions, onNavigate }: Props & { onNavigate?: () => void }) {
+function SidebarContent({ user, role, permissions, helpDeskEnabled, onNavigate }: Props & { onNavigate?: () => void; helpDeskEnabled: boolean }) {
   const pathname = usePathname();
 
   return (
@@ -307,7 +313,7 @@ function SidebarContent({ user, role, permissions, onNavigate }: Props & { onNav
         </div>
       </div>
 
-      <NavLinks pathname={pathname} role={role} permissions={permissions} onNavigate={onNavigate} />
+      <NavLinks pathname={pathname} role={role} permissions={permissions} userEmail={user.email} helpDeskEnabled={helpDeskEnabled} onNavigate={onNavigate} />
 
       <Separator />
 
@@ -333,7 +339,7 @@ function SidebarContent({ user, role, permissions, onNavigate }: Props & { onNav
   );
 }
 
-export default function SidebarNav({ user, role, permissions }: Props) {
+export default function SidebarNav({ user, role, permissions, helpDeskEnabled }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -354,14 +360,14 @@ export default function SidebarNav({ user, role, permissions }: Props) {
             </SheetTrigger>
             <SheetContent side="left" className="w-64 p-0 border-0">
               <SheetTitle className="sr-only">Navigation</SheetTitle>
-              <SidebarContent user={user} role={role} permissions={permissions} onNavigate={() => setOpen(false)} />
+              <SidebarContent user={user} role={role} permissions={permissions} helpDeskEnabled={helpDeskEnabled} onNavigate={() => setOpen(false)} />
             </SheetContent>
           </Sheet>
         </div>
       </div>
 
       <div className="hidden md:flex w-64 h-full shrink-0 flex-col">
-        <SidebarContent user={user} role={role} permissions={permissions} />
+        <SidebarContent user={user} role={role} permissions={permissions} helpDeskEnabled={helpDeskEnabled} />
       </div>
     </>
   );

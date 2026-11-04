@@ -30,9 +30,9 @@ export async function GET() {
 
 export async function POST() {
   const session = await auth();
-  const role = (session?.user as any)?.role as string | undefined;
-  if (role !== "ADMIN") {
-    return NextResponse.json({ error: "Help Desk module can only be toggled by an ADMIN" }, { status: 401 });
+  const userEmail = (session?.user as any)?.email as string | undefined;
+  if (userEmail !== "admin@oasis.local") {
+    return NextResponse.json({ error: "Help Desk module can only be toggled by the super admin" }, { status: 403 });
   }
   const current = await upsertSingleton();
   const updated = await prisma.siteConfig.update({
