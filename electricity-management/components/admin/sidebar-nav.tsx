@@ -9,7 +9,7 @@ import {
   LayoutDashboard, Users, Plug, Gauge, FileText,
   CreditCard, BarChart3, Settings, LogOut, Menu,
   Zap, Building2, ShieldCheck, UserCog, Wrench,
-  ChevronDown, ChevronRight, Calendar, DollarSign,
+  ChevronDown, ChevronRight, Calendar, DollarSign, CalendarClock,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -33,6 +33,7 @@ const MAINTENANCE_SUB_ITEMS = [
   { href: "/admin/maintenance",          label: "Bills",    icon: FileText,   adminOnly: false },
   { href: "/admin/maintenance/rates",    label: "Rates",    icon: Settings,   adminOnly: true  },
   { href: "/admin/maintenance/payments", label: "Payments", icon: DollarSign, adminOnly: false },
+  { href: "/admin/maintenance/advance",  label: "Advance Payments", icon: CalendarClock, adminOnly: false },
   { href: "/admin/maintenance/reports",  label: "Reports",  icon: BarChart3,  adminOnly: false },
 ];
 

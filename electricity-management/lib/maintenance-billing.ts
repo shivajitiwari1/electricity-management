@@ -46,6 +46,74 @@ export function calculateInterestCharge(amount: number, dueDate: Date, today: Da
   return Math.round(amount * 0.12 * (daysOverdue / 365) * 100) / 100;
 }
 
+/**
+ * Was this payment taken before the month it covers had started?
+ *
+ * The Advance Pay flow raises a bill for each future month and records the
+ * payment on the day the money is taken, so an advance payment always lands in
+ * an earlier month than its billing period. A bill for a month that had already
+ * begun is an ordinary payment, not an advance.
+ *
+ * Billing periods are stored at 00:00 UTC while dates are shown in IST, so the
+ * payment date is shifted to IST before its month is read. Otherwise a payment
+ * made just after midnight IST on the 1st would read as the previous month.
+ */
+export function isAdvancePayment(paymentDate: Date, billingPeriodStart: Date): boolean {
+  const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+  const shifted = new Date(paymentDate.getTime() + IST_OFFSET_MS);
+  const paymentMonthStart = Date.UTC(shifted.getUTCFullYear(), shifted.getUTCMonth(), 1);
+  return billingPeriodStart.getTime() > paymentMonthStart;
+}
+
+export interface AdvancePaymentRecord {
+  id: string;
+  connectionId: string;
+  /** When the bill was raised — the day the advance money was taken. */
+  billDate: Date;
+  billingPeriodStart: Date;
+  billingPeriodEnd: Date;
+}
+
+/** Is `next` the month immediately after `prev`? Periods always start on the 1st. */
+function isNextBillingMonth(prev: Date, next: Date): boolean {
+  const expected = Date.UTC(prev.getUTCFullYear(), prev.getUTCMonth() + 1, 1);
+  return next.getTime() === expected;
+}
+
+/**
+ * Group advance payments into the batches they were taken in.
+ *
+ * The Advance Pay flow bills several months at once, all sharing one bill date,
+ * so a batch is a run of consecutive months paid together on the same day for
+ * the same flat. Two separate advances on the same day stay apart unless their
+ * months happen to be contiguous — in which case they really are one run.
+ */
+export function groupAdvancePaymentRuns<T extends AdvancePaymentRecord>(rows: T[]): T[][] {
+  const byBatch = new Map<string, T[]>();
+  for (const row of rows) {
+    const key = `${row.connectionId}|${row.billDate.getTime()}`;
+    const list = byBatch.get(key);
+    if (list) list.push(row);
+    else byBatch.set(key, [row]);
+  }
+
+  const runs: T[][] = [];
+  for (const list of byBatch.values()) {
+    list.sort((a, b) => a.billingPeriodStart.getTime() - b.billingPeriodStart.getTime());
+    let run: T[] = [];
+    for (const row of list) {
+      const prev = run[run.length - 1];
+      if (prev && !isNextBillingMonth(prev.billingPeriodStart, row.billingPeriodStart)) {
+        runs.push(run);
+        run = [];
+      }
+      run.push(row);
+    }
+    if (run.length > 0) runs.push(run);
+  }
+  return runs;
+}
+
 /** Days allowed to pay, counted from the end of the month being billed. */
 const MAINTENANCE_DUE_DAYS = 15;
 

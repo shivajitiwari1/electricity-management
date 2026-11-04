@@ -235,6 +235,8 @@ Interest      = 12% per annum, simple, after due date
 - Bill list: filters, details, PDF, email, demand letter, delete, Excel export.
 - Record maintenance payment with optional rebate/waiver.
 - Maintenance payment list and delete.
+- Advance payments list (`/admin/maintenance/advance`): one row per advance taken (a 6/12-month batch is one row), showing the period covered, duration in months, total, and a receipt download.
+- Advance receipts: reprinting any payment of an advance batch renders a single "ADVANCE MAINTENANCE PAYMENT RECEIPT" for the whole batch — total amount, months covered, period, and the bill-number range.
 - Statuses: `PENDING`, `PARTIAL`, `OVERDUE`, `PAID`.
 - Receipt route exists.
 

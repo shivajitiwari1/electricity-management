@@ -44,6 +44,10 @@ export interface ReceiptData {
   balanceDue?: number;
   /** Header badge text. Defaults to "PAYMENT RECEIPT". */
   title?: string;
+  /** Advance receipts: how many monthly bills the payment covers. */
+  monthsCovered?: number;
+  /** Advance receipts: the period the payment covers, pre-formatted. */
+  periodLabel?: string;
 }
 
 function formatDate(date: Date): string {
@@ -384,11 +388,17 @@ export function generateReceiptPdf(data: ReceiptData): Promise<Buffer> {
       .text("PAYMENT DETAILS", L, y, { width: CW });
 
     y += 16;
-    const detailRows: [string, string][] = [
-      ["Bill Number", data.billNumber],
+    const detailRows: [string, string][] = [["Bill Number", data.billNumber]];
+    if (data.monthsCovered) {
+      detailRows.push(["Advance For", `${data.monthsCovered} Month${data.monthsCovered === 1 ? "" : "s"}`]);
+    }
+    if (data.periodLabel) {
+      detailRows.push(["Period Covered", data.periodLabel]);
+    }
+    detailRows.push(
       ["Payment Method", formatMethod(data.method)],
       ["Payment Date", formatDate(data.paymentDate)],
-    ];
+    );
     if (data.razorpayPaymentId) {
       detailRows.push(["Transaction ID", data.razorpayPaymentId]);
     }

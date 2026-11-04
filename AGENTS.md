@@ -68,3 +68,18 @@ Maintenance-specific data rules (do not copy electricity logic blindly):
 - Applied the same card spacing treatment to the electricity `Reports` page (`components/admin/reports-client.tsx`): `#reports-printable` now uses `space-y-6`, and the stat cards use `px-5 pt-5` to match Maintenance Reports.
 - Deployment follow-up: the first production build had the reports routes but the menu entry vanished because production's `SiteConfig.maintenanceBillingEnabled` is `false`. Removed that gate from both the sidebar and the page and redeployed (`787b681`).
 - Verified with `npx tsc --noEmit` and `npm run build`; the new `/admin/maintenance/reports`, `/api/maintenance/reports/pdf`, and `/api/maintenance/reports/xlsx` routes compile successfully. The electricity Reports page spacing changes also build cleanly.
+
+### Maintenance advance payments page
+
+**Status: COMPLETE — not committed or deployed.**
+
+Goal: a Maintenance section listing every advance payment with a receipt download per row.
+
+- New route: `app/(admin)/admin/maintenance/advance/page.tsx`; new client table `components/admin/maintenance-advance-payments-table.tsx`; new `Advance Payments` entry in `MAINTENANCE_SUB_ITEMS` (gated on the existing `maintenance` read permission, like Bills/Payments).
+- Advance payments have no database flag: the Advance Pay flow (`/api/maintenance/bills/advance`) raises a PAID bill per future month and records a `MaintenancePayment` on the day the money is taken. `isAdvancePayment()` in `lib/maintenance-billing.ts` therefore treats a payment as an advance when its billing period starts after the month of the payment date (payment month read in IST, since periods are stored at 00:00 UTC).
+- The list shows one row per advance taken, not per month: `groupAdvancePaymentRuns()` groups payments into runs of consecutive months paid together on the same day for the same flat. Columns: receipt no, flat/resident, bill range, period covered, duration in months, total amount, method, reference, paid on, receipt.
+- The receipt route (`app/api/maintenance/payments/[id]/receipt/route.ts`) reprints any advance payment as one **"ADVANCE MAINTENANCE PAYMENT RECEIPT"** for the whole batch: total of the batch, `Advance For: N Months`, `Period Covered`, and the bill-number range. The receipt number is the batch's first payment, so the same document comes out whichever row is clicked. `ReceiptData` gained `monthsCovered` and `periodLabel`.
+- `ADJUSTMENT` rows are excluded: a rebate/waiver gets no receipt.
+- Filters (tower, advance start month, search) and sorting are client-side because the page loads the advance rows already; no new API route.
+- Known gap left untouched: the Advance Pay dialog collects a rebate but `/api/maintenance/bills/advance` ignores `rebateAmount`, so advance receipts never show a rebate.
+- Verified with `npx tsc --noEmit` and `npm run build`; `/admin/maintenance/advance` compiles as a dynamic route. Advance detection and batch grouping were unit-checked (regular vs advance, IST midnight boundary, legacy period ends, non-contiguous same-day batches, multiple flats), and a sample advance receipt PDF was rendered and inspected.
