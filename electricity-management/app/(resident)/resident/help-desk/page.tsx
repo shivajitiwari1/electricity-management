@@ -44,19 +44,27 @@ export default function ResidentHelpDeskPage() {
   const [helpDeskEnabled, setHelpDeskEnabled] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
     (async () => {
       try {
         const res = await fetch("/api/help-desk/config", { cache: "no-store" });
         const data = await res.json();
-        if (!res.ok || data.helpDeskEnabled === false) {
+        if (!cancelled) {
+          if (!res.ok || data.helpDeskEnabled === false) {
+            setHelpDeskEnabled(false);
+            router.push("/resident/dashboard");
+          }
+        }
+      } catch {
+        if (!cancelled) {
           setHelpDeskEnabled(false);
           router.push("/resident/dashboard");
         }
-      } catch {
-        setHelpDeskEnabled(false);
-        router.push("/resident/dashboard");
       }
     })();
+    return () => {
+      cancelled = true;
+    };
   }, [router]);
 
   const [tickets, setTickets] = useState<TicketListItem[]>([]);
