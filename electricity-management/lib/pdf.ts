@@ -48,6 +48,25 @@ export interface ReceiptData {
   monthsCovered?: number;
   /** Advance receipts: the period the payment covers, pre-formatted. */
   periodLabel?: string;
+  /** Extra label/value rows shown with the payment details (e.g. GST breakup). */
+  breakdownRows?: [string, string][];
+  /**
+   * Advance receipts: per-month itemisation. Amounts are in Rs. and the totals
+   * row sums every column. Rendered above the payment breakdown.
+   */
+  monthsTable?: {
+    /** e.g. "Dec 2026" */
+    period: string;
+    billNumber: string;
+    base: number;
+    cgst: number;
+    sgst: number;
+    /** GST-inclusive amount charged for the month. */
+    gross: number;
+    rebate: number;
+    /** Cash actually received for the month. */
+    net: number;
+  }[];
 }
 
 function formatDate(date: Date): string {
@@ -406,18 +425,142 @@ export function generateReceiptPdf(data: ReceiptData): Promise<Buffer> {
     for (let i = 0; i < detailRows.length; i++) {
       const [label, value] = detailRows[i];
       if (i % 2 === 0) {
-        doc.rect(L, y - 4, CW, 22).fill("#f9fafb");
+        doc.rect(L, y - 4, CW, 18).fill("#f9fafb");
       }
-      doc.fillColor("#6b7280").font("Helvetica").fontSize(8.5)
+      doc.fillColor("#6b7280").font("Helvetica").fontSize(8)
         .text(label, L + 8, y, { width: 200, lineBreak: false });
-      doc.fillColor("#111827").font("Helvetica-Bold").fontSize(8.5)
+      doc.fillColor("#111827").font("Helvetica-Bold").fontSize(8)
         .text(value, 260, y, { width: CW - 222, lineBreak: false });
-      y += 22;
+      y += 18;
+    }
+
+    // ── Month-wise breakdown (advance receipts) ─────────────────────────────
+    // Everything the resident was charged, per month, so no figure has to be
+    // backed out from the totals. Columns are Rs. amounts; the total row sums
+    // every column.
+    const monthsTable = data.monthsTable ?? [];
+    if (monthsTable.length > 0) {
+      y += 12;
+      doc.fillColor("#374151").font("Helvetica-Bold").fontSize(8.5)
+        .text("MONTH-WISE BREAKDOWN", L, y, { width: CW });
+
+      y += 14;
+      const headerH = 16;
+      const rowH = 14;
+      const totalH = 15;
+      const pad = 6;
+      const tableH = headerH + monthsTable.length * rowH + totalH + pad;
+
+      const colDefs: { label: string; x: number; w: number; right?: boolean }[] = [
+        { label: "Month", x: 44, w: 56 },
+        { label: "Bill No", x: 104, w: 132 },
+        { label: "Base", x: 242, w: 44, right: true },
+        { label: "CGST", x: 290, w: 44, right: true },
+        { label: "SGST", x: 338, w: 44, right: true },
+        { label: "Total", x: 386, w: 55, right: true },
+        { label: "Rebate", x: 445, w: 46, right: true },
+        { label: "Net", x: 495, w: 54, right: true },
+      ];
+
+      doc.rect(L, y, CW, tableH).fill("#f9fafb");
+      doc.rect(L, y, CW, tableH).strokeColor("#e5e7eb").lineWidth(0.8).stroke();
+      doc.rect(L, y, CW, headerH).fill("#1e3a5f");
+      for (const col of colDefs) {
+        doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(6.2)
+          .text(col.label, col.x, y + 5.5, {
+            width: col.w,
+            align: col.right ? "right" : "left",
+            lineBreak: false,
+          });
+      }
+
+      let my = y + headerH + 3;
+      for (const m of monthsTable) {
+        const cells = [
+          m.period,
+          m.billNumber,
+          formatCurrency(m.base),
+          formatCurrency(m.cgst),
+          formatCurrency(m.sgst),
+          formatCurrency(m.gross),
+          formatCurrency(m.rebate),
+          formatCurrency(m.net),
+        ];
+        for (let i = 0; i < colDefs.length; i++) {
+          const col = colDefs[i];
+          const isBill = i === 1;
+          const isMonth = i === 0;
+          doc.fillColor("#111827").font(isMonth || isBill ? "Helvetica" : "Helvetica").fontSize(isBill ? 6.3 : 7.2)
+            .text(cells[i], col.x, my, {
+              width: col.w,
+              align: col.right ? "right" : "left",
+              lineBreak: false,
+            });
+        }
+        my += rowH;
+      }
+
+      // Totals row
+      const sum = (pick: (m: (typeof monthsTable)[number]) => number) =>
+        monthsTable.reduce((acc, m) => acc + pick(m), 0);
+      doc.moveTo(L + 8, my - 2).lineTo(L + CW - 8, my - 2).strokeColor("#e5e7eb").lineWidth(0.6).stroke();
+      doc.fillColor("#1e3a5f").font("Helvetica-Bold").fontSize(7.2)
+        .text("TOTAL", 44, my + 2, { width: 100, lineBreak: false });
+      doc.fontSize(6.3).font("Helvetica")
+        .text(`${monthsTable.length} Month${monthsTable.length === 1 ? "" : "s"}`, 104, my + 2.6, {
+          width: 120,
+          lineBreak: false,
+        });
+      const moneyCols: [number, number][] = [
+        [242, sum((m) => m.base)],
+        [290, sum((m) => m.cgst)],
+        [338, sum((m) => m.sgst)],
+        [386, sum((m) => m.gross)],
+        [445, sum((m) => m.rebate)],
+        [495, sum((m) => m.net)],
+      ];
+      for (const [x, value] of moneyCols) {
+        const w = colDefs.find((c) => c.x === x)?.w ?? 44;
+        doc.fillColor("#1e3a5f").font("Helvetica-Bold").fontSize(6.4)
+          .text(formatCurrency(value), x, my + 2, { width: w, align: "right", lineBreak: false });
+      }
+
+      y += tableH;
+    }
+
+    // ── Payment breakdown (advance receipts) ──────────────────────────────
+    // An advance covers several months, so a single "amount paid" figure hides
+    // what the resident was charged. List the charges, the rebate and the net
+    // received; this replaces the amount box below.
+    const breakdownRows = data.breakdownRows ?? [];
+    if (breakdownRows.length > 0) {
+      const headerH = 20;
+      const rowH = 18;
+      const cardH = headerH + breakdownRows.length * rowH + 6;
+
+      y += 12;
+      doc.rect(L, y, CW, cardH).fill("#f9fafb");
+      doc.rect(L, y, CW, cardH).strokeColor("#e5e7eb").lineWidth(0.8).stroke();
+      doc.rect(L, y, CW, headerH).fill("#1e3a5f");
+      doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(8)
+        .text("PAYMENT BREAKDOWN", L + 8, y + 6, { width: CW - 16 });
+
+      let by = y + headerH + 5;
+      for (const [label, value] of breakdownRows) {
+        doc.fillColor("#6b7280").font("Helvetica").fontSize(8.5)
+          .text(label, L + 8, by, { width: 300, lineBreak: false });
+        doc.fillColor("#111827").font("Helvetica-Bold").fontSize(8.5)
+          .text(value, L + 300, by, { width: CW - 316, align: "right", lineBreak: false });
+        by += rowH;
+      }
+      y += cardH;
     }
 
     // ── Amount box ────────────────────────────────────────────────────────
     y += 14;
-    if (data.rebateAmount && data.rebateAmount > 0) {
+    if (breakdownRows.length > 0) {
+      // The breakdown above already states the net amount, so skip the box.
+    } else if (data.rebateAmount && data.rebateAmount > 0) {
       doc.rect(L, y, CW, 110).fill("#eef2ff");
       doc.fillColor("#4b5563").font("Helvetica").fontSize(8)
         .text("AMOUNT PAID", L, y + 10, { width: CW, align: "center" });
@@ -426,7 +569,7 @@ export function generateReceiptPdf(data: ReceiptData): Promise<Buffer> {
       doc.fillColor("#4b5563").font("Helvetica").fontSize(8)
         .text("REBATE / WAIVER", L, y + 52, { width: CW, align: "center" });
       doc.fillColor("#16a34a").font("Helvetica-Bold").fontSize(14)
-        .text(`− Rs. ${formatCurrency(data.rebateAmount)}`, L, y + 64, { width: CW, align: "center" });
+        .text(`- Rs. ${formatCurrency(data.rebateAmount)}`, L, y + 64, { width: CW, align: "center" });
       doc.moveTo(L + 120, y + 84).lineTo(L + CW - 120, y + 84).strokeColor("#1e3a5f").lineWidth(0.5).stroke();
       doc.fillColor("#1e3a5f").font("Helvetica-Bold").fontSize(11)
         .text(`Total Settled: Rs. ${formatCurrency(data.amount + data.rebateAmount)}`, L, y + 90, { width: CW, align: "center" });
@@ -440,7 +583,7 @@ export function generateReceiptPdf(data: ReceiptData): Promise<Buffer> {
     }
 
     // ── Confirmation box ──────────────────────────────────────────────────
-    y += 96;
+    if (breakdownRows.length === 0) y += 96;
     const balanceDue = data.balanceDue ?? 0;
 
     if (balanceDue > 0) {

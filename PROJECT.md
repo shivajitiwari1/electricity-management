@@ -236,7 +236,7 @@ Interest      = 12% per annum, simple, after due date
 - Record maintenance payment with optional rebate/waiver.
 - Maintenance payment list and delete.
 - Advance payments list (`/admin/maintenance/advance`): one row per advance taken (a 6/12-month batch is one row), showing the period covered, duration in months, total, and a receipt download.
-- Advance receipts: reprinting any payment of an advance batch renders a single "ADVANCE MAINTENANCE PAYMENT RECEIPT" for the whole batch — total amount, months covered, period, and the bill-number range.
+- Advance receipts: reprinting any payment of an advance batch renders a single "ADVANCE MAINTENANCE PAYMENT RECEIPT" for the whole batch — total amount, months covered, period, and the bill-number range — with a month-wise breakdown table (period, bill no, base / CGST / SGST / GST-inclusive total / rebate share / net), followed by a payment breakdown (base charges, CGST/SGST split out of the GST-inclusive bill amount, total, rebate/waiver, net received). The Advance Pay rebate is recorded as one `ADJUSTMENT` row per month.
 - Statuses: `PENDING`, `PARTIAL`, `OVERDUE`, `PAID`.
 - Receipt route exists.
 

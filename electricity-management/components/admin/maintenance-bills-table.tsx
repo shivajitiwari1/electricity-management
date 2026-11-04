@@ -349,6 +349,10 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
       toast.success(
         `${data.generated} bill(s) generated and marked paid.${
           data.skipped > 0 ? ` ${data.skipped} month(s) skipped (already existed).` : ""
+        }${
+          data.rebate > 0
+            ? ` Rebate applied: ₹${Number(data.rebate).toLocaleString("en-IN")}.`
+            : ""
         }`
       );
       setAdvanceOpen(false);

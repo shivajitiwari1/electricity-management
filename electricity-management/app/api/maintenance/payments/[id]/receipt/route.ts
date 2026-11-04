@@ -4,12 +4,24 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { generateReceiptPdf, ReceiptData } from "@/lib/pdf";
-import { groupAdvancePaymentRuns, isAdvancePayment } from "@/lib/maintenance-billing";
+import {
+  groupAdvancePaymentRuns,
+  isAdvancePayment,
+  splitMaintenanceAmount,
+} from "@/lib/maintenance-billing";
 
 /** DD-MM-YYYY, matching how lib/pdf.ts formats dates on the receipt. */
 function periodDate(date: Date): string {
   const d = new Date(date);
   return `${String(d.getDate()).padStart(2, "0")}-${String(d.getMonth() + 1).padStart(2, "0")}-${d.getFullYear()}`;
+}
+
+/** "Rs. 1,234.00" — matches formatCurrency() in lib/pdf.ts. */
+function money(value: number): string {
+  return `Rs. ${Number(value).toLocaleString("en-IN", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
 }
 
 export async function GET(
@@ -72,10 +84,13 @@ export async function GET(
     // as one PAID bill and one receipt per month. Reprint it as a single receipt
     // for the whole batch so it states the amount and the duration that the
     // resident actually paid for.
+    //
+    // ADJUSTMENT rows are loaded too: they are the rebate / waiver given with
+    // the advance and must appear in the receipt's breakdown, but they are not
+    // payments, so they are left out of the batch grouping below.
     const siblings = await prisma.maintenancePayment.findMany({
       where: {
         status: "SUCCESS",
-        method: { not: "ADJUSTMENT" },
         bill: {
           connectionId: payment.bill.connectionId,
           billDate: payment.bill.billDate,
@@ -88,49 +103,156 @@ export async function GET(
         paymentDate: true,
         razorpayPaymentId: true,
         method: true,
+        maintenanceBillId: true,
         bill: {
           select: {
             billNumber: true,
             billingPeriodStart: true,
             billingPeriodEnd: true,
+            amount: true,
+            unitArea: true,
+            ratePerSqFt: true,
           },
         },
       },
     });
 
     const runs = groupAdvancePaymentRuns(
-      siblings.map((p) => ({
-        id: p.id,
-        connectionId: payment.bill.connectionId,
-        billDate: payment.bill.billDate,
-        billingPeriodStart: p.bill.billingPeriodStart,
-        billingPeriodEnd: p.bill.billingPeriodEnd,
-        receiptNumber: p.receiptNumber,
-        amount: p.amount,
-        paymentDate: p.paymentDate,
-        razorpayPaymentId: p.razorpayPaymentId,
-        method: p.method,
-        billNumber: p.bill.billNumber,
-      }))
+      siblings
+        .filter((p) => p.method !== "ADJUSTMENT")
+        .map((p) => ({
+          id: p.id,
+          connectionId: payment.bill.connectionId,
+          billDate: payment.bill.billDate,
+          billingPeriodStart: p.bill.billingPeriodStart,
+          billingPeriodEnd: p.bill.billingPeriodEnd,
+          receiptNumber: p.receiptNumber,
+          amount: p.amount,
+          paymentDate: p.paymentDate,
+          razorpayPaymentId: p.razorpayPaymentId,
+          method: p.method,
+          billNumber: p.bill.billNumber,
+          maintenanceBillId: p.maintenanceBillId,
+          billAmount: p.bill.amount,
+          unitArea: p.bill.unitArea,
+          ratePerSqFt: p.bill.ratePerSqFt,
+        }))
     );
     const batch = runs.find((run) => run.some((p) => p.id === payment.id)) ?? [];
 
     if (batch.length > 0) {
       const first = batch[0];
       const last = batch[batch.length - 1];
-      const total = batch.reduce((sum, p) => sum + Math.round(Number(p.amount)), 0);
+      const netTotal = batch.reduce((sum, p) => sum + Math.round(Number(p.amount)), 0);
+
+      // The rebate is recorded as one ADJUSTMENT row per month, on the same
+      // bills as the advance. Sum the ones belonging to this batch.
+      const batchBillIds = new Set(batch.map((p) => p.maintenanceBillId));
+      const rebateTotal = Math.round(
+        siblings
+          .filter((p) => p.method === "ADJUSTMENT" && batchBillIds.has(p.maintenanceBillId))
+          .reduce((sum, p) => sum + Number(p.amount), 0)
+      );
+
+      // MaintenanceBill.amount is GST-inclusive, so split it — never add GST on
+      // top. Summing per month also handles a batch whose months were priced
+      // differently from each other.
+      const siteConfig = await prisma.siteConfig.findUnique({
+        where: { id: "singleton" },
+        select: { cgstRate: true, sgstRate: true },
+      });
+      const cgstRate = Number(siteConfig?.cgstRate ?? 0);
+      const sgstRate = Number(siteConfig?.sgstRate ?? 0);
+
+      let baseTotal = 0;
+      let cgstTotal = 0;
+      let sgstTotal = 0;
+      let grossTotal = 0;
+      for (const p of batch) {
+        const split = splitMaintenanceAmount(
+          { amount: p.billAmount, unitArea: p.unitArea, ratePerSqFt: p.ratePerSqFt },
+          cgstRate,
+          sgstRate
+        );
+        baseTotal += split.base;
+        cgstTotal += split.cgst;
+        sgstTotal += split.sgst;
+        grossTotal += split.currentMonthTotal;
+      }
+
+      // Legacy advances were sometimes recorded as a lump-sum payment on a
+      // single monthly bill (e.g. 12 months paid against a one-month bill), so
+      // the bills do not add up to the money received. Treat the excess as more
+      // gross charged and back the GST out of it, so the breakdown always
+      // reconciles: base + CGST + SGST = total = net + rebate.
+      const unexplained = netTotal + rebateTotal - grossTotal;
+      if (unexplained > 0) {
+        const combined = cgstRate + sgstRate;
+        const extraCgst = combined > 0 ? Math.round((unexplained * cgstRate) / (100 + combined)) : 0;
+        const extraSgst = combined > 0 ? Math.round((unexplained * sgstRate) / (100 + combined)) : 0;
+        baseTotal += unexplained - extraCgst - extraSgst;
+        cgstTotal += extraCgst;
+        sgstTotal += extraSgst;
+        grossTotal += unexplained;
+      }
+
+      const breakdownRows: [string, string][] = [
+        ["Base Maintenance Charges", money(baseTotal)],
+      ];
+      if (cgstTotal > 0) breakdownRows.push([`CGST @ ${cgstRate}%`, money(cgstTotal)]);
+      if (sgstTotal > 0) breakdownRows.push([`SGST @ ${sgstRate}%`, money(sgstTotal)]);
+
+      // Month-wise itemisation for the receipt. Every figure is derived from
+      // the recorded bills, payments and rebates.
+      const rebateByBill = new Map<string, number>();
+      for (const s of siblings) {
+        if (s.method === "ADJUSTMENT" && batchBillIds.has(s.maintenanceBillId)) {
+          rebateByBill.set(
+            s.maintenanceBillId,
+            (rebateByBill.get(s.maintenanceBillId) ?? 0) + Number(s.amount)
+          );
+        }
+      }
+      receiptData.monthsTable = batch.map((p) => {
+        const split = splitMaintenanceAmount(
+          { amount: p.billAmount, unitArea: p.unitArea, ratePerSqFt: p.ratePerSqFt },
+          cgstRate,
+          sgstRate
+        );
+        const rebate = Math.round(rebateByBill.get(p.maintenanceBillId) ?? 0);
+        return {
+          period: new Date(p.billingPeriodStart).toLocaleString("en-IN", {
+            month: "short",
+            year: "numeric",
+          }),
+          billNumber: p.billNumber,
+          base: split.base,
+          cgst: split.cgst,
+          sgst: split.sgst,
+          gross: split.currentMonthTotal,
+          rebate,
+          net: Math.round(Number(p.amount)),
+        };
+      });
+      breakdownRows.push(["Total (incl. GST)", money(grossTotal)]);
+      if (rebateTotal > 0) {
+        breakdownRows.push(["Rebate / Waiver", `- ${money(rebateTotal)}`]);
+      }
+      breakdownRows.push(["Net Amount Received", money(netTotal)]);
 
       receiptData.receiptNumber = first.receiptNumber;
       receiptData.billNumber =
         batch.length > 1 ? `${first.billNumber} to ${last.billNumber}` : first.billNumber;
-      receiptData.amount = total;
+      receiptData.amount = netTotal;
+      receiptData.rebateAmount = rebateTotal > 0 ? rebateTotal : undefined;
       receiptData.method = first.method;
       receiptData.paymentDate = first.paymentDate;
       receiptData.razorpayPaymentId = first.razorpayPaymentId ?? undefined;
       receiptData.title = "ADVANCE MAINTENANCE PAYMENT RECEIPT";
       receiptData.monthsCovered = batch.length;
       receiptData.periodLabel = `${periodDate(first.billingPeriodStart)} to ${periodDate(last.billingPeriodEnd)}`;
-      receiptData.billTotal = total;
+      receiptData.breakdownRows = breakdownRows;
+      receiptData.billTotal = grossTotal;
       receiptData.balanceDue = 0;
     }
   } else {
