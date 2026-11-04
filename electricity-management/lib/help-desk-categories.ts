@@ -1,0 +1,18 @@
+export const DEFAULT_HELP_DESK_CATEGORIES = [
+  "Asset",
+  "Electricity",
+  "Cleaning",
+  "Plumbing",
+  "Parking",
+  "Lifts",
+  "Housekeeping",
+  "Security",
+  "STP",
+  "ClubHouse & Facilities",
+  "NBH App Issues",
+  "Others",
+  "Water",
+  "Telephone/Intercom",
+  "Carpenter work",
+  "Fabrication",
+] as const;

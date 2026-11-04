@@ -52,6 +52,11 @@ model User {
   createdAt DateTime   @default(now())
   resident  Resident?
   auditLogs AuditLog[]
+  createdTickets Ticket[] @relation("TicketCreatedBy")
+  assignedTickets Ticket[] @relation("TicketAssignee")
+  ticketComments TicketComment[]
+  ticketUploads TicketAttachment[]
+  assignmentRules AssignmentRule[]
 }
 
 model Resident {
@@ -64,6 +69,7 @@ model Resident {
   tenantPhone    String?
   createdAt      DateTime     @default(now())
   connections    Connection[]
+  tickets        Ticket[]
 }
 
 model Connection {
@@ -82,6 +88,7 @@ model Connection {
   meterReadings  MeterReading[]
   bills            Bill[]
   maintenanceBills MaintenanceBill[]
+  tickets          Ticket[]
 }
 
 model Rate {
@@ -246,6 +253,188 @@ model SiteConfig {
   id                        String  @id @default("singleton")
   maintenanceMode           Boolean @default(false)
   maintenanceBillingEnabled Boolean @default(false)
+  helpDeskEnabled           Boolean @default(false)
   cgstRate                  Decimal @default(9) @db.Decimal(5, 2)
   sgstRate                  Decimal @default(9) @db.Decimal(5, 2)
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  ON_HOLD
+  RESOLVED
+  CLOSED
+  AUTO_CLOSED
+  CANCELLED
+  NOT_AN_ISSUE
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum ComplaintType {
+  PERSONAL
+  PUBLIC
+}
+
+enum AssignmentSlotKind {
+  TICKET
+  VISIT
+}
+
+model TicketCategory {
+  id              String   @id @default(cuid())
+  name            String   @unique
+  sortOrder       Int      @default(0)
+  createdAt       DateTime @default(now())
+
+  subCategories  TicketSubcategory[]
+  tickets        Ticket[]
+  escalationRules EscalationRule[]
+  assignmentRules AssignmentRule[]
+}
+
+model TicketSubcategory {
+  id         String         @id @default(cuid())
+  categoryId String
+  name       String
+  sortOrder  Int            @default(0)
+  createdAt  DateTime       @default(now())
+
+  category   TicketCategory   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  tickets    Ticket[]
+  assignmentRules AssignmentRule[]
+
+  @@unique([categoryId, name])
+}
+
+model Ticket {
+  id              String   @id @default(cuid())
+  ticketNumber    String   @unique
+  residentId      String
+  connectionId    String?
+  categoryId      String
+  subcategoryId   String?
+  assigneeId      String?
+  createdById     String
+  description     String   @db.Text
+  priority        TicketPriority @default(MEDIUM)
+  status          TicketStatus   @default(OPEN)
+  complaintType   ComplaintType  @default(PERSONAL)
+  escalationLevel Int       @default(0)
+  slaDueAt        DateTime?
+  lastEscalatedAt DateTime?
+  closedAt        DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  resident        Resident  @relation(fields: [residentId], references: [id])
+  connection      Connection? @relation(fields: [connectionId], references: [id], onDelete: SetNull)
+  category        TicketCategory @relation(fields: [categoryId], references: [id])
+  subcategory     TicketSubcategory? @relation(fields: [subcategoryId], references: [id], onDelete: SetNull)
+  assignee        User? @relation("TicketAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  createdBy       User   @relation("TicketCreatedBy", fields: [createdById], references: [id])
+  comments        TicketComment[]
+  attachments     TicketAttachment[]
+
+  @@index([status])
+  @@index([residentId])
+  @@index([connectionId])
+  @@index([assigneeId])
+  @@index([categoryId])
+  @@index([updatedAt])
+}
+
+model TicketComment {
+  id         String   @id @default(cuid())
+  ticketId   String
+  authorId   String
+  body       String   @db.Text
+  isInternal Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  ticket     Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  author     User     @relation(fields: [authorId], references: [id])
+
+  @@index([ticketId])
+}
+
+model TicketAttachment {
+  id          String   @id @default(cuid())
+  ticketId    String
+  uploadedById String?
+  fileName    String
+  mimeType    String
+  sizeBytes   Int
+  data        Bytes    @db.MediumBlob
+  createdAt   DateTime @default(now())
+
+  ticket      Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  uploadedBy  User?    @relation(fields: [uploadedById], references: [id], onDelete: SetNull)
+
+  @@index([ticketId])
+}
+
+model EscalationRule {
+  id         String   @id @default(cuid())
+  categoryId String
+  priority   TicketPriority
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  category   TicketCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  steps      EscalationStep[]
+
+  @@unique([categoryId, priority])
+}
+
+model EscalationStep {
+  id           String @id @default(cuid())
+  ruleId       String
+  level        Int
+  timeValue    Int
+  timeUnit     String @db.VarChar(20) @default("MINUTES")
+  contactName  String
+  contactEmail String
+  contactPhone String
+
+  rule         EscalationRule @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+
+  @@unique([ruleId, level])
+}
+
+model AssignmentRule {
+  id            String   @id @default(cuid())
+  categoryId    String
+  subcategoryId String?
+  assigneeId    String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  category      TicketCategory   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  subcategory   TicketSubcategory? @relation(fields: [subcategoryId], references: [id], onDelete: SetNull)
+  assignee      User             @relation(fields: [assigneeId], references: [id])
+  slots         AssignmentSlot[]
+
+  @@index([categoryId])
+  @@index([subcategoryId])
+  @@index([assigneeId])
+}
+
+model AssignmentSlot {
+  id        String            @id @default(cuid())
+  ruleId    String
+  kind      AssignmentSlotKind
+  startTime String            @db.VarChar(5)
+  endTime   String            @db.VarChar(5)
+  day       String            @db.VarChar(20) @default("EVERYDAY")
+
+  rule      AssignmentRule    @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+
+  @@index([ruleId])
 }

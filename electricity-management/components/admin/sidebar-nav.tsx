@@ -10,8 +10,10 @@ import {
   CreditCard, BarChart3, Settings, LogOut, Menu,
   Zap, Building2, ShieldCheck, UserCog, Wrench,
   ChevronDown, ChevronRight, Calendar, DollarSign, CalendarClock,
+  LifeBuoy, ListChecks, Tag, Shield, Search, X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Separator } from "@/components/ui/separator";
@@ -37,6 +39,13 @@ const MAINTENANCE_SUB_ITEMS = [
   { href: "/admin/maintenance/reports",  label: "Reports",  icon: BarChart3,  adminOnly: false },
 ];
 
+const HELP_DESK_SUB_ITEMS = [
+  { href: "/admin/help-desk",                label: "Open Tickets",     icon: ListChecks, adminOnly: false },
+  { href: "/admin/help-desk/categories",     label: "Categories",       icon: Tag,        adminOnly: false },
+  { href: "/admin/help-desk/escalation",     label: "Escalation Matrix",icon: Shield,     adminOnly: false },
+  { href: "/admin/help-desk/assignment-rules", label: "Assignment Rules", icon: UserCog,   adminOnly: false },
+];
+
 const ADMIN_ONLY_ITEMS = [
   { href: "/admin/users",          label: "Users",         icon: UserCog,         pageId: "users" },
   { href: "/admin/permissions",    label: "Permissions",   icon: ShieldCheck,     pageId: "permissions" },
@@ -56,18 +65,98 @@ function NavLinks({ pathname, role, permissions, onNavigate }: {
 }) {
   const isAdmin = role === "ADMIN";
   const isMaintActive = pathname.startsWith("/admin/maintenance");
+  const isHelpDeskActive = pathname.startsWith("/admin/help-desk");
   const [maintOpen, setMaintOpen] = useState(isMaintActive);
+  const [helpDeskOpen, setHelpDeskOpen] = useState(isHelpDeskActive);
+  const [query, setQuery] = useState("");
 
   const showMaintenance = isAdmin || permissions["maintenance"]?.canRead === true;
+  const showHelpDesk = isAdmin || permissions["help-desk"]?.canRead === true;
+
+  const search = query.trim().toLowerCase();
+  const isSearching = search.length > 0;
+
+  const searchable = (label: string, href: string) =>
+    label.toLowerCase().includes(search) || href.toLowerCase().includes(search);
 
   const visibleItems = NAV_ITEMS.filter(({ pageId }) => {
     if (isAdmin) return true;
     return permissions[pageId]?.canRead === true;
   });
 
+  const visibleItemsFiltered = isSearching
+    ? visibleItems.filter((item) => searchable(item.label, item.href))
+    : visibleItems;
+
+  const maintenanceItems = MAINTENANCE_SUB_ITEMS.filter(({ adminOnly }) => !adminOnly || isAdmin);
+  const helpDeskItems = HELP_DESK_SUB_ITEMS.filter(({ adminOnly }) => !adminOnly || isAdmin);
+  const adminItems = isAdmin ? ADMIN_ONLY_ITEMS : [];
+
+  const groupMatches = (groupLabel: string) => groupLabel.toLowerCase().includes(search);
+
+  const filteredMaintenance =
+    isSearching && !groupMatches("Maintenance")
+      ? maintenanceItems.filter((item) => searchable(item.label, item.href))
+      : maintenanceItems;
+
+  const filteredHelpDesk =
+    isSearching && !groupMatches("Help Desk")
+      ? helpDeskItems.filter((item) => searchable(item.label, item.href))
+      : helpDeskItems;
+
+  const filteredAdmin = isSearching
+    ? adminItems.filter((item) => searchable(item.label, item.href))
+    : adminItems;
+
+  const showMaintenanceGroup =
+    showMaintenance && (!isSearching || groupMatches("Maintenance") || filteredMaintenance.length > 0);
+  const showHelpDeskGroup =
+    showHelpDesk && (!isSearching || groupMatches("Help Desk") || filteredHelpDesk.length > 0);
+  const showAdminGroup = !isSearching || filteredAdmin.length > 0;
+
+  const noResults =
+    isSearching &&
+    visibleItemsFiltered.length === 0 &&
+    !showMaintenanceGroup &&
+    !showHelpDeskGroup &&
+    !showAdminGroup;
+
+  const maintExpanded = isSearching ? true : maintOpen;
+  const helpDeskExpanded = isSearching ? true : helpDeskOpen;
+
   return (
     <nav className="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto">
-      {visibleItems.map(({ href, label, icon: Icon }) => {
+      {/* Menu search */}
+      <div className="relative pb-2">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+        <Input
+          type="text"
+          placeholder="Search menu…"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          className="pl-9 pr-9 h-9"
+          autoComplete="off"
+          aria-label="Search menu"
+        />
+        {query && (
+          <button
+            type="button"
+            onClick={() => setQuery("")}
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            aria-label="Clear search"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
+      </div>
+
+      {noResults ? (
+        <p className="px-3 py-6 text-sm text-muted-foreground text-center">
+          No menu item matches “{query.trim()}”.
+        </p>
+      ) : (
+        <>
+      {visibleItemsFiltered.map(({ href, label, icon: Icon }) => {
         const active = pathname === href || pathname.startsWith(href + "/");
         return (
           <Link
@@ -88,7 +177,7 @@ function NavLinks({ pathname, role, permissions, onNavigate }: {
       })}
 
       {/* Maintenance expandable group */}
-      {showMaintenance && (
+      {showMaintenanceGroup && (
         <div>
           <button
             onClick={() => setMaintOpen((o) => !o)}
@@ -101,13 +190,13 @@ function NavLinks({ pathname, role, permissions, onNavigate }: {
           >
             <Wrench className="h-4 w-4 shrink-0" />
             <span className="flex-1 text-left">Maintenance</span>
-            {maintOpen
+            {maintExpanded
               ? <ChevronDown className="h-3.5 w-3.5 shrink-0" />
               : <ChevronRight className="h-3.5 w-3.5 shrink-0" />}
           </button>
-          {maintOpen && (
+          {maintExpanded && (
             <div className="ml-6 mt-0.5 space-y-0.5 border-l border-border pl-3">
-              {MAINTENANCE_SUB_ITEMS.filter(({ adminOnly }) => !adminOnly || isAdmin).map(({ href, label, icon: Icon }) => {
+              {filteredMaintenance.map(({ href, label, icon: Icon }) => {
                 const active = pathname === href || (href !== "/admin/maintenance" && pathname.startsWith(href + "/"));
                 return (
                   <Link
@@ -131,8 +220,52 @@ function NavLinks({ pathname, role, permissions, onNavigate }: {
         </div>
       )}
 
+      {/* Help Desk expandable group */}
+      {showHelpDeskGroup && (
+        <div>
+          <button
+            onClick={() => setHelpDeskOpen((o) => !o)}
+            className={cn(
+              "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150",
+              isHelpDeskActive
+                ? "bg-primary text-primary-foreground shadow-sm"
+                : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+            )}
+          >
+            <LifeBuoy className="h-4 w-4 shrink-0" />
+            <span className="flex-1 text-left">Help Desk</span>
+            {helpDeskExpanded
+              ? <ChevronDown className="h-3.5 w-3.5 shrink-0" />
+              : <ChevronRight className="h-3.5 w-3.5 shrink-0" />}
+          </button>
+          {helpDeskExpanded && (
+            <div className="ml-6 mt-0.5 space-y-0.5 border-l border-border pl-3">
+              {filteredHelpDesk.map(({ href, label, icon: Icon }) => {
+                const active = pathname === href || (href !== "/admin/help-desk" && pathname.startsWith(href + "/"));
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    onClick={onNavigate}
+                    className={cn(
+                      "flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm font-medium transition-all duration-150",
+                      active
+                        ? "bg-primary/15 text-primary"
+                        : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                    )}
+                  >
+                    <Icon className="h-3.5 w-3.5 shrink-0" />
+                    {label}
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Admin-only items */}
-      {isAdmin && ADMIN_ONLY_ITEMS.map(({ href, label, icon: Icon }) => {
+      {showAdminGroup && filteredAdmin.map(({ href, label, icon: Icon }) => {
         const active = pathname === href || pathname.startsWith(href + "/");
         return (
           <Link
@@ -151,6 +284,8 @@ function NavLinks({ pathname, role, permissions, onNavigate }: {
           </Link>
         );
       })}
+        </>
+      )}
     </nav>
   );
 }

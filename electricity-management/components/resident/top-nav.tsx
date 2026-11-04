@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
-import { Home, FileText, CreditCard, User, LogOut, Zap, Wrench } from "lucide-react";
+import { Home, FileText, CreditCard, User, LogOut, Zap, Wrench, LifeBuoy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 
@@ -12,26 +12,29 @@ const baseNavItems = [
   { href: "/resident/dashboard", label: "Dashboard", icon: Home },
   { href: "/resident/bills", label: "Bills", icon: FileText },
   { href: "/resident/payments", label: "Payments", icon: CreditCard },
+  { href: "/resident/help-desk", label: "Help Desk", icon: LifeBuoy },
   { href: "/resident/profile", label: "Profile", icon: User },
 ];
 
 interface Props {
   user: { name?: string | null; email?: string | null };
   maintenanceEnabled?: boolean;
+  helpDeskEnabled?: boolean;
 }
 
-export default function ResidentNav({ user, maintenanceEnabled = false }: Props) {
+export default function ResidentNav({ user, maintenanceEnabled = false, helpDeskEnabled = false }: Props) {
   const pathname = usePathname();
 
-  const navItems = maintenanceEnabled
-    ? [
-        baseNavItems[0],
-        baseNavItems[1],
-        baseNavItems[2],
-        { href: "/resident/maintenance", label: "Maintenance", icon: Wrench },
-        baseNavItems[3],
-      ]
-    : baseNavItems;
+  const navItems = [
+    baseNavItems[0],
+    baseNavItems[1],
+    baseNavItems[2],
+    ...(maintenanceEnabled
+      ? [{ href: "/resident/maintenance", label: "Maintenance", icon: Wrench }]
+      : []),
+    ...(helpDeskEnabled ? [baseNavItems[3]] : []),
+    baseNavItems[4],
+  ];
 
   return (
     <header className="bg-card border-b border-border shadow-sm sticky top-0 z-10">
