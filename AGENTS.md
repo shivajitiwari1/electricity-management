@@ -26,23 +26,24 @@ Critical rules:
 - Maintenance Reports visibility: do not gate the sidebar entry or page on `maintenanceBillingEnabled`. Production keeps that flag off, and gating only Reports hid it while Bills/Payments stayed accessible.
 - Production: https://www.oasisvenetia.in (Vercel project `electricity-management`).
 
-## Help Desk implementation (IN PROGRESS, NOT deployed)
+## Help Desk implementation — DEPLOYED TO PRODUCTION
 
-Status: COMPLETE LOCALLY — migration applied to production TiDB Cloud, seeding complete, build passes. Ready for deployment review.
+Status: DEPLOYED to https://www.oasisvenetia.in (Vercel project `electricity-management`).
+Commit `83d0473` — `feat(help-desk): deploy help desk module to production`.
 
 Decisions:
 - Full parity: Open Tickets, New Complaint, ticket detail, Categories, Escalation Matrix, Assignment Rules.
 - Resident-facing pages included.
 - Start fresh (no NoBrokerHood import).
 - Same seed list as the observed production UI; the screenshot only exposes 16 categories, not 18.
-- No deployment until local build passes and user reviews.
 
 Schema/migration:
 - `prisma/schema.prisma` adds TicketCategory, TicketSubcategory, Ticket, TicketComment, TicketAttachment (MEDIUMBLOB bytes), EscalationRule, EscalationStep, AssignmentRule, AssignmentSlot and enum TicketStatus/TicketPriority/ComplaintType/AssignmentSlotKind.
-- Migration `prisma/migrations/20261104_add_help_desk/migration.sql` created manually. NOT applied. Run against production only after a backup and explicit approval.
-- `prisma/seed-help-desk.ts` upserts ADMIN/MANAGER permissions + categories; existing seeds/matrix/pages updated with `help-desk` page id. Do not run until migration is applied.
+- Migration `prisma/migrations/20261104_add_help_desk/migration.sql` applied to production TiDB Cloud.
+- Backup taken before migration: `backups/pre-helpdesk-migration-20261104-174252.sql` (4.6 MB MySQL dump).
+- `prisma/seed-help-desk.ts` run against production — upserts ADMIN/MANAGER permissions + categories; existing seeds/matrix/pages updated with `help-desk` page id.
 
-Completed so far:
+Completed:
 - `lib/help-desk-categories.ts`, `lib/help-desk.ts`, `lib/help-desk-assignment.ts`, `lib/help-desk-job-card.ts` (PDFKit job card with optional public comments).
 - `lib/help-desk-config.ts` — `helpDeskEnabled()` helper + `guardHelpDeskEnabled()` 503 guard.
 - Sidebar Help Desk expandable group + permissions matrix/seeds updated.
@@ -64,12 +65,19 @@ Completed so far:
   - `GET /api/help-desk/form-options` — shared option payload for create/edit forms (categories/subcategories for everyone; resident view returns own flat(s); admin/MANAGER view returns residents with connections and active staff).
 - All mutating Help Desk API routes guarded by `guardHelpDeskEnabled()` (returns 503 when module disabled).
 - Shared helpers: `lib/help-desk-format.ts` (client-safe labels/badges); `lib/help-desk-job-card.ts`; `lib/help-desk-assignment.ts` (IST weekday/slot match + SLA from first escalation step).
-- Resident UI shipped and compiling: `/resident/help-desk` (list with status tabs + search), `/resident/help-desk/new`, `/resident/help-desk/[id]`, resident top-nav includes Help Desk without SiteConfig gating; resident pages redirect to dashboard when module disabled.
+- Resident UI shipped: `/resident/help-desk` (list with status tabs + search), `/resident/help-desk/new`, `/resident/help-desk/[id]`, resident top-nav includes Help Desk without SiteConfig gating; resident pages redirect to dashboard when module disabled.
 - Shared detail UI `components/help-desk/ticket-detail.tsx` supports staff controls (status, priority, type, assignee, location, category/subcategory) and resident read-only use.
-- Admin UI shipped and compiling: `/admin/help-desk` list (search + tabs + New Complaint modal + Excel export + job-card download link) via server wrapper + `components/admin/help-desk-list.tsx`; `/admin/help-desk/[id]` uses the shared detail component with ADMIN/MANAGER guard; `/admin/help-desk/categories` manage/add/rename/delete categories and subcategories; `/admin/help-desk/escalation` upsert/delete rules with first-response and escalation steps; `/admin/help-desk/assignment-rules` manage/add/edit/delete slot-based assignment rules.
+- Admin UI shipped: `/admin/help-desk` list (search + tabs + New Complaint modal + Excel export + job-card download link) via server wrapper + `components/admin/help-desk-list.tsx`; `/admin/help-desk/[id]` uses the shared detail component with ADMIN/MANAGER guard; `/admin/help-desk/categories` manage/add/rename/delete categories and subcategories; `/admin/help-desk/escalation` upsert/delete rules with first-response and escalation steps; `/admin/help-desk/assignment-rules` manage/add/edit/delete slot-based assignment rules.
 - `npx tsc --noEmit` passes.
 - `npm run build` passes (Next 16/Turbopack, 63 static pages; all new Help Desk routes and pages listed as dynamic; no DB access during build).
-- Nothing deployed; migration and seeds not applied.
+
+### New Complaint form — Resident / Location dropdowns
+
+**Select Resident \*** (admin only): lists every resident in the society (name, email, phone). When a resident is chosen, the Location dropdown below auto-fills with that resident's flats.
+
+**Complaint Location \***: lists the selected resident's flats as `Tower - FlatNo` (e.g. `A-101`, `B-205`). Populated dynamically from the resident's `connections`. Required so the system knows which flat the issue is at.
+
+Resident-facing form (`/resident/help-desk/new`): the Resident dropdown is omitted (forced to the logged-in resident), and Location shows only that resident's own connections.
 
 Notes:
 - Attachments are stored as images in MySQL MEDIUMBLOB (no Vercel Blob/env var required). Max 5MB, type-checked.
