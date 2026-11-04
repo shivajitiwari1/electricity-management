@@ -36,6 +36,22 @@ export function monthRange({ back = 24, forward = 3 } = {}) {
   return keys;
 }
 
+/** Today (or any date) as YYYY-MM-DD for <input type="date">, in local time. */
+export function localDateInputValue(date: Date = new Date()) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+/**
+ * Last day of the previous month as YYYY-MM-DD. Generating bills is usually
+ * done for the cycle just ended, so this is the sensible default date.
+ */
+export function previousMonthEndDate() {
+  const now = new Date();
+  const firstOfThisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const lastOfPreviousMonth = new Date(firstOfThisMonth.getTime() - 1);
+  return localDateInputValue(lastOfPreviousMonth);
+}
+
 /** The months present in a set of dates, newest first. */
 export function monthOptionsFrom(dates: (string | Date)[]) {
   return [...new Set(dates.map(monthKeyOf))].sort().reverse();

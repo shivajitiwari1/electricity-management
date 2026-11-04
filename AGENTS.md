@@ -85,3 +85,16 @@ Goal: a Maintenance section listing every advance payment with a receipt downloa
 - Advance receipts also itemise every month in a **MONTH-WISE BREAKDOWN** table — period, bill number, base / CGST / SGST / GST-inclusive total / rebate share / net received — with a total row that sums all columns.
 - Filters (tower, advance start month, search) and sorting are client-side because the page loads the advance rows already; no new API route.
 - Verified with `npx tsc --noEmit` and `npm run build`; `/admin/maintenance/advance` compiles as a dynamic route. Advance detection and batch grouping were unit-checked (regular vs advance, IST midnight boundary, legacy period ends, non-contiguous same-day batches, multiple flats), and a sample advance receipt PDF was rendered and inspected.
+
+### Maintenance bills: single Date-driven generation
+
+**Status: COMPLETE locally — NOT deployed.**
+
+Goal: remove the separate month dropdown; one calendar date controls whole-month generation and issue date.
+
+- The **Generate Maintenance Bills** dialog under Maintenance → Bills (both **All Customers** and **Individual Flat**) no longer shows a Month dropdown; a single native `<input type="date">` remains. Any day in the chosen month selects that month. Default is the last day of the previous month (e.g. 31 Oct for current Nov generation).
+- The date is stored as the bill issue date (`MaintenanceBill.billDate`) at UTC midnight so it renders as that day in IST. Billing period is derived from the date's UTC year/month.
+- UI sends `GET/POST /api/cron/generate-maintenance-bills?date=YYYY-MM-DD` for All Customers, or `POST /api/maintenance/bills/generate-one` with `billDate` for Individual Flat (no `month`). The legacy `?month=` query param is still accepted for backward compatibility, but sending both `date` and `month` is rejected; if `month` is sent alone, bills get issued today. Individual route also rejects mismatched `month` and `billDate`.
+- Both APIs validate strict `YYYY-MM-DD` and impossible dates (e.g. 2026-02-31), and resolve the maintenance rate in effect on the issue date so back-dated bills use the right rate.
+- The standalone `/admin/maintenance/generate` page (not linked in the sidebar) was updated to the same Date-only flow so stale Month UI cannot appear if someone opens it directly.
+- Verified with `npx tsc --noEmit` and `npm run build`; bills-table and legacy generator pages compile cleanly.

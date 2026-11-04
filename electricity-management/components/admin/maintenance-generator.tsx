@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Users, FilePlus2, ChevronsUpDown } from "lucide-react";
-import { MonthSelect, monthRange, previousMonthKey } from "@/components/ui/month-select";
+import { previousMonthEndDate } from "@/components/ui/month-select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 
@@ -27,9 +27,8 @@ interface Props {
 }
 
 export default function MaintenanceGenerator({ currentRatePerSqFt, connections }: Props) {
-  // Bills are raised for the month just ended, so default to that month.
-  const defaultMonth = previousMonthKey();
-  const [month, setMonth] = useState(defaultMonth);
+  // Generate for the cycle just ended; the selected date decides the month.
+  const [billDate, setBillDate] = useState(previousMonthEndDate);
   const [generating, setGenerating] = useState(false);
   const [result, setResult] = useState<{ created: number; skipped: number; errors?: number } | null>(null);
 
@@ -40,11 +39,11 @@ export default function MaintenanceGenerator({ currentRatePerSqFt, connections }
   const selConn = connections.find((c) => c.id === selConnId);
 
   const handleGenerateAll = async () => {
-    if (!month) return;
+    if (!billDate) return;
     setGenerating(true);
     setResult(null);
     try {
-      const res = await fetch(`/api/cron/generate-maintenance-bills?month=${month}`, { method: "POST" });
+      const res = await fetch(`/api/cron/generate-maintenance-bills?date=${encodeURIComponent(billDate)}`, { method: "POST" });
       const data = await res.json();
       if (!res.ok) { toast.error(data.error ?? "Generation failed"); return; }
       setResult(data);
@@ -55,14 +54,14 @@ export default function MaintenanceGenerator({ currentRatePerSqFt, connections }
   };
 
   const handleGenerateOne = async () => {
-    if (!selConnId || !month) return;
+    if (!selConnId || !billDate) return;
     setGenerating(true);
     setResult(null);
     try {
       const res = await fetch("/api/maintenance/bills/generate-one", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ connectionId: selConnId, month }),
+        body: JSON.stringify({ connectionId: selConnId, billDate }),
       });
       const data = await res.json();
       if (!res.ok) { toast.error(data.error ?? "Failed"); return; }
@@ -157,21 +156,21 @@ export default function MaintenanceGenerator({ currentRatePerSqFt, connections }
             )}
 
             <div className="space-y-1">
-              <Label>Billing Month</Label>
-              <MonthSelect
-                value={month}
-                onChange={setMonth}
-                options={monthRange({ back: 12, forward: 3 })}
-                className="w-44"
+              <Label>Date</Label>
+              <input
+                type="date"
+                value={billDate}
+                onChange={(e) => setBillDate(e.target.value)}
+                className="flex h-9 w-44 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus:outline-none focus:ring-1 focus:ring-ring"
               />
             </div>
 
             {mode === "all" ? (
-              <Button onClick={handleGenerateAll} disabled={generating || !currentRatePerSqFt || !month}>
+              <Button onClick={handleGenerateAll} disabled={generating || !currentRatePerSqFt || !billDate}>
                 {generating ? "Generating…" : "Raise Bills for All Customers"}
               </Button>
             ) : (
-              <Button onClick={handleGenerateOne} disabled={generating || !currentRatePerSqFt || !month || !selConnId}>
+              <Button onClick={handleGenerateOne} disabled={generating || !currentRatePerSqFt || !billDate || !selConnId}>
                 {generating ? "Generating…" : "Raise Bill"}
               </Button>
             )}
@@ -194,7 +193,7 @@ export default function MaintenanceGenerator({ currentRatePerSqFt, connections }
           <CardHeader>
             <CardTitle className="text-base">
               Active Connections Preview
-              <span className="text-sm font-normal text-gray-500 ml-2">— amounts for selected month</span>
+              <span className="text-sm font-normal text-gray-500 ml-2">— amounts for the selected month</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0">

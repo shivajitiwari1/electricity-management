@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MonthSelect, monthRange, currentMonthKey, previousMonthKey } from "@/components/ui/month-select";
+import { MonthSelect, monthRange, currentMonthKey, previousMonthEndDate } from "@/components/ui/month-select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { FileDown, FileSpreadsheet, Receipt, ChevronsUpDown, FilePlus2, Users, Trash2, Mail, ArrowUp, ArrowDown, ArrowUpDown, FileWarning } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -120,7 +120,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
   const [genOpen, setGenOpen] = useState(false);
   const [genMode, setGenMode] = useState<"all" | "individual">("individual");
   // Bills are raised for the month just ended, so default to that month.
-  const [genMonth, setGenMonth] = useState(previousMonthKey);
+  const [genDate, setGenDate] = useState(previousMonthEndDate);
   const [genConnId, setGenConnId] = useState("");
   const [genConnOpen, setGenConnOpen] = useState(false);
   const [genLoading, setGenLoading] = useState(false);
@@ -264,7 +264,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
   // Generate Bills helpers
   const openGenDialog = async () => {
     setGenMode("individual");
-    setGenMonth(previousMonthKey());
+    setGenDate(previousMonthEndDate());
     setGenConnId("");
     setGenPreviousDue("");
     setGenOpen(true);
@@ -274,8 +274,9 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
   const handleGenerateBills = async () => {
     setGenLoading(true);
     try {
+      if (!genDate) { toast.error("Select a date to generate"); return; }
       if (genMode === "all") {
-        const res = await fetch(`/api/cron/generate-maintenance-bills?month=${genMonth}`, { method: "POST" });
+        const res = await fetch(`/api/cron/generate-maintenance-bills?date=${encodeURIComponent(genDate)}`, { method: "POST" });
         const data = await res.json();
         if (!res.ok) { toast.error(data.error ?? "Failed to generate bills"); return; }
         toast.success(`Generated ${data.created} bill(s). ${data.skipped} skipped (already existed).`);
@@ -288,7 +289,7 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             connectionId: genConnId,
-            month: genMonth,
+            billDate: genDate,
             previousDue: genPreviousDue ? parseFloat(genPreviousDue) : 0,
           }),
         });
@@ -903,14 +904,18 @@ export default function MaintenanceBillsTable({ initialData, canWrite, canDelete
               </div>
             )}
 
+            {/* Any day in the billing month; the month of this date is generated. */}
             <div className="space-y-1">
-              <Label>Month</Label>
-              <MonthSelect
-                value={genMonth || previousMonthKey()}
-                onChange={setGenMonth}
-                options={monthRange({ back: 12, forward: 3 })}
-                className="w-full"
+              <Label>Date</Label>
+              <Input
+                type="date"
+                value={genDate}
+                onChange={(e) => setGenDate(e.target.value)}
+                aria-label="Bill date"
               />
+              <p className="text-xs text-muted-foreground">
+                Bills are generated for the month of this date and are issued on it.
+              </p>
             </div>
 
             {genMode === "individual" && (

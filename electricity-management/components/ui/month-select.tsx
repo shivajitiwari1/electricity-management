@@ -14,9 +14,20 @@ import {
   previousMonthKey,
   monthRange,
   monthOptionsFrom,
+  localDateInputValue,
+  previousMonthEndDate,
 } from "@/lib/month";
 
-export { formatMonthLabel, monthKeyOf, currentMonthKey, previousMonthKey, monthRange, monthOptionsFrom };
+export {
+  formatMonthLabel,
+  monthKeyOf,
+  currentMonthKey,
+  previousMonthKey,
+  monthRange,
+  monthOptionsFrom,
+  localDateInputValue,
+  previousMonthEndDate,
+};
 
 interface MonthSelectProps {
   /** A month key ("2026-09"), or `allValue` for no month filter. */

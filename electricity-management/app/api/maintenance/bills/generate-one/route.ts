@@ -16,18 +16,53 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Maintenance billing is currently disabled" }, { status: 422 });
   }
 
-  const { connectionId, month, previousDue } = await req.json();
+  const { connectionId, month, previousDue, billDate: billDateParam } = await req.json();
 
-  if (!connectionId || !month) {
-    return NextResponse.json({ error: "connectionId and month required" }, { status: 400 });
+  if (!connectionId) {
+    return NextResponse.json({ error: "connectionId required" }, { status: 400 });
   }
 
-  const [year, mon] = (month as string).split("-").map(Number);
-  if (!year || !mon || mon < 1 || mon > 12) {
-    return NextResponse.json({ error: "Invalid month format. Use YYYY-MM" }, { status: 400 });
+  // A date picked in the generate-bill form is the bill issue date, stored
+  // at UTC midnight like billing periods so it renders as that day in IST.
+  let billDate: Date = new Date();
+  let periodFromDate: { year: number; monthIndex: number } | null = null;
+  if (billDateParam != null) {
+    if (typeof billDateParam !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(billDateParam)) {
+      return NextResponse.json({ error: "Invalid bill date. Use YYYY-MM-DD" }, { status: 400 });
+    }
+    const parsed = new Date(`${billDateParam}T00:00:00.000Z`);
+    if (Number.isNaN(parsed.getTime()) || parsed.toISOString().slice(0, 10) !== billDateParam) {
+      return NextResponse.json({ error: "Invalid bill date. Use YYYY-MM-DD" }, { status: 400 });
+    }
+    billDate = parsed;
+    periodFromDate = { year: parsed.getUTCFullYear(), monthIndex: parsed.getUTCMonth() };
   }
 
-  const { periodStart, periodEnd } = maintenanceBillingPeriod(year, mon - 1);
+  let periodStart: Date;
+  let periodEnd: Date;
+  if (month != null && month !== "") {
+    const [year, mon] = String(month).split("-").map(Number);
+    if (!year || !mon || mon < 1 || mon > 12) {
+      return NextResponse.json({ error: "Invalid month format. Use YYYY-MM" }, { status: 400 });
+    }
+    if (
+      periodFromDate &&
+      (year !== periodFromDate.year || mon - 1 !== periodFromDate.monthIndex)
+    ) {
+      return NextResponse.json(
+        { error: "billDate and month refer to different months. Pick one or make them agree." },
+        { status: 400 }
+      );
+    }
+    ({ periodStart, periodEnd } = maintenanceBillingPeriod(year, mon - 1));
+  } else if (periodFromDate) {
+    ({ periodStart, periodEnd } = maintenanceBillingPeriod(
+      periodFromDate.year,
+      periodFromDate.monthIndex
+    ));
+  } else {
+    return NextResponse.json({ error: "billDate (or month) required" }, { status: 400 });
+  }
 
   const connection = await prisma.connection.findUnique({
     where: { id: connectionId },
@@ -50,8 +85,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ skipped: true, billNumber: existing.billNumber });
   }
 
+  // The rate in effect on the selected issue date — important when back-dating a bill.
   const rate = await prisma.maintenanceRate.findFirst({
-    where: { effectiveFrom: { lte: new Date() } },
+    where: { effectiveFrom: { lte: billDate } },
     orderBy: { effectiveFrom: "desc" },
   });
 
@@ -66,7 +102,6 @@ export async function POST(req: NextRequest) {
   const sgst = Math.round(baseAmount * sgstRate / 100);
   const totalAmount = baseAmount + cgst + sgst;
 
-  const now = new Date();
   const dueDate = maintenanceDueDate(periodStart);
 
   const bill = await prisma.maintenanceBill.create({
@@ -74,7 +109,7 @@ export async function POST(req: NextRequest) {
       connectionId: connection.id,
       maintenanceRateId: rate.id,
       billNumber,
-      billDate: now,
+      billDate,
       dueDate,
       billingPeriodStart: periodStart,
       billingPeriodEnd: periodEnd,

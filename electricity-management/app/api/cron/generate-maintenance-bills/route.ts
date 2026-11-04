@@ -8,6 +8,78 @@ import { generateUpiQrDataUrl } from "@/lib/qr";
 
 type ConnectionRow = Awaited<ReturnType<typeof fetchConnections>>[number];
 
+type GeneratePeriod =
+  | { ok: true; periodStart: Date; periodEnd: Date; issueDate: Date }
+  | { ok: false; response: NextResponse };
+
+/**
+ * Accept a single `date` (YYYY-MM-DD) and derive the billing period from it,
+ * or accept `month` (YYYY-MM) for backwards compatibility and bill today, or
+ * fall back to the current month and bill today.
+ */
+function parseGeneratePeriod(searchParams: URLSearchParams, now: Date): GeneratePeriod {
+  const monthParam = searchParams.get("month");
+  const dateParam = searchParams.get("date");
+
+  if (dateParam && monthParam) {
+    return {
+      ok: false,
+      response: NextResponse.json(
+        { error: "Provide either date or month, not both." },
+        { status: 400 }
+      ),
+    };
+  }
+
+  if (dateParam) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(dateParam)) {
+      return {
+        ok: false,
+        response: NextResponse.json(
+          { error: "Invalid date format. Use YYYY-MM-DD" },
+          { status: 400 }
+        ),
+      };
+    }
+    const issueDate = new Date(`${dateParam}T00:00:00.000Z`);
+    if (Number.isNaN(issueDate.getTime()) || issueDate.toISOString().slice(0, 10) !== dateParam) {
+      return {
+        ok: false,
+        response: NextResponse.json(
+          { error: "Invalid date. Use YYYY-MM-DD" },
+          { status: 400 }
+        ),
+      };
+    }
+    const { periodStart, periodEnd } = maintenanceBillingPeriod(
+      issueDate.getUTCFullYear(),
+      issueDate.getUTCMonth()
+    );
+    return { ok: true, periodStart, periodEnd, issueDate };
+  }
+
+  if (monthParam) {
+    const [year, mon] = monthParam.split("-").map(Number);
+    if (!year || !mon || mon < 1 || mon > 12) {
+      return {
+        ok: false,
+        response: NextResponse.json(
+          { error: "Invalid month format. Use YYYY-MM" },
+          { status: 400 }
+        ),
+      };
+    }
+    const { periodStart, periodEnd } = maintenanceBillingPeriod(year, mon - 1);
+    return { ok: true, periodStart, periodEnd, issueDate: now };
+  }
+
+  const { periodStart, periodEnd } = maintenanceBillingPeriod(
+    now.getUTCFullYear(),
+    now.getUTCMonth()
+  );
+  return { ok: true, periodStart, periodEnd, issueDate: now };
+}
+
 async function fetchConnections() {
   return prisma.connection.findMany({
     where: { status: "ACTIVE" },
@@ -20,7 +92,7 @@ async function createBillsBatch(
   rate: { id: string; ratePerSqFt: number | string | { toString(): string } },
   periodStart: Date,
   periodEnd: Date,
-  now: Date,
+  issueDate: Date,
 ) {
   const valid = connections.filter(c => c.unitArea && Number(c.unitArea) !== 0);
 
@@ -45,7 +117,7 @@ async function createBillsBatch(
       connectionId: c.id,
       maintenanceRateId: rate.id,
       billNumber: generateMaintenanceBillNumber(c.flatNo, periodStart),
-      billDate: now,
+      billDate: issueDate,
       dueDate,
       billingPeriodStart: periodStart,
       billingPeriodEnd: periodEnd,
@@ -151,30 +223,19 @@ export async function GET(req: NextRequest) {
   }
 
   const { searchParams } = new URL(req.url);
-  const monthParam = searchParams.get("month");
-
-  let periodStart: Date;
-  let periodEnd: Date;
-
-  if (monthParam) {
-    const [year, mon] = monthParam.split("-").map(Number);
-    if (!year || !mon || mon < 1 || mon > 12) {
-      return NextResponse.json({ error: "Invalid month format. Use YYYY-MM" }, { status: 400 });
-    }
-    ({ periodStart, periodEnd } = maintenanceBillingPeriod(year, mon - 1));
-  } else {
-    ({ periodStart, periodEnd } = maintenanceBillingPeriod(now.getUTCFullYear(), now.getUTCMonth()));
-  }
+  const parsed = parseGeneratePeriod(searchParams, now);
+  if (!parsed.ok) return parsed.response;
+  const { periodStart, periodEnd, issueDate } = parsed;
 
   const rate = await prisma.maintenanceRate.findFirst({
-    where: { effectiveFrom: { lte: now } },
+    where: { effectiveFrom: { lte: issueDate } },
     orderBy: { effectiveFrom: "desc" },
   });
 
   if (!rate) return NextResponse.json({ success: false, error: "No maintenance rate configured" }, { status: 422 });
 
   const connections = await fetchConnections();
-  const result = await createBillsBatch(connections, rate, periodStart, periodEnd, now);
+  const result = await createBillsBatch(connections, rate, periodStart, periodEnd, issueDate);
 
   if (result.toCreate.length > 0) {
     await sendBillEmails(result.toCreate, rate, periodStart, periodEnd, result.dueDate!, "cron:maintenance", Number(siteConfig.cgstRate ?? 0), Number(siteConfig.sgstRate ?? 0), result.billIdByNumber);
@@ -196,30 +257,19 @@ export async function POST(req: NextRequest) {
   const now = new Date();
 
   const { searchParams } = new URL(req.url);
-  const monthParam = searchParams.get("month");
-
-  let periodStart: Date;
-  let periodEnd: Date;
-
-  if (monthParam) {
-    const [year, mon] = monthParam.split("-").map(Number);
-    if (!year || !mon || mon < 1 || mon > 12) {
-      return NextResponse.json({ error: "Invalid month format. Use YYYY-MM" }, { status: 400 });
-    }
-    ({ periodStart, periodEnd } = maintenanceBillingPeriod(year, mon - 1));
-  } else {
-    ({ periodStart, periodEnd } = maintenanceBillingPeriod(now.getUTCFullYear(), now.getUTCMonth()));
-  }
+  const parsed = parseGeneratePeriod(searchParams, now);
+  if (!parsed.ok) return parsed.response;
+  const { periodStart, periodEnd, issueDate } = parsed;
 
   const rate = await prisma.maintenanceRate.findFirst({
-    where: { effectiveFrom: { lte: now } },
+    where: { effectiveFrom: { lte: issueDate } },
     orderBy: { effectiveFrom: "desc" },
   });
 
   if (!rate) return NextResponse.json({ success: false, error: "No maintenance rate configured" }, { status: 422 });
 
   const connections = await fetchConnections();
-  const result = await createBillsBatch(connections, rate, periodStart, periodEnd, now);
+  const result = await createBillsBatch(connections, rate, periodStart, periodEnd, issueDate);
 
   if (result.toCreate.length > 0) {
     await sendBillEmails(result.toCreate, rate, periodStart, periodEnd, result.dueDate!, "admin:maintenance", Number(siteConfig.cgstRate ?? 0), Number(siteConfig.sgstRate ?? 0), result.billIdByNumber);

@@ -217,8 +217,9 @@ Due date     = bill date + 9 days
 - Maintenance rate per square foot with effective date.
 - GST configuration: CGST and SGST, default 9% + 9%.
 - Generate bills:
-  - Bulk for a month.
+  - Bulk for the month of a picked date (all active flats; issue date = picked date).
   - One flat at a time.
+  - The Generate dialog has a single Date picker; the month is inferred from that date. The date is stored as the bill issue date (UTC midnight so it renders as that day in IST). The applicable maintenance rate is resolved as of that date. The bulk route accepts `?date=YYYY-MM-DD` (legacy `?month=YYYY-MM` remains for backward compatibility); the single-flat route accepts `billDate` without `month`.
 - Advance payment for multiple months.
 - Maintenance bill calculation:
 
