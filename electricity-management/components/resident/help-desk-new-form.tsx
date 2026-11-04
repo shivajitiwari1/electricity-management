@@ -46,15 +46,15 @@ export default function HelpDeskNewTicketForm() {
     (async () => {
       try {
         const res = await fetch("/api/help-desk/form-options", { cache: "no-store" });
-        if (!res.ok) {
-          const errData = (await res.json().catch(() => ({}))) as { error?: string };
-          throw new Error(errData.error ?? "Could not load form options");
-        }
-        const data = await res.json();
+        const data = (await res.json().catch(() => ({}))) as { categories?: unknown[]; resident?: unknown; error?: string };
+        if (!res.ok) throw new Error(data.error ?? "Could not load form options");
         if (cancelled) return;
-        const nextOptions = { categories: data.categories ?? [], resident: data.resident ?? null };
+        const nextOptions = {
+          categories: (data.categories ?? []) as { id: string; name: string; sortOrder: number; subcategories: { id: string; name: string; sortOrder: number }[] }[],
+          resident: (data.resident ?? null) as { id: string; name: string; connections: { id: string; flatNo: string; tower: string }[] } | null,
+        };
         setOptions(nextOptions);
-        const connections = data.resident?.connections ?? [];
+        const connections = nextOptions.resident?.connections ?? [];
         if (connections.length > 0) setConnectionId(connections[0].id);
       } catch (error) {
         toast.error(error instanceof Error ? error.message : "Could not load categories");

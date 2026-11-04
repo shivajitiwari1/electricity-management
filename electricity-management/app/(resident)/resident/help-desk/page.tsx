@@ -59,14 +59,13 @@ export default function ResidentHelpDeskPage() {
     })();
   }, [router]);
 
-  if (!helpDeskEnabled) return null;
-
   const [tickets, setTickets] = useState<TicketListItem[]>([]);
   const [search, setSearch] = useState("");
   const [activeTab, setActiveTab] = useState("ALL");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!helpDeskEnabled) return;
     let cancelled = false;
     (async () => {
       try {
@@ -83,7 +82,7 @@ export default function ResidentHelpDeskPage() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [helpDeskEnabled]);
 
   const counts = useMemo(() => {
     const map = new Map<string, number>();
@@ -109,6 +108,8 @@ export default function ResidentHelpDeskPage() {
         .some((value) => String(value).toLowerCase().includes(query));
     });
   }, [tickets, activeTab, search]);
+
+  if (!helpDeskEnabled) return null;
 
   return (
     <main className="p-4 md:p-6 space-y-6">
