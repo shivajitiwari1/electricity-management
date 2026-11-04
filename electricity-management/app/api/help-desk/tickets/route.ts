@@ -79,8 +79,9 @@ export async function GET(req: NextRequest) {
       orderBy: { updatedAt: "desc" },
       take: 500,
     });
-  } catch {
-    return NextResponse.json({ error: "Could not load tickets" }, { status: 500 });
+  } catch (error: any) {
+    console.error("Help Desk tickets GET error:", error?.message ?? error);
+    return NextResponse.json({ error: "Could not load tickets: " + (error?.message ?? "unknown") }, { status: 500 });
   }
 
   const serialized = tickets.map((ticket: any) => {

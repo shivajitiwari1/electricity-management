@@ -24,8 +24,9 @@ export async function GET(_req: NextRequest) {
       },
       orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
     });
-  } catch {
-    return NextResponse.json({ error: "Could not load categories" }, { status: 500 });
+  } catch (error: any) {
+    console.error("Help Desk categories error:", error?.message ?? error);
+    return NextResponse.json({ error: "Could not load categories: " + (error?.message ?? "unknown") }, { status: 500 });
   }
 
   const mappedCategories = categories.map((category: any) => ({
@@ -79,8 +80,9 @@ export async function GET(_req: NextRequest) {
         take: 1000,
         orderBy: [{ user: { name: "asc" } }],
       });
-    } catch {
-      return NextResponse.json({ error: "Could not load residents" }, { status: 500 });
+    } catch (error: any) {
+      console.error("Help Desk residents error:", error?.message ?? error);
+      return NextResponse.json({ error: "Could not load residents: " + (error?.message ?? "unknown") }, { status: 500 });
     }
 
     let staff: any[];
@@ -90,8 +92,9 @@ export async function GET(_req: NextRequest) {
         select: { id: true, name: true, email: true, role: true },
         orderBy: { name: "asc" },
       });
-    } catch {
-      return NextResponse.json({ error: "Could not load staff" }, { status: 500 });
+    } catch (error: any) {
+      console.error("Help Desk staff error:", error?.message ?? error);
+      return NextResponse.json({ error: "Could not load staff: " + (error?.message ?? "unknown") }, { status: 500 });
     }
 
     payload.residents = residents.map((resident) => ({
