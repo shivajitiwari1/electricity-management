@@ -46,8 +46,11 @@ export default function HelpDeskNewTicketForm() {
     (async () => {
       try {
         const res = await fetch("/api/help-desk/form-options", { cache: "no-store" });
+        if (!res.ok) {
+          const errData = (await res.json().catch(() => ({}))) as { error?: string };
+          throw new Error(errData.error ?? "Could not load form options");
+        }
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error ?? "Could not load form options");
         if (cancelled) return;
         const nextOptions = { categories: data.categories ?? [], resident: data.resident ?? null };
         setOptions(nextOptions);

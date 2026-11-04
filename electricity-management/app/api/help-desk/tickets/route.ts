@@ -25,6 +25,9 @@ export async function GET(req: NextRequest) {
   const session = await auth();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  const disabled = await guardHelpDeskEnabled();
+  if (disabled) return disabled;
+
   const role = (session.user as any).role as string;
   const userId = String((session.user as any).id ?? "");
 
@@ -68,12 +71,17 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  const tickets = await prisma.ticket.findMany({
-    where,
-    include: ticketInclude as any,
-    orderBy: { updatedAt: "desc" },
-    take: 500,
-  });
+  let tickets: any[];
+  try {
+    tickets = await prisma.ticket.findMany({
+      where,
+      include: ticketInclude as any,
+      orderBy: { updatedAt: "desc" },
+      take: 500,
+    });
+  } catch {
+    return NextResponse.json({ error: "Could not load tickets" }, { status: 500 });
+  }
 
   const serialized = tickets.map((ticket: any) => {
     if (role === "RESIDENT") {

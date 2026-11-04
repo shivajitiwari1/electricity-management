@@ -69,10 +69,19 @@ export default function AdminHelpDeskList() {
       fetch("/api/help-desk/tickets", { cache: "no-store" }),
       fetch("/api/help-desk/form-options", { cache: "no-store" }),
     ]);
-    const ticketsData = await ticketsRes.json();
-    const optionsData = await optionsRes.json();
-    if (!ticketsRes.ok) throw new Error(ticketsData.error ?? "Could not load tickets");
+
+    if (!ticketsRes.ok) {
+      const ticketsData = (await ticketsRes.json().catch(() => ({}))) as { error?: string };
+      throw new Error(ticketsData.error ?? "Could not load tickets");
+    }
+    const ticketsData = (await ticketsRes.json()) as { tickets: unknown[] };
     setTickets(ticketsData.tickets ?? []);
+
+    if (!optionsRes.ok) {
+      const optionsData = (await optionsRes.json().catch(() => ({}))) as { error?: string };
+      throw new Error(optionsData.error ?? "Could not load form options");
+    }
+    const optionsData = (await optionsRes.json()) as OptionSet;
     setOptions(optionsData);
   }
 
