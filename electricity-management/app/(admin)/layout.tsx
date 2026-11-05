@@ -13,14 +13,17 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   }
 
   let helpDeskEnabled = false;
+  let tenantVerificationEnabled = false;
   try {
     const siteConfig = await prisma.siteConfig.findUnique({
       where: { id: "singleton" },
-      select: { helpDeskEnabled: true },
+      select: { helpDeskEnabled: true, tenantVerificationEnabled: true },
     });
     helpDeskEnabled = siteConfig?.helpDeskEnabled ?? false;
+    tenantVerificationEnabled = siteConfig?.tenantVerificationEnabled ?? false;
   } catch {
     helpDeskEnabled = false;
+    tenantVerificationEnabled = false;
   }
 
   return (
@@ -30,6 +33,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         role={role}
         permissions={(session.user as any).permissions ?? {}}
         helpDeskEnabled={helpDeskEnabled}
+        tenantVerificationEnabled={tenantVerificationEnabled}
       />
       <main className="flex-1 overflow-auto p-4 md:p-6 pt-[72px] md:pt-6">
         {children}

@@ -18,6 +18,7 @@ const PAGES = [
   { id: "flat-info",      label: "Flat Info",      hasWrite: true,  hasDelete: true },
   { id: "maintenance",    label: "Maintenance",    hasWrite: true,  hasDelete: true },
   { id: "help-desk",      label: "Help Desk",      hasWrite: true,  hasDelete: true },
+  { id: "tenant-verification", label: "Tenant Verification", hasWrite: true, hasDelete: true },
 ];
 
 type PermRow = { page: string; canRead: boolean; canWrite: boolean; canDelete: boolean };
@@ -50,9 +51,22 @@ export default function PermissionsMatrix({ initialPermissions }: { initialPermi
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ permissions }),
       });
-      const data = await res.json();
+
+      const text = await res.text();
+      let data: any = {};
+      try {
+        data = text ? JSON.parse(text) : {};
+      } catch {
+        toast.error(
+          `Save failed (HTTP ${res.status}): ${text.slice(0, 140) || "empty response"}`
+        );
+        return;
+      }
+
       if (!res.ok) { toast.error(data.error ?? "Failed to save"); return; }
       toast.success("Permissions saved — Manager must re-login to apply changes");
+    } catch (error: any) {
+      toast.error(error?.message ?? "Network error");
     } finally {
       setSaving(false);
     }

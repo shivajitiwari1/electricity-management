@@ -30,7 +30,7 @@ async function seedPermissions() {
   const PAGES = [
     "dashboard", "residents", "connections", "meter-readings",
     "bills", "maintenance", "payments", "reports", "rates", "flat-info", "users", "permissions",
-    "help-desk",
+    "help-desk", "tenant-verification",
   ];
 
   const ADMIN_PERMS = PAGES.map((page) => ({
@@ -55,6 +55,7 @@ async function seedPermissions() {
     { role: Role.MANAGER, page: "users",          canRead: false, canWrite: false, canDelete: false },
     { role: Role.MANAGER, page: "permissions",    canRead: false, canWrite: false, canDelete: false },
     { role: Role.MANAGER, page: "help-desk",       canRead: true,  canWrite: true,  canDelete: false },
+    { role: Role.MANAGER, page: "tenant-verification", canRead: true,  canWrite: true,  canDelete: false },
   ];
 
   for (const perm of [...ADMIN_PERMS, ...MANAGER_PERMS]) {

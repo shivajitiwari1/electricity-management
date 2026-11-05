@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import {
   LayoutDashboard, Users, Plug, Gauge, FileText,
   CreditCard, BarChart3, Settings, LogOut, Menu,
-  Zap, Building2, ShieldCheck, UserCog, Wrench,
+  Zap, Building2, ShieldCheck, UserCog, User, Wrench,
   ChevronDown, ChevronRight, Calendar, DollarSign, CalendarClock,
   LifeBuoy, ListChecks, Tag, Shield, Search, X,
 } from "lucide-react";
@@ -46,6 +46,10 @@ const HELP_DESK_SUB_ITEMS = [
   { href: "/admin/help-desk/assignment-rules", label: "Assignment Rules", icon: UserCog,   adminOnly: false },
 ];
 
+const TENANT_VERIFICATION_SUB_ITEMS = [
+  { href: "/admin/tenant-verification",               label: "Applications",     icon: User,        adminOnly: false },
+];
+
 const ADMIN_ONLY_ITEMS = [
   { href: "/admin/users",          label: "Users",         icon: UserCog,         pageId: "users" },
   { href: "/admin/permissions",    label: "Permissions",   icon: ShieldCheck,     pageId: "permissions" },
@@ -56,27 +60,35 @@ interface Props {
   role: string;
   permissions: PermissionsMap;
   helpDeskEnabled: boolean;
+  tenantVerificationEnabled: boolean;
 }
 
-function NavLinks({ pathname, role, permissions, userEmail, helpDeskEnabled, onNavigate }: {
+function NavLinks({ pathname, role, permissions, userEmail, helpDeskEnabled, tenantVerificationEnabled, onNavigate }: {
   pathname: string;
   role: string;
   permissions: PermissionsMap;
   userEmail?: string | null;
   helpDeskEnabled: boolean;
+  tenantVerificationEnabled: boolean;
   onNavigate?: () => void;
 }) {
   const isAdmin = role === "ADMIN";
   const isSuperAdmin = userEmail === "admin@oasis.local";
   const isMaintActive = pathname.startsWith("/admin/maintenance");
   const isHelpDeskActive = pathname.startsWith("/admin/help-desk");
+  const isTenantVerificationActive = pathname.startsWith("/admin/tenant-verification");
   const [maintOpen, setMaintOpen] = useState(isMaintActive);
   const [helpDeskOpen, setHelpDeskOpen] = useState(isHelpDeskActive);
+  const [tenantVerificationOpen, setTenantVerificationOpen] = useState(isTenantVerificationActive);
   const [query, setQuery] = useState("");
 
   const showMaintenance = isAdmin || permissions["maintenance"]?.canRead === true;
   const showHelpDesk = helpDeskEnabled
     ? (isAdmin || permissions["help-desk"]?.canRead === true)
+    : isSuperAdmin;
+
+  const showTenantVerification = tenantVerificationEnabled
+    ? (isAdmin || permissions["tenant-verification"]?.canRead === true)
     : isSuperAdmin;
 
   const search = query.trim().toLowerCase();
@@ -96,6 +108,7 @@ function NavLinks({ pathname, role, permissions, userEmail, helpDeskEnabled, onN
 
   const maintenanceItems = MAINTENANCE_SUB_ITEMS.filter(({ adminOnly }) => !adminOnly || isAdmin);
   const helpDeskItems = HELP_DESK_SUB_ITEMS.filter(({ adminOnly }) => !adminOnly || isAdmin);
+  const tenantVerificationItems = TENANT_VERIFICATION_SUB_ITEMS.filter(({ adminOnly }) => !adminOnly || isAdmin);
   const adminItems = isAdmin ? ADMIN_ONLY_ITEMS : [];
 
   const groupMatches = (groupLabel: string) => groupLabel.toLowerCase().includes(search);
@@ -110,6 +123,11 @@ function NavLinks({ pathname, role, permissions, userEmail, helpDeskEnabled, onN
       ? helpDeskItems.filter((item) => searchable(item.label, item.href))
       : helpDeskItems;
 
+  const filteredTenantVerification =
+    isSearching && !groupMatches("Tenant Verification")
+      ? tenantVerificationItems.filter((item) => searchable(item.label, item.href))
+      : tenantVerificationItems;
+
   const filteredAdmin = isSearching
     ? adminItems.filter((item) => searchable(item.label, item.href))
     : adminItems;
@@ -118,6 +136,9 @@ function NavLinks({ pathname, role, permissions, userEmail, helpDeskEnabled, onN
     showMaintenance && (!isSearching || groupMatches("Maintenance") || filteredMaintenance.length > 0);
   const showHelpDeskGroup =
     showHelpDesk && (!isSearching || groupMatches("Help Desk") || filteredHelpDesk.length > 0);
+  const showTenantVerificationGroup =
+    showTenantVerification &&
+    (!isSearching || groupMatches("Tenant Verification") || filteredTenantVerification.length > 0);
   const showAdminGroup = !isSearching || filteredAdmin.length > 0;
 
   const noResults =
@@ -125,10 +146,12 @@ function NavLinks({ pathname, role, permissions, userEmail, helpDeskEnabled, onN
     visibleItemsFiltered.length === 0 &&
     !showMaintenanceGroup &&
     !showHelpDeskGroup &&
+    !showTenantVerificationGroup &&
     !showAdminGroup;
 
   const maintExpanded = isSearching ? true : maintOpen;
   const helpDeskExpanded = isSearching ? true : helpDeskOpen;
+  const tenantVerificationExpanded = isSearching ? true : tenantVerificationOpen;
 
   return (
     <nav className="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto">
@@ -270,6 +293,50 @@ function NavLinks({ pathname, role, permissions, userEmail, helpDeskEnabled, onN
         </div>
       )}
 
+      {/* Tenant Verification expandable group */}
+      {showTenantVerificationGroup && (
+        <div>
+          <button
+            onClick={() => setTenantVerificationOpen((o) => !o)}
+            className={cn(
+              "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150",
+              isTenantVerificationActive
+                ? "bg-primary text-primary-foreground shadow-sm"
+                : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+            )}
+          >
+            <User className="h-4 w-4 shrink-0" />
+            <span className="flex-1 text-left">Tenant Verification</span>
+            {tenantVerificationExpanded
+              ? <ChevronDown className="h-3.5 w-3.5 shrink-0" />
+              : <ChevronRight className="h-3.5 w-3.5 shrink-0" />}
+          </button>
+          {tenantVerificationExpanded && (
+            <div className="ml-6 mt-0.5 space-y-0.5 border-l border-border pl-3">
+              {filteredTenantVerification.map(({ href, label, icon: Icon }) => {
+                const active = pathname === href || (href !== "/admin/tenant-verification" && pathname.startsWith(href + "/"));
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    onClick={onNavigate}
+                    className={cn(
+                      "flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm font-medium transition-all duration-150",
+                      active
+                        ? "bg-primary/15 text-primary"
+                        : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                    )}
+                  >
+                    <Icon className="h-3.5 w-3.5 shrink-0" />
+                    {label}
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Admin-only items */}
       {showAdminGroup && filteredAdmin.map(({ href, label, icon: Icon }) => {
         const active = pathname === href || pathname.startsWith(href + "/");
@@ -296,7 +363,7 @@ function NavLinks({ pathname, role, permissions, userEmail, helpDeskEnabled, onN
   );
 }
 
-function SidebarContent({ user, role, permissions, helpDeskEnabled, onNavigate }: Props & { onNavigate?: () => void; helpDeskEnabled: boolean }) {
+function SidebarContent({ user, role, permissions, helpDeskEnabled, tenantVerificationEnabled, onNavigate }: Props & { onNavigate?: () => void; helpDeskEnabled: boolean; tenantVerificationEnabled: boolean }) {
   const pathname = usePathname();
 
   return (
@@ -313,7 +380,7 @@ function SidebarContent({ user, role, permissions, helpDeskEnabled, onNavigate }
         </div>
       </div>
 
-      <NavLinks pathname={pathname} role={role} permissions={permissions} userEmail={user.email} helpDeskEnabled={helpDeskEnabled} onNavigate={onNavigate} />
+      <NavLinks pathname={pathname} role={role} permissions={permissions} userEmail={user.email} helpDeskEnabled={helpDeskEnabled} tenantVerificationEnabled={tenantVerificationEnabled} onNavigate={onNavigate} />
 
       <Separator />
 
@@ -339,7 +406,7 @@ function SidebarContent({ user, role, permissions, helpDeskEnabled, onNavigate }
   );
 }
 
-export default function SidebarNav({ user, role, permissions, helpDeskEnabled }: Props) {
+export default function SidebarNav({ user, role, permissions, helpDeskEnabled, tenantVerificationEnabled }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -360,14 +427,14 @@ export default function SidebarNav({ user, role, permissions, helpDeskEnabled }:
             </SheetTrigger>
             <SheetContent side="left" className="w-64 p-0 border-0">
               <SheetTitle className="sr-only">Navigation</SheetTitle>
-              <SidebarContent user={user} role={role} permissions={permissions} helpDeskEnabled={helpDeskEnabled} onNavigate={() => setOpen(false)} />
+              <SidebarContent user={user} role={role} permissions={permissions} helpDeskEnabled={helpDeskEnabled} tenantVerificationEnabled={tenantVerificationEnabled} onNavigate={() => setOpen(false)} />
             </SheetContent>
           </Sheet>
         </div>
       </div>
 
       <div className="hidden md:flex w-64 h-full shrink-0 flex-col">
-        <SidebarContent user={user} role={role} permissions={permissions} helpDeskEnabled={helpDeskEnabled} />
+        <SidebarContent user={user} role={role} permissions={permissions} helpDeskEnabled={helpDeskEnabled} tenantVerificationEnabled={tenantVerificationEnabled} />
       </div>
     </>
   );

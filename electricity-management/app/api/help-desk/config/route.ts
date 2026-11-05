@@ -21,7 +21,7 @@ const upsertSingleton = () =>
 export async function GET() {
   const session = await auth();
   const role = (session?.user as any)?.role as string | undefined;
-  if (role !== "ADMIN" && role !== "MANAGER") {
+  if (!session || (role !== "ADMIN" && role !== "MANAGER" && role !== "RESIDENT")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const config = await upsertSingleton();

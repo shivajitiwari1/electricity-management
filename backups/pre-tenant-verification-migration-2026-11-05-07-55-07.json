@@ -1,0 +1,41 @@
+{
+  "takenAt": "2026-11-05T07:55:07.857Z",
+  "database": "electricity_management",
+  "note": "Targeted backup before 20261105_add_tenant_verification migration. SiteConfig (only table the migration alters) + full table row counts.",
+  "tableCounts": {
+    "User": 420,
+    "Resident": 417,
+    "Connection": 417,
+    "Rate": 1,
+    "MeterReading": 1599,
+    "Bill": 1593,
+    "Payment": 1279,
+    "AuditLog": 3964,
+    "FlatInfo": 416,
+    "_prisma_migrations": 9,
+    "Permission": 26,
+    "MaintenanceRate": 1,
+    "MaintenanceBill": 222,
+    "MaintenancePayment": 112,
+    "SiteConfig": 1,
+    "TicketCategory": 16,
+    "TicketSubcategory": 0,
+    "Ticket": 2,
+    "TicketComment": 2,
+    "TicketAttachment": 0,
+    "EscalationRule": 0,
+    "EscalationStep": 0,
+    "AssignmentRule": 1,
+    "AssignmentSlot": 1
+  },
+  "siteConfig": [
+    {
+      "id": "singleton",
+      "maintenanceMode": 0,
+      "cgstRate": "9.00",
+      "sgstRate": "9.00",
+      "maintenanceBillingEnabled": 0,
+      "helpDeskEnabled": 1
+    }
+  ]
+}

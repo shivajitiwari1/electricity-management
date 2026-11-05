@@ -21,11 +21,19 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const permissions = await prisma.permission.findMany({
-    orderBy: [{ role: "asc" }, { page: "asc" }],
-  });
+  try {
+    const permissions = await prisma.permission.findMany({
+      orderBy: [{ role: "asc" }, { page: "asc" }],
+    });
 
-  return NextResponse.json(permissions);
+    return NextResponse.json(permissions);
+  } catch (error: any) {
+    console.error("Permissions GET error:", error?.message ?? error);
+    return NextResponse.json(
+      { error: "Failed to load permissions" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function PUT(req: NextRequest) {
@@ -49,15 +57,24 @@ export async function PUT(req: NextRequest) {
     );
   }
 
-  await prisma.$transaction(
-    parsed.data.permissions.map(({ page, canRead, canWrite, canDelete }) =>
-      prisma.permission.update({
-        where: { role_page: { role: "MANAGER", page } },
-        data: { canRead, canWrite, canDelete },
-      })
-    )
-  );
+  try {
+    await prisma.$transaction(async (tx) => {
+      for (const { page, canRead, canWrite, canDelete } of parsed.data.permissions) {
+        await tx.permission.update({
+          where: { role_page: { role: "MANAGER", page } },
+          data: { canRead, canWrite, canDelete },
+        });
+      }
+    }, { maxWait: 10000, timeout: 30000 });
+  } catch (error: any) {
+    console.error("Permissions PUT error:", error);
+    const detail = String(error?.message ?? (typeof error === "string" ? error : "Unknown error")).slice(0, 2000);
+    return NextResponse.json(
+      { error: `Failed to save permissions: ${detail}` },
+      { status: 500 }
+    );
+  }
 
-  revalidateTag("permissions", {});
+  revalidateTag("permissions", "max");
   return NextResponse.json({ success: true });
 }

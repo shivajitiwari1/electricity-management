@@ -43,52 +43,55 @@ enum PaymentStatus {
 }
 
 model User {
-  id        String     @id @default(cuid())
-  name      String
-  email     String     @unique
-  password  String
-  role      Role
-  isActive  Boolean    @default(true)
-  createdAt DateTime   @default(now())
-  resident  Resident?
-  auditLogs AuditLog[]
-  createdTickets Ticket[] @relation("TicketCreatedBy")
-  assignedTickets Ticket[] @relation("TicketAssignee")
-  ticketComments TicketComment[]
-  ticketUploads TicketAttachment[]
-  assignmentRules AssignmentRule[]
+  id                      String                   @id @default(cuid())
+  name                    String
+  email                   String                   @unique
+  password                String
+  role                    Role
+  isActive                Boolean                  @default(true)
+  createdAt               DateTime                 @default(now())
+  resident                Resident?
+  auditLogs               AuditLog[]
+  createdTickets          Ticket[]                 @relation("TicketCreatedBy")
+  assignedTickets         Ticket[]                 @relation("TicketAssignee")
+  ticketComments          TicketComment[]
+  ticketUploads           TicketAttachment[]
+  assignmentRules         AssignmentRule[]
+  tenantApplicationAudits TenantApplicationAudit[]
 }
 
 model Resident {
-  id             String       @id @default(cuid())
-  userId         String       @unique
-  user           User         @relation(fields: [userId], references: [id])
-  residentNumber String       @unique
-  phone          String?
-  tenantName     String?
-  tenantPhone    String?
-  createdAt      DateTime     @default(now())
-  connections    Connection[]
-  tickets        Ticket[]
+  id                 String              @id @default(cuid())
+  userId             String              @unique
+  user               User                @relation(fields: [userId], references: [id])
+  residentNumber     String              @unique
+  phone              String?
+  tenantName         String?
+  tenantPhone        String?
+  createdAt          DateTime            @default(now())
+  connections        Connection[]
+  tickets            Ticket[]
+  tenantApplications TenantApplication[]
 }
 
 model Connection {
-  id             String           @id @default(cuid())
-  residentId     String
-  resident       Resident         @relation(fields: [residentId], references: [id])
-  tower          String
-  floor          String
-  flatNo         String           @unique
-  unitType       String
-  unitArea       Int
-  meterNo        String?
-  sanctionedLoad Decimal
-  status         ConnectionStatus @default(ACTIVE)
-  connectedAt    DateTime         @default(now())
-  meterReadings  MeterReading[]
-  bills            Bill[]
-  maintenanceBills MaintenanceBill[]
-  tickets          Ticket[]
+  id                 String              @id @default(cuid())
+  residentId         String
+  resident           Resident            @relation(fields: [residentId], references: [id])
+  tower              String
+  floor              String
+  flatNo             String              @unique
+  unitType           String
+  unitArea           Int
+  meterNo            String?
+  sanctionedLoad     Decimal
+  status             ConnectionStatus    @default(ACTIVE)
+  connectedAt        DateTime            @default(now())
+  meterReadings      MeterReading[]
+  bills              Bill[]
+  maintenanceBills   MaintenanceBill[]
+  tickets            Ticket[]
+  tenantApplications TenantApplication[]
 }
 
 model Rate {
@@ -141,8 +144,8 @@ model Bill {
   // Set when this bill's unpaid balance was rolled into a later bill's previousDues.
   // Such a bill is no longer separately payable — the later bill carries the amount.
   carriedForwardToId String?
-  carriedForwardTo   Bill?        @relation("BillCarryForward", fields: [carriedForwardToId], references: [id], onDelete: SetNull)
-  carriedForwardFrom Bill[]       @relation("BillCarryForward")
+  carriedForwardTo   Bill?   @relation("BillCarryForward", fields: [carriedForwardToId], references: [id], onDelete: SetNull)
+  carriedForwardFrom Bill[]  @relation("BillCarryForward")
 
   @@index([carriedForwardToId])
 }
@@ -170,12 +173,12 @@ enum MaintenanceBillStatus {
 }
 
 model MaintenanceRate {
-  id            String            @id @default(cuid())
-  ratePerSqFt   Decimal           @db.Decimal(10, 2)
+  id            String   @id @default(cuid())
+  ratePerSqFt   Decimal  @db.Decimal(10, 2)
   effectiveFrom DateTime
-  createdAt     DateTime          @default(now())
+  createdAt     DateTime @default(now())
 
-  bills         MaintenanceBill[]
+  bills MaintenanceBill[]
 }
 
 model MaintenanceBill {
@@ -196,8 +199,8 @@ model MaintenanceBill {
   status             MaintenanceBillStatus @default(PENDING)
   createdAt          DateTime              @default(now())
 
-  connection Connection          @relation(fields: [connectionId], references: [id])
-  rate       MaintenanceRate     @relation(fields: [maintenanceRateId], references: [id])
+  connection Connection           @relation(fields: [connectionId], references: [id])
+  rate       MaintenanceRate      @relation(fields: [maintenanceRateId], references: [id])
   payments   MaintenancePayment[]
 }
 
@@ -254,6 +257,7 @@ model SiteConfig {
   maintenanceMode           Boolean @default(false)
   maintenanceBillingEnabled Boolean @default(false)
   helpDeskEnabled           Boolean @default(false)
+  tenantVerificationEnabled Boolean @default(false)
   cgstRate                  Decimal @default(9) @db.Decimal(5, 2)
   sgstRate                  Decimal @default(9) @db.Decimal(5, 2)
 }
@@ -287,59 +291,59 @@ enum AssignmentSlotKind {
 }
 
 model TicketCategory {
-  id              String   @id @default(cuid())
-  name            String   @unique
-  sortOrder       Int      @default(0)
-  createdAt       DateTime @default(now())
+  id        String   @id @default(cuid())
+  name      String   @unique
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
 
-  subCategories  TicketSubcategory[]
-  tickets        Ticket[]
+  subCategories   TicketSubcategory[]
+  tickets         Ticket[]
   escalationRules EscalationRule[]
   assignmentRules AssignmentRule[]
 }
 
 model TicketSubcategory {
-  id         String         @id @default(cuid())
+  id         String   @id @default(cuid())
   categoryId String
   name       String
-  sortOrder  Int            @default(0)
-  createdAt  DateTime       @default(now())
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
 
-  category   TicketCategory   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  tickets    Ticket[]
+  category        TicketCategory   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  tickets         Ticket[]
   assignmentRules AssignmentRule[]
 
   @@unique([categoryId, name])
 }
 
 model Ticket {
-  id              String   @id @default(cuid())
-  ticketNumber    String   @unique
+  id              String         @id @default(cuid())
+  ticketNumber    String         @unique
   residentId      String
   connectionId    String?
   categoryId      String
   subcategoryId   String?
   assigneeId      String?
   createdById     String
-  description     String   @db.Text
+  description     String         @db.Text
   priority        TicketPriority @default(MEDIUM)
   status          TicketStatus   @default(OPEN)
   complaintType   ComplaintType  @default(PERSONAL)
-  escalationLevel Int       @default(0)
+  escalationLevel Int            @default(0)
   slaDueAt        DateTime?
   lastEscalatedAt DateTime?
   closedAt        DateTime?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
 
-  resident        Resident  @relation(fields: [residentId], references: [id])
-  connection      Connection? @relation(fields: [connectionId], references: [id], onDelete: SetNull)
-  category        TicketCategory @relation(fields: [categoryId], references: [id])
-  subcategory     TicketSubcategory? @relation(fields: [subcategoryId], references: [id], onDelete: SetNull)
-  assignee        User? @relation("TicketAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
-  createdBy       User   @relation("TicketCreatedBy", fields: [createdById], references: [id])
-  comments        TicketComment[]
-  attachments     TicketAttachment[]
+  resident    Resident           @relation(fields: [residentId], references: [id])
+  connection  Connection?        @relation(fields: [connectionId], references: [id], onDelete: SetNull)
+  category    TicketCategory     @relation(fields: [categoryId], references: [id])
+  subcategory TicketSubcategory? @relation(fields: [subcategoryId], references: [id], onDelete: SetNull)
+  assignee    User?              @relation("TicketAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  createdBy   User               @relation("TicketCreatedBy", fields: [createdById], references: [id])
+  comments    TicketComment[]
+  attachments TicketAttachment[]
 
   @@index([status])
   @@index([residentId])
@@ -357,38 +361,38 @@ model TicketComment {
   isInternal Boolean  @default(false)
   createdAt  DateTime @default(now())
 
-  ticket     Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
-  author     User     @relation(fields: [authorId], references: [id])
+  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  author User   @relation(fields: [authorId], references: [id])
 
   @@index([ticketId])
 }
 
 model TicketAttachment {
-  id          String   @id @default(cuid())
-  ticketId    String
+  id           String   @id @default(cuid())
+  ticketId     String
   uploadedById String?
-  fileName    String
-  mimeType    String
-  sizeBytes   Int
-  data        Bytes    @db.MediumBlob
-  createdAt   DateTime @default(now())
+  fileName     String
+  mimeType     String
+  sizeBytes    Int
+  data         Bytes    @db.MediumBlob
+  createdAt    DateTime @default(now())
 
-  ticket      Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
-  uploadedBy  User?    @relation(fields: [uploadedById], references: [id], onDelete: SetNull)
+  ticket     Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  uploadedBy User?  @relation(fields: [uploadedById], references: [id], onDelete: SetNull)
 
   @@index([ticketId])
 }
 
 model EscalationRule {
-  id         String   @id @default(cuid())
+  id         String         @id @default(cuid())
   categoryId String
   priority   TicketPriority
-  isActive   Boolean  @default(true)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  isActive   Boolean        @default(true)
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
 
-  category   TicketCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  steps      EscalationStep[]
+  category TicketCategory   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  steps    EscalationStep[]
 
   @@unique([categoryId, priority])
 }
@@ -398,12 +402,12 @@ model EscalationStep {
   ruleId       String
   level        Int
   timeValue    Int
-  timeUnit     String @db.VarChar(20) @default("MINUTES")
+  timeUnit     String @default("MINUTES") @db.VarChar(20)
   contactName  String
   contactEmail String
   contactPhone String
 
-  rule         EscalationRule @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+  rule EscalationRule @relation(fields: [ruleId], references: [id], onDelete: Cascade)
 
   @@unique([ruleId, level])
 }
@@ -416,10 +420,10 @@ model AssignmentRule {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  category      TicketCategory   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  subcategory   TicketSubcategory? @relation(fields: [subcategoryId], references: [id], onDelete: SetNull)
-  assignee      User             @relation(fields: [assigneeId], references: [id])
-  slots         AssignmentSlot[]
+  category    TicketCategory     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  subcategory TicketSubcategory? @relation(fields: [subcategoryId], references: [id], onDelete: SetNull)
+  assignee    User               @relation(fields: [assigneeId], references: [id])
+  slots       AssignmentSlot[]
 
   @@index([categoryId])
   @@index([subcategoryId])
@@ -427,14 +431,120 @@ model AssignmentRule {
 }
 
 model AssignmentSlot {
-  id        String            @id @default(cuid())
+  id        String             @id @default(cuid())
   ruleId    String
   kind      AssignmentSlotKind
-  startTime String            @db.VarChar(5)
-  endTime   String            @db.VarChar(5)
-  day       String            @db.VarChar(20) @default("EVERYDAY")
+  startTime String             @db.VarChar(5)
+  endTime   String             @db.VarChar(5)
+  day       String             @default("EVERYDAY") @db.VarChar(20)
 
-  rule      AssignmentRule    @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+  rule AssignmentRule @relation(fields: [ruleId], references: [id], onDelete: Cascade)
 
   @@index([ruleId])
+}
+
+enum TenantApplicationStatus {
+  PENDING
+  DOCUMENTS_SUBMITTED
+  OWNER_APPROVED
+  OWNER_REJECTED
+  POLICE_VERIFICATION_PENDING
+  POLICE_VERIFIED
+  POLICE_VERIFICATION_FAILED
+  MANAGEMENT_APPROVED
+  MANAGEMENT_REJECTED
+  ACTIVE
+  INACTIVE
+}
+
+enum VerificationDocumentType {
+  ID_PROOF
+  ADDRESS_PROOF
+  RENT_AGREEMENT
+  NOC
+  PHOTO
+  OTHER
+}
+
+model TenantApplication {
+  id                    String                  @id @default(cuid())
+  applicationNumber     String                  @unique
+  residentId            String?
+  connectionId          String?
+  tenantName            String
+  tenantPhone           String
+  tenantEmail           String?
+  tenantIdProof         String?
+  moveInDate            DateTime?
+  moveOutDate           DateTime?
+  status                TenantApplicationStatus @default(PENDING)
+  ownerApprovedAt       DateTime?
+  ownerApprovedBy       String?
+  managementApprovedAt  DateTime?
+  managementApprovedBy  String?
+  policeVerifiedAt      DateTime?
+  policeVerificationRef String?
+  applicationToken      String                  @unique
+  otpExpiresAt          DateTime?
+  otpVerified           Boolean                 @default(false)
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
+
+  resident   Resident?                @relation(fields: [residentId], references: [id], onDelete: SetNull)
+  connection Connection?              @relation(fields: [connectionId], references: [id], onDelete: SetNull)
+  documents  TenantDocument[]
+  family     TenantFamilyMember[]
+  auditLogs  TenantApplicationAudit[]
+
+  @@index([status])
+  @@index([applicationNumber])
+  @@index([connectionId])
+  @@index([applicationToken])
+}
+
+model TenantDocument {
+  id            String                   @id @default(cuid())
+  applicationId String
+  application   TenantApplication        @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  documentType  VerificationDocumentType
+  fileName      String
+  mimeType      String
+  sizeBytes     Int
+  data          Bytes                    @db.MediumBlob
+  verified      Boolean                  @default(false)
+  verifiedBy    String?
+  verifiedAt    DateTime?
+  createdAt     DateTime                 @default(now())
+  uploadedBy    String?
+
+  @@index([applicationId])
+}
+
+model TenantFamilyMember {
+  id            String            @id @default(cuid())
+  applicationId String
+  application   TenantApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  fullName      String
+  relation      String
+  age           Int?
+  idProof       String?
+  createdAt     DateTime          @default(now())
+
+  @@index([applicationId])
+}
+
+model TenantApplicationAudit {
+  id            String                   @id @default(cuid())
+  applicationId String
+  application   TenantApplication        @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  userId        String?
+  user          User?                    @relation(fields: [userId], references: [id])
+  action        String
+  fromStatus    TenantApplicationStatus?
+  toStatus      TenantApplicationStatus?
+  meta          Json?
+  createdAt     DateTime                 @default(now())
+
+  @@index([applicationId])
+  @@index([createdAt])
 }
