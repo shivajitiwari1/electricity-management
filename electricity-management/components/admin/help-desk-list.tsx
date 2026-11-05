@@ -7,6 +7,15 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 import { toast } from "sonner";
 import {
   formatTicketPriority,
@@ -15,7 +24,7 @@ import {
   statusBadgeClass,
   priorityBadgeClass,
 } from "@/lib/help-desk-format";
-import { Download, LifeBuoy, MessageSquare, Plus, Search, X } from "lucide-react";
+import { Check, ChevronsUpDown, Download, LifeBuoy, MessageSquare, Plus, Search, X } from "lucide-react";
 
 type Category = {
   id: string;
@@ -63,6 +72,12 @@ export default function AdminHelpDeskList() {
   const [assigneeId, setAssigneeId] = useState("");
   const [description, setDescription] = useState("");
   const [files, setFiles] = useState<FileList | null>(null);
+
+  // Searchable dropdown state
+  const [residentOpen, setResidentOpen] = useState(false);
+  const [residentSearch, setResidentSearch] = useState("");
+  const [locationOpen, setLocationOpen] = useState(false);
+  const [locationSearch, setLocationSearch] = useState("");
 
   async function load() {
     const [ticketsRes, optionsRes] = await Promise.all([
@@ -123,6 +138,17 @@ export default function AdminHelpDeskList() {
 
   const selectedResident = options.residents?.find((resident) => resident.id === residentId);
   const selectedCategory = options.categories?.find((category) => category.id === categoryId);
+  const selectedConnection = selectedResident?.connections.find((c) => c.id === connectionId);
+
+  const filteredResidents = options.residents?.filter((resident) => {
+    const q = residentSearch.toLowerCase();
+    return !q || resident.name.toLowerCase().includes(q) || resident.email.toLowerCase().includes(q);
+  }) ?? [];
+
+  const filteredConnections = selectedResident?.connections.filter((c) => {
+    const q = locationSearch.toLowerCase();
+    return !q || c.tower.toLowerCase().includes(q) || c.flatNo.toLowerCase().includes(q);
+  }) ?? [];
 
   async function submitComplaint() {
     if (!residentId) return toast.error("Select a resident");
@@ -164,6 +190,8 @@ export default function AdminHelpDeskList() {
       setShowNew(false);
       setResidentId("");
       setConnectionId("");
+      setResidentSearch("");
+      setLocationSearch("");
       setCategoryId("");
       setSubcategoryId("");
       setPriority("MEDIUM");
@@ -275,7 +303,7 @@ export default function AdminHelpDeskList() {
           <div className="bg-card w-full max-w-2xl rounded-xl shadow-lg max-h-[95vh] overflow-y-auto">
             <div className="flex items-center justify-between px-5 py-4 border-b">
               <h2 className="text-lg font-semibold">Log New Complaint</h2>
-              <button onClick={() => setShowNew(false)} className="rounded-md p-1 hover:bg-accent">
+              <button onClick={() => { setShowNew(false); setResidentSearch(""); setLocationSearch(""); }} className="rounded-md p-1 hover:bg-accent">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -283,21 +311,72 @@ export default function AdminHelpDeskList() {
               <div className="grid sm:grid-cols-2 gap-3">
                 <div className="sm:col-span-2 space-y-1.5">
                   <label className="text-sm font-medium">Select Resident *</label>
-                  <select className="w-full h-10 rounded-md border border-input bg-background px-3" value={residentId} onChange={(event) => { setResidentId(event.target.value); setConnectionId(""); }}>
-                    <option value="">Select resident</option>
-                    {options.residents?.map((resident) => (
-                      <option key={resident.id} value={resident.id}>{resident.name}</option>
-                    ))}
-                  </select>
+                  <Popover open={residentOpen} onOpenChange={(o) => { setResidentOpen(o); if (!o) setResidentSearch(""); }}>
+                    <PopoverTrigger className="inline-flex w-full items-center justify-between gap-2 rounded-lg border border-input bg-transparent px-3 py-2 text-sm font-normal whitespace-nowrap transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                      {selectedResident ? selectedResident.name : <span className="text-muted-foreground">Select resident</span>}
+                      <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[420px] p-0" align="start">
+                      <Command shouldFilter={false}>
+                        <CommandInput placeholder="Search resident…" value={residentSearch} onValueChange={setResidentSearch} />
+                        <CommandList className="max-h-64">
+                          <CommandEmpty>No residents found</CommandEmpty>
+                          <CommandGroup heading={`${filteredResidents.length} resident${filteredResidents.length !== 1 ? "s" : ""}`}>
+                            {filteredResidents.map((resident) => (
+                              <CommandItem
+                                key={resident.id}
+                                value={resident.id}
+                                onSelect={() => {
+                                  setResidentId(resident.id);
+                                  setConnectionId("");
+                                  setResidentSearch("");
+                                  setResidentOpen(false);
+                                }}
+                              >
+                                <Check className={`mr-2 h-4 w-4 ${residentId === resident.id ? "opacity-100" : "opacity-0"}`} />
+                                <span className="font-medium">{resident.name}</span>
+                                <span className="ml-2 text-muted-foreground text-xs">{resident.email}</span>
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
                 </div>
                 <div className="sm:col-span-2 space-y-1.5">
                   <label className="text-sm font-medium">Complaint Location *</label>
-                  <select className="w-full h-10 rounded-md border border-input bg-background px-3" value={connectionId} onChange={(event) => setConnectionId(event.target.value)}>
-                    <option value="">Select location</option>
-                    {selectedResident?.connections.map((connection) => (
-                      <option key={connection.id} value={connection.id}>{connection.tower}-{connection.flatNo}</option>
-                    ))}
-                  </select>
+                  <Popover open={locationOpen} onOpenChange={(o) => { setLocationOpen(o); if (!o) setLocationSearch(""); }}>
+                    <PopoverTrigger className="inline-flex w-full items-center justify-between gap-2 rounded-lg border border-input bg-transparent px-3 py-2 text-sm font-normal whitespace-nowrap transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" disabled={!residentId}>
+                      {selectedConnection ? `${selectedConnection.tower}-${selectedConnection.flatNo}` : <span className="text-muted-foreground">Select location</span>}
+                      <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[420px] p-0" align="start">
+                      <Command shouldFilter={false}>
+                        <CommandInput placeholder="Search flat or resident…" value={locationSearch} onValueChange={setLocationSearch} />
+                        <CommandList className="max-h-64">
+                          <CommandEmpty>No locations found</CommandEmpty>
+                          <CommandGroup heading={`${filteredConnections.length} location${filteredConnections.length !== 1 ? "s" : ""}`}>
+                            {filteredConnections.map((connection) => (
+                              <CommandItem
+                                key={connection.id}
+                                value={connection.id}
+                                disabled={!residentId}
+                                onSelect={() => {
+                                  setConnectionId(connection.id);
+                                  setLocationSearch("");
+                                  setLocationOpen(false);
+                                }}
+                              >
+                                <Check className={`mr-2 h-4 w-4 ${connectionId === connection.id ? "opacity-100" : "opacity-0"}`} />
+                                <span className="font-medium">{connection.tower}-{connection.flatNo}</span>
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
                 </div>
                 <div className="space-y-1.5">
                   <label className="text-sm font-medium">Priority *</label>
