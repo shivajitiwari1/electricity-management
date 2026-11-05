@@ -467,34 +467,56 @@ enum VerificationDocumentType {
 }
 
 model TenantApplication {
-  id                    String                  @id @default(cuid())
-  applicationNumber     String                  @unique
-  residentId            String?
-  connectionId          String?
-  tenantName            String
-  tenantPhone           String
-  tenantEmail           String?
-  tenantIdProof         String?
-  moveInDate            DateTime?
-  moveOutDate           DateTime?
-  status                TenantApplicationStatus @default(PENDING)
-  ownerApprovedAt       DateTime?
-  ownerApprovedBy       String?
-  managementApprovedAt  DateTime?
-  managementApprovedBy  String?
-  policeVerifiedAt      DateTime?
-  policeVerificationRef String?
-  applicationToken      String                  @unique
-  otpExpiresAt          DateTime?
-  otpVerified           Boolean                 @default(false)
-  createdAt             DateTime                @default(now())
-  updatedAt             DateTime                @updatedAt
+  id                       String                  @id @default(cuid())
+  applicationNumber        String                  @unique
+  residentId               String?
+  connectionId             String?
+  tenantName               String
+  tenantPhone              String
+  tenantEmail              String?
+  tenantIdProof            String?
+  moveInDate               DateTime?
+  moveOutDate              DateTime?
+  tenancyFrom              DateTime?
+  tenancyTo                DateTime?
+  permanentAddress         String?
+  fatherSpouseName         String?
+  dateOfBirth              DateTime?
+  occupation               String?
+  employer                 String?
+  officeAddress            String?
+  nationality              String?
+  maritalStatus            String?
+  previousAddress          String?
+  emergencyContactName     String?
+  emergencyContactRelation String?
+  emergencyContactMobile   String?
+  consentAccepted          Boolean      @default(false)
+  consentVersion           String?
+  consentAcceptedAt        DateTime?
+  policeStatus             String?
+  status                   TenantApplicationStatus @default(PENDING)
+  ownerApprovedAt          DateTime?
+  ownerApprovedBy          String?
+  managementApprovedAt     DateTime?
+  managementApprovedBy     String?
+  policeVerifiedAt         DateTime?
+  policeVerificationRef    String?
+  applicationToken         String                  @unique
+  otpExpiresAt             DateTime?
+  otpVerified              Boolean                 @default(false)
+  tower                    String?
+  flatNo                   String?
+  createdAt                DateTime                @default(now())
+  updatedAt                DateTime                @updatedAt
 
-  resident   Resident?                @relation(fields: [residentId], references: [id], onDelete: SetNull)
-  connection Connection?              @relation(fields: [connectionId], references: [id], onDelete: SetNull)
-  documents  TenantDocument[]
-  family     TenantFamilyMember[]
-  auditLogs  TenantApplicationAudit[]
+  resident               Resident?                @relation(fields: [residentId], references: [id], onDelete: SetNull)
+  connection             Connection?              @relation(fields: [connectionId], references: [id], onDelete: SetNull)
+  documents              TenantDocument[]
+  family                 TenantFamilyMember[]
+  vehicles               TenantVehicle[]
+  auditLogs              TenantApplicationAudit[]
+  tenantNotificationLogs TenantNotificationLog[]
 
   @@index([status])
   @@index([applicationNumber])
@@ -547,4 +569,67 @@ model TenantApplicationAudit {
 
   @@index([applicationId])
   @@index([createdAt])
+}
+
+enum PoliceStatus {
+  COMPLETED
+  APPLIED_IN_PROCESS
+  NOT_YET_APPLIED
+}
+
+enum DocumentReviewStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+  NEEDS_REPLACEMENT
+}
+
+model TenantVehicle {
+  id             String            @id @default(cuid())
+  applicationId  String
+  application    TenantApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  vehicleType    String?
+  registrationNo String?
+  stickerRfidNo  String?
+  createdAt      DateTime          @default(now())
+
+  @@index([applicationId])
+}
+
+model TenantNotificationLog {
+  id                 String            @id @default(cuid())
+  applicationId      String
+  application        TenantApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  channel            String // EMAIL/WHATSAPP/IN_APP
+  template           String
+  recipientReference String? // masked phone/email
+  status             String // SENT/FAILED/PENDING
+  providerMessageId  String?
+  attemptCount       Int               @default(0)
+  errorCode          String? // safe to retain, no secrets
+  createdAt          DateTime          @default(now())
+
+  @@index([applicationId])
+  @@index([createdAt])
+}
+
+enum OtpPurpose {
+  APPLICATION_REGISTRATION
+  APPLICATION_LOGIN
+}
+
+model OtpSession {
+  id          String     @id @default(cuid())
+  phone       String
+  purpose     OtpPurpose @default(APPLICATION_REGISTRATION)
+  otpHash     String // bcrypt hash of OTP, never plaintext
+  attempts    Int        @default(0)
+  maxAttempts Int        @default(5)
+  expiresAt   DateTime
+  verified    Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+
+  @@index([phone])
+  @@index([expiresAt])
+  @@index([verified])
 }

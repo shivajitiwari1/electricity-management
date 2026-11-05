@@ -11,10 +11,11 @@ export default async function ResidentLayout({ children }: { children: React.Rea
   const siteConfig = await prisma.siteConfig.findUnique({ where: { id: "singleton" } });
   const maintenanceEnabled = siteConfig?.maintenanceBillingEnabled ?? false;
   const helpDeskEnabled = siteConfig?.helpDeskEnabled ?? false;
+  const tenantVerificationEnabled = siteConfig?.tenantVerificationEnabled ?? false;
 
   return (
     <div className="min-h-screen bg-background">
-      <ResidentNav user={session.user} maintenanceEnabled={maintenanceEnabled} helpDeskEnabled={helpDeskEnabled} />
+      <ResidentNav user={session.user} maintenanceEnabled={maintenanceEnabled} helpDeskEnabled={helpDeskEnabled} tenantVerificationEnabled={tenantVerificationEnabled} />
       <main className="max-w-5xl mx-auto px-4 py-6">
         {children}
       </main>

@@ -3,33 +3,38 @@ export const runtime = "nodejs";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { guardPermission } from "@/lib/permissions";
 import { guardTenantVerificationEnabled } from "@/lib/tenant-verification-config";
-import {
-  nextTenantApplicationNumber,
-  generateApplicationToken,
-} from "@/lib/tenant-verification";
+import { nextTenantApplicationNumber } from "@/lib/tenant-verification";
 import { z } from "zod";
 
-const createApplicationSchema = z.object({
-  residentId: z.string().min(1).optional(),
-  connectionId: z.string().min(1).optional(),
-  tenantName: z.string().trim().min(1).max(200),
-  tenantPhone: z.string().trim().min(1).max(20),
-  tenantEmail: z.string().email().optional().nullable(),
-  tenantIdProof: z.string().trim().min(1).max(100).optional().nullable(),
+const createDraftSchema = z.object({
+  flatId: z.string().min(1, "Select a flat"),
+  tenantName: z.string().min(1, "Full name is required"),
+  tenantPhone: z.string().min(10, "Phone is required"),
+  tenantEmail: z.string().email().optional().or(z.literal("")),
   moveInDate: z.string().datetime().optional().nullable(),
-  moveOutDate: z.string().datetime().optional().nullable(),
-  description: z.string().trim().max(2000).optional().nullable(),
+  tenancyFrom: z.string().datetime().optional().nullable(),
+  tenancyTo: z.string().datetime().optional().nullable(),
+  permanentAddress: z.string().optional().or(z.literal("")),
+  fatherSpouseName: z.string().optional().or(z.literal("")),
+  dateOfBirth: z.string().datetime().optional().nullable(),
+  occupation: z.string().optional().or(z.literal("")),
+  employer: z.string().optional().or(z.literal("")),
+  officeAddress: z.string().optional().or(z.literal("")),
+  nationality: z.string().optional().or(z.literal("")),
+  maritalStatus: z.string().optional().or(z.literal("")),
+  idProofType: z.string().optional().or(z.literal("")),
+  idProofLast4: z.string().optional().or(z.literal("")),
+  policeStatus: z.string().optional().or(z.literal("")),
+  policeRefNumber: z.string().optional().or(z.literal("")),
+  policeRefDate: z.string().datetime().optional().nullable(),
+  previousAddress: z.string().optional().or(z.literal("")),
+  emergencyContactName: z.string().optional().or(z.literal("")),
+  emergencyContactRelation: z.string().optional().or(z.literal("")),
+  emergencyContactMobile: z.string().optional().or(z.literal("")),
 });
 
 const applicationInclude = {
-  resident: {
-    include: {
-      user: { select: { id: true, name: true, email: true, phone: true } },
-    },
-  },
-  connection: { select: { id: true, flatNo: true, tower: true } },
   documents: {
     orderBy: { createdAt: "asc" as const },
     select: {
@@ -39,10 +44,7 @@ const applicationInclude = {
       mimeType: true,
       sizeBytes: true,
       verified: true,
-      verifiedBy: true,
-      verifiedAt: true,
       createdAt: true,
-      uploadedBy: true,
     },
   },
   family: {
@@ -52,11 +54,20 @@ const applicationInclude = {
       fullName: true,
       relation: true,
       age: true,
-      idProof: true,
+      mobileNo: true,
       createdAt: true,
     },
   },
-  _count: { select: { documents: true, family: true, auditLogs: true } },
+  vehicles: {
+    orderBy: { createdAt: "asc" as const },
+    select: {
+      id: true,
+      vehicleType: true,
+      registrationNo: true,
+      stickerRfidNo: true,
+      createdAt: true,
+    },
+  },
 } as const;
 
 export async function GET(req: NextRequest) {
@@ -66,42 +77,24 @@ export async function GET(req: NextRequest) {
   const disabled = await guardTenantVerificationEnabled();
   if (disabled) return disabled;
 
-  const role = (session.user as any).role as string;
   const userId = String((session.user as any).id ?? "");
+  const userEmail = (session.user as any).email as string | undefined;
+  const url = new URL(req.url);
+  const phoneParam = url.searchParams.get("phone");
+  const statusParam = url.searchParams.get("status");
 
+  // Build where clause: match by user link or phone
   const where: any = {};
 
-  if (role === "RESIDENT") {
-    const resident = await prisma.resident.findUnique({
-      where: { userId },
-      select: { id: true },
-    });
-    if (!resident) return NextResponse.json({ applications: [] });
-    where.residentId = resident.id;
-  } else if (role === "ADMIN" || role === "MANAGER") {
-    const guard = await guardPermission(
-      session as any,
-      "tenant-verification",
-      "canRead"
-    );
-    if (guard) return guard;
-  } else {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
-
-  const url = new URL(req.url);
-  const search = url.searchParams.get("search")?.trim();
-  const statusParam = url.searchParams.get("status")?.trim();
-
-  if (search) {
+  if (phoneParam) {
+    where.tenantPhone = phoneParam;
+  } else if (userEmail) {
     where.OR = [
-      { applicationNumber: { contains: search } },
-      { tenantName: { contains: search } },
-      { tenantPhone: { contains: search } },
-      { connection: { flatNo: { contains: search } } },
-      { connection: { tower: { contains: search } } },
-      { resident: { user: { name: { contains: search } } } },
+      { residentId: userId },
+      { tenantEmail: userEmail },
     ];
+  } else {
+    where.residentId = userId;
   }
 
   if (statusParam) {
@@ -117,7 +110,7 @@ export async function GET(req: NextRequest) {
       take: 500,
     });
   } catch (error: any) {
-    console.error("Tenant Verification applications GET error:", error?.message ?? error);
+    console.error("Tenant applications GET error:", error?.message ?? error);
     return NextResponse.json(
       { error: "Could not load applications: " + (error?.message ?? "unknown") },
       { status: 500 }
@@ -141,7 +134,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const parsed = createApplicationSchema.safeParse(body);
+  const parsed = createDraftSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
       { error: "Validation failed", details: parsed.error.flatten() },
@@ -150,95 +143,91 @@ export async function POST(req: NextRequest) {
   }
 
   const data = parsed.data;
-  const user = session.user as { id: string; role?: string };
-  const role = user.role;
+  const userId = String((session.user as any).id ?? "");
 
-  let residentId = data.residentId ?? null;
+  // Verify OTP is verified for this phone
+  const otpSession = await prisma.otpSession.findFirst({
+    where: {
+      phone: data.tenantPhone,
+      verified: true,
+      expiresAt: { gt: new Date() },
+    },
+    orderBy: { createdAt: "desc" },
+  });
 
-  if (role === "RESIDENT") {
-    const ownResident = await prisma.resident.findUnique({
-      where: { userId: user.id },
-      select: { id: true },
-    });
-    if (!ownResident) {
-      return NextResponse.json({ error: "Resident profile not found" }, { status: 404 });
-    }
-    residentId = ownResident.id;
-  } else {
-    if (!residentId) {
-      return NextResponse.json({ error: "Select Resident is required" }, { status: 400 });
-    }
-    const guard = await guardPermission(
-      session as any,
-      "tenant-verification",
-      "canWrite"
+  if (!otpSession) {
+    return NextResponse.json(
+      { error: "Phone not verified. Please complete OTP verification first." },
+      { status: 403 }
     );
-    if (guard) return guard;
   }
 
-  const resident = await prisma.resident.findUnique({
-    where: { id: residentId },
-    select: { id: true },
+  // Verify the flat exists
+  const connection = await prisma.connection.findUnique({
+    where: { id: data.flatId },
+    select: { id: true, flatNo: true, tower: true, residentId: true },
   });
-  if (!resident) return NextResponse.json({ error: "Resident not found" }, { status: 404 });
 
-  let connectionId = data.connectionId ?? null;
-  if (connectionId) {
-    const owned = await prisma.connection.findFirst({
-      where: { id: connectionId, residentId },
-      select: { id: true },
-    });
-    if (!owned) {
+  if (!connection) {
+    return NextResponse.json({ error: "Flat not found" }, { status: 404 });
+  }
+
+  // Validate date order: tenancyFrom <= tenancyTo
+  if (data.tenancyFrom && data.tenancyTo) {
+    if (new Date(data.tenancyFrom) > new Date(data.tenancyTo)) {
       return NextResponse.json(
-        { error: "Location does not belong to the selected resident" },
+        { error: "Tenancy 'From' date must be before 'To' date" },
         { status: 400 }
       );
     }
-  } else {
-    const connections = await prisma.connection.findMany({
-      where: { residentId },
-      select: { id: true, flatNo: true, tower: true },
-      orderBy: { flatNo: "asc" },
-    });
-    if (connections.length === 1) {
-      connectionId = connections[0].id;
-    } else if (connections.length > 1) {
-      return NextResponse.json({ error: "Select a location for the application" }, { status: 400 });
-    }
+  }
+
+  // Validate moveInDate is not in the future
+  if (data.moveInDate && new Date(data.moveInDate) > new Date()) {
+    return NextResponse.json(
+      { error: "Move-in date cannot be in the future" },
+      { status: 400 }
+    );
   }
 
   const applicationNumber = await nextTenantApplicationNumber();
-  const applicationToken = generateApplicationToken();
+  const applicationToken = crypto.randomUUID();
 
   const application = await prisma.$transaction(async (tx) => {
     const created = await tx.tenantApplication.create({
       data: {
         applicationNumber,
-        residentId: residentId!,
-        connectionId,
+        applicationToken,
+        residentId: connection.residentId,
+        connectionId: data.flatId,
         tenantName: data.tenantName,
         tenantPhone: data.tenantPhone,
-        tenantEmail: data.tenantEmail ?? null,
-        tenantIdProof: data.tenantIdProof ?? null,
+        tenantEmail: data.tenantEmail || null,
+        tenantIdProof: data.idProofLast4 || null,
         moveInDate: data.moveInDate ? new Date(data.moveInDate) : null,
-        moveOutDate: data.moveOutDate ? new Date(data.moveOutDate) : null,
+        moveOutDate: null,
         status: "PENDING",
-        applicationToken,
-        otpVerified: false,
+        tower: connection.tower,
+        flatNo: connection.flatNo,
+        policeStatus: data.policeStatus || null,
+        policeVerificationRef: data.policeRefNumber || null,
+        policeVerifiedAt: data.policeRefDate ? new Date(data.policeRefDate) : null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       include: applicationInclude as any,
     });
 
     await tx.auditLog.create({
       data: {
-        userId: user.id,
+        userId,
         action: "CREATE",
         entity: "TenantApplication",
         entityId: created.id,
         meta: {
           applicationNumber,
-          residentId: residentId,
-          connectionId,
+          flatId: data.flatId,
+          tenantName: data.tenantName,
         },
       },
     });

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
-import { Home, FileText, CreditCard, User, LogOut, Zap, Wrench, LifeBuoy } from "lucide-react";
+import { Home, FileText, CreditCard, User, LogOut, Zap, Wrench, LifeBuoy, ShieldUser } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 
@@ -20,9 +20,10 @@ interface Props {
   user: { name?: string | null; email?: string | null };
   maintenanceEnabled?: boolean;
   helpDeskEnabled?: boolean;
+  tenantVerificationEnabled?: boolean;
 }
 
-export default function ResidentNav({ user, maintenanceEnabled = false, helpDeskEnabled = false }: Props) {
+export default function ResidentNav({ user, maintenanceEnabled = false, helpDeskEnabled = false, tenantVerificationEnabled = false }: Props) {
   const pathname = usePathname();
 
   const navItems = [
@@ -33,6 +34,9 @@ export default function ResidentNav({ user, maintenanceEnabled = false, helpDesk
       ? [{ href: "/resident/maintenance", label: "Maintenance", icon: Wrench }]
       : []),
     ...(helpDeskEnabled ? [baseNavItems[3]] : []),
+    ...(tenantVerificationEnabled ? [
+      { href: "/resident/tenant-verification", label: "Tenant Verification", icon: ShieldUser }
+    ] : []),
     baseNavItems[4],
   ];
 

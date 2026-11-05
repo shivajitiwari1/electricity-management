@@ -17,8 +17,8 @@ export function formatDocumentType(type: VerificationDocumentType): string {
 
 export function formatStatus(status: TenantApplicationStatus): string {
   const map: Record<TenantApplicationStatus, string> = {
-    [TenantApplicationStatus.PENDING]: "Pending",
-    [TenantApplicationStatus.DOCUMENTS_SUBMITTED]: "Documents Submitted",
+    [TenantApplicationStatus.PENDING]: "Draft",
+    [TenantApplicationStatus.DOCUMENTS_SUBMITTED]: "Submitted",
     [TenantApplicationStatus.OWNER_APPROVED]: "Owner Approved",
     [TenantApplicationStatus.OWNER_REJECTED]: "Owner Rejected",
     [TenantApplicationStatus.POLICE_VERIFICATION_PENDING]:

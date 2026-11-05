@@ -30,7 +30,11 @@ export function generateApplicationToken() {
 }
 
 /**
- * Validates whether a status transition is allowed.
+ * Phase 1 workflow status transition matrix.
+ * Maps Phase 1 design statuses to existing database enum values.
+ *
+ * Phase 1: DRAFT → SUBMITTED → OWNER_PENDING → MANAGEMENT_PENDING → APPROVED/REJECTED
+ * DB enum: PENDING → DOCUMENTS_SUBMITTED → OWNER_APPROVED → POLICE_VERIFIED → MANAGEMENT_APPROVED/REJECTED
  */
 export const ALLOWED_TRANSITIONS: Record<
   TenantApplicationStatus,
@@ -38,7 +42,6 @@ export const ALLOWED_TRANSITIONS: Record<
 > = {
   [TenantApplicationStatus.PENDING]: [
     TenantApplicationStatus.DOCUMENTS_SUBMITTED,
-    TenantApplicationStatus.OWNER_REJECTED,
     TenantApplicationStatus.INACTIVE,
   ],
   [TenantApplicationStatus.DOCUMENTS_SUBMITTED]: [
@@ -87,6 +90,26 @@ export function isValidTransition(
   return ALLOWED_TRANSITIONS[from]?.includes(to) ?? false;
 }
 
+/**
+ * Maps a DB status to its Phase 1 workflow phase for display purposes.
+ */
+export function toWorkflowPhase(status: TenantApplicationStatus): string {
+  const map: Record<TenantApplicationStatus, string> = {
+    [TenantApplicationStatus.PENDING]: "DRAFT",
+    [TenantApplicationStatus.DOCUMENTS_SUBMITTED]: "SUBMITTED",
+    [TenantApplicationStatus.OWNER_APPROVED]: "OWNER_PENDING",
+    [TenantApplicationStatus.OWNER_REJECTED]: "REJECTED",
+    [TenantApplicationStatus.POLICE_VERIFICATION_PENDING]: "OWNER_PENDING",
+    [TenantApplicationStatus.POLICE_VERIFIED]: "MANAGEMENT_PENDING",
+    [TenantApplicationStatus.POLICE_VERIFICATION_FAILED]: "REJECTED",
+    [TenantApplicationStatus.MANAGEMENT_APPROVED]: "APPROVED",
+    [TenantApplicationStatus.MANAGEMENT_REJECTED]: "REJECTED",
+    [TenantApplicationStatus.ACTIVE]: "APPROVED",
+    [TenantApplicationStatus.INACTIVE]: "WITHDRAWN",
+  };
+  return map[status];
+}
+
 export function formatDocumentType(type: VerificationDocumentType): string {
   const map: Record<VerificationDocumentType, string> = {
     [VerificationDocumentType.ID_PROOF]: "ID Proof",
@@ -101,8 +124,8 @@ export function formatDocumentType(type: VerificationDocumentType): string {
 
 export function formatStatus(status: TenantApplicationStatus): string {
   const map: Record<TenantApplicationStatus, string> = {
-    [TenantApplicationStatus.PENDING]: "Pending",
-    [TenantApplicationStatus.DOCUMENTS_SUBMITTED]: "Documents Submitted",
+    [TenantApplicationStatus.PENDING]: "Draft",
+    [TenantApplicationStatus.DOCUMENTS_SUBMITTED]: "Submitted",
     [TenantApplicationStatus.OWNER_APPROVED]: "Owner Approved",
     [TenantApplicationStatus.OWNER_REJECTED]: "Owner Rejected",
     [TenantApplicationStatus.POLICE_VERIFICATION_PENDING]:
