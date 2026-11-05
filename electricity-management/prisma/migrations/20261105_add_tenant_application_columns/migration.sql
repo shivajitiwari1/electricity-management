@@ -17,3 +17,5 @@ ALTER TABLE `TenantApplication` ADD COLUMN `consentAccepted` BOOLEAN NOT NULL DE
 ALTER TABLE `TenantApplication` ADD COLUMN `consentVersion` VARCHAR(191) NULL;
 ALTER TABLE `TenantApplication` ADD COLUMN `consentAcceptedAt` DATETIME(3) NULL;
 ALTER TABLE `TenantApplication` ADD COLUMN `policeStatus` VARCHAR(191) NULL;
+ALTER TABLE `TenantApplication` ADD COLUMN `tower` VARCHAR(191) NULL;
+ALTER TABLE `TenantApplication` ADD COLUMN `flatNo` VARCHAR(191) NULL;
