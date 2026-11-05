@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Check, ChevronRight, ChevronLeft, X, AlertTriangle, Plus } from "lucide-react";
+import { Check, ChevronRight, ChevronLeft, X, AlertCircle, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -550,7 +550,19 @@ export default function ApplicationWizard({
                       {...form.register("step4.idProofType")}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select ID type" />
+                        <SelectValue>
+                          {(() => {
+                            const val = form.getValues("step4.idProofType");
+                            const labels: Record<string, string> = {
+                              AADHAAR: "Aadhaar",
+                              PASSPORT: "Passport",
+                              VOTER_ID: "Voter ID",
+                              DRIVING_LICENCE: "Driving Licence",
+                              OTHER: "Other",
+                            };
+                            return val ? labels[val] || val : "Select ID type";
+                          })()}
+                        </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="AADHAAR">Aadhaar</SelectItem>
@@ -578,7 +590,17 @@ export default function ApplicationWizard({
                       {...form.register("step4.policeStatus")}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select status" />
+                        <SelectValue>
+                          {(() => {
+                            const val = form.getValues("step4.policeStatus");
+                            const labels: Record<string, string> = {
+                              COMPLETED: "Completed",
+                              APPLIED_IN_PROCESS: "Applied / In Process",
+                              NOT_YET_APPLIED: "Not Yet Applied",
+                            };
+                            return val ? labels[val] || val : "Select status";
+                          })()}
+                        </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="COMPLETED">Completed</SelectItem>
@@ -693,8 +715,19 @@ export default function ApplicationWizard({
             {currentStep === "step7" && (
               <>
                 <div className="space-y-4">
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <div className="flex items-start gap-3">
+                      <AlertCircle className="h-5 w-5 text-blue-600 mt-0.5" />
+                      <div>
+                        <p className="text-sm font-medium">How to upload documents</p>
+                        <p className="text-sm text-muted-foreground">
+                          First, complete this application and submit it (click Next below). Then you'll be able to upload documents from your application detail page.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                   <p className="text-sm text-muted-foreground">
-                    Upload the following documents. All files are stored privately.
+                    You'll need to upload the following documents after your application is submitted:
                   </p>
                   <div className="space-y-2">
                     <div className="flex items-center gap-3 p-3 bg-muted/50 rounded border border-border">
@@ -726,11 +759,6 @@ export default function ApplicationWizard({
                       <Badge variant="secondary">Conditional</Badge>
                     </div>
                   </div>
-                  <AlertTriangle className="h-4 w-4 text-amber-500" />
-                  <span className="text-sm text-amber-600">
-                    Document upload will be available after application creation. You can return to
-                    this application to upload documents.
-                  </span>
                 </div>
               </>
             )}
