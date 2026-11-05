@@ -786,7 +786,7 @@ export default function ApplicationWizard({
                   <Button
                     type="button"
                     onClick={nextStep}
-                    disabled={isSubmitting || !isStepValid(currentStep)}
+                    disabled={isSubmitting}
                     className="ml-2"
                   >
                     Next <ChevronRight className="h-4 w-4 ml-2" />
@@ -802,7 +802,7 @@ export default function ApplicationWizard({
                 )}
               </div>
               <span className="text-xs text-muted-foreground">
-                {isStepValid(currentStep) ? "Step complete" : "Please complete all required fields"}
+                {form.formState.isValid ? "All steps valid" : "Review incomplete fields"}
               </span>
             </div>
           </form>
