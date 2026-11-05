@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Check, ChevronRight, ChevronLeft, X, AlertCircle, Plus } from "lucide-react";
+import { Check, ChevronRight, ChevronLeft, X, AlertCircle, Plus, Upload, Download } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -125,6 +125,12 @@ export default function ApplicationWizard({
 }) {
   const [currentStep, setCurrentStep] = useState<StepId>("step1");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [uploadedDocs, setUploadedDocs] = useState<Array<{
+    id: string;
+    type: string;
+    fileName: string;
+    size: number;
+  }>>([]);
   const router = useRouter();
 
   const form = useForm<FormData>({
@@ -141,7 +147,7 @@ export default function ApplicationWizard({
         tenantName: "",
         fatherSpouseName: "",
         dateOfBirth: "",
-        tenantPhone: "",
+        tenantPhone: phone || "",
         alternateMobile: "",
         tenantEmail: "",
         occupation: "",
@@ -180,23 +186,16 @@ export default function ApplicationWizard({
 
   const currentStepIndex = STEPS.findIndex((s) => s.id === currentStep);
 
-  /**
-   * Check if all required fields in a step are filled.
-   */
   const isStepValid = (stepId: StepId): boolean => {
-    const stepErrors = form.formState.errors;
-    const stepKey = stepId as keyof FormData;
-    const stepData = (form.getValues() as any)[stepKey];
+    const stepData = (form.getValues() as any)[stepId];
+    if (!stepData) return false;
 
-    // Get all keys for this step from the schema
-    const stepFields = Object.keys(stepData || {});
+    const stepFields = Object.keys(stepData);
 
-    // Check each required field has a value
     for (const field of stepFields) {
       const value = stepData[field];
-      const error = (stepErrors as any)[stepKey]?.[field];
+      const error = (form.formState.errors as any)[stepId]?.[field];
 
-      // If field is empty or has an error, step is invalid
       if (value === "" || value === null || value === undefined || error) {
         return false;
       }
@@ -210,11 +209,7 @@ export default function ApplicationWizard({
   };
 
   const nextStep = () => {
-    // Validate current step before allowing navigation
     if (!isStepValid(currentStep)) {
-      // Trigger form validation to show errors
-      const errors = form.getFieldState(currentStep as any, form.getValues() as any);
-      // Mark all fields in current step as touched to show errors
       const stepKey = currentStep as keyof FormData;
       const stepData = (form.getValues() as any)[stepKey];
       const stepFields = Object.keys(stepData || {});
@@ -236,6 +231,48 @@ export default function ApplicationWizard({
     if (prevIndex >= 0) {
       setCurrentStep(STEPS[prevIndex].id);
     }
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>, docType: string) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const MAX_SIZE = 5 * 1024 * 1024; // 5 MB
+    const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
+
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      toast.error(`File type ${file.type} not allowed. Allowed: JPG, PNG, WEBP, PDF`);
+      return;
+    }
+
+    if (file.size > MAX_SIZE) {
+      toast.error("File too large. Max 5 MB.");
+      return;
+    }
+
+    const newDoc = {
+      id: crypto.randomUUID(),
+      type: docType,
+      fileName: file.name,
+      size: file.size,
+      file,
+    };
+
+    setUploadedDocs((prev) => [...prev, newDoc]);
+    form.setValue("step7.hasDocuments", true);
+    toast.success(`${file.name} uploaded`);
+    e.target.value = "";
+  };
+
+  const removeDoc = (docId: string) => {
+    setUploadedDocs((prev) => {
+      const updated = prev.filter((d) => d.id !== docId);
+      if (updated.length === 0) {
+        form.setValue("step7.hasDocuments", false);
+      }
+      return updated;
+    });
+    toast.success("Document removed");
   };
 
   const onSubmit = async (data: any) => {
@@ -273,19 +310,14 @@ export default function ApplicationWizard({
     }
   };
 
-  const completedSteps = new Set<string>();
-
   return (
     <div className="max-w-6xl mx-auto">
-      {/* Progress Tracker */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-muted-foreground">
             Step {currentStepIndex + 1} of {STEPS.length}
           </span>
-          <Badge variant="secondary">
-            {formatStatus(currentStep)}
-          </Badge>
+          <Badge variant="secondary">{formatStatus(currentStep)}</Badge>
         </div>
         <div className="flex items-center gap-2">
           {STEPS.map((step, index) => (
@@ -315,7 +347,6 @@ export default function ApplicationWizard({
         </CardHeader>
         <CardContent className="pt-0">
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* Step 1: Flat & Tenancy */}
             {currentStep === "step1" && (
               <>
                 <div className="space-y-3">
@@ -328,16 +359,17 @@ export default function ApplicationWizard({
                       <SelectTrigger>
                         <SelectValue>
                           {(() => {
-                            const selected = connections.find(
-                              (c) => c.id === form.getValues("step1.flatId")
-                            );
-                            return selected
-                              ? `${selected.tower}-${selected.flatNo}`
-                              : "Choose a flat";
+                            const flatId = form.getValues("step1.flatId");
+                            if (!flatId) return "Choose a flat";
+                            const selected = connections.find((c) => c.id === flatId);
+                            return selected ? `${selected.tower}-${selected.flatNo}` : "Choose a flat";
                           })()}
                         </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
+                        <SelectItem key="" value="" disabled>
+                          Choose a flat
+                        </SelectItem>
                         {connections.map((c) => (
                           <SelectItem key={c.id} value={c.id}>
                             {c.tower} - {c.flatNo}{c.residentName ? ` (${c.residentName})` : ""}
@@ -384,7 +416,6 @@ export default function ApplicationWizard({
               </>
             )}
 
-            {/* Step 2: Primary Occupant */}
             {currentStep === "step2" && (
               <>
                 <div className="space-y-3">
@@ -448,39 +479,52 @@ export default function ApplicationWizard({
                       <p className="text-xs text-destructive">{form.formState.errors.step2.officeAddress.message}</p>
                     )}
                   </div>
-                  <div className="space-y-1">
-                    <Label>Nationality *</Label>
-                    <Input {...form.register("step2.nationality")} />
-                    {form.formState.errors.step2?.nationality && (
-                      <p className="text-xs text-destructive">{form.formState.errors.step2.nationality.message}</p>
-                    )}
-                  </div>
-                  <div className="space-y-1">
-                    <Label>Marital Status *</Label>
-                    <Select
-                      onValueChange={(value) => form.setValue("step2.maritalStatus", String(value))}
-                      {...form.register("step2.maritalStatus")}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select marital status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Single">Single</SelectItem>
-                        <SelectItem value="Married">Married</SelectItem>
-                        <SelectItem value="Divorced">Divorced</SelectItem>
-                        <SelectItem value="Widowed">Widowed</SelectItem>
-                        <SelectItem value="Other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    {form.formState.errors.step2?.maritalStatus && (
-                      <p className="text-xs text-destructive">{form.formState.errors.step2.maritalStatus.message}</p>
-                    )}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <Label>Nationality *</Label>
+                      <Input {...form.register("step2.nationality")} />
+                      {form.formState.errors.step2?.nationality && (
+                        <p className="text-xs text-destructive">{form.formState.errors.step2.nationality.message}</p>
+                      )}
+                    </div>
+                    <div className="space-y-1">
+                      <Label>Marital Status *</Label>
+                      <Select
+                        onValueChange={(value) => form.setValue("step2.maritalStatus", String(value))}
+                        {...form.register("step2.maritalStatus")}
+                      >
+                        <SelectTrigger>
+                          <SelectValue>
+                          {(() => {
+                            const val = form.getValues("step2.maritalStatus");
+                            const labels: Record<string, string> = {
+                              Single: "Single",
+                              Married: "Married",
+                              Divorced: "Divorced",
+                              Widowed: "Widowed",
+                              Other: "Other",
+                            };
+                            return val ? labels[val] || val : "Select marital status";
+                          })()}
+                        </SelectValue>
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Single">Single</SelectItem>
+                          <SelectItem value="Married">Married</SelectItem>
+                          <SelectItem value="Divorced">Divorced</SelectItem>
+                          <SelectItem value="Widowed">Widowed</SelectItem>
+                          <SelectItem value="Other">Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      {form.formState.errors.step2?.maritalStatus && (
+                        <p className="text-xs text-destructive">{form.formState.errors.step2.maritalStatus.message}</p>
+                      )}
+                    </div>
                   </div>
                 </div>
               </>
             )}
 
-            {/* Step 3: Family Members */}
             {currentStep === "step3" && (
               <>
                 <div className="space-y-1">
@@ -496,9 +540,7 @@ export default function ApplicationWizard({
                         <div key={idx} className="grid grid-cols-1 md:grid-cols-4 gap-3 p-3 bg-muted/50 rounded border border-border">
                           <div>
                             <Label className="text-xs">Full Name</Label>
-                            <Input
-                              {...form.register(`step3.familyMembers.${idx}.fullName`)}
-                            />
+                            <Input {...form.register(`step3.familyMembers.${idx}.fullName`)} />
                           </div>
                           <div>
                             <Label className="text-xs">Relationship</Label>
@@ -539,7 +581,6 @@ export default function ApplicationWizard({
               </>
             )}
 
-            {/* Step 4: Identity & Police Verification */}
             {currentStep === "step4" && (
               <>
                 <div className="space-y-3">
@@ -565,6 +606,9 @@ export default function ApplicationWizard({
                         </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
+                        <SelectItem key="" value="" disabled>
+                          Select ID type
+                        </SelectItem>
                         <SelectItem value="AADHAAR">Aadhaar</SelectItem>
                         <SelectItem value="PASSPORT">Passport</SelectItem>
                         <SelectItem value="VOTER_ID">Voter ID</SelectItem>
@@ -603,6 +647,9 @@ export default function ApplicationWizard({
                         </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
+                        <SelectItem key="" value="" disabled>
+                          Select status
+                        </SelectItem>
                         <SelectItem value="COMPLETED">Completed</SelectItem>
                         <SelectItem value="APPLIED_IN_PROCESS">Applied / In Process</SelectItem>
                         <SelectItem value="NOT_YET_APPLIED">Not Yet Applied</SelectItem>
@@ -632,7 +679,6 @@ export default function ApplicationWizard({
               </>
             )}
 
-            {/* Step 5: Vehicle Details */}
             {currentStep === "step5" && (
               <>
                 <div className="space-y-1">
@@ -679,7 +725,6 @@ export default function ApplicationWizard({
               </>
             )}
 
-            {/* Step 6: Emergency Contact */}
             {currentStep === "step6" && (
               <>
                 <div className="space-y-3">
@@ -711,7 +756,6 @@ export default function ApplicationWizard({
               </>
             )}
 
-            {/* Step 7: Documents */}
             {currentStep === "step7" && (
               <>
                 <div className="space-y-4">
@@ -719,16 +763,14 @@ export default function ApplicationWizard({
                     <div className="flex items-start gap-3">
                       <AlertCircle className="h-5 w-5 text-blue-600 mt-0.5" />
                       <div>
-                        <p className="text-sm font-medium">How to upload documents</p>
+                        <p className="text-sm font-medium">Upload documents after submission</p>
                         <p className="text-sm text-muted-foreground">
-                          First, complete this application and submit it (click Next below). Then you'll be able to upload documents from your application detail page.
+                          First submit this application (click Next below). Then return to your
+                          application detail page to upload documents:
                         </p>
                       </div>
                     </div>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    You'll need to upload the following documents after your application is submitted:
-                  </p>
                   <div className="space-y-2">
                     <div className="flex items-center gap-3 p-3 bg-muted/50 rounded border border-border">
                       <div className="flex-1">
@@ -759,11 +801,14 @@ export default function ApplicationWizard({
                       <Badge variant="secondary">Conditional</Badge>
                     </div>
                   </div>
+                  <AlertCircle className="h-4 w-4 text-amber-500" />
+                  <span className="text-sm text-amber-600 ml-2">
+                    Document upload will be available after application creation.
+                  </span>
                 </div>
               </>
             )}
 
-            {/* Step 8: Declaration */}
             {currentStep === "step8" && (
               <>
                 <div className="space-y-4">
@@ -853,3 +898,5 @@ function formatStatus(stepId: StepId): string {
   };
   return map[stepId];
 }
+
+
