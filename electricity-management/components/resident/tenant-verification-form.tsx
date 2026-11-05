@@ -7,14 +7,18 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { Check } from "lucide-react";
+import { ChevronsUpDown } from "lucide-react";
 import { toast } from "sonner";
 
 const formSchema = z.object({
@@ -28,14 +32,23 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
+type Connection = {
+  id: string;
+  flatNo: string;
+  tower: string;
+  residentName?: string | null;
+};
+
 type Props = {
-  connections: Array<{ id: string; flatNo: string; tower: string }>;
+  connections: Connection[];
 };
 
 export default function TenantVerificationForm({
   connections,
 }: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [flatOpen, setFlatOpen] = useState(false);
+  const [flatSearch, setFlatSearch] = useState("");
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -48,6 +61,24 @@ export default function TenantVerificationForm({
       moveInDate: "",
     },
   });
+
+  const selectedConnection = connections.find((c) => c.id === form.getValues("connectionId"));
+
+  const filteredConnections = connections.filter((c) => {
+    const q = flatSearch.toLowerCase();
+    return (
+      !q ||
+      c.flatNo.toLowerCase().includes(q) ||
+      c.tower.toLowerCase().includes(q) ||
+      c.residentName?.toLowerCase().includes(q)
+    );
+  });
+
+  function handleSelectConnection(connectionId: string) {
+    form.setValue("connectionId", connectionId);
+    setFlatSearch("");
+    setFlatOpen(false);
+  }
 
   const onFormSubmit = async (data: FormData) => {
     setIsSubmitting(true);
@@ -76,6 +107,8 @@ export default function TenantVerificationForm({
 
       toast.success("Application submitted successfully");
       form.reset();
+      setFlatSearch("");
+      setFlatOpen(false);
     } catch (err: any) {
       toast.error(err?.message ?? "Failed to submit application");
     } finally {
@@ -123,22 +156,44 @@ export default function TenantVerificationForm({
             </div>
           </div>
           <div className="space-y-1">
-            <Label>Select Flat</Label>
-            <Select
-              onValueChange={(value) => form.setValue("connectionId", String(value))}
-              {...form.register("connectionId")}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Choose a flat" />
-              </SelectTrigger>
-              <SelectContent>
-                {connections.map((c) => (
-                  <SelectItem key={c.id} value={c.id}>
-                    {c.tower} - {c.flatNo}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <Label>Select Flat *</Label>
+            <Popover open={flatOpen} onOpenChange={(o) => { setFlatOpen(o); if (!o) setFlatSearch(""); }}>
+              <PopoverTrigger className="inline-flex w-full items-center justify-between gap-2 rounded-lg border border-input bg-transparent px-3 py-2 text-sm font-normal whitespace-nowrap transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                {selectedConnection
+                  ? `${selectedConnection.tower} — ${selectedConnection.flatNo}`
+                  : <span className="text-muted-foreground">Search flat or resident…</span>}
+                <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
+              </PopoverTrigger>
+              <PopoverContent className="w-[420px] p-0" align="start">
+                <Command shouldFilter={false}>
+                  <CommandInput
+                    placeholder="Search flat no or resident name…"
+                    value={flatSearch}
+                    onValueChange={setFlatSearch}
+                  />
+                  <CommandList className="max-h-64">
+                    <CommandEmpty>No flats found</CommandEmpty>
+                    <CommandGroup heading={`${filteredConnections.length} connection${filteredConnections.length !== 1 ? "s" : ""}`}>
+                      {filteredConnections.map((c) => (
+                        <CommandItem
+                          key={c.id}
+                          value={c.id}
+                          onSelect={() => handleSelectConnection(c.id)}
+                        >
+                          <Check
+                            className={`mr-2 h-4 w-4 ${form.getValues("connectionId") === c.id ? "opacity-100" : "opacity-0"}`}
+                          />
+                          <span className="font-medium">{c.tower} — {c.flatNo}</span>
+                          {c.residentName && (
+                            <span className="ml-2 text-muted-foreground text-xs">{c.residentName}</span>
+                          )}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
             {form.formState.errors.connectionId && (
               <p className="text-xs text-destructive">{form.formState.errors.connectionId.message}</p>
             )}
