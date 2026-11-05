@@ -1,0 +1,19 @@
+-- Add new columns to TenantApplication
+ALTER TABLE `TenantApplication` ADD COLUMN `tenancyFrom` DATETIME(3) NULL;
+ALTER TABLE `TenantApplication` ADD COLUMN `tenancyTo` DATETIME(3) NULL;
+ALTER TABLE `TenantApplication` ADD COLUMN `permanentAddress` VARCHAR(191) NULL;
+ALTER TABLE `TenantApplication` ADD COLUMN `fatherSpouseName` VARCHAR(191) NULL;
+ALTER TABLE `TenantApplication` ADD COLUMN `dateOfBirth` DATETIME(3) NULL;
+ALTER TABLE `TenantApplication` ADD COLUMN `occupation` VARCHAR(191) NULL;
+ALTER TABLE `TenantApplication` ADD COLUMN `employer` VARCHAR(191) NULL;
+ALTER TABLE `TenantApplication` ADD COLUMN `officeAddress` VARCHAR(191) NULL;
+ALTER TABLE `TenantApplication` ADD COLUMN `nationality` VARCHAR(191) NULL;
+ALTER TABLE `TenantApplication` ADD COLUMN `maritalStatus` VARCHAR(191) NULL;
+ALTER TABLE `TenantApplication` ADD COLUMN `previousAddress` VARCHAR(191) NULL;
+ALTER TABLE `TenantApplication` ADD COLUMN `emergencyContactName` VARCHAR(191) NULL;
+ALTER TABLE `TenantApplication` ADD COLUMN `emergencyContactRelation` VARCHAR(191) NULL;
+ALTER TABLE `TenantApplication` ADD COLUMN `emergencyContactMobile` VARCHAR(191) NULL;
+ALTER TABLE `TenantApplication` ADD COLUMN `consentAccepted` BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE `TenantApplication` ADD COLUMN `consentVersion` VARCHAR(191) NULL;
+ALTER TABLE `TenantApplication` ADD COLUMN `consentAcceptedAt` DATETIME(3) NULL;
+ALTER TABLE `TenantApplication` ADD COLUMN `policeStatus` VARCHAR(191) NULL;
