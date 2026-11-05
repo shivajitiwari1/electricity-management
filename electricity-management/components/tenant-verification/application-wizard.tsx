@@ -180,11 +180,29 @@ export default function ApplicationWizard({
 
   const currentStepIndex = STEPS.findIndex((s) => s.id === currentStep);
 
-  const isStepValid = (stepId: StepId) => {
+  /**
+   * Check if all required fields in a step are filled.
+   */
+  const isStepValid = (stepId: StepId): boolean => {
     const stepErrors = form.formState.errors;
-    const stepFields = STEPS.find((s) => s.id === stepId)!;
-    // Simple validation - check if any errors exist for this step
-    return true; // Form validation happens on submit
+    const stepKey = stepId as keyof FormData;
+    const stepData = (form.getValues() as any)[stepKey];
+
+    // Get all keys for this step from the schema
+    const stepFields = Object.keys(stepData || {});
+
+    // Check each required field has a value
+    for (const field of stepFields) {
+      const value = stepData[field];
+      const error = (stepErrors as any)[stepKey]?.[field];
+
+      // If field is empty or has an error, step is invalid
+      if (value === "" || value === null || value === undefined || error) {
+        return false;
+      }
+    }
+
+    return true;
   };
 
   const goToStep = (stepId: StepId) => {
@@ -192,6 +210,21 @@ export default function ApplicationWizard({
   };
 
   const nextStep = () => {
+    // Validate current step before allowing navigation
+    if (!isStepValid(currentStep)) {
+      // Trigger form validation to show errors
+      const errors = form.getFieldState(currentStep as any, form.getValues() as any);
+      // Mark all fields in current step as touched to show errors
+      const stepKey = currentStep as keyof FormData;
+      const stepData = (form.getValues() as any)[stepKey];
+      const stepFields = Object.keys(stepData || {});
+      for (const field of stepFields) {
+        (form as any).setValue(`${stepKey}.${field}`, stepData[field], { shouldValidate: true });
+      }
+      toast.error("Please fill all required fields before proceeding.");
+      return;
+    }
+
     const nextIndex = currentStepIndex + 1;
     if (nextIndex < STEPS.length) {
       setCurrentStep(STEPS[nextIndex].id);
@@ -208,7 +241,6 @@ export default function ApplicationWizard({
   const onSubmit = async (data: any) => {
     setIsSubmitting(true);
     try {
-      // Prepare payload for API
       const payload = {
         ...data.step1,
         ...data.step2,
@@ -242,10 +274,9 @@ export default function ApplicationWizard({
   };
 
   const completedSteps = new Set<string>();
-  // In a real implementation, track completed steps based on form validation
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-6xl mx-auto">
       {/* Progress Tracker */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-2">
@@ -278,7 +309,7 @@ export default function ApplicationWizard({
         </div>
       </div>
 
-      <Card>
+      <Card className="w-full">
         <CardHeader>
           <CardTitle>{STEPS.find((s) => s.id === currentStep)?.label}</CardTitle>
         </CardHeader>
@@ -287,7 +318,7 @@ export default function ApplicationWizard({
             {/* Step 1: Flat & Tenancy */}
             {currentStep === "step1" && (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-3">
                   <div className="space-y-1">
                     <Label>Select Flat *</Label>
                     <Select
@@ -316,8 +347,6 @@ export default function ApplicationWizard({
                       <p className="text-xs text-destructive">{form.formState.errors.step1.moveInDate.message}</p>
                     )}
                   </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <Label>Tenancy From *</Label>
                     <Input type="date" {...form.register("step1.tenancyFrom")} />
@@ -332,16 +361,16 @@ export default function ApplicationWizard({
                       <p className="text-xs text-destructive">{form.formState.errors.step1.tenancyTo.message}</p>
                     )}
                   </div>
-                </div>
-                <div className="space-y-1">
-                  <Label>Permanent Address *</Label>
-                  <Input
-                    placeholder="Your permanent home address"
-                    {...form.register("step1.permanentAddress")}
-                  />
-                  {form.formState.errors.step1?.permanentAddress && (
-                    <p className="text-xs text-destructive">{form.formState.errors.step1.permanentAddress.message}</p>
-                  )}
+                  <div className="space-y-1">
+                    <Label>Permanent Address *</Label>
+                    <Input
+                      placeholder="Your permanent home address"
+                      {...form.register("step1.permanentAddress")}
+                    />
+                    {form.formState.errors.step1?.permanentAddress && (
+                      <p className="text-xs text-destructive">{form.formState.errors.step1.permanentAddress.message}</p>
+                    )}
+                  </div>
                 </div>
               </>
             )}
@@ -349,7 +378,7 @@ export default function ApplicationWizard({
             {/* Step 2: Primary Occupant */}
             {currentStep === "step2" && (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-3">
                   <div className="space-y-1">
                     <Label>Full Name (as per ID) *</Label>
                     <Input {...form.register("step2.tenantName")} />
@@ -364,8 +393,6 @@ export default function ApplicationWizard({
                       <p className="text-xs text-destructive">{form.formState.errors.step2.fatherSpouseName.message}</p>
                     )}
                   </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <Label>Date of Birth *</Label>
                     <Input type="date" {...form.register("step2.dateOfBirth")} />
@@ -380,8 +407,6 @@ export default function ApplicationWizard({
                       <p className="text-xs text-destructive">{form.formState.errors.step2.tenantPhone.message}</p>
                     )}
                   </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <Label>Alternate Mobile</Label>
                     <Input placeholder="+91 98765 43210" {...form.register("step2.alternateMobile")} />
@@ -393,29 +418,27 @@ export default function ApplicationWizard({
                       <p className="text-xs text-destructive">{form.formState.errors.step2.tenantEmail.message}</p>
                     )}
                   </div>
-                </div>
-                <div className="space-y-1">
-                  <Label>Occupation *</Label>
-                  <Input {...form.register("step2.occupation")} />
-                  {form.formState.errors.step2?.occupation && (
-                    <p className="text-xs text-destructive">{form.formState.errors.step2.occupation.message}</p>
-                  )}
-                </div>
-                <div className="space-y-1">
-                  <Label>Employer / Company *</Label>
-                  <Input {...form.register("step2.employer")} />
-                  {form.formState.errors.step2?.employer && (
-                    <p className="text-xs text-destructive">{form.formState.errors.step2.employer.message}</p>
-                  )}
-                </div>
-                <div className="space-y-1">
-                  <Label>Office Address *</Label>
-                  <Input {...form.register("step2.officeAddress")} />
-                  {form.formState.errors.step2?.officeAddress && (
-                    <p className="text-xs text-destructive">{form.formState.errors.step2.officeAddress.message}</p>
-                  )}
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <Label>Occupation *</Label>
+                    <Input {...form.register("step2.occupation")} />
+                    {form.formState.errors.step2?.occupation && (
+                      <p className="text-xs text-destructive">{form.formState.errors.step2.occupation.message}</p>
+                    )}
+                  </div>
+                  <div className="space-y-1">
+                    <Label>Employer / Company *</Label>
+                    <Input {...form.register("step2.employer")} />
+                    {form.formState.errors.step2?.employer && (
+                      <p className="text-xs text-destructive">{form.formState.errors.step2.employer.message}</p>
+                    )}
+                  </div>
+                  <div className="space-y-1">
+                    <Label>Office Address *</Label>
+                    <Input {...form.register("step2.officeAddress")} />
+                    {form.formState.errors.step2?.officeAddress && (
+                      <p className="text-xs text-destructive">{form.formState.errors.step2.officeAddress.message}</p>
+                    )}
+                  </div>
                   <div className="space-y-1">
                     <Label>Nationality *</Label>
                     <Input {...form.register("step2.nationality")} />
@@ -510,7 +533,7 @@ export default function ApplicationWizard({
             {/* Step 4: Identity & Police Verification */}
             {currentStep === "step4" && (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-3">
                   <div className="space-y-1">
                     <Label>ID Proof Type *</Label>
                     <Select
@@ -539,27 +562,25 @@ export default function ApplicationWizard({
                       <p className="text-xs text-destructive">{form.formState.errors.step4.idProofLast4.message}</p>
                     )}
                   </div>
-                </div>
-                <div className="space-y-1">
-                  <Label>Police Verification Status *</Label>
-                  <Select
-                    onValueChange={(value) => form.setValue("step4.policeStatus", String(value))}
-                    {...form.register("step4.policeStatus")}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="COMPLETED">Completed</SelectItem>
-                      <SelectItem value="APPLIED_IN_PROCESS">Applied / In Process</SelectItem>
-                      <SelectItem value="NOT_YET_APPLIED">Not Yet Applied</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  {form.formState.errors.step4?.policeStatus && (
-                    <p className="text-xs text-destructive">{form.formState.errors.step4.policeStatus.message}</p>
-                  )}
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <Label>Police Verification Status *</Label>
+                    <Select
+                      onValueChange={(value) => form.setValue("step4.policeStatus", String(value))}
+                      {...form.register("step4.policeStatus")}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="COMPLETED">Completed</SelectItem>
+                        <SelectItem value="APPLIED_IN_PROCESS">Applied / In Process</SelectItem>
+                        <SelectItem value="NOT_YET_APPLIED">Not Yet Applied</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    {form.formState.errors.step4?.policeStatus && (
+                      <p className="text-xs text-destructive">{form.formState.errors.step4.policeStatus.message}</p>
+                    )}
+                  </div>
                   <div className="space-y-1">
                     <Label>Reference Number</Label>
                     <Input {...form.register("step4.policeRefNumber")} />
@@ -568,15 +589,15 @@ export default function ApplicationWizard({
                     <Label>Reference Date</Label>
                     <Input type="date" {...form.register("step4.policeRefDate")} />
                   </div>
+                  <div className="space-y-1">
+                    <Label>Previous Address</Label>
+                    <Input placeholder="Your previous residential address" {...form.register("step4.previousAddress")} />
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    ID number field shows last 4 digits preferred. Do not submit full Aadhaar unless
+                    required by management policy.
+                  </p>
                 </div>
-                <div className="space-y-1">
-                  <Label>Previous Address</Label>
-                  <Input placeholder="Your previous residential address" {...form.register("step4.previousAddress")} />
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  ID number field shows last 4 digits preferred. Do not submit full Aadhaar unless
-                  required by management policy.
-                </p>
               </>
             )}
 
@@ -630,7 +651,7 @@ export default function ApplicationWizard({
             {/* Step 6: Emergency Contact */}
             {currentStep === "step6" && (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-3">
                   <div className="space-y-1">
                     <Label>Emergency Contact Name *</Label>
                     <Input {...form.register("step6.emergencyContactName")} />
@@ -756,7 +777,7 @@ export default function ApplicationWizard({
                   <Button
                     type="button"
                     onClick={nextStep}
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || !isStepValid(currentStep)}
                     className="ml-2"
                   >
                     Next <ChevronRight className="h-4 w-4 ml-2" />
@@ -772,7 +793,7 @@ export default function ApplicationWizard({
                 )}
               </div>
               <span className="text-xs text-muted-foreground">
-                {form.formState.isValid ? "All steps valid" : "Review incomplete fields"}
+                {isStepValid(currentStep) ? "Step complete" : "Please complete all required fields"}
               </span>
             </div>
           </form>
