@@ -327,7 +327,14 @@ export default function ApplicationWizard({
                     >
                       <SelectTrigger>
                         <SelectValue>
-                          {connections.find((c) => c.id === form.getValues("step1.flatId"))?.flatNo ? `${connections.find((c) => c.id === form.getValues("step1.flatId"))?.tower}-${connections.find((c) => c.id === form.getValues("step1.flatId"))?.flatNo}` : "Choose a flat"}
+                          {(() => {
+                            const selected = connections.find(
+                              (c) => c.id === form.getValues("step1.flatId")
+                            );
+                            return selected
+                              ? `${selected.tower}-${selected.flatNo}`
+                              : "Choose a flat";
+                          })()}
                         </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
