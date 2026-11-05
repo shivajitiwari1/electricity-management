@@ -326,7 +326,9 @@ export default function ApplicationWizard({
                       {...form.register("step1.flatId")}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Choose a flat" />
+                        <SelectValue>
+                          {connections.find((c) => c.id === form.getValues("step1.flatId"))?.flatNo ? `${connections.find((c) => c.id === form.getValues("step1.flatId"))?.tower}-${connections.find((c) => c.id === form.getValues("step1.flatId"))?.flatNo}` : "Choose a flat"}
+                        </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
                         {connections.map((c) => (
