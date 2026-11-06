@@ -93,7 +93,24 @@ export async function POST(req: NextRequest) {
         deliverySkipped = true;
       }
     } catch (deliveryError: any) {
-      // Never leave a usable session behind when the message did not go out.
+      if (isDev) {
+        // Development: never strand the developer behind a broken/missing
+        // provider — keep the session and surface the OTP on screen instead.
+        console.warn(
+          "OTP delivery failed; surfacing OTP on screen (development only):",
+          deliveryError?.message ?? deliveryError
+        );
+        return NextResponse.json({
+          success: true,
+          message: "Could not deliver the OTP (development). Use the on-screen code.",
+          channel,
+          sessionId: result.sessionId,
+          expiresAt: result.expiresAt,
+          otp: result.otp,
+          deliverySkipped: true,
+        });
+      }
+      // Production: never leave a usable session behind when the message did not go out.
       await deleteOtpSession(result.sessionId);
       if (channel === "EMAIL") {
         // Do not leak raw SMTP error details to the client.

@@ -37,7 +37,7 @@ export default function EmailVerification({ email }: Props) {
 
       setOtpSent(true);
       setDevOtp(typeof json?.otp === "string" ? json.otp : null);
-      toast.success(`OTP sent to ${email}`);
+      toast.success(typeof json?.otp === "string" ? json.message ?? "OTP shown on screen (development)" : `OTP sent to ${email}`);
     } catch (err: any) {
       toast.error(err?.message || "Could not send OTP");
     } finally {

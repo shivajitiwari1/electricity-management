@@ -38,7 +38,7 @@ export default function PhoneVerification({ phone }: Props) {
 
       setOtpSent(true);
       setDevOtp(typeof json?.otp === "string" ? json.otp : null);
-      toast.success(`OTP sent to ${phone}`);
+      toast.success(typeof json?.otp === "string" ? json?.message ?? "OTP shown on screen (development)" : `OTP sent to ${phone}`);
     } catch (err: any) {
       toast.error(err?.message || "Could not send OTP");
     } finally {
