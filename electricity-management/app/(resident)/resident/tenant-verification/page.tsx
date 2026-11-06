@@ -89,6 +89,14 @@ export default async function TenantVerificationLandingPage() {
           </Button>
         </Link>
       </div>
+
+      <div className="flex justify-center">
+        <Link href="/resident/tenant-verification/applications" className="flex items-center">
+          <Button variant="outline" size="lg" className="w-full md:w-auto">
+            My Applications
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 }

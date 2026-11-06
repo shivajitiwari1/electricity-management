@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -437,21 +438,21 @@ export default function ApplicationWizard({
                   </div>
                   <div className="space-y-1">
                     <Label>Move-in Date *</Label>
-                    <Input type="date" {...form.register("step1.moveInDate")} />
+                    <DatePicker {...form.register("step1.moveInDate")} />
                     {form.formState.errors.step1?.moveInDate && (
                       <p className="text-xs text-destructive">{form.formState.errors.step1.moveInDate.message}</p>
                     )}
                   </div>
                   <div className="space-y-1">
                     <Label>Tenancy From *</Label>
-                    <Input type="date" {...form.register("step1.tenancyFrom")} />
+                    <DatePicker {...form.register("step1.tenancyFrom")} />
                     {form.formState.errors.step1?.tenancyFrom && (
                       <p className="text-xs text-destructive">{form.formState.errors.step1.tenancyFrom.message}</p>
                     )}
                   </div>
                   <div className="space-y-1">
                     <Label>Tenancy To *</Label>
-                    <Input type="date" {...form.register("step1.tenancyTo")} />
+                    <DatePicker {...form.register("step1.tenancyTo")} />
                     {form.formState.errors.step1?.tenancyTo && (
                       <p className="text-xs text-destructive">{form.formState.errors.step1.tenancyTo.message}</p>
                     )}
@@ -489,7 +490,7 @@ export default function ApplicationWizard({
                   </div>
                   <div className="space-y-1">
                     <Label>Date of Birth *</Label>
-                    <Input type="date" {...form.register("step2.dateOfBirth")} />
+                    <DatePicker {...form.register("step2.dateOfBirth")} />
                     {form.formState.errors.step2?.dateOfBirth && (
                       <p className="text-xs text-destructive">{form.formState.errors.step2.dateOfBirth.message}</p>
                     )}
