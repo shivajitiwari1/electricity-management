@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import Link from "next/link";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { formatStatus } from "@/lib/tenant-verification-format";
@@ -46,7 +46,12 @@ export default function TenantVerificationList({ applications }: { applications:
             applications.map((app) => (
               <TableRow key={app.id}>
                 <TableCell className="font-medium">
-                  {app.applicationNumber}
+                  <Link
+                    href={`/admin/tenant-verification/${app.id}`}
+                    className="text-primary hover:underline"
+                  >
+                    {app.applicationNumber}
+                  </Link>
                 </TableCell>
                 <TableCell>{app.tenantName}</TableCell>
                 <TableCell>{app.tenantPhone}</TableCell>

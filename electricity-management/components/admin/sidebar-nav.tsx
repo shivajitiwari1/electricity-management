@@ -10,7 +10,7 @@ import {
   CreditCard, BarChart3, Settings, LogOut, Menu,
   Zap, Building2, ShieldCheck, UserCog, User, Wrench,
   ChevronDown, ChevronRight, Calendar, DollarSign, CalendarClock,
-  LifeBuoy, ListChecks, Tag, Shield, Search, X,
+  LifeBuoy, ListChecks, Tag, Shield, Search, X, UserPlus,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,8 +47,9 @@ const HELP_DESK_SUB_ITEMS = [
 ];
 
 const TENANT_VERIFICATION_SUB_ITEMS = [
-  { href: "/admin/tenant-verification",               label: "Applications",     icon: User,        adminOnly: false },
-  { href: "/admin/tenant-verification/settings",      label: "Settings",         icon: Settings,    adminOnly: true },
+  { href: "/admin/tenant-verification",               label: "Applications",     icon: User,        adminOnly: false, writeOnly: false },
+  { href: "/admin/tenant-verification/new",           label: "Register Tenant",  icon: UserPlus,    adminOnly: false, writeOnly: true },
+  { href: "/admin/tenant-verification/settings",      label: "Settings",         icon: Settings,    adminOnly: true,  writeOnly: false },
 ];
 
 const ADMIN_ONLY_ITEMS = [
@@ -109,7 +110,11 @@ function NavLinks({ pathname, role, permissions, userEmail, helpDeskEnabled, ten
 
   const maintenanceItems = MAINTENANCE_SUB_ITEMS.filter(({ adminOnly }) => !adminOnly || isAdmin);
   const helpDeskItems = HELP_DESK_SUB_ITEMS.filter(({ adminOnly }) => !adminOnly || isAdmin);
-  const tenantVerificationItems = TENANT_VERIFICATION_SUB_ITEMS.filter(({ adminOnly }) => !adminOnly || isAdmin);
+  const tenantVerificationItems = TENANT_VERIFICATION_SUB_ITEMS.filter(
+    ({ adminOnly, writeOnly }) =>
+      (!adminOnly || isAdmin) &&
+      (!writeOnly || isAdmin || permissions["tenant-verification"]?.canWrite === true)
+  );
   const adminItems = isAdmin ? ADMIN_ONLY_ITEMS : [];
 
   const groupMatches = (groupLabel: string) => groupLabel.toLowerCase().includes(search);

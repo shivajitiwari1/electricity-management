@@ -3,6 +3,7 @@ export const runtime = "nodejs";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { guardPermission } from "@/lib/permissions";
 import { guardTenantVerificationEnabled, getEnforcedChannels } from "@/lib/tenant-verification-config";
 import { hasVerifiedOtp } from "@/lib/tenant-verification-otp";
 import { nextTenantApplicationNumber } from "@/lib/tenant-verification";
@@ -169,6 +170,14 @@ export async function POST(req: NextRequest) {
 
   const data = parsed.data;
   const userId = String((session.user as any).id ?? "");
+  const role = (session.user as any).role as string;
+
+  // RESIDENT may create an application only for their own flats (enforced below).
+  // ADMIN/MANAGER register tenants on behalf of owners and need the page's canWrite permission.
+  if (role !== "RESIDENT") {
+    const writeGuard = await guardPermission(session as any, "tenant-verification", "canWrite");
+    if (writeGuard) return writeGuard;
+  }
 
   // Contact verification is enforced for whichever channels the admin enabled.
   const channels = await getEnforcedChannels();
@@ -207,6 +216,21 @@ export async function POST(req: NextRequest) {
 
   if (!connection) {
     return NextResponse.json({ error: "Flat not found" }, { status: 404 });
+  }
+
+  // A RESIDENT may only create applications for their own flats. Applications
+  // created by ADMIN/MANAGER on behalf of an owner are allowed for any flat.
+  if (role === "RESIDENT") {
+    const resident = await prisma.resident.findUnique({
+      where: { userId },
+      select: { id: true },
+    });
+    if (!resident || connection.residentId !== resident.id) {
+      return NextResponse.json(
+        { error: "You can only register tenants for your own flats" },
+        { status: 403 }
+      );
+    }
   }
 
   // Validate date order: tenancyFrom <= tenancyTo

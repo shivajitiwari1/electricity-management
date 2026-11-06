@@ -153,6 +153,7 @@ export default function ApplicationWizard({
   connections,
   phone,
   verificationChannels = { email: false, phone: false },
+  successRedirectBase = "/resident/tenant-verification/applications",
 }: {
   connections: Array<{ id: string; flatNo: string; tower: string; residentName?: string | null }>;
   phone?: string;
@@ -161,6 +162,8 @@ export default function ApplicationWizard({
    * A channel only appears here once the matching provider is configured.
    */
   verificationChannels?: { email: boolean; phone: boolean };
+  /** Where to send the user after the application is created; the application id is appended. */
+  successRedirectBase?: string;
 }) {
   const [currentStep, setCurrentStep] = useState<StepId>("step1");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -355,7 +358,7 @@ export default function ApplicationWizard({
 
       const json = await res.json();
       toast.success("Application created successfully!");
-      router.push(`/resident/tenant-verification/applications/${json.application.id}`);
+      router.push(`${successRedirectBase}/${json.application.id}`);
     } catch (err: any) {
       toast.error(err?.message || "Failed to create application");
     } finally {

@@ -2,8 +2,11 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
 import { guardPermission } from "@/lib/permissions";
 import { redirect } from "next/navigation";
+import Link from "next/link";
+import { UserPlus } from "lucide-react";
 import TenantVerificationToggle from "@/components/admin/tenant-verification-toggle";
 import TenantVerificationList from "@/components/admin/tenant-verification-list";
+import { Button } from "@/components/ui/button";
 
 export const dynamic = "force-dynamic";
 
@@ -26,6 +29,10 @@ export default async function TenantVerificationPage() {
   if (guard) {
     redirect("/admin/dashboard");
   }
+
+  const canWrite =
+    role === "ADMIN" ||
+    ((session.user as any).permissions?.["tenant-verification"]?.canWrite === true);
 
   let siteConfig: { tenantVerificationEnabled: boolean } | null = null;
   try {
@@ -59,12 +66,22 @@ export default async function TenantVerificationPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">Tenant Verification</h1>
-        <p className="text-muted-foreground">
-          Manage tenant verification applications for flats in the society. Configure how
-          tenants verify their contact details at Settings.
-        </p>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">Tenant Verification</h1>
+          <p className="text-muted-foreground">
+            Manage tenant verification applications for flats in the society. Configure how
+            tenants verify their contact details at Settings.
+          </p>
+        </div>
+        {!dbError && canWrite && (
+          <Link href="/admin/tenant-verification/new" className="flex items-center">
+            <Button>
+              <UserPlus className="mr-1.5 h-4 w-4" />
+              Register Tenant
+            </Button>
+          </Link>
+        )}
       </div>
 
       {dbError ? (
