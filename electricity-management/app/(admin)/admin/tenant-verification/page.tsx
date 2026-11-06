@@ -24,7 +24,6 @@ export default async function TenantVerificationPage() {
     "canRead"
   );
   if (guard) {
-    // guard is a NextResponse; in a server component we redirect instead
     redirect("/admin/dashboard");
   }
 
@@ -35,7 +34,6 @@ export default async function TenantVerificationPage() {
       select: { tenantVerificationEnabled: true },
     });
   } catch {
-    // SiteConfig.tenantVerificationEnabled column not yet created (migration pending)
     siteConfig = null;
   }
 
@@ -64,7 +62,8 @@ export default async function TenantVerificationPage() {
       <div>
         <h1 className="text-2xl font-bold">Tenant Verification</h1>
         <p className="text-muted-foreground">
-          Manage tenant verification applications for flats in the society.
+          Manage tenant verification applications for flats in the society. Configure how
+          tenants verify their contact details at Settings.
         </p>
       </div>
 

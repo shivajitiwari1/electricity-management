@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,8 @@ import { Badge } from "@/components/ui/badge";
 import { Check, ChevronRight, ChevronLeft, X, AlertCircle, Plus, Upload, Download } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import PhoneVerification from "@/components/tenant-verification/phone-verification";
+import EmailVerification from "@/components/tenant-verification/email-verification";
 
 // Step 1: Flat & Tenancy
 const step1Schema = z.object({
@@ -30,7 +32,7 @@ const step2Schema = z.object({
   dateOfBirth: z.string().min(1, "Date of birth is required"),
   tenantPhone: z.string().min(10, "Valid phone number is required"),
   alternateMobile: z.string().optional().or(z.literal("")),
-  tenantEmail: z.string().email().optional().or(z.literal("")),
+  tenantEmail: z.string().min(1, "Email is required").email("Enter a valid email address"),
   occupation: z.string().min(1, "Occupation is required"),
   employer: z.string().min(1, "Employer is required"),
   officeAddress: z.string().min(1, "Office address is required"),
@@ -42,7 +44,11 @@ const step2Schema = z.object({
 const familyMemberSchema = z.object({
   fullName: z.string().min(1, "Name is required"),
   relation: z.string().min(1, "Relationship is required"),
-  age: z.coerce.number().optional().nullable(),
+  // z.coerce turns "" into 0 — treat "no age" as null.
+  age: z.preprocess(
+    (value) => (value === "" || value === undefined ? null : value),
+    z.coerce.number().optional().nullable()
+  ),
   idProof: z.string().optional().or(z.literal("")),
 });
 
@@ -116,12 +122,44 @@ const STEPS = [
 
 type StepId = (typeof STEPS)[number]["id"];
 
+const NATIONALITY_OPTIONS = [
+  "Indian",
+  "Nepali",
+  "Bhutanese",
+  "Bangladeshi",
+  "Sri Lankan",
+  "Pakistani",
+  "Afghan",
+  "American",
+  "British",
+  "Canadian",
+  "Australian",
+  "Other",
+] as const;
+
+const STEP_SCHEMAS: Record<StepId, z.ZodType> = {
+  step1: step1Schema,
+  step2: step2Schema,
+  step3: step3Schema,
+  step4: step4Schema,
+  step5: step5Schema,
+  step6: step6Schema,
+  step7: step7Schema,
+  step8: step8Schema,
+};
+
 export default function ApplicationWizard({
   connections,
   phone,
+  verificationChannels = { email: false, phone: false },
 }: {
   connections: Array<{ id: string; flatNo: string; tower: string; residentName?: string | null }>;
   phone?: string;
+  /**
+   * Which contact details the admin requires the tenant to verify.
+   * A channel only appears here once the matching provider is configured.
+   */
+  verificationChannels?: { email: boolean; phone: boolean };
 }) {
   const [currentStep, setCurrentStep] = useState<StepId>("step1");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -135,6 +173,7 @@ export default function ApplicationWizard({
 
   const form = useForm<FormData>({
     resolver: zodResolver(combinedSchema) as any,
+    mode: "onChange",
     defaultValues: {
       step1: {
         flatId: "",
@@ -184,46 +223,49 @@ export default function ApplicationWizard({
     },
   });
 
+  const {
+    fields: familyMemberFields,
+    append: appendFamilyMember,
+    remove: removeFamilyMember,
+  } = useFieldArray({
+    control: form.control,
+    name: "step3.familyMembers",
+  });
+
+  const {
+    fields: vehicleFields,
+    append: appendVehicle,
+  } = useFieldArray({
+    control: form.control,
+    name: "step5.vehicles",
+  });
+
   const currentStepIndex = STEPS.findIndex((s) => s.id === currentStep);
+  const tenantPhone = form.watch("step2.tenantPhone");
+  const tenantEmail = form.watch("step2.tenantEmail");
+  const needsVerification = verificationChannels.email || verificationChannels.phone;
 
-  const isStepValid = (stepId: StepId): boolean => {
-    const stepData = (form.getValues() as any)[stepId];
-    if (!stepData) return false;
+  const nextStep = async () => {
+    if (currentStepIndex >= STEPS.length - 1) return;
 
-    const stepFields = Object.keys(stepData);
+    const stepData = form.getValues(currentStep);
+    const result = STEP_SCHEMAS[currentStep].safeParse(stepData);
 
-    for (const field of stepFields) {
-      const value = stepData[field];
-      const error = (form.formState.errors as any)[stepId]?.[field];
-
-      if (value === "" || value === null || value === undefined || error) {
-        return false;
-      }
-    }
-
-    return true;
-  };
-
-  const goToStep = (stepId: StepId) => {
-    setCurrentStep(stepId);
-  };
-
-  const nextStep = () => {
-    if (!isStepValid(currentStep)) {
-      const stepKey = currentStep as keyof FormData;
-      const stepData = (form.getValues() as any)[stepKey];
-      const stepFields = Object.keys(stepData || {});
-      for (const field of stepFields) {
-        (form as any).setValue(`${stepKey}.${field}`, stepData[field], { shouldValidate: true });
+    if (!result.success) {
+      form.clearErrors(currentStep);
+      for (const issue of result.error.issues) {
+        const fieldPath = issue.path.length > 0 ? `${currentStep}.${issue.path.join(".")}` : currentStep;
+        form.setError(fieldPath as any, {
+          type: issue.code,
+          message: issue.message,
+        });
       }
       toast.error("Please fill all required fields before proceeding.");
       return;
     }
 
-    const nextIndex = currentStepIndex + 1;
-    if (nextIndex < STEPS.length) {
-      setCurrentStep(STEPS[nextIndex].id);
-    }
+    form.clearErrors(currentStep);
+    setCurrentStep(STEPS[currentStepIndex + 1].id);
   };
 
   const prevStep = () => {
@@ -278,7 +320,7 @@ export default function ApplicationWizard({
   const onSubmit = async (data: any) => {
     setIsSubmitting(true);
     try {
-      const payload = {
+      const payload: Record<string, any> = {
         ...data.step1,
         ...data.step2,
         ...data.step3,
@@ -288,6 +330,16 @@ export default function ApplicationWizard({
         ...data.step7,
         ...data.step8,
       };
+
+      // HTML date inputs yield YYYY-MM-DD; the API expects ISO datetimes.
+      for (const key of ["moveInDate", "tenancyFrom", "tenancyTo", "dateOfBirth", "policeRefDate"]) {
+        const value = payload[key];
+        if (typeof value === "string" && value) {
+          payload[key] = `${value}T00:00:00.000Z`;
+        } else {
+          delete payload[key];
+        }
+      }
 
       const res = await fetch("/api/tenant-verification/applications", {
         method: "POST",
@@ -311,7 +363,7 @@ export default function ApplicationWizard({
   };
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="w-full">
       <div className="mb-8">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-muted-foreground">
@@ -349,14 +401,16 @@ export default function ApplicationWizard({
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {currentStep === "step1" && (
               <>
-                <div className="space-y-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <Label>Select Flat *</Label>
                     <Select
-                      onValueChange={(value) => form.setValue("step1.flatId", String(value))}
+                      onValueChange={(value) =>
+                        form.setValue("step1.flatId", String(value), { shouldValidate: true })
+                      }
                       {...form.register("step1.flatId")}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue>
                           {(() => {
                             const flatId = form.getValues("step1.flatId");
@@ -402,7 +456,7 @@ export default function ApplicationWizard({
                       <p className="text-xs text-destructive">{form.formState.errors.step1.tenancyTo.message}</p>
                     )}
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-1 md:col-span-2">
                     <Label>Permanent Address *</Label>
                     <Input
                       placeholder="Your permanent home address"
@@ -418,7 +472,7 @@ export default function ApplicationWizard({
 
             {currentStep === "step2" && (
               <>
-                <div className="space-y-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <Label>Full Name (as per ID) *</Label>
                     <Input {...form.register("step2.tenantName")} />
@@ -452,7 +506,7 @@ export default function ApplicationWizard({
                     <Input placeholder="+91 98765 43210" {...form.register("step2.alternateMobile")} />
                   </div>
                   <div className="space-y-1">
-                    <Label>Email</Label>
+                    <Label>Email *</Label>
                     <Input type="email" placeholder="tenant@example.com" {...form.register("step2.tenantEmail")} />
                     {form.formState.errors.step2?.tenantEmail && (
                       <p className="text-xs text-destructive">{form.formState.errors.step2.tenantEmail.message}</p>
@@ -473,28 +527,43 @@ export default function ApplicationWizard({
                     )}
                   </div>
                   <div className="space-y-1">
-                    <Label>Office Address *</Label>
-                    <Input {...form.register("step2.officeAddress")} />
-                    {form.formState.errors.step2?.officeAddress && (
-                      <p className="text-xs text-destructive">{form.formState.errors.step2.officeAddress.message}</p>
+                    <Label>Nationality *</Label>
+                    <Select
+                      onValueChange={(value) =>
+                        form.setValue("step2.nationality", String(value), { shouldValidate: true })
+                      }
+                      {...form.register("step2.nationality")}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue>
+                          {form.getValues("step2.nationality") || "Select nationality"}
+                        </SelectValue>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="" disabled>
+                          Select nationality
+                        </SelectItem>
+                        {NATIONALITY_OPTIONS.map((nationality) => (
+                          <SelectItem key={nationality} value={nationality}>
+                            {nationality}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {form.formState.errors.step2?.nationality && (
+                      <p className="text-xs text-destructive">{form.formState.errors.step2.nationality.message}</p>
                     )}
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <Label>Nationality *</Label>
-                      <Input {...form.register("step2.nationality")} />
-                      {form.formState.errors.step2?.nationality && (
-                        <p className="text-xs text-destructive">{form.formState.errors.step2.nationality.message}</p>
-                      )}
-                    </div>
-                    <div className="space-y-1">
-                      <Label>Marital Status *</Label>
-                      <Select
-                        onValueChange={(value) => form.setValue("step2.maritalStatus", String(value))}
-                        {...form.register("step2.maritalStatus")}
-                      >
-                        <SelectTrigger>
-                          <SelectValue>
+                  <div className="space-y-1">
+                    <Label>Marital Status *</Label>
+                    <Select
+                      onValueChange={(value) =>
+                        form.setValue("step2.maritalStatus", String(value), { shouldValidate: true })
+                      }
+                      {...form.register("step2.maritalStatus")}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue>
                           {(() => {
                             const val = form.getValues("step2.maritalStatus");
                             const labels: Record<string, string> = {
@@ -507,7 +576,7 @@ export default function ApplicationWizard({
                             return val ? labels[val] || val : "Select marital status";
                           })()}
                         </SelectValue>
-                        </SelectTrigger>
+                      </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="Single">Single</SelectItem>
                           <SelectItem value="Married">Married</SelectItem>
@@ -519,7 +588,13 @@ export default function ApplicationWizard({
                       {form.formState.errors.step2?.maritalStatus && (
                         <p className="text-xs text-destructive">{form.formState.errors.step2.maritalStatus.message}</p>
                       )}
-                    </div>
+                  </div>
+                  <div className="space-y-1 md:col-span-2">
+                    <Label>Office Address *</Label>
+                    <Input {...form.register("step2.officeAddress")} />
+                    {form.formState.errors.step2?.officeAddress && (
+                      <p className="text-xs text-destructive">{form.formState.errors.step2.officeAddress.message}</p>
+                    )}
                   </div>
                 </div>
               </>
@@ -534,25 +609,48 @@ export default function ApplicationWizard({
                   </p>
                 </div>
                 <div className="space-y-3">
-                  {(form.getValues("step3.familyMembers") || []).length > 0 ? (
+                  {familyMemberFields.length > 0 ? (
                     <>
-                      {(form.getValues("step3.familyMembers") as any[]).map((member, idx) => (
-                        <div key={idx} className="grid grid-cols-1 md:grid-cols-4 gap-3 p-3 bg-muted/50 rounded border border-border">
-                          <div>
-                            <Label className="text-xs">Full Name</Label>
-                            <Input {...form.register(`step3.familyMembers.${idx}.fullName`)} />
+                      {familyMemberFields.map((member, idx) => (
+                        <div key={member.id} className="rounded border border-border bg-muted/50 p-3">
+                          <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                            <div>
+                              <Label className="text-xs">Full Name</Label>
+                              <Input {...form.register(`step3.familyMembers.${idx}.fullName`)} />
+                              {form.formState.errors.step3?.familyMembers?.[idx]?.fullName?.message && (
+                                <p className="text-xs text-destructive">
+                                  {form.formState.errors.step3.familyMembers[idx]?.fullName?.message}
+                                </p>
+                              )}
+                            </div>
+                            <div>
+                              <Label className="text-xs">Relationship</Label>
+                              <Input {...form.register(`step3.familyMembers.${idx}.relation`)} />
+                              {form.formState.errors.step3?.familyMembers?.[idx]?.relation?.message && (
+                                <p className="text-xs text-destructive">
+                                  {form.formState.errors.step3.familyMembers[idx]?.relation?.message}
+                                </p>
+                              )}
+                            </div>
+                            <div>
+                              <Label className="text-xs">Age</Label>
+                              <Input type="number" {...form.register(`step3.familyMembers.${idx}.age`)} />
+                            </div>
+                            <div>
+                              <Label className="text-xs">ID Proof</Label>
+                              <Input {...form.register(`step3.familyMembers.${idx}.idProof`)} />
+                            </div>
                           </div>
-                          <div>
-                            <Label className="text-xs">Relationship</Label>
-                            <Input {...form.register(`step3.familyMembers.${idx}.relation`)} />
-                          </div>
-                          <div>
-                            <Label className="text-xs">Age</Label>
-                            <Input type="number" {...form.register(`step3.familyMembers.${idx}.age`)} />
-                          </div>
-                          <div>
-                            <Label className="text-xs">ID Proof</Label>
-                            <Input {...form.register(`step3.familyMembers.${idx}.idProof`)} />
+                          <div className="mt-2 flex justify-end">
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="text-destructive hover:text-destructive"
+                              onClick={() => removeFamilyMember(idx)}
+                            >
+                              <X className="h-4 w-4 mr-1" /> Remove
+                            </Button>
                           </div>
                         </div>
                       ))}
@@ -565,13 +663,9 @@ export default function ApplicationWizard({
                   type="button"
                   variant="outline"
                   size="sm"
-                  onClick={() => {
-                    const members = form.getValues("step3.familyMembers") || [];
-                    form.setValue("step3.familyMembers", [
-                      ...members,
-                      { fullName: "", relation: "", age: null, idProof: "" },
-                    ]);
-                  }}
+                  onClick={() =>
+                    appendFamilyMember({ fullName: "", relation: "", age: null, idProof: "" })
+                  }
                 >
                   <Plus className="h-4 w-4 mr-2" /> Add Family Member
                 </Button>
@@ -583,14 +677,16 @@ export default function ApplicationWizard({
 
             {currentStep === "step4" && (
               <>
-                <div className="space-y-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <Label>ID Proof Type *</Label>
                     <Select
-                      onValueChange={(value) => form.setValue("step4.idProofType", String(value))}
+                      onValueChange={(value) =>
+                        form.setValue("step4.idProofType", String(value), { shouldValidate: true })
+                      }
                       {...form.register("step4.idProofType")}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue>
                           {(() => {
                             const val = form.getValues("step4.idProofType");
@@ -630,10 +726,12 @@ export default function ApplicationWizard({
                   <div className="space-y-1">
                     <Label>Police Verification Status *</Label>
                     <Select
-                      onValueChange={(value) => form.setValue("step4.policeStatus", String(value))}
+                      onValueChange={(value) =>
+                        form.setValue("step4.policeStatus", String(value), { shouldValidate: true })
+                      }
                       {...form.register("step4.policeStatus")}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue>
                           {(() => {
                             const val = form.getValues("step4.policeStatus");
@@ -671,7 +769,7 @@ export default function ApplicationWizard({
                     <Label>Previous Address</Label>
                     <Input placeholder="Your previous residential address" {...form.register("step4.previousAddress")} />
                   </div>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-muted-foreground md:col-span-2">
                     ID number field shows last 4 digits preferred. Do not submit full Aadhaar unless
                     required by management policy.
                   </p>
@@ -688,8 +786,8 @@ export default function ApplicationWizard({
                   </p>
                 </div>
                 <div className="space-y-3">
-                  {(form.getValues("step5.vehicles") || []).map((v, idx) => (
-                    <div key={idx} className="grid grid-cols-1 md:grid-cols-3 gap-3 p-3 bg-muted/50 rounded border border-border">
+                  {vehicleFields.map((vehicle, idx) => (
+                    <div key={vehicle.id} className="grid grid-cols-1 md:grid-cols-3 gap-3 p-3 bg-muted/50 rounded border border-border">
                       <div>
                         <Label className="text-xs">Vehicle Type</Label>
                         <Input {...form.register(`step5.vehicles.${idx}.vehicleType`)} />
@@ -709,13 +807,9 @@ export default function ApplicationWizard({
                   type="button"
                   variant="outline"
                   size="sm"
-                  onClick={() => {
-                    const vehicles = form.getValues("step5.vehicles") || [];
-                    form.setValue("step5.vehicles", [
-                      ...vehicles,
-                      { vehicleType: "", registrationNo: "", stickerRfidNo: "" },
-                    ]);
-                  }}
+                  onClick={() =>
+                    appendVehicle({ vehicleType: "", registrationNo: "", stickerRfidNo: "" })
+                  }
                 >
                   <Plus className="h-4 w-4 mr-2" /> Add Vehicle
                 </Button>
@@ -727,7 +821,7 @@ export default function ApplicationWizard({
 
             {currentStep === "step6" && (
               <>
-                <div className="space-y-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <Label>Emergency Contact Name *</Label>
                     <Input {...form.register("step6.emergencyContactName")} />
@@ -801,16 +895,38 @@ export default function ApplicationWizard({
                       <Badge variant="secondary">Conditional</Badge>
                     </div>
                   </div>
-                  <AlertCircle className="h-4 w-4 text-amber-500" />
-                  <span className="text-sm text-amber-600 ml-2">
-                    Document upload will be available after application creation.
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <AlertCircle className="h-4 w-4 shrink-0 text-amber-500" />
+                    <span className="text-sm text-amber-600">
+                      Document upload will be available after application creation.
+                    </span>
+                  </div>
                 </div>
               </>
             )}
 
             {currentStep === "step8" && (
               <>
+                {needsVerification && (
+                  <div className="space-y-3">
+                    <div>
+                      <p className="text-sm font-medium">Contact Verification</p>
+                      <p className="text-xs text-muted-foreground">
+                        {verificationChannels.email && verificationChannels.phone
+                          ? "Verify both your mobile number and email address before submitting."
+                          : verificationChannels.email
+                            ? "Verify your email address before submitting."
+                            : "Verify your mobile number before submitting."}
+                      </p>
+                    </div>
+                    {verificationChannels.phone && (
+                      <PhoneVerification key={`phone-${tenantPhone}`} phone={tenantPhone} />
+                    )}
+                    {verificationChannels.email && (
+                      <EmailVerification key={`email-${tenantEmail}`} email={tenantEmail} />
+                    )}
+                  </div>
+                )}
                 <div className="space-y-4">
                   <div className="bg-muted/50 p-4 rounded border border-border">
                     <p className="text-sm font-medium">Declaration &amp; Undertaking</p>
@@ -867,7 +983,7 @@ export default function ApplicationWizard({
                 ) : (
                   <Button
                     type="submit"
-                    disabled={isSubmitting || !form.formState.isValid}
+                    disabled={isSubmitting}
                     className="bg-primary text-primary-foreground"
                   >
                     {isSubmitting ? "Submitting..." : "Submit Application"}

@@ -65,7 +65,7 @@ export default function ResidentHelpDeskPage() {
     return () => {
       cancelled = true;
     };
-  }, [router]);
+  }, []);
 
   const [tickets, setTickets] = useState<TicketListItem[]>([]);
   const [search, setSearch] = useState("");
@@ -122,15 +122,17 @@ export default function ResidentHelpDeskPage() {
   return (
     <main className="p-4 md:p-6 space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
+        <div className="w-full sm:w-auto">
           <h1 className="text-2xl font-bold text-gray-900">Help Desk</h1>
           <p className="text-sm text-gray-500 mt-1">
             Raise tickets and track complaint status.
           </p>
         </div>
-        <Link href="/resident/help-desk/new" className={`${buttonVariants({ variant: "default" })} gap-2`}>
-          <Plus className="h-4 w-4" /> New Complaint
-        </Link>
+        <div className="w-full sm:w-auto">
+          <Link href="/resident/help-desk/new" className={`${buttonVariants({ variant: "default" })} gap-2`}>
+            <Plus className="h-4 w-4" /> New Complaint
+          </Link>
+        </div>
       </div>
 
       <Card>
@@ -149,12 +151,12 @@ export default function ResidentHelpDeskPage() {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-wrap gap-2 mb-6">
+          <div className="flex flex-col sm:flex-row items-center gap-2 mb-6">
             {TABS.map((tab) => (
               <button
                 key={tab.value}
                 onClick={() => setActiveTab(tab.value)}
-                className={`text-sm px-3 py-1.5 rounded-full border transition-colors ${
+                className={`flex-1 text-sm px-3 py-1.5 rounded-full border transition-colors ${
                   activeTab === tab.value
                     ? "bg-primary text-primary-foreground border-transparent"
                     : "bg-background text-muted-foreground hover:text-foreground"

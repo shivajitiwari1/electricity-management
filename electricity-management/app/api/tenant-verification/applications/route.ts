@@ -3,7 +3,8 @@ export const runtime = "nodejs";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { guardTenantVerificationEnabled } from "@/lib/tenant-verification-config";
+import { guardTenantVerificationEnabled, getEnforcedChannels } from "@/lib/tenant-verification-config";
+import { hasVerifiedOtp } from "@/lib/tenant-verification-otp";
 import { nextTenantApplicationNumber } from "@/lib/tenant-verification";
 import { z } from "zod";
 
@@ -32,6 +33,30 @@ const createDraftSchema = z.object({
   emergencyContactName: z.string().optional().or(z.literal("")),
   emergencyContactRelation: z.string().optional().or(z.literal("")),
   emergencyContactMobile: z.string().optional().or(z.literal("")),
+  consentAccepted: z.boolean().optional(),
+  familyMembers: z
+    .array(
+      z.object({
+        fullName: z.string().min(1, "Name is required"),
+        relation: z.string().min(1, "Relationship is required"),
+        // z.coerce turns "" into 0 — treat "no age" as null.
+        age: z.preprocess(
+          (value) => (value === "" || value === undefined ? null : value),
+          z.coerce.number().optional().nullable()
+        ),
+        idProof: z.string().optional().or(z.literal("")),
+      })
+    )
+    .optional(),
+  vehicles: z
+    .array(
+      z.object({
+        vehicleType: z.string().optional().or(z.literal("")),
+        registrationNo: z.string().optional().or(z.literal("")),
+        stickerRfidNo: z.string().optional().or(z.literal("")),
+      })
+    )
+    .optional(),
 });
 
 const applicationInclude = {
@@ -54,7 +79,7 @@ const applicationInclude = {
       fullName: true,
       relation: true,
       age: true,
-      mobileNo: true,
+      idProof: true,
       createdAt: true,
     },
   },
@@ -145,21 +170,33 @@ export async function POST(req: NextRequest) {
   const data = parsed.data;
   const userId = String((session.user as any).id ?? "");
 
-  // Verify OTP is verified for this phone
-  const otpSession = await prisma.otpSession.findFirst({
-    where: {
-      phone: data.tenantPhone,
-      verified: true,
-      expiresAt: { gt: new Date() },
-    },
-    orderBy: { createdAt: "desc" },
-  });
+  // Contact verification is enforced for whichever channels the admin enabled.
+  const channels = await getEnforcedChannels();
 
-  if (!otpSession) {
-    return NextResponse.json(
-      { error: "Phone not verified. Please complete OTP verification first." },
-      { status: 403 }
-    );
+  if (channels.phone) {
+    const phoneVerified = await hasVerifiedOtp({ channel: "PHONE", phone: data.tenantPhone });
+    if (!phoneVerified) {
+      return NextResponse.json(
+        { error: "Phone not verified. Please complete OTP verification first." },
+        { status: 403 }
+      );
+    }
+  }
+
+  if (channels.email) {
+    if (!data.tenantEmail) {
+      return NextResponse.json(
+        { error: "Email address is required for email verification." },
+        { status: 400 }
+      );
+    }
+    const emailVerified = await hasVerifiedOtp({ channel: "EMAIL", email: data.tenantEmail });
+    if (!emailVerified) {
+      return NextResponse.json(
+        { error: "Email not verified. Please complete OTP verification first." },
+        { status: 403 }
+      );
+    }
   }
 
   // Verify the flat exists
@@ -206,6 +243,22 @@ export async function POST(req: NextRequest) {
         tenantIdProof: data.idProofLast4 || null,
         moveInDate: data.moveInDate ? new Date(data.moveInDate) : null,
         moveOutDate: null,
+        tenancyFrom: data.tenancyFrom ? new Date(data.tenancyFrom) : null,
+        tenancyTo: data.tenancyTo ? new Date(data.tenancyTo) : null,
+        permanentAddress: data.permanentAddress || null,
+        fatherSpouseName: data.fatherSpouseName || null,
+        dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth) : null,
+        occupation: data.occupation || null,
+        employer: data.employer || null,
+        officeAddress: data.officeAddress || null,
+        nationality: data.nationality || null,
+        maritalStatus: data.maritalStatus || null,
+        previousAddress: data.previousAddress || null,
+        emergencyContactName: data.emergencyContactName || null,
+        emergencyContactRelation: data.emergencyContactRelation || null,
+        emergencyContactMobile: data.emergencyContactMobile || null,
+        consentAccepted: data.consentAccepted ?? false,
+        consentAcceptedAt: data.consentAccepted ? new Date() : null,
         status: "PENDING",
         tower: connection.tower,
         flatNo: connection.flatNo,
@@ -217,6 +270,30 @@ export async function POST(req: NextRequest) {
       },
       include: applicationInclude as any,
     });
+
+    if (data.familyMembers?.length) {
+      await tx.tenantFamilyMember.createMany({
+        data: data.familyMembers.map((member) => ({
+          applicationId: created.id,
+          fullName: member.fullName,
+          relation: member.relation,
+          // A 0 can only mean the field was left empty — coerce turns "" into 0.
+          age: member.age === 0 ? null : member.age ?? null,
+          idProof: member.idProof || null,
+        })),
+      });
+    }
+
+    if (data.vehicles?.length) {
+      await tx.tenantVehicle.createMany({
+        data: data.vehicles.map((vehicle) => ({
+          applicationId: created.id,
+          vehicleType: vehicle.vehicleType || null,
+          registrationNo: vehicle.registrationNo || null,
+          stickerRfidNo: vehicle.stickerRfidNo || null,
+        })),
+      });
+    }
 
     await tx.auditLog.create({
       data: {

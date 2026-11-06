@@ -48,6 +48,7 @@ const HELP_DESK_SUB_ITEMS = [
 
 const TENANT_VERIFICATION_SUB_ITEMS = [
   { href: "/admin/tenant-verification",               label: "Applications",     icon: User,        adminOnly: false },
+  { href: "/admin/tenant-verification/settings",      label: "Settings",         icon: Settings,    adminOnly: true },
 ];
 
 const ADMIN_ONLY_ITEMS = [
@@ -425,7 +426,7 @@ export default function SidebarNav({ user, role, permissions, helpDeskEnabled, t
               <Menu className="h-5 w-5" />
               <span className="sr-only">Open menu</span>
             </SheetTrigger>
-            <SheetContent side="left" className="w-64 p-0 border-0">
+            <SheetContent side="left" className="w-full p-0 border-0">
               <SheetTitle className="sr-only">Navigation</SheetTitle>
               <SidebarContent user={user} role={role} permissions={permissions} helpDeskEnabled={helpDeskEnabled} tenantVerificationEnabled={tenantVerificationEnabled} onNavigate={() => setOpen(false)} />
             </SheetContent>

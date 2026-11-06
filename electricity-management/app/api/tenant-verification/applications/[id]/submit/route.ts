@@ -3,7 +3,8 @@ export const runtime = "nodejs";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { guardTenantVerificationEnabled } from "@/lib/tenant-verification-config";
+import { guardTenantVerificationEnabled, getEnforcedChannels } from "@/lib/tenant-verification-config";
+import { hasVerifiedOtp } from "@/lib/tenant-verification-otp";
 import { z } from "zod";
 
 const submitSchema = z.object({
@@ -78,21 +79,39 @@ export async function POST(
     );
   }
 
-  // Verify OTP is verified for this phone
-  const otpSession = await prisma.otpSession.findFirst({
-    where: {
-      phone: existing.tenantPhone,
-      verified: true,
-      expiresAt: { gt: new Date() },
-    },
-    orderBy: { createdAt: "desc" },
-  });
+  // Contact verification is enforced for whichever channels the admin enabled.
+  const channels = await getEnforcedChannels();
 
-  if (!otpSession) {
-    return NextResponse.json(
-      { error: "Phone not verified. Please complete OTP verification first." },
-      { status: 403 }
-    );
+  if (channels.phone) {
+    const phoneVerified = await hasVerifiedOtp({
+      channel: "PHONE",
+      phone: existing.tenantPhone,
+    });
+    if (!phoneVerified) {
+      return NextResponse.json(
+        { error: "Phone not verified. Please complete OTP verification first." },
+        { status: 403 }
+      );
+    }
+  }
+
+  if (channels.email) {
+    if (!existing.tenantEmail) {
+      return NextResponse.json(
+        { error: "Email address is required for email verification." },
+        { status: 400 }
+      );
+    }
+    const emailVerified = await hasVerifiedOtp({
+      channel: "EMAIL",
+      email: existing.tenantEmail,
+    });
+    if (!emailVerified) {
+      return NextResponse.json(
+        { error: "Email not verified. Please complete OTP verification first." },
+        { status: 403 }
+      );
+    }
   }
 
   // Validate completeness: check required fields are filled

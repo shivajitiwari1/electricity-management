@@ -16,7 +16,7 @@ export default async function ResidentLayout({ children }: { children: React.Rea
   return (
     <div className="min-h-screen bg-background">
       <ResidentNav user={session.user} maintenanceEnabled={maintenanceEnabled} helpDeskEnabled={helpDeskEnabled} tenantVerificationEnabled={tenantVerificationEnabled} />
-      <main className="max-w-5xl mx-auto px-4 py-6">
+      <main className="px-5 py-4">
         {children}
       </main>
       <IdleTimeout />

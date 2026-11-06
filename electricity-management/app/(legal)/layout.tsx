@@ -4,7 +4,7 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <header className="border-b bg-white">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="px-5 py-4 flex items-center justify-between">
           <div>
             <Link href="/login" className="font-semibold text-gray-900 text-lg hover:text-gray-600 transition-colors">
               Oasis Venetia Heights
@@ -26,13 +26,13 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
       </header>
 
       <main className="flex-1">
-        <div className="max-w-4xl mx-auto px-4 py-10">
+        <div className="px-5 py-10">
           {children}
         </div>
       </main>
 
       <footer className="bg-gray-50 border-t mt-12">
-        <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="px-5 py-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-gray-600">
             <div>
               <p className="font-medium text-gray-900 mb-1">© {new Date().getFullYear()} Oasis Buildmart India Pvt. Ltd.</p>

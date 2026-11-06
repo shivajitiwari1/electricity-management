@@ -7,6 +7,42 @@ export const OTP_MAX_ATTEMPTS = 5;
 export const OTP_RESEND_COOLDOWN_SECONDS = 60;
 export const OTP_RATE_LIMIT_WINDOW_HOURS = 1;
 export const OTP_RATE_LIMIT_MAX = 3;
+/** How long a verified OTP still counts as proof of ownership. */
+export const OTP_VERIFIED_WINDOW_MINUTES = 30;
+
+export type OtpChannel = "PHONE" | "EMAIL";
+
+export type OtpPurposeValue = "APPLICATION_REGISTRATION" | "APPLICATION_LOGIN";
+
+/**
+ * A phone number or an email address to send an OTP to.
+ * `{ phone }` keeps working without passing `channel`.
+ */
+export type OtpTarget = { phone: string; channel?: "PHONE" } | { email: string; channel: "EMAIL" };
+
+type ResolvedTarget = {
+  channel: OtpChannel;
+  identifier: string;
+  field: "phone" | "email";
+};
+
+function normalizePhone(phone: string) {
+  const digits = phone.replace(/\D/g, "");
+  if (digits.length === 12 && digits.startsWith("91")) return digits.slice(2);
+  if (digits.length === 11 && digits.startsWith("0")) return digits.slice(1);
+  return digits;
+}
+
+function normalizeEmail(email: string) {
+  return email.trim().toLowerCase();
+}
+
+function resolveTarget(target: OtpTarget): ResolvedTarget {
+  if (target.channel === "EMAIL") {
+    return { channel: "EMAIL", identifier: normalizeEmail(target.email), field: "email" };
+  }
+  return { channel: "PHONE", identifier: normalizePhone(target.phone), field: "phone" };
+}
 
 /**
  * Generates a 6-digit numeric OTP.
@@ -34,25 +70,23 @@ export async function verifyOtpHash(otp: string, hash: string): Promise<boolean>
 }
 
 /**
- * Creates or updates an OTP session for a phone number.
- * Returns the plaintext OTP (only for sending via SMS provider).
- * Caller must send the OTP via their approved SMS provider.
+ * Creates or updates an OTP session for a phone number or email address.
+ * Returns the plaintext OTP (only for handing to a delivery provider).
  */
 export async function createOtpSession({
-  phone,
   purpose = "APPLICATION_REGISTRATION",
-}: {
-  phone: string;
+  ...target
+}: OtpTarget & {
   purpose?: "APPLICATION_REGISTRATION" | "APPLICATION_LOGIN";
 }) {
-  // Normalize phone: remove spaces, dashes, parentheses
-  const normalizedPhone = phone.replace(/[\s\-()]/g, "");
+  const resolved = resolveTarget(target as OtpTarget);
+  const { channel, identifier, field } = resolved;
 
-  // Rate limit: count OTP requests in the last hour for this phone
+  // Rate limit: count OTP requests in the last hour for this identifier
   const oneHourAgo = new Date(Date.now() - OTP_RATE_LIMIT_WINDOW_HOURS * 60 * 60 * 1000);
   const recentRequests = await prisma.otpSession.count({
     where: {
-      phone: normalizedPhone,
+      [field]: identifier,
       createdAt: { gte: oneHourAgo },
     },
   });
@@ -64,7 +98,7 @@ export async function createOtpSession({
   // Resend cooldown: check if there's a recent unverified session
   const existing = await prisma.otpSession.findFirst({
     where: {
-      phone: normalizedPhone,
+      [field]: identifier,
       purpose,
       verified: false,
       expiresAt: { gt: new Date() },
@@ -87,20 +121,23 @@ export async function createOtpSession({
   const otpHash = await hashOtp(otp);
   const expiresAt = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000);
 
-  // Invalidate any existing unverified sessions for this phone + purpose
-  await prisma.otpSession.updateMany({
+  // Drop any previous unverified sessions for this identifier. They are deleted
+  // rather than flagged verified, because a verified row is proof of ownership
+  // and an abandoned request must never become proof.
+  await prisma.otpSession.deleteMany({
     where: {
-      phone: normalizedPhone,
+      [field]: identifier,
       purpose,
       verified: false,
     },
-    data: { verified: true }, // mark as consumed so they can't be used
   });
 
   // Create new OTP session
   const session = await prisma.otpSession.create({
     data: {
-      phone: normalizedPhone,
+      channel,
+      phone: field === "phone" ? identifier : null,
+      email: field === "email" ? identifier : null,
       purpose,
       otpHash,
       attempts: 0,
@@ -112,29 +149,30 @@ export async function createOtpSession({
 
   return {
     sessionId: session.id,
-    otp, // plaintext OTP — send via SMS provider, do not log
+    otp, // plaintext OTP — hand to the delivery provider, do not log
+    channel,
+    identifier,
     expiresAt,
   };
 }
 
 /**
- * Verifies an OTP for a phone number.
- * Returns { success, phone } on success, or throws on failure.
+ * Verifies an OTP for a phone number or email address.
+ * Returns { success, channel, identifier } on success, or throws on failure.
  */
 export async function verifyOtpSession({
-  phone,
   otp,
   purpose = "APPLICATION_REGISTRATION",
-}: {
-  phone: string;
+  ...target
+}: OtpTarget & {
   otp: string;
   purpose?: "APPLICATION_REGISTRATION" | "APPLICATION_LOGIN";
 }) {
-  const normalizedPhone = phone.replace(/[\s\-()]/g, "");
+  const { channel, identifier, field } = resolveTarget(target as OtpTarget);
 
   const session = await prisma.otpSession.findFirst({
     where: {
-      phone: normalizedPhone,
+      [field]: identifier,
       purpose,
       verified: false,
       expiresAt: { gt: new Date() },
@@ -163,54 +201,97 @@ export async function verifyOtpSession({
     throw new Error("Invalid OTP. Please try again.");
   }
 
-  // Mark session as verified
+  // Mark session as verified. Extending expiresAt gives the applicant a working
+  // window to finish the form after verifying.
   await prisma.otpSession.update({
     where: { id: session.id },
-    data: { verified: true },
+    data: {
+      verified: true,
+      expiresAt: new Date(Date.now() + OTP_VERIFIED_WINDOW_MINUTES * 60 * 1000),
+    },
   });
 
   return {
     success: true,
-    phone: normalizedPhone,
+    channel,
+    identifier,
+    phone: channel === "PHONE" ? identifier : null,
+    email: channel === "EMAIL" ? identifier : null,
     sessionId: session.id,
   };
 }
 
+/** Removes a session that was never delivered (provider failure, bad number). */
+export async function deleteOtpSession(sessionId: string) {
+  await prisma.otpSession.deleteMany({ where: { id: sessionId } });
+}
+
 /**
- * Marks a phone number as OTP-verified in the system.
- * Creates or links a user identity for the verified phone.
+ * Confirms an OTP session is verified and still within its validity window.
+ * Used as the gate before an application may be created or submitted.
  */
-export async function markPhoneVerified({
-  phone,
+export async function hasVerifiedOtp(target: OtpTarget) {
+  const { identifier, field } = resolveTarget(target);
+
+  const session = await prisma.otpSession.findFirst({
+    where: {
+      [field]: identifier,
+      verified: true,
+      expiresAt: { gt: new Date() },
+    },
+    orderBy: { createdAt: "desc" },
+    select: { id: true },
+  });
+
+  return Boolean(session);
+}
+
+/**
+ * Marks an identifier as OTP-verified in the system.
+ * Old unverified sessions are removed so an abandoned request can never be
+ * mistaken for proof of ownership.
+ */
+export async function markIdentifierVerified({
   purpose,
   sessionId,
-}: {
-  phone: string;
-  purpose: string;
+  ...target
+}: OtpTarget & {
+  purpose: OtpPurposeValue;
   sessionId: string;
 }) {
-  const normalizedPhone = phone.replace(/[\s\-()]/g, "");
+  const { channel, identifier, field } = resolveTarget(target as OtpTarget);
 
   // Verify the session exists and is verified
   const session = await prisma.otpSession.findUnique({
     where: { id: sessionId },
   });
 
-  if (!session || !session.verified || session.phone !== normalizedPhone) {
+  if (!session || !session.verified || session[field] !== identifier) {
     throw new Error("Invalid or unverified OTP session.");
   }
 
-  // Mark all sessions for this phone as verified (consumed)
-  await prisma.otpSession.updateMany({
-    where: { phone: normalizedPhone },
-    data: { verified: true },
+  await prisma.otpSession.deleteMany({
+    where: {
+      [field]: identifier,
+      purpose,
+      verified: false,
+    },
   });
 
   return {
     success: true,
-    phone: normalizedPhone,
-    phoneVerified: true,
+    channel,
+    identifier,
+    phoneVerified: channel === "PHONE",
+    emailVerified: channel === "EMAIL",
   };
+}
+
+/**
+ * Backwards-compatible wrapper for the phone-only callers.
+ */
+export async function markPhoneVerified(args: { phone: string; purpose: OtpPurposeValue; sessionId: string }) {
+  return markIdentifierVerified({ ...args, channel: "PHONE" });
 }
 
 /**

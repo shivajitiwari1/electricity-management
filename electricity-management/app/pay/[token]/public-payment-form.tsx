@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { FileText, AlertCircle, Building2, Smartphone, MessageCircle, Copy, Download } from "lucide-react";
 import { toast } from "sonner";
 import Image from "next/image";
+import { copyToClipboard } from "@/lib/clipboard";
 
 type SerializedBill = {
   id: string;
@@ -68,7 +69,10 @@ function BillRow({ label, value, highlight }: { label: string; value: string; hi
 function CopyButton({ value }: { value: string }) {
   return (
     <button
-      onClick={() => { navigator.clipboard.writeText(value); toast.success("Copied!"); }}
+      onClick={async () => {
+        const ok = await copyToClipboard(value);
+        toast(ok ? "Copied!" : "Could not copy");
+      }}
       className="ml-2 text-blue-500 hover:text-blue-700"
       title="Copy"
     >

@@ -42,7 +42,7 @@ export default function ResidentNav({ user, maintenanceEnabled = false, helpDesk
 
   return (
     <header className="bg-card border-b border-border shadow-sm sticky top-0 z-10">
-      <div className="max-w-5xl mx-auto px-4 flex items-center justify-between h-14">
+      <div className="w-full px-4 flex items-center justify-between h-14">
         {/* Logo + desktop nav */}
         <div className="flex items-center gap-5">
           <div className="flex items-center gap-2.5 shrink-0">

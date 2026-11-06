@@ -5,6 +5,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import ApplicationWizard from "@/components/tenant-verification/application-wizard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getEnforcedChannels } from "@/lib/tenant-verification-config";
 
 export default async function TenantVerificationRegisterPage() {
   const session = await auth();
@@ -39,6 +40,14 @@ export default async function TenantVerificationRegisterPage() {
   const connections = resident?.connections || [];
   const phone = resident?.phone || resident?.tenantPhone || "";
 
+  // Only require verification for channels the admin enabled *and* that can deliver.
+  let verificationChannels = { email: false, phone: false };
+  try {
+    verificationChannels = await getEnforcedChannels();
+  } catch {
+    verificationChannels = { email: false, phone: false };
+  }
+
   if (connections.length === 0) {
     return (
       <div className="max-w-2xl mx-auto py-12">
@@ -58,7 +67,7 @@ export default async function TenantVerificationRegisterPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-4">
+    <div className="px-5 py-4">
       <div className="mb-6">
         <h1 className="text-2xl font-bold">New Application</h1>
         <p className="text-muted-foreground">
@@ -66,7 +75,11 @@ export default async function TenantVerificationRegisterPage() {
         </p>
       </div>
 
-      <ApplicationWizard connections={connections} phone={phone} />
+      <ApplicationWizard
+        connections={connections}
+        phone={phone}
+        verificationChannels={verificationChannels}
+      />
     </div>
   );
 }

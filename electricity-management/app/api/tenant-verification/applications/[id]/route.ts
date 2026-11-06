@@ -227,7 +227,9 @@ export async function PATCH(
   if (data.officeAddress !== undefined) updateData.officeAddress = data.officeAddress || null;
   if (data.nationality !== undefined) updateData.nationality = data.nationality || null;
   if (data.maritalStatus !== undefined) updateData.maritalStatus = data.maritalStatus || null;
-  if (data.idProofType !== undefined) updateData.idProofType = data.idProofType || null;
+  // TenantApplication has no idProofType column — it stores only
+  // tenantIdProof (last 4 digits). Ignore the type selector instead of
+  // failing the update with an unknown Prisma field.
   if (data.idProofLast4 !== undefined)
     updateData.tenantIdProof = data.idProofLast4 || null;
   if (data.policeStatus !== undefined) updateData.policeStatus = data.policeStatus || null;

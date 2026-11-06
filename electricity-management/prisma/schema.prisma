@@ -258,8 +258,18 @@ model SiteConfig {
   maintenanceBillingEnabled Boolean @default(false)
   helpDeskEnabled           Boolean @default(false)
   tenantVerificationEnabled Boolean @default(false)
+  /// Which contact details a tenant must verify before submitting an application.
+  tenantVerificationMethod  TenantVerificationMethod @default(PHONE)
+  /// Fast2SMS API key used to deliver phone OTPs. Never sent to the browser in full.
+  fast2smsApiKey            String?
   cgstRate                  Decimal @default(9) @db.Decimal(5, 2)
   sgstRate                  Decimal @default(9) @db.Decimal(5, 2)
+}
+
+enum TenantVerificationMethod {
+  EMAIL
+  PHONE
+  BOTH
 }
 
 enum TicketStatus {
@@ -618,9 +628,18 @@ enum OtpPurpose {
   APPLICATION_LOGIN
 }
 
+enum OtpChannel {
+  PHONE
+  EMAIL
+}
+
 model OtpSession {
   id          String     @id @default(cuid())
-  phone       String
+  channel     OtpChannel @default(PHONE)
+  /// Set when channel = PHONE.
+  phone       String?
+  /// Set when channel = EMAIL.
+  email       String?
   purpose     OtpPurpose @default(APPLICATION_REGISTRATION)
   otpHash     String // bcrypt hash of OTP, never plaintext
   attempts    Int        @default(0)
@@ -630,6 +649,7 @@ model OtpSession {
   createdAt   DateTime   @default(now())
 
   @@index([phone])
+  @@index([email])
   @@index([expiresAt])
   @@index([verified])
 }
