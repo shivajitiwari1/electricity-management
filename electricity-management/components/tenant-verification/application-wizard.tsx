@@ -764,7 +764,7 @@ export default function ApplicationWizard({
                   </div>
                   <div className="space-y-1">
                     <Label>Reference Date</Label>
-                    <Input type="date" {...form.register("step4.policeRefDate")} />
+                    <DatePicker {...form.register("step4.policeRefDate")} />
                   </div>
                   <div className="space-y-1">
                     <Label>Previous Address</Label>
