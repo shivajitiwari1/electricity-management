@@ -17,10 +17,23 @@ import { useRouter } from "next/navigation";
 import PhoneVerification from "@/components/tenant-verification/phone-verification";
 import EmailVerification from "@/components/tenant-verification/email-verification";
 
+// HTML date inputs yield YYYY-MM-DD; parse as local midnight to compare with today.
+const isFutureDate = (value: string) => {
+  if (!value) return false;
+  const d = new Date(`${value}T00:00:00`);
+  if (isNaN(d.getTime())) return false;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return d.getTime() > today.getTime();
+};
+
 // Step 1: Flat & Tenancy
 const step1Schema = z.object({
   flatId: z.string().min(1, "Select a flat"),
-  moveInDate: z.string().min(1, "Move-in date is required"),
+  moveInDate: z
+    .string()
+    .min(1, "Move-in date is required")
+    .refine((v) => !isFutureDate(v), { message: "Move-in date cannot be in the future" }),
   tenancyFrom: z.string().min(1, "Tenancy from date is required"),
   tenancyTo: z.string().min(1, "Tenancy to date is required"),
   permanentAddress: z.string().min(1, "Permanent address is required"),
@@ -242,6 +255,10 @@ export default function ApplicationWizard({
     name: "step5.vehicles",
   });
 
+  // Local (not UTC) today, so "today" is never accidentally blocked for IST users.
+  const now = new Date();
+  const todayISO = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+
   const currentStepIndex = STEPS.findIndex((s) => s.id === currentStep);
   const tenantPhone = form.watch("step2.tenantPhone");
   const tenantEmail = form.watch("step2.tenantEmail");
@@ -439,7 +456,7 @@ export default function ApplicationWizard({
                   </div>
                   <div className="space-y-1">
                     <Label>Move-in Date *</Label>
-                    <DatePicker {...form.register("step1.moveInDate")} />
+                    <DatePicker {...form.register("step1.moveInDate")} max={todayISO} />
                     {form.formState.errors.step1?.moveInDate && (
                       <p className="text-xs text-destructive">{form.formState.errors.step1.moveInDate.message}</p>
                     )}
