@@ -128,7 +128,6 @@ export default async function AdminTenantVerificationNewPage() {
       ) : (
         <ApplicationWizard
           connections={connections}
-          phone=""
           verificationChannels={verificationChannels}
           successRedirectBase="/admin/tenant-verification"
         />

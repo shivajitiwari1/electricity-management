@@ -24,8 +24,6 @@ export default async function TenantVerificationRegisterPage() {
     where: { userId },
     select: {
       id: true,
-      phone: true,
-      tenantPhone: true,
       connections: {
         select: {
           id: true,
@@ -38,7 +36,6 @@ export default async function TenantVerificationRegisterPage() {
   });
 
   const connections = resident?.connections || [];
-  const phone = resident?.phone || resident?.tenantPhone || "";
 
   // Only require verification for channels the admin enabled *and* that can deliver.
   let verificationChannels = { email: false, phone: false };
@@ -77,7 +74,6 @@ export default async function TenantVerificationRegisterPage() {
 
       <ApplicationWizard
         connections={connections}
-        phone={phone}
         verificationChannels={verificationChannels}
       />
     </div>

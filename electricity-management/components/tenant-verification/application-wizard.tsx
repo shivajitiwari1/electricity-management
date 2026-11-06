@@ -151,12 +151,10 @@ const STEP_SCHEMAS: Record<StepId, z.ZodType> = {
 
 export default function ApplicationWizard({
   connections,
-  phone,
   verificationChannels = { email: false, phone: false },
   successRedirectBase = "/resident/tenant-verification/applications",
 }: {
   connections: Array<{ id: string; flatNo: string; tower: string; residentName?: string | null }>;
-  phone?: string;
   /**
    * Which contact details the admin requires the tenant to verify.
    * A channel only appears here once the matching provider is configured.
@@ -190,7 +188,7 @@ export default function ApplicationWizard({
         tenantName: "",
         fatherSpouseName: "",
         dateOfBirth: "",
-        tenantPhone: phone || "",
+        tenantPhone: "",
         alternateMobile: "",
         tenantEmail: "",
         occupation: "",
