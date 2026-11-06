@@ -193,7 +193,7 @@ export default async function TenantVerificationDetailPage({
                     </div>
                     <Link
                       href={`/api/tenant-verification/applications/${id}/documents/${doc.id}`}
-                      className="text-xs text-primary underline underline-offset-2 hover:text-primary-foreground"
+                      className="text-xs text-primary underline underline-offset-2 hover:text-primary/80"
                     >
                       Download
                     </Link>

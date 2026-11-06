@@ -96,11 +96,10 @@ export default async function AdminApplicationsPage() {
                     </TableCell>
                     <TableCell>{app.createdAt?.toLocaleDateString("en-IN") || "—"}</TableCell>
                     <TableCell>
-                      <Link
-                        href={`/tenant-verification/admin/applications/${app.id}`}
-                        className="text-sm text-primary underline underline-offset-4 hover:text-primary-foreground"
-                      >
-                        Review
+                      <Link href={`/tenant-verification/admin/applications/${app.id}`}>
+                        <Button variant="secondary" size="sm">
+                          Review
+                        </Button>
                       </Link>
                     </TableCell>
                   </TableRow>

@@ -131,11 +131,10 @@ export default async function OwnerTenantVerificationPage() {
                         <Badge variant="secondary">{formatStatus(app.status)}</Badge>
                       </td>
                       <td className="px-3 py-2">
-                        <Link
-                          href={`/tenant-verification/owner/applications/${app.id}`}
-                          className="text-sm text-primary underline underline-offset-4 hover:text-primary-foreground"
-                        >
-                          Review
+                        <Link href={`/tenant-verification/owner/applications/${app.id}`}>
+                          <Button variant="secondary" size="sm">
+                            Review
+                          </Button>
                         </Link>
                       </td>
                     </tr>
