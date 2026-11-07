@@ -42,7 +42,23 @@ export default async function TenantVerificationDetailPage({
     include: {
       resident: { include: { user: { select: { name: true, email: true } } } },
       connection: { select: { flatNo: true, tower: true } },
-      documents: { orderBy: { createdAt: "asc" as const } },
+      documents: {
+        orderBy: { createdAt: "asc" as const },
+        select: {
+          id: true,
+          documentType: true,
+          fileName: true,
+          mimeType: true,
+          sizeBytes: true,
+          verified: true,
+          verifiedBy: true,
+          verifiedAt: true,
+          createdAt: true,
+          // `data` (binary blob) is excluded — it's passed to a client
+          // component and cannot be serialized by RSC. Download fetches it
+          // separately via /api/tenant-verification/applications/[id]/documents/[docId].
+        },
+      },
       family: { orderBy: { createdAt: "asc" as const } },
       auditLogs: {
         orderBy: { createdAt: "desc" as const },
