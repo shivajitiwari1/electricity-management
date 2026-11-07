@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const editSchema = z.object({
   tenantName: z.string().min(1, "Tenant name is required"),
@@ -120,6 +121,8 @@ export default function TenantVerificationEditForm({
     },
   });
 
+  const router = useRouter();
+
   const onFormSubmit = async (data: FormData) => {
     setIsSubmitting(true);
     try {
@@ -152,6 +155,7 @@ export default function TenantVerificationEditForm({
       }
 
       toast.success("Application updated successfully");
+      router.push(`/admin/tenant-verification/${application.id}`);
     } catch (err: any) {
       toast.error(err?.message ?? "Failed to update application");
     } finally {
