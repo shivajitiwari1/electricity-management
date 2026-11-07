@@ -3,6 +3,7 @@ export const runtime = "nodejs";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { guardPermission } from "@/lib/permissions";
 import { guardTenantVerificationEnabled } from "@/lib/tenant-verification-config";
 import { z } from "zod";
 
@@ -31,6 +32,7 @@ const updateDraftSchema = z.object({
   emergencyContactRelation: z.string().optional().or(z.literal("")).optional(),
   emergencyContactMobile: z.string().optional().or(z.literal("")).optional(),
   flatId: z.string().optional(),
+  status: z.enum(["PENDING", "DOCUMENTS_SUBMITTED", "OWNER_APPROVED", "OWNER_REJECTED", "POLICE_VERIFICATION_PENDING", "POLICE_VERIFIED", "POLICE_VERIFICATION_FAILED", "MANAGEMENT_APPROVED", "MANAGEMENT_REJECTED", "ACTIVE", "INACTIVE"]).optional(),
 });
 
 export async function GET(
@@ -116,6 +118,7 @@ export async function PATCH(
   const { id } = await params;
   const userId = String((session.user as any).id ?? "");
   const userEmail = (session.user as any).email as string | undefined;
+  const userRole = (session.user as any).role as string;
   const url = new URL(req.url);
   const phoneParam = url.searchParams.get("phone");
 
@@ -139,16 +142,13 @@ export async function PATCH(
     existing.tenantEmail === userEmail ||
     existing.tenantPhone === phoneParam;
 
-  if (!ownsApplication) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
+  const canWrite =
+    userRole === "ADMIN" ||
+    ((session.user as any).permissions?.["tenant-verification"]?.canWrite === true);
 
-  // Only DRAFT applications can be edited
-  if (existing.status !== "PENDING") {
-    return NextResponse.json(
-      { error: "Only draft applications can be edited" },
-      { status: 409 }
-    );
+  // Residents (non-admin) must own the application
+  if (!ownsApplication && !canWrite) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   let body: unknown;
@@ -167,6 +167,51 @@ export async function PATCH(
   }
 
   const data = parsed.data;
+
+  // Handle status change (approve/reject) — admin/manager only
+  if (data.status !== undefined && data.status !== existing.status) {
+    if (!canWrite) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
+    const updated = await prisma.$transaction(async (tx) => {
+      const app = await tx.tenantApplication.update({
+        where: { id },
+        data: { status: data.status },
+      });
+
+      await tx.auditLog.create({
+        data: {
+          userId,
+          action: `STATUS_CHANGE_${data.status}`,
+          entity: "TenantApplication",
+          entityId: id,
+          meta: {
+            applicationNumber: app.applicationNumber,
+            fromStatus: existing.status,
+            toStatus: data.status,
+          },
+        },
+      });
+
+      return app;
+    });
+
+    return NextResponse.json({ application: updated });
+  }
+
+  // Field edits: PENDING applications can be edited by ADMIN/MANAGER (canWrite).
+  // Non-PENDING (approved/rejected) applications can only be edited by ADMIN.
+  if (existing.status !== "PENDING") {
+    if (userRole !== "ADMIN") {
+      return NextResponse.json(
+        { error: "Only admin can edit approved applications" },
+        { status: 403 }
+      );
+    }
+  } else if (!canWrite) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
 
   // If changing flat, verify it exists
   let connectionId = existing.connectionId;
@@ -273,4 +318,52 @@ export async function PATCH(
   });
 
   return NextResponse.json({ application: updated });
+}
+
+export async function DELETE(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const session = await auth();
+  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const disabled = await guardTenantVerificationEnabled();
+  if (disabled) return disabled;
+
+  const { id } = await params;
+  const userId = String((session.user as any).id ?? "");
+  const userRole = (session.user as any).role as string;
+
+  // Only ADMIN can delete applications
+  if (userRole !== "ADMIN") {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  const existing = await prisma.tenantApplication.findUnique({
+    where: { id },
+    select: { id: true, applicationNumber: true, status: true },
+  });
+
+  if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+  await prisma.$transaction(async (tx) => {
+    await tx.tenantApplication.delete({
+      where: { id },
+    });
+
+    await tx.auditLog.create({
+      data: {
+        userId,
+        action: "DELETE",
+        entity: "TenantApplication",
+        entityId: id,
+        meta: {
+          applicationNumber: existing.applicationNumber,
+          status: existing.status,
+        },
+      },
+    });
+  });
+
+  return NextResponse.json({ success: true });
 }

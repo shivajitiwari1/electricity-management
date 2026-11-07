@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatStatus } from "@/lib/tenant-verification-format";
+import { toast } from "sonner";
 
 type Application = {
   id: string;
@@ -49,7 +51,6 @@ type Props = {
   isResident?: boolean;
   canWrite?: boolean;
   canDelete?: boolean;
-  onStatusChange?: (status: string) => void;
 };
 
 export default function TenantVerificationDetail({
@@ -57,9 +58,29 @@ export default function TenantVerificationDetail({
   isResident = false,
   canWrite = false,
   canDelete = false,
-  onStatusChange,
 }: Props) {
   const statusLabel = formatStatus(application.status as any);
+  const [statusChanging, setStatusChanging] = useState<string | null>(null);
+
+  const handleStatusChange = async (status: string) => {
+    setStatusChanging(status);
+    try {
+      const res = await fetch(`/api/tenant-verification/applications/${application.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err?.error ?? "Failed to update status");
+      }
+      toast.success("Status updated");
+      window.location.reload();
+    } catch (err: any) {
+      toast.error(err?.message ?? "Failed to update status");
+      setStatusChanging(null);
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -114,7 +135,7 @@ export default function TenantVerificationDetail({
               <span className="font-medium text-muted-foreground">Owner Email</span>
               <p>{application.resident?.user?.email ?? "—"}</p>
             </div>
-            <div className="text-sm">
+            <div className="text-sm flex items-center gap-2">
               <span className="font-medium text-muted-foreground">Status</span>
               <Badge className="w-fit">{statusLabel}</Badge>
             </div>
@@ -125,25 +146,33 @@ export default function TenantVerificationDetail({
       {!isResident && canWrite && (
         <div className="flex gap-2">
           <button
-            onClick={() => onStatusChange?.("DOCUMENTS_SUBMITTED")}
-            className="px-3 py-1.5 text-xs border rounded-md hover:bg-accent"
-            disabled={application.status !== "PENDING"}
+            onClick={() => handleStatusChange("DOCUMENTS_SUBMITTED")}
+            disabled={
+              application.status !== "PENDING" || statusChanging === "DOCUMENTS_SUBMITTED"
+            }
+            className="px-3 py-1.5 text-xs border rounded-md hover:bg-accent disabled:opacity-50"
           >
-            Mark Documents Submitted
+            {statusChanging === "DOCUMENTS_SUBMITTED" ? "…" : "Mark Documents Submitted"}
           </button>
           <button
-            onClick={() => onStatusChange?.("OWNER_APPROVED")}
-            className="px-3 py-1.5 text-xs border rounded-md hover:bg-accent"
-            disabled={application.status !== "DOCUMENTS_SUBMITTED"}
+            onClick={() => handleStatusChange("OWNER_APPROVED")}
+            disabled={
+              application.status !== "DOCUMENTS_SUBMITTED" ||
+              statusChanging === "OWNER_APPROVED"
+            }
+            className="px-3 py-1.5 text-xs border rounded-md hover:bg-accent disabled:opacity-50"
           >
-            Owner Approve
+            {statusChanging === "OWNER_APPROVED" ? "…" : "Owner Approve"}
           </button>
           <button
-            onClick={() => onStatusChange?.("MANAGEMENT_APPROVED")}
-            className="px-3 py-1.5 text-xs border rounded-md hover:bg-accent"
-            disabled={application.status !== "POLICE_VERIFIED"}
+            onClick={() => handleStatusChange("MANAGEMENT_APPROVED")}
+            disabled={
+              application.status !== "POLICE_VERIFIED" ||
+              statusChanging === "MANAGEMENT_APPROVED"
+            }
+            className="px-3 py-1.5 text-xs border rounded-md hover:bg-accent disabled:opacity-50"
           >
-            Management Approve
+            {statusChanging === "MANAGEMENT_APPROVED" ? "…" : "Management Approve"}
           </button>
         </div>
       )}

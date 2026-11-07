@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import { guardPermission } from "@/lib/permissions";
 import { redirect } from "next/navigation";
 import TenantVerificationDetail from "@/components/shared/tenant-verification-detail";
+import TenantVerificationActions from "@/components/admin/tenant-verification-actions";
 
 export const dynamic = "force-dynamic";
 
@@ -32,6 +33,10 @@ export default async function TenantVerificationDetailPage({
     redirect("/admin/dashboard");
   }
 
+  const canWrite =
+    role === "ADMIN" ||
+    ((session.user as any).permissions?.["tenant-verification"]?.canWrite === true);
+
   const application = await prisma.tenantApplication.findUnique({
     where: { id },
     include: {
@@ -50,19 +55,31 @@ export default async function TenantVerificationDetailPage({
     redirect("/admin/tenant-verification");
   }
 
+  const isDraft = application.status === "PENDING";
+  const canEdit = isDraft ? canWrite : role === "ADMIN";
+
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">Application {application.applicationNumber}</h1>
-        <p className="text-muted-foreground">
-          View and manage this tenant verification application.
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-bold">Application {application.applicationNumber}</h1>
+          <p className="text-muted-foreground">
+            View and manage this tenant verification application.
+          </p>
+        </div>
+        <TenantVerificationActions
+          id={id}
+          applicationNumber={application.applicationNumber}
+          canEdit={canEdit}
+          role={role}
+          canDelete={role === "ADMIN"}
+        />
       </div>
 
       <TenantVerificationDetail
         application={application as any}
         isResident={false}
-        canWrite={role === "ADMIN" || role === "MANAGER"}
+        canWrite={canWrite}
         canDelete={role === "ADMIN"}
       />
     </div>

@@ -93,7 +93,14 @@ export default async function TenantVerificationPage() {
 
       <TenantVerificationToggle initialEnabled={siteConfig?.tenantVerificationEnabled ?? false} />
 
-      {!dbError && <TenantVerificationList applications={applications} />}
+      {!dbError && (
+        <TenantVerificationList
+          applications={applications}
+          canWrite={canWrite}
+          canDelete={role === "ADMIN"}
+          isAdmin={role === "ADMIN"}
+        />
+      )}
     </div>
   );
 }
