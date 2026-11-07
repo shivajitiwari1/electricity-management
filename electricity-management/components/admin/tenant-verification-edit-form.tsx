@@ -124,19 +124,22 @@ export default function TenantVerificationEditForm({
     setIsSubmitting(true);
     try {
       const payload: Record<string, unknown> = { ...data };
-      // Convert empty strings to null for optional fields
-      for (const key of Object.keys(payload)) {
-        if (payload[key] === "") payload[key] = null;
-      }
-      // Parse date fields
+      // Date fields: a real date becomes an ISO datetime string; an empty date
+      // becomes null (the API accepts null via .nullable()).
       const dateFields: (keyof FormData)[] = [
         "moveInDate", "tenancyFrom", "tenancyTo", "dateOfBirth", "policeRefDate",
       ];
       for (const field of dateFields) {
         if (data[field]) {
           payload[field] = `${data[field]}T00:00:00.000Z`;
+        } else {
+          payload[field] = null;
         }
       }
+      // Other optional string fields are left as-is: an empty string is fine,
+      // the API coerces "" to null before writing to the database. Do NOT send
+      // null here, because the API zod schema accepts "" / undefined but not
+      // null, which would fail validation.
 
       const res = await fetch(`/api/tenant-verification/applications/${application.id}`, {
         method: "PATCH",
