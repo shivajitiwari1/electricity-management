@@ -188,8 +188,8 @@ export default function TenantVerificationDetail({
             <ul className="space-y-1 text-sm">
               {application.documents.map((doc) => (
                 <li key={doc.id} className="flex items-center gap-2">
-                  <span className="w-8 text-muted-foreground">{doc.documentType}</span>
-                  <span className="flex-1 truncate">{doc.fileName}</span>
+                  <span className="w-20 truncate text-muted-foreground">{doc.documentType}</span>
+                  <span className="flex-1 truncate min-w-0">{doc.fileName}</span>
                   <span className="w-16 text-xs text-muted-foreground">
                     {(doc.sizeBytes / 1024).toFixed(1)} KB
                   </span>
@@ -216,10 +216,10 @@ export default function TenantVerificationDetail({
             <ul className="space-y-1 text-sm">
               {application.family.map((member) => (
                 <li key={member.id} className="flex items-center gap-2">
-                  <span className="flex-1 truncate">{member.fullName}</span>
-                  <span className="w-16 text-muted-foreground">{member.relation}</span>
+                  <span className="max-w-[150px] truncate min-w-0">{member.fullName}</span>
+                  <span className="w-16 truncate min-w-0 text-muted-foreground">{member.relation}</span>
                   <span className="w-12 text-muted-foreground">{member.age ?? "—"}</span>
-                  <span className="w-20 text-muted-foreground truncate">{member.idProof ?? "—"}</span>
+                  <span className="w-20 truncate min-w-0 text-muted-foreground">{member.idProof ?? "—"}</span>
                 </li>
               ))}
             </ul>
