@@ -98,7 +98,7 @@ export default async function TenantVerificationApplicationsPage() {
                     <TableCell className="text-center">{app._count.family}</TableCell>
                     <TableCell>
                       <Link href={`/resident/tenant-verification/applications/${app.id}`}>
-                        <Button variant="secondary" size="sm">
+                        <Button variant="outline" size="sm">
                           View Details
                         </Button>
                       </Link>

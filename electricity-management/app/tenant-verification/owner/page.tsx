@@ -132,7 +132,7 @@ export default async function OwnerTenantVerificationPage() {
                       </td>
                       <td className="px-3 py-2">
                         <Link href={`/tenant-verification/owner/applications/${app.id}`}>
-                          <Button variant="secondary" size="sm">
+                          <Button variant="outline" size="sm">
                             Review
                           </Button>
                         </Link>
